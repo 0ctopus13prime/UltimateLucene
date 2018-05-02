@@ -1,16 +1,11 @@
 #ifndef LUCENE_CORE_ANALYSIS_TOKEN_FILTER_H_
 #define LUCENE_CORE_ANALYSIS_TOKEN_FILTER_H_
 
-namespace lucene {
-  namespace core {
-    namespace analysis {
+namespace lucene { namespace core { namespace analysis {
 
-      class TokenFilter {
+class TokenFilter {
 
-      };
+};
 
-    } // End of namespace analysis
-  } // End of namespace core
-} // End of namespace lucene
-
+}}} // End of namespace
 #endif
