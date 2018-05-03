@@ -46,7 +46,7 @@ main() {
   cmake $src
 
   # Do a make
-  make -v -j
+  make -j
 }
 
 main "$@"
