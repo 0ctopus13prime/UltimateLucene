@@ -19,8 +19,8 @@ endmacro()
 ## MACRO END
 #######################
 
-add_headers_and_sources(doochi_core Analysis)
-add_headers_and_sources(doochi_core Util)
+add_headers_and_sources(DoochiCore Analysis)
+add_headers_and_sources(DoochiCore Util)
 
 add_subdirectory(Analysis)
 add_subdirectory(Util)
