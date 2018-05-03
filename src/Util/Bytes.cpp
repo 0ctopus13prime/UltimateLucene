@@ -1,12 +1,13 @@
 #include <stdexcept>
 #include <cstring>
+#include <string>
 #include <assert.h>
 #include <Util/Bytes.h>
 
 using namespace lucene::core::util;
 
 BytesRef::BytesRef()
-  : BytesRef(BYTES_REF_EMPTY_BYTES, 0, 1) {
+  : BytesRef(BytesRef::BYTES_REF_EMPTY_BYTES, 0, 1) {
 }
 
 // It's a shallow copy
@@ -25,7 +26,7 @@ void BytesRef::DeepCopyOf(BytesRef& source, BytesRef& target) {
   target.length = source.length;
   target.offset = source.offset;
   int effective_length = source.length - source.offset;
-  if(target.bytes != BYTES_REF_EMPTY_BYTES) delete[] target.bytes;
+  if(target.bytes != BytesRef::BYTES_REF_EMPTY_BYTES) delete[] target.bytes;
   target.bytes = new char[effective_length];
   std::memcpy(target.bytes, source.bytes + source.offset, effective_length);
 }
@@ -36,7 +37,7 @@ BytesRef::BytesRef(unsigned int capacity)
 
 BytesRef::BytesRef(std::string& text) {
   if(text.empty()) {
-    bytes = BYTES_REF_EMPTY_BYTES;
+    bytes = BytesRef::BYTES_REF_EMPTY_BYTES;
     offset = 0;
     length = 1;
   } else {
@@ -49,7 +50,7 @@ BytesRef::BytesRef(std::string& text) {
 }
 
 BytesRef::~BytesRef() {
-  if(bytes != BYTES_REF_EMPTY_BYTES) {
+  if(bytes != BytesRef::BYTES_REF_EMPTY_BYTES) {
     delete[] bytes;
   }
 }
@@ -105,8 +106,8 @@ std::string BytesRef::UTF8ToString() {
 }
 
 bool BytesRef::IsValid() {
-  if(bytes == BYTES_REF_EMPTY_BYTES && (offset != 0 || length != 1)) {
-    throw std::runtime_error("bytes is BYTES_REF_EMPTY_BYTES, offset=" + std::to_string(offset) + ", length=" + std::to_string(length));
+  if(bytes == BytesRef::BYTES_REF_EMPTY_BYTES && (offset != 0 || length != 1)) {
+    throw std::runtime_error("bytes is BytesRef::BYTES_REF_EMPTY_BYTES, offset=" + std::to_string(offset) + ", length=" + std::to_string(length));
   }
   if(bytes == nullptr) {
     throw std::runtime_error("bytes is null");

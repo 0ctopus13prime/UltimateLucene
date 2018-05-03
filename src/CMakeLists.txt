@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(DoochiCore)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_CXX_FLAGS "-std=c++11")
 
 #######################
 ## MACRO START
@@ -19,8 +19,11 @@ endmacro()
 ## MACRO END
 #######################
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
 add_headers_and_sources(DoochiCore Analysis)
 add_headers_and_sources(DoochiCore Util)
+add_library(DoochiCore SHARED ${DoochiCore_headers} ${DoochiCore_sources})
 
 add_subdirectory(Analysis)
 add_subdirectory(Util)
