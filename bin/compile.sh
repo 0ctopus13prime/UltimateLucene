@@ -4,16 +4,18 @@ help() {
   echo "Compile Doochi-Core source code"
   echo "  -h : Help, print manual"
   echo "  -c : Clean and compile"
+
+  exit 0
 }
 
-argparse() {
+main() {
   local cmd
 
   while getopts "ch" cmd
   do
     case "$cmd" in
       c)
-        CLEAR=true
+        CLEAR="true"
       ;;
       h)
         help
@@ -24,12 +26,7 @@ argparse() {
     esac
   done
 
-  echo "$((OPTIND-1))"
-}
-
-main() {
-  arg_shift=$(argparse "$@")
-  shift $arg_shift
+  shift $((OPTIND-1))
 
   currPath=$(cd $(dirname ${BASH_SOURCE[0]}); pwd)
   src="$currPath/../src"
