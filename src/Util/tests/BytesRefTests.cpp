@@ -25,24 +25,25 @@ int main() {
     // Shallow copy, Deep copy
     std::string str = "doochi";
     BytesRef bytes_ref1(str);
-    SharedBytesRef shared_bytes_ref2(bytes_ref1); // Shallow copy
+    BytesRef shared_bytes_ref2(bytes_ref1); // Shallow copy
 
     // Shallow case, Change single character at 0 index
-    bytes_ref1.bytes[0] = 'x';
-    assert(shared_bytes_ref2.bytes[0] == 'x');
+    bytes_ref1.bytes.get()[0] = 'x';
+    assert(bytes_ref1.bytes.get()[0] == 'x');
 
     // Deep copy case, Chage single character at 0 index
-    BytesRef bytes_ref2(bytes_ref1);
-    bytes_ref1.bytes[0] = 'd';
-    assert(bytes_ref2.bytes[0] != bytes_ref1.bytes[0]);
-    assert(bytes_ref2.bytes[0] == 'x');
+    BytesRef bytes_ref2;
+    bytes_ref2.DeepCopyOf(bytes_ref1);
+    bytes_ref1.bytes.get()[0] = 'd';
+    assert(bytes_ref2.bytes.get()[0] != bytes_ref1.bytes.get()[0]);
+    assert(bytes_ref2.bytes.get()[0] == 'x');
 
     // operator =, assign
     BytesRef bytes_ref3(bytes_ref1);
     bytes_ref3 = bytes_ref2;
     assert(bytes_ref3 == bytes_ref2);
 
-    SharedBytesRef shared_bytes_ref3(bytes_ref3);
+    BytesRef shared_bytes_ref3(bytes_ref3);
     shared_bytes_ref3 = bytes_ref2;
     assert(shared_bytes_ref3 == bytes_ref2);
   }
@@ -56,9 +57,9 @@ int main() {
     // 1. ==
     {
       BytesRef bytes_ref1(str1);
-      SharedBytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str1);
-      SharedBytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref2(bytes_ref2);
 
       assert(bytes_ref1 == bytes_ref2);
       assert(shared_bytes_ref1 == bytes_ref2);
@@ -69,9 +70,9 @@ int main() {
     // 2. !=
     {
       BytesRef bytes_ref1(str1);
-      SharedBytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str2);
-      SharedBytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref2(bytes_ref2);
 
       assert(bytes_ref1 != bytes_ref2);
       assert(bytes_ref1 != shared_bytes_ref2);
@@ -82,9 +83,9 @@ int main() {
     // 3. <
     {
       BytesRef bytes_ref1(str1);
-      SharedBytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str2);
-      SharedBytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref2(bytes_ref2);
 
       assert(bytes_ref1 < bytes_ref2);
       assert(bytes_ref1 < shared_bytes_ref2);
@@ -92,7 +93,7 @@ int main() {
       assert(shared_bytes_ref1 < shared_bytes_ref2);
 
       BytesRef bytes_ref3(str3);
-      SharedBytesRef shared_bytes_ref3(bytes_ref3);
+      BytesRef shared_bytes_ref3(bytes_ref3);
       assert(bytes_ref1 < bytes_ref3);
       assert(bytes_ref1 < shared_bytes_ref3);
       assert(shared_bytes_ref1 < bytes_ref3);
@@ -102,9 +103,9 @@ int main() {
     // 4. <=
     {
       BytesRef bytes_ref1(str1);
-      SharedBytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str1);
-      SharedBytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref2(bytes_ref2);
 
       assert(bytes_ref1 <= bytes_ref2);
       assert(bytes_ref1 <= shared_bytes_ref2);
@@ -112,7 +113,7 @@ int main() {
       assert(shared_bytes_ref1 <= shared_bytes_ref2);
 
       BytesRef bytes_ref3(str3);
-      SharedBytesRef shared_bytes_ref3(bytes_ref3);
+      BytesRef shared_bytes_ref3(bytes_ref3);
       assert(bytes_ref1 <= bytes_ref3);
       assert(bytes_ref1 <= shared_bytes_ref3);
       assert(shared_bytes_ref1 <= bytes_ref3);
@@ -122,9 +123,9 @@ int main() {
     // 5. >
     {
       BytesRef bytes_ref1(str1);
-      SharedBytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str2);
-      SharedBytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref2(bytes_ref2);
 
       assert(bytes_ref2 > bytes_ref1);
       assert(bytes_ref2 > shared_bytes_ref1);
@@ -132,7 +133,7 @@ int main() {
       assert(shared_bytes_ref2 > shared_bytes_ref1);
 
       BytesRef bytes_ref3(str3);
-      SharedBytesRef shared_bytes_ref3(bytes_ref3);
+      BytesRef shared_bytes_ref3(bytes_ref3);
       assert(bytes_ref3 > bytes_ref1);
       assert(bytes_ref3 > shared_bytes_ref1);
       assert(shared_bytes_ref3 > bytes_ref1);
@@ -142,9 +143,9 @@ int main() {
     // 6. >=
     {
       BytesRef bytes_ref1(str1);
-      SharedBytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str1);
-      SharedBytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref2(bytes_ref2);
 
       assert(bytes_ref2 >= bytes_ref1);
       assert(bytes_ref2 >= shared_bytes_ref1);
@@ -152,7 +153,7 @@ int main() {
       assert(shared_bytes_ref2 >= shared_bytes_ref1);
 
       BytesRef bytes_ref3(str3);
-      SharedBytesRef shared_bytes_ref3(bytes_ref3);
+      BytesRef shared_bytes_ref3(bytes_ref3);
       assert(bytes_ref3 >= bytes_ref1);
       assert(bytes_ref3 >= shared_bytes_ref1);
       assert(shared_bytes_ref3 >= bytes_ref1);
@@ -163,35 +164,13 @@ int main() {
   {
     // Validation test
     BytesRef bytes_ref;
-    unsigned int offset_copy = bytes_ref.offset;
-    bytes_ref.offset = 1;
+    bytes_ref.offset = 1; // nullptr && offset > length
     try {
       bytes_ref.IsValid();
       assert(false); // Fail here
     } catch(...) {
       // Ignore, Exception must be caught in here.
     }
-    bytes_ref.offset = offset_copy;
-
-    char* bytes_copy = bytes_ref.bytes;
-    bytes_ref.bytes = nullptr;
-    try {
-      bytes_ref.IsValid();
-      assert(false); // Fail here
-    } catch(...) {
-      // Ignore, Exception must be caught in here.
-    }
-    bytes_ref.bytes = bytes_copy;
-
-    offset_copy = bytes_ref.offset;
-    bytes_ref.offset = bytes_ref.length + 1;
-    try {
-      bytes_ref.IsValid();
-      assert(false); // Fail here
-    } catch(...) {
-      // Ignore, Exception must be caught in here.
-    }
-    bytes_ref.offset = offset_copy;
   }
 
   std::cout << "End basic BytesRefTests" << std::endl;

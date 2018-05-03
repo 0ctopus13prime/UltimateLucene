@@ -2,6 +2,7 @@
 #define LUCENE_CORE_UTIL_BYTES_H_
 
 #include <string>
+#include <memory>
 
 namespace lucene { namespace core { namespace util {
 
@@ -10,8 +11,7 @@ class BytesRef {
     int CompareTo(const BytesRef& other) const;
 
   public:
-    static char BYTES_REF_EMPTY_BYTES[1];
-    char* bytes;
+    std::shared_ptr<char> bytes;
     unsigned int offset;
     unsigned int length;
 
@@ -22,6 +22,7 @@ class BytesRef {
     BytesRef(unsigned int capacity);
     BytesRef(std::string& text);
     ~BytesRef();
+    void DeepCopyOf(BytesRef& other);
     BytesRef& operator=(const BytesRef& other);
     bool operator==(const BytesRef& other) const;
     bool operator!=(const BytesRef& other) const;
@@ -32,14 +33,9 @@ class BytesRef {
     std::string UTF8ToString();
     bool IsValid() const;
 };
-//char BytesRef::BYTES_REF_EMPTY_BYTES[1] = {'\0'};
 
-class SharedBytesRef: public BytesRef {
-  public:
-    SharedBytesRef(char* bytes, unsigned int offset, unsigned int length);
-    SharedBytesRef(const BytesRef& other);
-    ~SharedBytesRef();
-    SharedBytesRef& operator=(const BytesRef& other);
+class BytesRefBuilder {
+
 };
 
 }}} // End of namespace
