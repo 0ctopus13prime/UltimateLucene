@@ -20,12 +20,16 @@ class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
     BytesRef& GetBytesRef() override;
     void SetBytesRef(BytesRef& bytes) override;
     void Clear() override;
-    void CopyTo(AttributeImpl& target) override;
     void ReflectWith(AttributeReflector& reflector) override;
     bool operator==(BytesTermAttributeImpl& other);
 };
 
 class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, public TermToBytesRefAttribute {
+  private:
+    static unsigned int MIN_BUFFER_SIZE;
+    char* term_buffer;
+    unsigned int term_length;
+
   private:
     void GrowTermBuffer(int new_size);
 
@@ -34,7 +38,6 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     CharTermAttributeImpl(const CharTermAttributeImpl& other);
     virtual ~CharTermAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
-    void CopyTo(AttributeImpl& target) override;
     BytesRef& GetBytesRef() override;
     void CopyBuffer(char* buffer, const int offset, const int length) override;
     char* Buffer() override;
@@ -43,26 +46,28 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     std::string SubSequence(const int start, const int end) override;
     CharTermAttributeImpl& SetLength(const int length) override;
     CharTermAttributeImpl& SetEmpty() override;
-    CharTermAttributeImpl& Append(std::string& csq) override;
-    CharTermAttributeImpl& Append(std::string& csq, const int start, const int end) override;
-    CharTermAttributeImpl& Append(char c) override;
-    CharTermAttributeImpl& Append(std::stringbuf& buf) override;
-    CharTermAttributeImpl& Append(CharTermAttribute& term_att) override;
+    CharTermAttribute& Append(const std::string& csq) override;
+    CharTermAttribute& Append(const std::string& csq, const unsigned int start, const unsigned int end) override;
+    CharTermAttribute& Append(const char c) override;
+    CharTermAttribute& Append(const std::stringbuf& buf) override;
+    CharTermAttribute& Append(const CharTermAttribute& term_att) override;
     char operator[](const int idx) override;
     bool operator==(CharTermAttributeImpl& other);
 };
 
 class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
+  private:
+    int flags;
+
   public:
     FlagsAttributeImpl();
     FlagsAttributeImpl(const FlagsAttributeImpl& other);
     virtual ~FlagsAttributeImpl();
     int GetFlags() override;
-    void SetFlags(int flags) override;
+    void SetFlags(const int flags) override;
     void ReflectWith(AttributeReflector& reflector) override;
-    void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    bool operator==(FlagsAttributeImpl& other);
+    bool operator==(const FlagsAttributeImpl& other);
 };
 
 class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
@@ -74,14 +79,17 @@ class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
     KeywordAttributeImpl(const KeywordAttributeImpl& other);
     virtual ~KeywordAttributeImpl();
     bool IsKeyword() override;
-    void SetKeyword(bool is_keyword) override;
+    void SetKeyword(const bool is_keyword) override;
     void ReflectWith(AttributeReflector& reflector) override;
-    void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    bool operator==(FlagsAttributeImpl& other);
+    bool operator==(const KeywordAttributeImpl& other);
 };
 
 class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
+  private:
+    unsigned int start_offset;
+    unsigned int end_offset;
+
   public:
     OffsetAttributeImpl();
     OffsetAttributeImpl(const OffsetAttributeImpl& other);
@@ -90,9 +98,8 @@ class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
     void SetOffset(const int start_offset, const int end_offset) override;
     int EndOffset() override;
     void ReflectWith(AttributeReflector& reflector) override;
-    void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    bool operator==(OffsetAttributeImpl& other);
+    bool operator==(const OffsetAttributeImpl& other);
 };
 
 class PackedTokenAttributeImpl {
@@ -108,7 +115,6 @@ class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
     PayloadAttributeImpl(const PayloadAttributeImpl& other);
     virtual ~PayloadAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
-    void CopyTo(AttributeImpl& target) override;
     void Clear() override;
     bool operator==(PayloadAttributeImpl& other);
     BytesRef& GetPayload() override;
@@ -117,50 +123,48 @@ class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
 
 class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncrementAttribute {
   private:
-    int position_increment = 1;
+    unsigned int position_increment;
 
   public:
     PositionIncrementAttributeImpl();
     PositionIncrementAttributeImpl(const PositionIncrementAttributeImpl& other);
     virtual ~PositionIncrementAttributeImpl();
     void SetPositionIncrement(int position_increment) override;
-    int GetPositionIncrement() override;
+    unsigned int GetPositionIncrement() override;
     void ReflectWith(AttributeReflector& reflector) override;
-    void CopyTo(AttributeImpl& target) override;
+    void End() override;
     void Clear() override;
     bool operator==(PositionIncrementAttributeImpl& other);
 };
 
 class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAttribute {
   private:
-    int position_length = 1;
+    unsigned int position_length;
 
   public:
     PositionLengthAttributeImpl();
     PositionLengthAttributeImpl(const PositionLengthAttributeImpl& other);
     virtual ~PositionLengthAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
-    void CopyTo(AttributeImpl& target) override;
     void Clear() override;
     bool operator==(PositionLengthAttributeImpl& other);
-    void SetPositionLength(int position_length) override;
-    int GetPositionLength() override;
+    void SetPositionLength(unsigned int position_length) override;
+    unsigned int GetPositionLength() override;
 };
 
 class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttribute {
   private:
-    int term_frequency = 1;
+    unsigned int term_frequency;
 
   public:
     TermFrequencyAttributeImpl();
     TermFrequencyAttributeImpl(const TermFrequencyAttributeImpl& other);
     virtual ~TermFrequencyAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
-    void CopyTo(AttributeImpl& target) override;
     void Clear() override;
     bool operator==(TermFrequencyAttributeImpl& other);
-    void SetTermFrequency(int term_frequency) override;
-    int GetTermFrequency() override;
+    void SetTermFrequency(unsigned int term_frequency) override;
+    unsigned int GetTermFrequency() override;
 };
 
 class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
@@ -172,7 +176,6 @@ class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
     TypeAttributeImpl(const TypeAttributeImpl& other);
     virtual ~TypeAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
-    void CopyTo(AttributeImpl& target) override;
     void Clear() override;
     bool operator==(TypeAttributeImpl& other);
     std::string& Type() override;

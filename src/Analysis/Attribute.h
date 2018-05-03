@@ -51,29 +51,33 @@ class PositionIncrementAttribute: public Attribute {
   public:
     virtual ~PositionIncrementAttribute() { }
     virtual void SetPositionIncrement(int position_increment) = 0;
-    virtual int GetPositionIncrement() = 0;
+    virtual unsigned int GetPositionIncrement() = 0;
 };
 
 class PositionLengthAttribute: public Attribute {
   public:
     virtual ~PositionLengthAttribute() { }
-    virtual void SetPositionLength(int position_length) = 0;
-    virtual int GetPositionLength() = 0;
+    virtual void SetPositionLength(unsigned int position_length) = 0;
+    virtual unsigned int GetPositionLength() = 0;
 };
 
 class TermFrequencyAttribute: public Attribute {
   public:
     virtual ~TermFrequencyAttribute() { }
-    virtual void SetTermFrequency(int term_frequency) = 0;
-    virtual int GetTermFrequency() = 0;
+    virtual void SetTermFrequency(unsigned int term_frequency) = 0;
+    virtual unsigned int GetTermFrequency() = 0;
 };
 
 class TypeAttribute: public Attribute {
+  public:
+    static const char* DEFAULT_TYPE;
+
   public:
     virtual ~TypeAttribute() { }
     virtual std::string& Type() = 0;
     virtual void SetType(std::string& type) = 0;
 };
+
 
 class CharTermAttribute: public Attribute {
   public:
@@ -86,11 +90,11 @@ class CharTermAttribute: public Attribute {
     virtual std::string SubSequence(int start, int end) = 0;
     virtual CharTermAttribute& SetLength(int length) = 0;
     virtual CharTermAttribute& SetEmpty() = 0;
-    virtual CharTermAttribute& Append(std::string& csq) = 0;
-    virtual CharTermAttribute& Append(std::string& csq, int start, int end) = 0;
-    virtual CharTermAttribute& Append(char c) = 0;
-    virtual CharTermAttribute& Append(std::stringbuf& buf) = 0;
-    virtual CharTermAttribute& Append(CharTermAttribute& term_att) = 0;
+    virtual CharTermAttribute& Append(const std::string& csq) = 0;
+    virtual CharTermAttribute& Append(const std::string& csq, const unsigned int start, const unsigned int end) = 0;
+    virtual CharTermAttribute& Append(const char c) = 0;
+    virtual CharTermAttribute& Append(const std::stringbuf& buf) = 0;
+    virtual CharTermAttribute& Append(const CharTermAttribute& term_att) = 0;
 };
 
 class OffsetAttribute: public Attribute {

@@ -20,9 +20,8 @@ class AttributeImpl: public Attribute {
   public:
     virtual ~AttributeImpl() { }
     virtual void ReflectWith(AttributeReflector& reflector) = 0;
-    virtual void CopyTo(AttributeImpl& target) = 0;
     virtual void Clear() = 0;
-    void End();
+    virtual void End();
     std::string ReflectAsString(const bool prepend_att_class);
 };
 
