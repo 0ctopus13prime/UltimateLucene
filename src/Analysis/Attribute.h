@@ -3,7 +3,10 @@
 
 #include <string>
 #include <sstream>
-#include <Util/BytesRef.h>
+#include <Util/Bytes.h>
+#include <Util/Attribute.h>
+
+using namespace lucene::core::util;
 
 namespace lucene { namespace core { namespace analysis { namespace tokenattributes {
 
@@ -18,7 +21,7 @@ class BytesTermAttribute: public TermToBytesRefAttribute {
     BytesRef bytes;
 
   public:
-    BytesTermAttribute();
+    BytesTermAttribute(): bytes() { }
     virtual ~BytesTermAttribute() { }
     virtual void SetBytesRef(BytesRef& bytes) = 0;
 };
@@ -65,23 +68,17 @@ class TermFrequencyAttribute: public Attribute {
     virtual int GetTermFrequency() = 0;
 };
 
-class TermToBytesRefAttribute: public Attribute {
-  public:
-    virtual ~TermToBytesRefAttribute() { }
-    BytesRef& GetBytesRef();
-};
-
 class TypeAttribute: public Attribute {
   public:
     virtual ~TypeAttribute() { }
     virtual std::string& Type() = 0;
     virtual void SetType(std::string& type) = 0;
-}
+};
 
 class CharTermAttribute: public Attribute {
   public:
     virtual ~CharTermAttribute() { }
-    virtual void CopyBuffer(char[] buffer, int offset, int length) = 0;
+    virtual void CopyBuffer(char* buffer, int offset, int length) = 0;
     virtual char* Buffer() = 0;
     virtual char* ResizeBuffer(int new_size) = 0;
     virtual int Length() = 0;
@@ -92,7 +89,6 @@ class CharTermAttribute: public Attribute {
     virtual CharTermAttribute& Append(std::string& csq) = 0;
     virtual CharTermAttribute& Append(std::string& csq, int start, int end) = 0;
     virtual CharTermAttribute& Append(char c) = 0;
-    virtual CharTermAttribute& Append(std::string& s) = 0;
     virtual CharTermAttribute& Append(std::stringbuf& buf) = 0;
     virtual CharTermAttribute& Append(CharTermAttribute& term_att) = 0;
 };
@@ -101,7 +97,7 @@ class OffsetAttribute: public Attribute {
   public:
     virtual ~OffsetAttribute() { }
     virtual int StartOffset() = 0;
-    virtual void SetOffset(int start_offset, int end_offset) = 0;
+    virtual void SetOffset(const int start_offset, const int end_offset) = 0;
     virtual int EndOffset() = 0;
 };
 

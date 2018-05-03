@@ -2,16 +2,21 @@
 #define LUCENE_CORE_ANALYSIS_TOKEN_ATTRIBUTES_ATTRIBUTES_IMPL_H
 
 #include <string>
+#include <Analysis/Attribute.h>
+#include <Util/Bytes.h>
+#include <Util/Attribute.h>
+
+using namespace lucene::core::util;
 
 namespace lucene { namespace core { namespace analysis { namespace tokenattributes {
 
-class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute, public TermToBytesRefAttribute {
+class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
   private:
     BytesRef bytes;
 
   public:
     BytesTermAttributeImpl();
-    BytesTermAttributeImpl(const BytesTermAttribute& other);
+    BytesTermAttributeImpl(const BytesTermAttributeImpl& other);
     BytesRef& GetBytesRef() override;
     void SetBytesRef(BytesRef& bytes) override;
     void Clear() override;
@@ -30,10 +35,8 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     virtual ~CharTermAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
     void CopyTo(AttributeImpl& target) override;
-    CharTermAttributeImpl* Clone() override;
-    void End() override;
     BytesRef& GetBytesRef() override;
-    void CopyBuffer(char[] buffer, const int offset, const int length) override;
+    void CopyBuffer(char* buffer, const int offset, const int length) override;
     char* Buffer() override;
     char* ResizeBuffer(const int new_size) override;
     int Length() override;
@@ -43,7 +46,6 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     CharTermAttributeImpl& Append(std::string& csq) override;
     CharTermAttributeImpl& Append(std::string& csq, const int start, const int end) override;
     CharTermAttributeImpl& Append(char c) override;
-    CharTermAttributeImpl& Append(std::string& s) override;
     CharTermAttributeImpl& Append(std::stringbuf& buf) override;
     CharTermAttributeImpl& Append(CharTermAttribute& term_att) override;
     char operator[](const int idx) override;
@@ -60,7 +62,6 @@ class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    void End() override;
     bool operator==(FlagsAttributeImpl& other);
 };
 
@@ -77,7 +78,6 @@ class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    void End() override;
     bool operator==(FlagsAttributeImpl& other);
 };
 
@@ -87,12 +87,11 @@ class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
     OffsetAttributeImpl(const OffsetAttributeImpl& other);
     virtual ~OffsetAttributeImpl();
     int StartOffset() override;
-    int SetOffset(const int start_offset, const int end_offset) override;
+    void SetOffset(const int start_offset, const int end_offset) override;
     int EndOffset() override;
     void ReflectWith(AttributeReflector& reflector) override;
     void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    void End() override;
     bool operator==(OffsetAttributeImpl& other);
 };
 
@@ -111,10 +110,9 @@ class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    void End() override;
     bool operator==(PayloadAttributeImpl& other);
-    BytesRef& GetPayLoad() override;
-    void SetPayLoad(BytesRef& payload) override;
+    BytesRef& GetPayload() override;
+    void SetPayload(BytesRef& payload) override;
 };
 
 class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncrementAttribute {
@@ -130,7 +128,6 @@ class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncre
     void ReflectWith(AttributeReflector& reflector) override;
     void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    void End() override;
     bool operator==(PositionIncrementAttributeImpl& other);
 };
 
@@ -145,7 +142,6 @@ class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAt
     void ReflectWith(AttributeReflector& reflector) override;
     void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    void End() override;
     bool operator==(PositionLengthAttributeImpl& other);
     void SetPositionLength(int position_length) override;
     int GetPositionLength() override;
@@ -162,7 +158,6 @@ class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttr
     void ReflectWith(AttributeReflector& reflector) override;
     void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    void End() override;
     bool operator==(TermFrequencyAttributeImpl& other);
     void SetTermFrequency(int term_frequency) override;
     int GetTermFrequency() override;
@@ -179,7 +174,6 @@ class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void CopyTo(AttributeImpl& target) override;
     void Clear() override;
-    void End() override;
     bool operator==(TypeAttributeImpl& other);
     std::string& Type() override;
     void SetType(std::string& type) override;

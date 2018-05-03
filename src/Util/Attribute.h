@@ -10,6 +10,12 @@ class Attribute {
     virtual ~Attribute() {}
 };
 
+class AttributeReflector {
+  public:
+    virtual ~AttributeReflector() {}
+    virtual void Reflect() = 0;
+};
+
 class AttributeImpl: public Attribute {
   public:
     virtual ~AttributeImpl() { }
@@ -17,18 +23,12 @@ class AttributeImpl: public Attribute {
     virtual void CopyTo(AttributeImpl& target) = 0;
     virtual void Clear() = 0;
     void End();
-    std::string ReflectAsString(const bool prepend_att_class) final;
+    std::string ReflectAsString(const bool prepend_att_class);
 };
 
 class AttributeFactory {
   public:
     virtual ~AttributeFactory() {}
-};
-
-class AttributeReflector {
-  public:
-    virtual ~AttributeReflector() {}
-    virtual void Reflect() = 0;
 };
 
 class AttributeSource {

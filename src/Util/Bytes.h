@@ -7,7 +7,7 @@ namespace lucene { namespace core { namespace util {
 
 class BytesRef {
   private:
-    int CompareTo(BytesRef& other);
+    int CompareTo(const BytesRef& other) const;
 
   public:
     static char BYTES_REF_EMPTY_BYTES[1];
@@ -22,22 +22,24 @@ class BytesRef {
     BytesRef(unsigned int capacity);
     BytesRef(std::string& text);
     ~BytesRef();
-    bool operator==(BytesRef& other);
-    bool operator!=(BytesRef& other);
-    bool operator<(BytesRef& other);
-    bool operator<=(BytesRef& other);
-    bool operator>(BytesRef& other);
-    bool operator>=(BytesRef& other);
+    BytesRef& operator=(const BytesRef& other);
+    bool operator==(const BytesRef& other) const;
+    bool operator!=(const BytesRef& other) const;
+    bool operator<(const BytesRef& other) const;
+    bool operator<=(const BytesRef& other) const;
+    bool operator>(const BytesRef& other) const;
+    bool operator>=(const BytesRef& other) const;
     std::string UTF8ToString();
-    bool IsValid();
+    bool IsValid() const;
 };
-char BytesRef::BYTES_REF_EMPTY_BYTES[1] = {'\0'};
+//char BytesRef::BYTES_REF_EMPTY_BYTES[1] = {'\0'};
 
 class SharedBytesRef: public BytesRef {
   public:
     SharedBytesRef(char* bytes, unsigned int offset, unsigned int length);
     SharedBytesRef(const BytesRef& other);
     ~SharedBytesRef();
+    SharedBytesRef& operator=(const BytesRef& other);
 };
 
 }}} // End of namespace

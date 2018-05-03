@@ -36,6 +36,15 @@ int main() {
     bytes_ref1.bytes[0] = 'd';
     assert(bytes_ref2.bytes[0] != bytes_ref1.bytes[0]);
     assert(bytes_ref2.bytes[0] == 'x');
+
+    // operator =, assign
+    BytesRef bytes_ref3(bytes_ref1);
+    bytes_ref3 = bytes_ref2;
+    assert(bytes_ref3 == bytes_ref2);
+
+    SharedBytesRef shared_bytes_ref3(bytes_ref3);
+    shared_bytes_ref3 = bytes_ref2;
+    assert(shared_bytes_ref3 == bytes_ref2);
   }
 
   {

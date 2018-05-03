@@ -9,6 +9,9 @@ using namespace lucene::core::util;
 /*
  * BytesRef
  */
+
+char BytesRef::BYTES_REF_EMPTY_BYTES[1] = {'\0'};
+
 BytesRef::BytesRef()
   : BytesRef(BytesRef::BYTES_REF_EMPTY_BYTES, 0, 1) {
 }
@@ -52,7 +55,7 @@ BytesRef::~BytesRef() {
   }
 }
 
-int BytesRef::CompareTo(BytesRef& other) {
+int BytesRef::CompareTo(const BytesRef& other) const {
   if(IsValid() && other.IsValid()) {
     unsigned int my_len = length - offset;
     unsigned int his_len = other.length - other.offset;
@@ -74,27 +77,42 @@ int BytesRef::CompareTo(BytesRef& other) {
   return false;
 }
 
-bool BytesRef::operator==(BytesRef& other) {
+BytesRef& BytesRef::operator=(const BytesRef& source) {
+  if(this != &source) {
+    if(bytes != BytesRef::BYTES_REF_EMPTY_BYTES) {
+      delete[] bytes;
+    }
+    length = source.length;
+    offset = source.offset;
+    int effective_length = source.length - source.offset;
+    bytes = new char[effective_length];
+    std::memcpy(bytes, source.bytes + source.offset, effective_length);
+  }
+
+  return *this;
+}
+
+bool BytesRef::operator==(const BytesRef& other) const {
   return CompareTo(other) == 0;
 }
 
-bool BytesRef::operator!=(BytesRef& other) {
+bool BytesRef::operator!=(const BytesRef& other) const {
   return !operator==(other);
 }
 
-bool BytesRef::operator<(BytesRef& other) {
+bool BytesRef::operator<(const BytesRef& other) const {
   return CompareTo(other) < 0;
 }
 
-bool BytesRef::operator<=(BytesRef& other) {
+bool BytesRef::operator<=(const BytesRef& other) const {
   return CompareTo(other) <= 0;
 }
 
-bool BytesRef::operator>(BytesRef& other) {
+bool BytesRef::operator>(const BytesRef& other) const {
   return CompareTo(other) > 0;
 }
 
-bool BytesRef::operator>=(BytesRef& other) {
+bool BytesRef::operator>=(const BytesRef& other) const {
   return CompareTo(other) >= 0;
 }
 
@@ -102,7 +120,7 @@ std::string BytesRef::UTF8ToString() {
   return std::string(bytes, offset, length);
 }
 
-bool BytesRef::IsValid() {
+bool BytesRef::IsValid() const {
   if(bytes == BytesRef::BYTES_REF_EMPTY_BYTES && (offset != 0 || length != 1)) {
     throw std::runtime_error("bytes is BytesRef::BYTES_REF_EMPTY_BYTES, offset=" + std::to_string(offset) + ", length=" + std::to_string(length));
   }
@@ -136,4 +154,10 @@ SharedBytesRef::~SharedBytesRef() {
   bytes = BytesRef::BYTES_REF_EMPTY_BYTES;
   offset = 0;
   length = 1;
+}
+
+SharedBytesRef& SharedBytesRef::operator=(const BytesRef& other) {
+  bytes = other.bytes;
+  offset = other.offset;
+  length = other.length;
 }
