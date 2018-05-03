@@ -17,7 +17,6 @@ BytesRef::BytesRef(const BytesRef& source) {
   length = source.length;
   offset = source.offset;
   int effective_length = source.length - source.offset;
-  if(bytes != BytesRef::BYTES_REF_EMPTY_BYTES) delete[] bytes;
   bytes = new char[effective_length];
   std::memcpy(bytes, source.bytes + source.offset, effective_length);
 }
