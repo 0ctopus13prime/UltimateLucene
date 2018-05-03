@@ -5,7 +5,7 @@
 
 namespace lucene { namespace core { namespace util {
 
-class BytesRef final {
+class BytesRef {
   private:
     int CompareTo(BytesRef& other);
 
@@ -18,9 +18,7 @@ class BytesRef final {
   public:
     BytesRef();
     BytesRef(char* bytes, unsigned int offset, unsigned int length);
-    // It's a shallow copy, not a deep copy.
     BytesRef(const BytesRef& other);
-    static void DeepCopyOf(BytesRef& source, BytesRef& target);
     BytesRef(unsigned int capacity);
     BytesRef(std::string& text);
     ~BytesRef();
@@ -34,6 +32,13 @@ class BytesRef final {
     bool IsValid();
 };
 char BytesRef::BYTES_REF_EMPTY_BYTES[1] = {'\0'};
+
+class SharedBytesRef: public BytesRef {
+  public:
+    SharedBytesRef(char* bytes, unsigned int offset, unsigned int length);
+    SharedBytesRef(const BytesRef& other);
+    ~SharedBytesRef();
+};
 
 }}} // End of namespace
 
