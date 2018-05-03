@@ -6,13 +6,20 @@
 
 using namespace lucene::core::util;
 
+/*
+ * BytesRef
+ */
 BytesRef::BytesRef()
   : BytesRef(BytesRef::BYTES_REF_EMPTY_BYTES, 0, 1) {
 }
 
-// It's a shallow copy
-BytesRef::BytesRef(const BytesRef& other)
-  : BytesRef(other.bytes, other.offset, other.length) {
+BytesRef::BytesRef(const BytesRef& source) {
+  length = source.length;
+  offset = source.offset;
+  int effective_length = source.length - source.offset;
+  if(bytes != BytesRef::BYTES_REF_EMPTY_BYTES) delete[] bytes;
+  bytes = new char[effective_length];
+  std::memcpy(bytes, source.bytes + source.offset, effective_length);
 }
 
 BytesRef::BytesRef(char* bytes, unsigned int offset, unsigned int length)
@@ -20,15 +27,6 @@ BytesRef::BytesRef(char* bytes, unsigned int offset, unsigned int length)
     offset(offset),
     length(length) {
   assert(IsValid());
-}
-
-void BytesRef::DeepCopyOf(BytesRef& source, BytesRef& target) {
-  target.length = source.length;
-  target.offset = source.offset;
-  int effective_length = source.length - source.offset;
-  if(target.bytes != BytesRef::BYTES_REF_EMPTY_BYTES) delete[] target.bytes;
-  target.bytes = new char[effective_length];
-  std::memcpy(target.bytes, source.bytes + source.offset, effective_length);
 }
 
 BytesRef::BytesRef(unsigned int capacity)
@@ -117,4 +115,26 @@ bool BytesRef::IsValid() {
   }
 
   return true;
+}
+
+
+
+
+
+/*
+ * SharedBytesRef
+ */
+SharedBytesRef::SharedBytesRef(char* bytes, unsigned int offset, unsigned int length)
+  : BytesRef(bytes, offset, length) {
+}
+
+SharedBytesRef::SharedBytesRef(const BytesRef& other)
+  : SharedBytesRef(other.bytes, other.offset, other.length) {
+}
+
+SharedBytesRef::~SharedBytesRef() {
+  // Prevent a deallocate operation at BytesRef's destructor
+  bytes = BytesRef::BYTES_REF_EMPTY_BYTES;
+  offset = 0;
+  length = 1;
 }
