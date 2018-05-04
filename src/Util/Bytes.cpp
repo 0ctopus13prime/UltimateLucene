@@ -144,8 +144,8 @@ std::string BytesRef::UTF8ToString() {
 
 bool BytesRef::IsValid() const {
   // In C++ BytesRef allows null bytes
-  if(bytes.use_count() == 0 && (offset != 0 || length != 0)) {
-    throw std::runtime_error("bytes is empty, offset=" + std::to_string(offset) + ", length=" + std::to_string(length));
+  if(!bytes.get() && (offset != 0 || length != 0)) {
+    throw std::runtime_error("bytes is nullptr, offset=" + std::to_string(offset) + ", length=" + std::to_string(length));
   }
 
   if(offset > length) {
