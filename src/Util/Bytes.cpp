@@ -1,8 +1,10 @@
+#include <memory>
 #include <stdexcept>
 #include <cstring>
 #include <string>
 #include <assert.h>
 #include <Util/Bytes.h>
+#include <Util/ArrayUtil.h>
 
 using namespace lucene::core::util;
 
@@ -11,51 +13,39 @@ using namespace lucene::core::util;
  */
 
 BytesRef::BytesRef()
-  : BytesRef(nullptr, 0, 0) {
+  : BytesRef(std::shared_ptr<char>(nullptr, std::default_delete<char[]>()), 0, 0, 0) {
 }
 
 BytesRef::BytesRef(const BytesRef& source)
-  : bytes(source.bytes),
-    offset(source.offset),
-    length(source.length) {
+  : BytesRef(source.bytes, source.offset, source.length, source.capacity) {
 }
 
-BytesRef::BytesRef(char* new_bytes_ptr, unsigned int new_offset, unsigned int new_length) {
-  bytes = std::shared_ptr<char>(nullptr, std::default_delete<char[]>());
-  offset = new_offset;
-  length = new_length;
-
-  if(new_bytes_ptr && offset < length) {
-    int effective_length = length - offset;
-    char* bytes_ptr = new char[effective_length];
-    std::memcpy(bytes_ptr, new_bytes_ptr + new_offset, effective_length);
-    bytes.reset(bytes_ptr);
-  } 
-
+BytesRef::BytesRef(std::shared_ptr<char> new_bytes, unsigned int new_offset, unsigned int new_length, unsigned int new_capacity)
+  : bytes(new_bytes),
+    offset(new_offset),
+    length(new_length),
+    capacity(new_capacity) {
   assert(IsValid());
 }
 
-BytesRef::BytesRef(unsigned int capacity) {
-  bytes = std::shared_ptr<char>(nullptr, std::default_delete<char[]>());
-  offset = length = 0;
+BytesRef::BytesRef(std::shared_ptr<char> new_bytes, unsigned int new_capacity)
+  : BytesRef(new_bytes, 0, new_capacity, new_capacity) {
+}
 
-  if(capacity > 0) {
-    char* bytes_ptr = new char[capacity];
-    bytes.reset(bytes_ptr);
-  }
+BytesRef::BytesRef(unsigned int new_capacity)
+  : BytesRef(std::shared_ptr<char>(new char[new_capacity], std::default_delete<char[]>()), new_capacity) {
 }
 
 BytesRef::BytesRef(std::string& text) {
-  bytes = std::shared_ptr<char>(nullptr, std::default_delete<char[]>());
-
   if(text.empty()) {
-    length = offset = 0;
+    bytes = std::shared_ptr<char>(nullptr, std::default_delete<char[]>());
+    capacity = length = offset = 0;
   } else {
     const char* cstr = text.c_str();
     offset = 0;
-    length = text.size();
-    char* bytes_ptr = new char[length];
-    std::memcpy(bytes_ptr, cstr, length);
+    capacity = length = text.size();
+    char* bytes_ptr = new char[capacity];
+    std::memcpy(bytes_ptr, cstr, capacity);
     bytes.reset(bytes_ptr);
   }
 }
@@ -63,17 +53,16 @@ BytesRef::BytesRef(std::string& text) {
 BytesRef::~BytesRef() {
 }
 
-void BytesRef::DeepCopyOf(BytesRef& other) {
-  offset = other.offset;
-  length = other.length;
-  unsigned int effective_length = (length - offset);
-  char* his_bytes_ptr = other.bytes.get();
+BytesRef BytesRef::DeepCopyOf() {
+  BytesRef copy;
   
-  if(his_bytes_ptr && offset < length) {
-    char* my_bytes_ptr = new char[effective_length];
-    std::memcpy(my_bytes_ptr, his_bytes_ptr + other.offset, other.length);
-    bytes.reset(my_bytes_ptr);
-  }
+  copy.offset = 0;
+  copy.length = length;
+  copy.capacity = length;
+  char* new_byte_arr = arrayutil::CopyOfRange(bytes.get(), offset, offset + length);
+  copy.bytes.reset(new_byte_arr);
+
+  return copy;
 }
 
 int BytesRef::CompareTo(const BytesRef& other) const {
@@ -106,9 +95,10 @@ int BytesRef::CompareTo(const BytesRef& other) const {
 
 BytesRef& BytesRef::operator=(const BytesRef& source) {
   if(this != &source) {
-    length = source.length;
-    offset = source.offset;
     bytes = source.bytes;
+    offset = source.offset;
+    length = source.length;
+    capacity = source.capacity;
   }
 
   return *this;
@@ -153,4 +143,93 @@ bool BytesRef::IsValid() const {
   }
 
   return true;
+}
+
+
+/**
+ * BytesRefBuilder
+ */
+BytesRefBuilder::BytesRefBuilder()
+  : ref() {
+}
+
+const char* BytesRefBuilder::Bytes() const {
+  return ref.bytes.get();
+}
+
+const unsigned int BytesRefBuilder::Length() const {
+  return ref.length;
+}
+
+void BytesRefBuilder::SetLength(const unsigned int new_length) {
+  ref.length = new_length;
+}
+
+char& BytesRefBuilder::operator[](const unsigned int idx) {
+  return ref.bytes.get()[idx];
+}
+
+void BytesRefBuilder::Grow(unsigned int new_capacity) {
+  std::pair<char*, unsigned int> new_bytes_pair = arrayutil::Grow(ref.bytes.get(), ref.capacity, new_capacity);
+  if(new_bytes_pair.first) {
+    ref.bytes.reset(new_bytes_pair.first);
+    ref.capacity = new_bytes_pair.second;
+  }
+}
+
+void BytesRefBuilder::Append(const char c) {
+  Grow(ref.length + 1);
+  char* byte_arr = ref.bytes.get();
+  byte_arr[ref.length++] = c;
+}
+
+void BytesRefBuilder::Append(const char* new_bytes, const unsigned int off, const unsigned int len) {
+  Grow(ref.length + len);
+  std::memcpy(ref.bytes.get() + ref.length, new_bytes + off, len);
+  ref.length += len;
+}
+
+void BytesRefBuilder::Append(BytesRef& ref) {
+  Append(ref.bytes.get(), ref.offset, ref.length);
+}
+
+void BytesRefBuilder::Append(BytesRefBuilder& builder) {
+  Append(builder.Get());
+}
+
+void BytesRefBuilder::Clear() {
+  SetLength(0);
+}
+
+void BytesRefBuilder::CopyBytes(const char* new_bytes, const unsigned int off, const unsigned int len) {
+  Clear();
+  Append(new_bytes, off, len);
+}
+
+void BytesRefBuilder::CopyBytes(BytesRef& ref) {
+  Clear();
+  Append(ref);
+}
+
+void BytesRefBuilder::CopyBytes(BytesRefBuilder& builder) {
+  Clear();
+  Append(builder);
+}
+
+void BytesRefBuilder::CopyChars(std::string& text) {
+  CopyChars(text, 0, text.size());
+}
+
+void BytesRefBuilder::CopyChars(std::string& text, const unsigned int off, const unsigned int len) {
+  Grow(len);
+  std::memcpy(ref.bytes.get(), text.c_str() + off, len);
+  ref.length = len;
+}
+
+BytesRef& BytesRefBuilder::Get() {
+  return ref;
+}
+
+BytesRef BytesRefBuilder::ToBytesRef() const {
+  return BytesRef(ref.bytes, 0, ref.capacity, ref.capacity);
 }

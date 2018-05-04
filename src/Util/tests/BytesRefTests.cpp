@@ -10,6 +10,7 @@ int main() {
   std::cout << "Start basic BytesRefTests" << std::endl;
 
   {
+    std::cout << "  - Basic test" << std::endl;
     // Basic test
     std::string name = "doochi";
     BytesRef bytes_ref(name);
@@ -22,6 +23,7 @@ int main() {
   }
 
   {
+    std::cout << "  - Shallow copy, Deep copy" << std::endl;
     // Shallow copy, Deep copy
     std::string str = "doochi";
     BytesRef bytes_ref1(str);
@@ -29,11 +31,10 @@ int main() {
 
     // Shallow case, Change single character at 0 index
     bytes_ref1.bytes.get()[0] = 'x';
-    assert(bytes_ref1.bytes.get()[0] == 'x');
+    assert(shared_bytes_ref2.bytes.get()[0] == 'x');
 
     // Deep copy case, Chage single character at 0 index
-    BytesRef bytes_ref2;
-    bytes_ref2.DeepCopyOf(bytes_ref1);
+    BytesRef bytes_ref2 = bytes_ref1.DeepCopyOf();
     bytes_ref1.bytes.get()[0] = 'd';
     assert(bytes_ref2.bytes.get()[0] != bytes_ref1.bytes.get()[0]);
     assert(bytes_ref2.bytes.get()[0] == 'x');
@@ -49,6 +50,7 @@ int main() {
   }
 
   {
+    std::cout << "  - Compare tests" << std::endl;
     // Compare tests
     std::string str1 = "doochi stupid";
     std::string str2 = str1 + " suffix";
@@ -56,6 +58,7 @@ int main() {
 
     // 1. ==
     {
+      std::cout << "    - == test" << std::endl;
       BytesRef bytes_ref1(str1);
       BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str1);
@@ -69,6 +72,7 @@ int main() {
 
     // 2. !=
     {
+      std::cout << "    - != test" << std::endl;
       BytesRef bytes_ref1(str1);
       BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str2);
@@ -82,6 +86,7 @@ int main() {
 
     // 3. <
     {
+      std::cout << "    - < test" << std::endl;
       BytesRef bytes_ref1(str1);
       BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str2);
@@ -102,6 +107,7 @@ int main() {
 
     // 4. <=
     {
+      std::cout << "    - <= test" << std::endl;
       BytesRef bytes_ref1(str1);
       BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str1);
@@ -122,6 +128,7 @@ int main() {
 
     // 5. >
     {
+      std::cout << "    - > test" << std::endl;
       BytesRef bytes_ref1(str1);
       BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str2);
@@ -142,6 +149,7 @@ int main() {
 
     // 6. >=
     {
+      std::cout << "    - >= test" << std::endl;
       BytesRef bytes_ref1(str1);
       BytesRef shared_bytes_ref1(bytes_ref1);
       BytesRef bytes_ref2(str1);
@@ -162,6 +170,7 @@ int main() {
   }
 
   {
+    std::cout << "  - Validation test" << std::endl;
     // Validation test
     BytesRef bytes_ref;
     bytes_ref.offset = 1; // nullptr && offset > length
