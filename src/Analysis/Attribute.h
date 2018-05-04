@@ -83,10 +83,10 @@ class CharTermAttribute: public Attribute {
   public:
     virtual ~CharTermAttribute() { }
     virtual void CopyBuffer(char* buffer, int offset, int length) = 0;
-    virtual char* Buffer() = 0;
+    virtual char* Buffer() const = 0;
     virtual char* ResizeBuffer(int new_size) = 0;
-    virtual int Length() = 0;
-    virtual char operator[](const int idx) = 0;
+    virtual int Length() const = 0;
+    virtual char& operator[](const int idx) = 0;
     virtual std::string SubSequence(int start, int end) = 0;
     virtual CharTermAttribute& SetLength(int length) = 0;
     virtual CharTermAttribute& SetEmpty() = 0;

@@ -1,7 +1,10 @@
+#include <memory>
 #include <string>
 #include <stdexcept>
 #include <Analysis/AttributeImpl.h>
+#include <Util/ArrayUtil.h>
 
+using namespace lucene::core::util;
 using namespace lucene::core::analysis::tokenattributes;
 
 /**
@@ -368,24 +371,110 @@ void TypeAttributeImpl::SetType(std::string& new_type) {
  * CharTermAttributeImpl
  */
 
-/*
-CharTermAttributeImpl::CharTermAttributeImpl();
-CharTermAttributeImpl(const CharTermAttributeImpl& other);
-virtual ~CharTermAttributeImpl();
-void ReflectWith(AttributeReflector& reflector) override;
-BytesRef& GetBytesRef() override;
-void CopyBuffer(char* buffer, const int offset, const int length) override;
-char* Buffer() override;
-char* ResizeBuffer(const int new_size) override;
-int Length() override;
-std::string SubSequence(const int start, const int end) override;
-CharTermAttributeImpl& SetLength(const int length) override;
-CharTermAttributeImpl& SetEmpty() override;
-CharTermAttribute& operator+=(const std::string& csq) override;
-CharTermAttribute& operator+=(const std::string& csq, const unsigned int start, const unsigned int end) override;
-CharTermAttribute& operator+=(const char c) override;
-CharTermAttribute& operator+=(const std::stringbuf& buf) override;
-CharTermAttribute& operator+=(const CharTermAttribute& term_att) override;
-char operator[](const int idx) override;
-bool operator==(CharTermAttributeImpl& other);
-*/
+CharTermAttributeImpl::CharTermAttributeImpl()
+  : term_buffer(new char[CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE]),
+    term_capacity(CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE),
+    term_length(0),
+    builder() {
+}
+
+CharTermAttributeImpl::CharTermAttributeImpl(const CharTermAttributeImpl& other)
+  : term_buffer(arrayutil::CopyOfRange(other.term_buffer, 0, other.term_capacity)),
+    term_capacity(other.term_capacity),
+    term_length(other.term_capacity),
+    builder() {
+}
+
+CharTermAttributeImpl::~CharTermAttributeImpl() {
+  if(term_buffer != nullptr) {
+    delete[] term_buffer;
+  }
+}
+
+void CharTermAttributeImplReflectWith(AttributeReflector& reflector) {
+  // TODO Implement it.
+}
+
+BytesRef& CharTermAttributeImpl::GetBytesRef() {
+  builder.CopyBytes(term_buffer, 0, term_length);
+  return builder.Get();
+}
+
+void CharTermAttributeImpl::CopyBuffer(char* buffer, const int offset, const int length) {
+  GrowTermBuffer(length);
+  std::memcpy(term_buffer, buffer + offset, length);
+  term_length = length;
+}
+
+char* CharTermAttributeImpl::Buffer() const {
+  return term_buffer;
+}
+
+char* CharTermAttributeImpl::ResizeBuffer(const int new_size) {
+  if(term_capacity < new_size) {
+    std::pair<char*, unsigned int> new_term_buffer_info = arrayutil::Grow(term_buffer, term_capacity, new_size);
+    if(new_term_buffer_info.first) {
+      delete[] term_buffer;
+      term_buffer = new_term_buffer_info.first;
+      term_capacity = new_term_buffer_info.second;
+    }
+  }
+
+  return term_buffer;
+}
+
+int CharTermAttributeImpl::Length() const {
+  return term_length;
+}
+
+std::string CharTermAttributeImpl::SubSequence(const int start, const int end) {
+  arrayutil::CheckFromToIndex(start, end, term_length); 
+  return std::string(term_buffer, start, end - start);
+}
+
+CharTermAttributeImpl& CharTermAttributeImpl::SetLength(const int length) {
+  arrayutil::CheckFromIndexSize(0, length, term_capacity);
+}
+
+CharTermAttributeImpl& CharTermAttributeImpl::SetEmpty() {
+  term_length = 0;
+  return *this;
+}
+
+CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq) {
+  Append(csq, 0, csq.size()); 
+}
+
+CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq, const unsigned int start, const unsigned int end) {
+  arrayutil::CheckFromToIndex(start, end, csq.size());
+  unsigned int len = (end - start);
+  if(len == 0) return *this;
+  ResizeBuffer(term_length + len);
+  
+  std::memcpy(term_buffer + term_length, csq.c_str() + start, len);  
+  return *this;
+}
+
+CharTermAttribute& CharTermAttributeImpl::Append(const char c) {
+  ResizeBuffer(term_length + 1)[term_length++] = c;
+}
+
+CharTermAttribute& CharTermAttributeImpl::Append(const CharTermAttribute& term_att) {
+  const int len = term_att.Length();
+  std::memcpy(ResizeBuffer(term_length + len) + term_length, term_att.Buffer(), len);
+  term_length += len;
+  return *this;
+}
+
+char& CharTermAttributeImpl::operator[](const int index) {
+  arrayutil::CheckIndex(index, term_length);
+  return term_buffer[index];
+}
+
+bool CharTermAttributeImpl::operator==(CharTermAttributeImpl& other) {
+  if(term_length == other.term_length) {
+    return (std::memcmp(term_buffer, other.term_buffer, term_length) == 0);
+  }
+
+  return false;
+}

@@ -24,11 +24,13 @@ class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
     bool operator==(BytesTermAttributeImpl& other);
 };
 
+#define CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE 10
 class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, public TermToBytesRefAttribute {
   private:
-    static unsigned int MIN_BUFFER_SIZE;
     char* term_buffer;
+    unsigned int term_capacity;
     unsigned int term_length;
+    BytesRefBuilder builder;
 
   private:
     void GrowTermBuffer(int new_size);
@@ -40,18 +42,17 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     void ReflectWith(AttributeReflector& reflector) override;
     BytesRef& GetBytesRef() override;
     void CopyBuffer(char* buffer, const int offset, const int length) override;
-    char* Buffer() override;
+    char* Buffer() const override;
     char* ResizeBuffer(const int new_size) override;
-    int Length() override;
+    int Length() const override;
     std::string SubSequence(const int start, const int end) override;
     CharTermAttributeImpl& SetLength(const int length) override;
     CharTermAttributeImpl& SetEmpty() override;
     CharTermAttribute& Append(const std::string& csq) override;
     CharTermAttribute& Append(const std::string& csq, const unsigned int start, const unsigned int end) override;
     CharTermAttribute& Append(const char c) override;
-    CharTermAttribute& Append(const std::stringbuf& buf) override;
     CharTermAttribute& Append(const CharTermAttribute& term_att) override;
-    char operator[](const int idx) override;
+    char& operator[](const int idx) override;
     bool operator==(CharTermAttributeImpl& other);
 };
 

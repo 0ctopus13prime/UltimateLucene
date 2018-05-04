@@ -65,6 +65,34 @@ T* CopyOfRange(const T* original, const unsigned int from, const unsigned int to
   }
 }
 
+template <typename INTEGER1, typename INTEGER2, typename INTEGER3>
+INTEGER1 CheckFromToIndex(INTEGER1 from_index, INTEGER2 to_index, INTEGER3 length) {
+  if(from_index < 0 || from_index > to_index || to_index > length) {
+    throw std::invalid_argument("Range [" + std::to_string(from_index) + ", " + std::to_string(to_index) + ") out of bounds for length " + std::to_string(length));
+  }
+
+  return from_index;
+}
+
+template <typename INTEGER1, typename INTEGER2, typename INTEGER3>
+INTEGER1 CheckFromIndexSize(INTEGER1 from_index, INTEGER2 size, INTEGER3 length) {
+  long end = from_index + size;
+  if(from_index < 0 || from_index > end || end > length) {
+    throw std::invalid_argument("Range [" + std::to_string(from_index) + ", " + std::to_string(from_index) + " + " + std::to_string(size) + ") out of bounds for length " + std::to_string(length));
+  }
+
+  return from_index;
+}
+
+template <typename INTEGER1, typename INTEGER2>
+INTEGER1 CheckIndex(INTEGER1 index, INTEGER2 length) {
+  if(index < 0 || index >= length) {
+    throw std::invalid_argument("Index " + std::to_string(index) + " out-of-bounds for length " + std::to_string(length));
+  }
+
+  return index;
+}
+
 
 }}}} // End of namespace
 
