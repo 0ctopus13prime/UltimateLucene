@@ -391,9 +391,16 @@ CharTermAttributeImpl::~CharTermAttributeImpl() {
   }
 }
 
-void CharTermAttributeImplReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it.
+void CharTermAttributeImpl::GrowTermBuffer(const unsigned int new_size) {
+  if(term_capacity < new_size) {
+      // Not big enough; create a new array with slight
+      // Over allocation:
+      term_capacity = arrayutil::Oversize(new_size, sizeof(char));
+      delete[] term_buffer;
+      term_buffer = new char[term_capacity];
+  }
 }
+
 
 BytesRef& CharTermAttributeImpl::GetBytesRef() {
   builder.CopyBytes(term_buffer, 0, term_length);
@@ -428,7 +435,7 @@ int CharTermAttributeImpl::Length() const {
 }
 
 std::string CharTermAttributeImpl::SubSequence(const int start, const int end) {
-  arrayutil::CheckFromToIndex(start, end, term_length); 
+  arrayutil::CheckFromToIndex(start, end, term_length);
   return std::string(term_buffer, start, end - start);
 }
 
@@ -442,7 +449,7 @@ CharTermAttributeImpl& CharTermAttributeImpl::SetEmpty() {
 }
 
 CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq) {
-  Append(csq, 0, csq.size()); 
+  Append(csq, 0, csq.size());
 }
 
 CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq, const unsigned int start, const unsigned int end) {
@@ -450,8 +457,8 @@ CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq, const u
   unsigned int len = (end - start);
   if(len == 0) return *this;
   ResizeBuffer(term_length + len);
-  
-  std::memcpy(term_buffer + term_length, csq.c_str() + start, len);  
+
+  std::memcpy(term_buffer + term_length, csq.c_str() + start, len);
   return *this;
 }
 
@@ -464,6 +471,10 @@ CharTermAttribute& CharTermAttributeImpl::Append(const CharTermAttribute& term_a
   std::memcpy(ResizeBuffer(term_length + len) + term_length, term_att.Buffer(), len);
   term_length += len;
   return *this;
+}
+
+void CharTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
+  // TODO Implement it.
 }
 
 char& CharTermAttributeImpl::operator[](const int index) {

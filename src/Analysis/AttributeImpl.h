@@ -33,13 +33,12 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     BytesRefBuilder builder;
 
   private:
-    void GrowTermBuffer(int new_size);
+    void GrowTermBuffer(const unsigned int new_size);
 
   public:
     CharTermAttributeImpl();
     CharTermAttributeImpl(const CharTermAttributeImpl& other);
     virtual ~CharTermAttributeImpl();
-    void ReflectWith(AttributeReflector& reflector) override;
     BytesRef& GetBytesRef() override;
     void CopyBuffer(char* buffer, const int offset, const int length) override;
     char* Buffer() const override;
@@ -52,6 +51,7 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     CharTermAttribute& Append(const std::string& csq, const unsigned int start, const unsigned int end) override;
     CharTermAttribute& Append(const char c) override;
     CharTermAttribute& Append(const CharTermAttribute& term_att) override;
+    void ReflectWith(AttributeReflector& reflector) override;
     char& operator[](const int idx) override;
     bool operator==(CharTermAttributeImpl& other);
 };
