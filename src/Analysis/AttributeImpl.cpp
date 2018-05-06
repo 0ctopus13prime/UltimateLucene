@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <Analysis/AttributeImpl.h>
 #include <Util/ArrayUtil.h>
+#include <Util/Attribute.h>
 
 using namespace lucene::core::util;
 using namespace lucene::core::analysis::tokenattributes;
@@ -48,7 +49,7 @@ bool BytesTermAttributeImpl::operator==(BytesTermAttributeImpl& other) {
 
 /**
  * FlagsAttributeImpl
- */ 
+ */
 
 FlagsAttributeImpl::FlagsAttributeImpl()
   : flags(0) {
@@ -140,7 +141,7 @@ int OffsetAttributeImpl::StartOffset() {
   return start_offset;
 }
 
-void OffsetAttributeImpl::SetOffset(const int new_start_offset, const int new_end_offset) {
+void OffsetAttributeImpl::SetOffset(const unsigned int new_start_offset, const unsigned int new_end_offset) {
   start_offset = new_start_offset;
   end_offset = new_end_offset;
 }
@@ -183,7 +184,7 @@ void PayloadAttributeImpl::ReflectWith(AttributeReflector& reflector) {
 }
 
 void PayloadAttributeImpl::Clear() {
-  payload = BytesRef(); 
+  payload = BytesRef();
 }
 
 bool PayloadAttributeImpl::operator==(PayloadAttributeImpl& other) {
@@ -219,7 +220,7 @@ PositionIncrementAttributeImpl::PositionIncrementAttributeImpl(const PositionInc
 PositionIncrementAttributeImpl::~PositionIncrementAttributeImpl() {
 }
 
-void PositionIncrementAttributeImpl::SetPositionIncrement(int new_position_increment) {
+void PositionIncrementAttributeImpl::SetPositionIncrement(const unsigned int new_position_increment) {
   position_increment = new_position_increment;
 }
 
@@ -361,7 +362,7 @@ std::string& TypeAttributeImpl::Type() {
   return type;
 }
 
-void TypeAttributeImpl::SetType(std::string& new_type) {
+void TypeAttributeImpl::SetType(const std::string& new_type) {
   type = new_type;
 }
 
@@ -401,13 +402,16 @@ void CharTermAttributeImpl::GrowTermBuffer(const unsigned int new_size) {
   }
 }
 
-
 BytesRef& CharTermAttributeImpl::GetBytesRef() {
   builder.CopyBytes(term_buffer, 0, term_length);
   return builder.Get();
 }
 
-void CharTermAttributeImpl::CopyBuffer(char* buffer, const int offset, const int length) {
+void CharTermAttributeImpl::Clear() {
+  term_length = 0;
+}
+
+void CharTermAttributeImpl::CopyBuffer(const char* buffer, const unsigned int offset, const unsigned int length) {
   GrowTermBuffer(length);
   std::memcpy(term_buffer, buffer + offset, length);
   term_length = length;
@@ -417,7 +421,7 @@ char* CharTermAttributeImpl::Buffer() const {
   return term_buffer;
 }
 
-char* CharTermAttributeImpl::ResizeBuffer(const int new_size) {
+char* CharTermAttributeImpl::ResizeBuffer(const unsigned int new_size) {
   if(term_capacity < new_size) {
     std::pair<char*, unsigned int> new_term_buffer_info = arrayutil::Grow(term_buffer, term_capacity, new_size);
     if(new_term_buffer_info.first) {
@@ -434,12 +438,12 @@ int CharTermAttributeImpl::Length() const {
   return term_length;
 }
 
-std::string CharTermAttributeImpl::SubSequence(const int start, const int end) {
+std::string CharTermAttributeImpl::SubSequence(const unsigned int start, const unsigned int end) {
   arrayutil::CheckFromToIndex(start, end, term_length);
   return std::string(term_buffer, start, end - start);
 }
 
-CharTermAttributeImpl& CharTermAttributeImpl::SetLength(const int length) {
+CharTermAttributeImpl& CharTermAttributeImpl::SetLength(const unsigned int length) {
   arrayutil::CheckFromIndexSize(0, length, term_capacity);
 }
 
@@ -477,7 +481,7 @@ void CharTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
   // TODO Implement it.
 }
 
-char& CharTermAttributeImpl::operator[](const int index) {
+char& CharTermAttributeImpl::operator[](const unsigned int index) {
   arrayutil::CheckIndex(index, term_length);
   return term_buffer[index];
 }
@@ -488,4 +492,85 @@ bool CharTermAttributeImpl::operator==(CharTermAttributeImpl& other) {
   }
 
   return false;
+}
+
+/**
+ *  PackedTokenAttributeImpl
+ */
+PackedTokenAttributeImpl::PackedTokenAttributeImpl()
+  : CharTermAttributeImpl(),
+    start_offset(0),
+    end_offset(0),
+    type(TypeAttribute::DEFAULT_TYPE),
+    position_increment(0),
+    position_length(0),
+    term_frequency(0) {
+}
+
+PackedTokenAttributeImpl::PackedTokenAttributeImpl(const PackedTokenAttributeImpl& other)
+  : CharTermAttributeImpl(other),
+    start_offset(other.start_offset),
+    end_offset(other.end_offset),
+    type(other.type),
+    position_increment(other.position_increment),
+    position_length(other.position_length),
+    term_frequency(other.term_frequency) {
+}
+
+PackedTokenAttributeImpl::~PackedTokenAttributeImpl() {
+}
+
+std::string& PackedTokenAttributeImpl::Type() {
+  return type;
+}
+
+void PackedTokenAttributeImpl::SetType(const std::string& new_type) {
+  type = new_type;
+}
+
+void PackedTokenAttributeImpl::SetPositionIncrement(const unsigned int new_position_increment) {
+  position_increment = new_position_increment;
+}
+
+unsigned int PackedTokenAttributeImpl::GetPositionIncrement() {
+  return position_increment;
+}
+
+void PackedTokenAttributeImpl::SetPositionLength(unsigned int new_position_length) {
+  position_length = new_position_length;
+}
+
+unsigned int PackedTokenAttributeImpl::GetPositionLength() {
+  return position_length;
+}
+
+int PackedTokenAttributeImpl::StartOffset() {
+  return start_offset;
+}
+
+void PackedTokenAttributeImpl::SetOffset(const unsigned int new_start_offset, const unsigned int new_end_offset) {
+  start_offset = new_start_offset;
+  end_offset = new_end_offset;
+}
+
+int PackedTokenAttributeImpl::EndOffset() {
+  return end_offset;
+}
+
+void PackedTokenAttributeImpl::SetTermFrequency(unsigned int new_term_frequency) {
+  term_frequency = term_frequency;
+}
+
+unsigned int PackedTokenAttributeImpl::GetTermFrequency() {
+  return term_frequency;
+}
+
+PackedTokenAttributeImpl& PackedTokenAttributeImpl::operator=(const PackedTokenAttributeImpl& other) {
+  CharTermAttributeImpl::operator=(other);
+  start_offset = other.start_offset;
+  end_offset = other.end_offset;
+  type = other.type;
+  position_increment = other.position_increment;
+  position_length = other.position_length;
+  term_frequency = other.term_frequency;
 }
