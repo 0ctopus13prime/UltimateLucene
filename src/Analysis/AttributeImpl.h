@@ -1,6 +1,7 @@
 #ifndef LUCENE_CORE_ANALYSIS_TOKEN_ATTRIBUTES_ATTRIBUTES_IMPL_H
 #define LUCENE_CORE_ANALYSIS_TOKEN_ATTRIBUTES_ATTRIBUTES_IMPL_H
 
+#include <vector>
 #include <string>
 #include <Analysis/Attribute.h>
 #include <Util/Bytes.h>
@@ -22,6 +23,8 @@ class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
     void Clear() override;
     void ReflectWith(AttributeReflector& reflector) override;
     bool operator==(BytesTermAttributeImpl& other);
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 #define CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE 10
@@ -55,6 +58,8 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     void ReflectWith(AttributeReflector& reflector) override;
     char& operator[](const unsigned int idx) override;
     bool operator==(CharTermAttributeImpl& other);
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
@@ -70,6 +75,8 @@ class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(const FlagsAttributeImpl& other);
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
@@ -85,6 +92,8 @@ class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(const KeywordAttributeImpl& other);
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
@@ -102,6 +111,8 @@ class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(const OffsetAttributeImpl& other);
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 class PackedTokenAttributeImpl:
@@ -132,6 +143,8 @@ class PackedTokenAttributeImpl:
     void SetTermFrequency(const unsigned int new_term_frequency) override;
     unsigned int GetTermFrequency() override;
     PackedTokenAttributeImpl& operator=(const PackedTokenAttributeImpl& other);
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
@@ -147,6 +160,8 @@ class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
     bool operator==(PayloadAttributeImpl& other);
     BytesRef& GetPayload() override;
     void SetPayload(BytesRef& payload) override;
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncrementAttribute {
@@ -163,6 +178,8 @@ class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncre
     void End() override;
     void Clear() override;
     bool operator==(PositionIncrementAttributeImpl& other);
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAttribute {
@@ -178,6 +195,8 @@ class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAt
     bool operator==(PositionLengthAttributeImpl& other);
     void SetPositionLength(const unsigned int position_length) override;
     unsigned int GetPositionLength() override;
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttribute {
@@ -193,6 +212,8 @@ class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttr
     bool operator==(TermFrequencyAttributeImpl& other);
     void SetTermFrequency(const unsigned int term_frequency) override;
     unsigned int GetTermFrequency() override;
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
@@ -208,6 +229,8 @@ class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
     bool operator==(TypeAttributeImpl& other);
     std::string& Type() override;
     void SetType(const std::string& type) override;
+    std::vector<std::string> AttributeNames() override;
+    std::string AttributeImplName() override;
 };
 
 }}}} // End of namespace

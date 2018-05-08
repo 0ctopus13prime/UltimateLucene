@@ -2,8 +2,10 @@
 #define LUCENE_CORE_UTIL_ATTRIBUTE_H_
 
 #include <unordered_map>
+#include <vector>
 #include <unordered_set>
 #include <functional>
+#include <memory>
 #include <string>
 
 namespace lucene { namespace core { namespace util {
@@ -25,6 +27,8 @@ class AttributeImpl: public Attribute {
     virtual void ReflectWith(AttributeReflector& reflector) = 0;
     virtual void Clear() = 0;
     virtual void End();
+    virtual std::vector<std::string> AttributeNames() = 0;
+    virtual std::string AttributeImplName() = 0;
     std::string ReflectAsString(const bool prepend_att_class);
 };
 
@@ -86,12 +90,9 @@ class AttributeFactory::StaticImplementationAttributeFactory: public AttributeFa
 
 class AttributeSource {
   public:
-    virtual AttributeImpl* CreateAttributeInstance(std::string class_name) = 0;
-
-  public:
     class State final {
       public:
-        AttributeImpl* attribute;
+        std::shared_ptr<AttributeImpl> attribute;
         State* next;
 
       public:
@@ -100,6 +101,39 @@ class AttributeSource {
         ~State();
         State& operator=(const State& other);
     };
+
+  private:
+    std::shared_ptr<State> current_state;
+    bool current_state_dirty;
+    std::unordered_map<std::string, std::shared_ptr<AttributeImpl>> attributes;
+    std::unordered_map<std::string, std::shared_ptr<AttributeImpl>> attribute_impls;
+    std::shared_ptr<AttributeFactory> factory;
+
+  private:
+    State* GetCurrentState();
+
+  public:
+    AttributeSource();
+    AttributeSource(const AttributeSource& other);
+    AttributeSource(AttributeFactory* factory);
+    AttributeFactory& GetAttributeFactory() const;
+    void AddAttributeImpl(const std::string& att_name, const std::string& att_impl_name, std::function<AttributeImpl*(void)>& att_impl_factory);
+    bool HasAttributes();
+    bool HasAttribute(const std::string& att_name);
+
+    template<typename T>
+    T& GetAttribute(const std::string& att_name) {
+      return *(dynamic_cast<T*>(attributes.at(att_name).get()));
+    }
+
+    void ClearAttributes();
+    void EndAttributes();
+    void RemoveAllAttributes();
+    State* CaptureState(State& target);
+    void RestoreState(State* state);
+    std::string ReflectAsString(const bool prepend_att);
+    void ReflectWith(AttributeReflector& reflector);
+    AttributeSource& operator=(const AttributeSource& other);
 };
 
 }}} // End of namespace

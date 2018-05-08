@@ -45,7 +45,13 @@ bool BytesTermAttributeImpl::operator==(BytesTermAttributeImpl& other) {
   return (bytes == other.bytes);
 }
 
+std::vector<std::string> BytesTermAttributeImpl::AttributeNames() {
+  return {"BytesTermAttribute"};
+}
 
+std::string BytesTermAttributeImpl::AttributeImplName() {
+  return "BytesTermAttributeImpl";
+}
 
 /**
  * FlagsAttributeImpl
@@ -82,6 +88,13 @@ bool FlagsAttributeImpl::operator==(const FlagsAttributeImpl& other) {
   return (flags = other.flags);
 }
 
+std::vector<std::string> FlagsAttributeImpl::AttributeNames() {
+  return {"FlagsAttribute"};
+}
+
+std::string FlagsAttributeImpl::AttributeImplName() {
+  return "FlagsAttributeImpl";
+}
 
 /**
  * KeywordAttributeImpl
@@ -118,7 +131,13 @@ bool KeywordAttributeImpl::operator==(const KeywordAttributeImpl& other) {
   return (keyword == other.keyword);
 }
 
+std::vector<std::string> KeywordAttributeImpl::AttributeNames() {
+  return {"KeywordAttribute"};
+}
 
+std::string KeywordAttributeImpl::AttributeImplName() {
+  return "KeywordAttributeImpl";
+}
 
 /**
  * OffsetAttributeImpl
@@ -162,6 +181,13 @@ bool OffsetAttributeImpl::operator==(const OffsetAttributeImpl& other) {
   return (start_offset == other.start_offset && end_offset == other.end_offset);
 }
 
+std::vector<std::string> OffsetAttributeImpl::AttributeNames() {
+  return {"OffsetAttribute"};
+}
+
+std::string OffsetAttributeImpl::AttributeImplName() {
+  return "OffsetAttributeImpl";
+}
 
 
 /**
@@ -203,6 +229,13 @@ void PayloadAttributeImpl::SetPayload(BytesRef& new_payload) {
   payload = new_payload;
 }
 
+std::vector<std::string> PayloadAttributeImpl::AttributeNames() {
+  return {"PayloadAttribute"};
+}
+
+std::string PayloadAttributeImpl::AttributeImplName() {
+  return "PayloadAttributeImpl";
+}
 
 
 /**
@@ -248,6 +281,14 @@ bool PositionIncrementAttributeImpl::operator==(PositionIncrementAttributeImpl& 
   return (position_increment == other.position_increment);
 }
 
+std::vector<std::string> PositionIncrementAttributeImpl::AttributeNames() {
+  return {"PositionIncrementAttribute"};
+}
+
+std::string PositionIncrementAttributeImpl::AttributeImplName() {
+  return "PositionIncrementAttributeImpl";
+}
+
 
 /**
  * PositionLengthAttributeImpl
@@ -285,6 +326,14 @@ void PositionLengthAttributeImpl::SetPositionLength(unsigned int new_position_le
 
 unsigned int PositionLengthAttributeImpl::GetPositionLength() {
   return position_length;
+}
+
+std::vector<std::string> PositionLengthAttributeImpl::AttributeNames() {
+  return {"PositionLengthAttribute"};
+}
+
+std::string PositionLengthAttributeImpl::AttributeImplName() {
+  return "PositionLengthAttributeImpl";
 }
 
 
@@ -326,6 +375,13 @@ unsigned int TermFrequencyAttributeImpl::GetTermFrequency() {
   return term_frequency;
 }
 
+std::vector<std::string> TermFrequencyAttributeImpl::AttributeNames() {
+  return {"TermFrequencyAttribute"};
+}
+
+std::string TermFrequencyAttributeImpl::AttributeImplName() {
+  return "TermFrequencyAttributeImpl";
+}
 
 
 /**
@@ -366,7 +422,13 @@ void TypeAttributeImpl::SetType(const std::string& new_type) {
   type = new_type;
 }
 
+std::vector<std::string> TypeAttributeImpl::AttributeNames() {
+  return {"TypeAttribute"};
+}
 
+std::string TypeAttributeImpl::AttributeImplName() {
+  return "TypeAttributeImpl";
+}
 
 /**
  * CharTermAttributeImpl
@@ -494,6 +556,14 @@ bool CharTermAttributeImpl::operator==(CharTermAttributeImpl& other) {
   return false;
 }
 
+std::vector<std::string> CharTermAttributeImpl::AttributeNames() {
+  return {"CharTermAttribute", "TermToBytesRefAttribute"};
+}
+
+std::string CharTermAttributeImpl::AttributeImplName() {
+  return "CharTermAttributeImpl";
+}
+
 /**
  *  PackedTokenAttributeImpl
  */
@@ -573,4 +643,20 @@ PackedTokenAttributeImpl& PackedTokenAttributeImpl::operator=(const PackedTokenA
   position_increment = other.position_increment;
   position_length = other.position_length;
   term_frequency = other.term_frequency;
+}
+
+std::vector<std::string> PackedTokenAttributeImpl::AttributeNames() {
+  return {
+    "CharTermAttribute",
+    "TermToBytesRefAttribute",
+    "TypeAttribute",
+    "PositionIncrementAttribute",
+    "PositionLengthAttribute",
+    "OffsetAttribute",
+    "TermFrequencyAttribute"
+  };
+}
+
+std::string PackedTokenAttributeImpl::AttributeImplName() {
+  return "PackedTokenAttributeImpl";
 }
