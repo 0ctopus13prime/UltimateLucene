@@ -1,6 +1,7 @@
 #include <memory>
 #include <string>
 #include <stdexcept>
+#include <typeinfo>
 #include <Analysis/AttributeImpl.h>
 #include <Util/ArrayUtil.h>
 #include <Util/Attribute.h>
@@ -29,8 +30,7 @@ void BytesTermAttributeImpl::SetBytesRef(BytesRef& other_bytes) {
 }
 
 void BytesTermAttributeImpl::Clear() {
-  BytesRef empty_bytes_ref;
-  bytes = empty_bytes_ref;
+  bytes = BytesRef();
 }
 
 void BytesTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
@@ -51,6 +51,19 @@ std::vector<std::string> BytesTermAttributeImpl::AttributeNames() {
 
 std::string BytesTermAttributeImpl::AttributeImplName() {
   return "BytesTermAttributeImpl";
+}
+
+void BytesTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    BytesTermAttributeImpl& other = dynamic_cast<BytesTermAttributeImpl&>(attr_impl);
+    bytes.ShallowCopyTo(other.bytes);
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+BytesTermAttributeImpl& BytesTermAttributeImpl::operator=(const BytesTermAttributeImpl& other) {
+  bytes = other.bytes;
 }
 
 /**
@@ -96,6 +109,19 @@ std::string FlagsAttributeImpl::AttributeImplName() {
   return "FlagsAttributeImpl";
 }
 
+void FlagsAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    FlagsAttributeImpl& other = dynamic_cast<FlagsAttributeImpl&>(attr_impl);
+    other.flags = flags;
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+FlagsAttributeImpl& FlagsAttributeImpl::operator=(const FlagsAttributeImpl& other) {
+  flags = other.flags;
+}
+
 /**
  * KeywordAttributeImpl
  */
@@ -137,6 +163,19 @@ std::vector<std::string> KeywordAttributeImpl::AttributeNames() {
 
 std::string KeywordAttributeImpl::AttributeImplName() {
   return "KeywordAttributeImpl";
+}
+
+void KeywordAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    KeywordAttributeImpl& other = dynamic_cast<KeywordAttributeImpl&>(attr_impl);
+    other.keyword = keyword;
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+KeywordAttributeImpl& KeywordAttributeImpl::operator=(const KeywordAttributeImpl& other) {
+  keyword = other.keyword;
 }
 
 /**
@@ -189,6 +228,20 @@ std::string OffsetAttributeImpl::AttributeImplName() {
   return "OffsetAttributeImpl";
 }
 
+void OffsetAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    OffsetAttributeImpl& other = dynamic_cast<OffsetAttributeImpl&>(attr_impl);
+    other.start_offset = start_offset;
+    other.end_offset = end_offset;
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+OffsetAttributeImpl& OffsetAttributeImpl::operator=(const OffsetAttributeImpl& other) {
+  start_offset = other.start_offset;
+  end_offset = other.end_offset;
+}
 
 /**
  * PayloadAttributeImpl
@@ -237,6 +290,18 @@ std::string PayloadAttributeImpl::AttributeImplName() {
   return "PayloadAttributeImpl";
 }
 
+void PayloadAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    PayloadAttributeImpl& other = dynamic_cast<PayloadAttributeImpl&>(attr_impl);
+    payload.ShallowCopyTo(other.payload);
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+PayloadAttributeImpl& PayloadAttributeImpl::operator=(const PayloadAttributeImpl& other) {
+  payload = other.payload;
+}
 
 /**
  * PositionIncrementAttributeImpl
@@ -289,6 +354,18 @@ std::string PositionIncrementAttributeImpl::AttributeImplName() {
   return "PositionIncrementAttributeImpl";
 }
 
+void PositionIncrementAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    PositionIncrementAttributeImpl& other = dynamic_cast<PositionIncrementAttributeImpl&>(attr_impl);
+    other.position_increment = position_increment;
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+PositionIncrementAttributeImpl& PositionIncrementAttributeImpl::operator=(const PositionIncrementAttributeImpl& other) {
+  position_increment = other.position_increment;
+}
 
 /**
  * PositionLengthAttributeImpl
@@ -336,6 +413,18 @@ std::string PositionLengthAttributeImpl::AttributeImplName() {
   return "PositionLengthAttributeImpl";
 }
 
+void PositionLengthAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    PositionLengthAttributeImpl& other = dynamic_cast<PositionLengthAttributeImpl&>(attr_impl);
+    other.position_length = position_length;
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+PositionLengthAttributeImpl& PositionLengthAttributeImpl::operator=(const PositionLengthAttributeImpl& other) {
+  position_length = other.position_length;
+}
 
 /**
  * TermFrequencyAttributeImpl
@@ -383,6 +472,18 @@ std::string TermFrequencyAttributeImpl::AttributeImplName() {
   return "TermFrequencyAttributeImpl";
 }
 
+void TermFrequencyAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    TermFrequencyAttributeImpl& other = dynamic_cast<TermFrequencyAttributeImpl&>(attr_impl);
+    other.term_frequency = term_frequency;
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+TermFrequencyAttributeImpl& TermFrequencyAttributeImpl::operator=(const TermFrequencyAttributeImpl& other) {
+  term_frequency = other.term_frequency;
+}
 
 /**
  * TypeAttributeImpl
@@ -428,6 +529,20 @@ std::vector<std::string> TypeAttributeImpl::AttributeNames() {
 
 std::string TypeAttributeImpl::AttributeImplName() {
   return "TypeAttributeImpl";
+}
+
+void TypeAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    TypeAttributeImpl& other = dynamic_cast<TypeAttributeImpl&>(attr_impl);
+    // It's acutally a deep copy.
+    other.type = type;
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+TypeAttributeImpl& TypeAttributeImpl::operator=(const TypeAttributeImpl& other) {
+  type = other.type;
 }
 
 /**
@@ -564,6 +679,25 @@ std::string CharTermAttributeImpl::AttributeImplName() {
   return "CharTermAttributeImpl";
 }
 
+void CharTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    CharTermAttributeImpl& other = dynamic_cast<CharTermAttributeImpl&>(attr_impl);
+    other.term_buffer = term_buffer;
+    other.term_capacity = term_capacity;
+    other.term_length = term_length;
+    builder.Get().ShallowCopyTo(other.builder.Get());
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
+}
+
+CharTermAttributeImpl& CharTermAttributeImpl::operator=(const CharTermAttributeImpl& other) {
+  term_buffer = arrayutil::CopyOfRange(other.term_buffer, 0, other.term_capacity);
+  term_capacity = other.term_capacity;
+  term_length = other.term_length;
+  builder.Get() = const_cast<CharTermAttributeImpl&>(other).builder.Get();
+}
+
 /**
  *  PackedTokenAttributeImpl
  */
@@ -636,7 +770,7 @@ unsigned int PackedTokenAttributeImpl::GetTermFrequency() {
 }
 
 PackedTokenAttributeImpl& PackedTokenAttributeImpl::operator=(const PackedTokenAttributeImpl& other) {
-  CharTermAttributeImpl::operator=(other);
+  CharTermAttributeImpl::operator=(dynamic_cast<const CharTermAttributeImpl&>(other));
   start_offset = other.start_offset;
   end_offset = other.end_offset;
   type = other.type;
@@ -659,4 +793,19 @@ std::vector<std::string> PackedTokenAttributeImpl::AttributeNames() {
 
 std::string PackedTokenAttributeImpl::AttributeImplName() {
   return "PackedTokenAttributeImpl";
+}
+
+void PackedTokenAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
+  try {
+    PackedTokenAttributeImpl& other = dynamic_cast<PackedTokenAttributeImpl&>(attr_impl);
+    CharTermAttributeImpl::ShallowCopyTo(attr_impl);
+    other.start_offset = start_offset;
+    other.end_offset = end_offset;
+    other.type = type;
+    other.position_increment = position_increment;
+    other.position_length = position_length;
+    other.term_frequency = term_frequency;
+  } catch(std::bad_cast& e) {
+    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+  }
 }

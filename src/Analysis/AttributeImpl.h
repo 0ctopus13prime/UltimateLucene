@@ -25,6 +25,8 @@ class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
     bool operator==(BytesTermAttributeImpl& other);
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    BytesTermAttributeImpl& operator=(const BytesTermAttributeImpl& other);
 };
 
 #define CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE 10
@@ -60,6 +62,8 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     bool operator==(CharTermAttributeImpl& other);
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    CharTermAttributeImpl& operator=(const CharTermAttributeImpl& other);
 };
 
 class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
@@ -77,6 +81,8 @@ class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
     bool operator==(const FlagsAttributeImpl& other);
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    FlagsAttributeImpl& operator=(const FlagsAttributeImpl& other);
 };
 
 class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
@@ -94,6 +100,8 @@ class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
     bool operator==(const KeywordAttributeImpl& other);
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    KeywordAttributeImpl& operator=(const KeywordAttributeImpl& other);
 };
 
 class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
@@ -113,6 +121,8 @@ class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
     bool operator==(const OffsetAttributeImpl& other);
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    OffsetAttributeImpl& operator=(const OffsetAttributeImpl& other);
 };
 
 class PackedTokenAttributeImpl:
@@ -142,9 +152,10 @@ class PackedTokenAttributeImpl:
     int EndOffset() override;
     void SetTermFrequency(const unsigned int new_term_frequency) override;
     unsigned int GetTermFrequency() override;
-    PackedTokenAttributeImpl& operator=(const PackedTokenAttributeImpl& other);
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    PackedTokenAttributeImpl& operator=(const PackedTokenAttributeImpl& other);
 };
 
 class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
@@ -162,6 +173,8 @@ class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
     void SetPayload(BytesRef& payload) override;
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    PayloadAttributeImpl& operator=(const PayloadAttributeImpl& other);
 };
 
 class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncrementAttribute {
@@ -180,6 +193,8 @@ class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncre
     bool operator==(PositionIncrementAttributeImpl& other);
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    PositionIncrementAttributeImpl& operator=(const PositionIncrementAttributeImpl& other);
 };
 
 class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAttribute {
@@ -197,6 +212,8 @@ class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAt
     unsigned int GetPositionLength() override;
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    PositionLengthAttributeImpl& operator=(const PositionLengthAttributeImpl& other);
 };
 
 class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttribute {
@@ -214,6 +231,8 @@ class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttr
     unsigned int GetTermFrequency() override;
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    TermFrequencyAttributeImpl& operator=(const TermFrequencyAttributeImpl& other);
 };
 
 class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
@@ -231,6 +250,8 @@ class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
     void SetType(const std::string& type) override;
     std::vector<std::string> AttributeNames() override;
     std::string AttributeImplName() override;
+    void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    TypeAttributeImpl& operator=(const TypeAttributeImpl& other);
 };
 
 }}}} // End of namespace

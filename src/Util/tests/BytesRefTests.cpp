@@ -27,25 +27,26 @@ int main() {
     // Shallow copy, Deep copy
     std::string str = "doochi";
     BytesRef bytes_ref1(str);
-    BytesRef shared_bytes_ref2(bytes_ref1); // Shallow copy
+    BytesRef shared_bytes_ref2;
+    bytes_ref1.ShallowCopyTo(shared_bytes_ref2); // Shallow copy
 
     // Shallow case, Change single character at 0 index
     bytes_ref1.bytes.get()[0] = 'x';
     assert(shared_bytes_ref2.bytes.get()[0] == 'x');
 
     // Deep copy case, Chage single character at 0 index
-    BytesRef bytes_ref2 = bytes_ref1.DeepCopyOf();
+    BytesRef bytes_ref2 = bytes_ref1;
     bytes_ref1.bytes.get()[0] = 'd';
     assert(bytes_ref2.bytes.get()[0] != bytes_ref1.bytes.get()[0]);
     assert(bytes_ref2.bytes.get()[0] == 'x');
 
     // operator =, assign
-    BytesRef bytes_ref3(bytes_ref1);
-    bytes_ref3 = bytes_ref2;
+    BytesRef bytes_ref3 = bytes_ref2; // Deep copy
     assert(bytes_ref3 == bytes_ref2);
 
-    BytesRef shared_bytes_ref3(bytes_ref3);
-    shared_bytes_ref3 = bytes_ref2;
+    BytesRef shared_bytes_ref3;
+    bytes_ref3.ShallowCopyTo(shared_bytes_ref3);
+
     assert(shared_bytes_ref3 == bytes_ref2);
   }
 
@@ -60,7 +61,8 @@ int main() {
     {
       std::cout << "    - == test" << std::endl;
       BytesRef bytes_ref1(str1);
-      BytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1;
+      bytes_ref1.ShallowCopyTo(shared_bytes_ref1);
       BytesRef bytes_ref2(str1);
       BytesRef shared_bytes_ref2(bytes_ref2);
 
@@ -74,9 +76,12 @@ int main() {
     {
       std::cout << "    - != test" << std::endl;
       BytesRef bytes_ref1(str1);
-      BytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1;
+      bytes_ref1.ShallowCopyTo(shared_bytes_ref1);
+
       BytesRef bytes_ref2(str2);
-      BytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref2;
+      bytes_ref2.ShallowCopyTo(shared_bytes_ref2);
 
       assert(bytes_ref1 != bytes_ref2);
       assert(bytes_ref1 != shared_bytes_ref2);
@@ -88,9 +93,12 @@ int main() {
     {
       std::cout << "    - < test" << std::endl;
       BytesRef bytes_ref1(str1);
-      BytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1;
+      bytes_ref1.ShallowCopyTo(shared_bytes_ref1);
+
       BytesRef bytes_ref2(str2);
-      BytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref2;
+      bytes_ref2.ShallowCopyTo(shared_bytes_ref2);
 
       assert(bytes_ref1 < bytes_ref2);
       assert(bytes_ref1 < shared_bytes_ref2);
@@ -109,9 +117,12 @@ int main() {
     {
       std::cout << "    - <= test" << std::endl;
       BytesRef bytes_ref1(str1);
-      BytesRef shared_bytes_ref1(bytes_ref1);
-      BytesRef bytes_ref2(str1);
-      BytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref1;
+      bytes_ref1.ShallowCopyTo(shared_bytes_ref1);
+
+      BytesRef bytes_ref2(str2);
+      BytesRef shared_bytes_ref2;
+      bytes_ref2.ShallowCopyTo(shared_bytes_ref2);
 
       assert(bytes_ref1 <= bytes_ref2);
       assert(bytes_ref1 <= shared_bytes_ref2);
@@ -130,9 +141,12 @@ int main() {
     {
       std::cout << "    - > test" << std::endl;
       BytesRef bytes_ref1(str1);
-      BytesRef shared_bytes_ref1(bytes_ref1);
+      BytesRef shared_bytes_ref1;
+      bytes_ref1.ShallowCopyTo(shared_bytes_ref1);
+
       BytesRef bytes_ref2(str2);
-      BytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref2;
+      bytes_ref2.ShallowCopyTo(shared_bytes_ref2);
 
       assert(bytes_ref2 > bytes_ref1);
       assert(bytes_ref2 > shared_bytes_ref1);
@@ -151,9 +165,12 @@ int main() {
     {
       std::cout << "    - >= test" << std::endl;
       BytesRef bytes_ref1(str1);
-      BytesRef shared_bytes_ref1(bytes_ref1);
-      BytesRef bytes_ref2(str1);
-      BytesRef shared_bytes_ref2(bytes_ref2);
+      BytesRef shared_bytes_ref1;
+      bytes_ref1.ShallowCopyTo(shared_bytes_ref1);
+
+      BytesRef bytes_ref2(str2);
+      BytesRef shared_bytes_ref2;
+      bytes_ref2.ShallowCopyTo(shared_bytes_ref2);
 
       assert(bytes_ref2 >= bytes_ref1);
       assert(bytes_ref2 >= shared_bytes_ref1);

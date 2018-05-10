@@ -29,6 +29,7 @@ class AttributeImpl: public Attribute {
     virtual void End();
     virtual std::vector<std::string> AttributeNames() = 0;
     virtual std::string AttributeImplName() = 0;
+    virtual void ShallowCopyTo(AttributeImpl& attr_impl) = 0;
     std::string ReflectAsString(const bool prepend_att_class);
 };
 

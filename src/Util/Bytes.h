@@ -18,13 +18,13 @@ class BytesRef {
 
   public:
     BytesRef();
-    BytesRef(std::shared_ptr<char> bytes, unsigned int offset, unsigned int length, unsigned int capacity);
-    BytesRef(std::shared_ptr<char> bytes, unsigned int capacity);
+    BytesRef(char* bytes, unsigned int offset, unsigned int length, unsigned int capacity);
+    BytesRef(char* bytes, unsigned int capacity);
     BytesRef(const BytesRef& other);
     BytesRef(unsigned int capacity);
     BytesRef(std::string& text);
     ~BytesRef();
-    BytesRef DeepCopyOf();
+    void ShallowCopyTo(BytesRef& target);
     BytesRef& operator=(const BytesRef& other);
     bool operator==(const BytesRef& other) const;
     bool operator!=(const BytesRef& other) const;
@@ -46,7 +46,7 @@ class BytesRefBuilder {
     const unsigned int Length() const;
     void SetLength(const unsigned int length);
     char& operator[](const unsigned int idx);
-    void Grow(unsigned int capacity);  
+    void Grow(unsigned int capacity);
     void Append(const char c);
     void Append(const char* c, const unsigned int off, const unsigned int len);
     void Append(BytesRef& ref);
