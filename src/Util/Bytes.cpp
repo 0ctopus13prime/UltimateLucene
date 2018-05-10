@@ -12,8 +12,10 @@ using namespace lucene::core::util;
  * BytesRef
  */
 
+std::shared_ptr<char> BytesRef::DEFAULT_BYTES = std::shared_ptr<char>(new char[1](), std::default_delete<char[]>());
+
 BytesRef::BytesRef()
-  : bytes(new char[1](), std::default_delete<char[]>()),
+  : bytes(BytesRef::DEFAULT_BYTES),
     offset(0),
     length(0),
     capacity(1) {
@@ -48,7 +50,7 @@ BytesRef::BytesRef(unsigned int new_capacity)
 
 BytesRef::BytesRef(std::string& text) {
   if(text.empty()) {
-    bytes = std::shared_ptr<char>(new char[1](), std::default_delete<char[]>());
+    bytes = BytesRef::DEFAULT_BYTES;
     offset = length = 0;
     capacity = 1;
   } else {

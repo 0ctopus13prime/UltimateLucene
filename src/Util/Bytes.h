@@ -8,6 +8,9 @@ namespace lucene { namespace core { namespace util {
 
 class BytesRef {
   private:
+    static std::shared_ptr<char> DEFAULT_BYTES;
+
+  private:
     int CompareTo(const BytesRef& other) const;
 
   public:
