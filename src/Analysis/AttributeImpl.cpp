@@ -25,6 +25,9 @@ BytesRef& BytesTermAttributeImpl::GetBytesRef() {
   return bytes;
 }
 
+BytesTermAttributeImpl::~BytesTermAttributeImpl() {
+}
+
 void BytesTermAttributeImpl::SetBytesRef(BytesRef& other_bytes) {
   bytes = other_bytes;
 }

@@ -19,6 +19,7 @@ class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
     BytesTermAttributeImpl();
     BytesTermAttributeImpl(const BytesTermAttributeImpl& other);
     BytesRef& GetBytesRef() override;
+    virtual ~BytesTermAttributeImpl();
     void SetBytesRef(BytesRef& bytes) override;
     void Clear() override;
     void ReflectWith(AttributeReflector& reflector) override;
@@ -140,7 +141,7 @@ class PackedTokenAttributeImpl:
   public:
     PackedTokenAttributeImpl();
     PackedTokenAttributeImpl(const PackedTokenAttributeImpl& other);
-    ~PackedTokenAttributeImpl();
+    virtual ~PackedTokenAttributeImpl();
     std::string& Type() override;
     void SetType(const std::string& new_type) override;
     void SetPositionIncrement(const unsigned int new_position_increment) override;
