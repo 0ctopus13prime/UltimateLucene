@@ -4,7 +4,12 @@
 namespace lucene { namespace core { namespace util { namespace etc {
 
 class Version {
+  public:
+    static Version LATEST;
 
+  public:
+    Version();
+    Version(Version& other);
 };
 
 }}}}

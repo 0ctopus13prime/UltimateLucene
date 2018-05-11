@@ -1,0 +1,96 @@
+#include <Analysis/Reader.h>
+
+using namespace lucene::core::analysis;
+
+/**
+ *  Reader
+ */
+Reader::~Reader() {
+}
+
+/**
+ * StringReader
+ */
+
+StringReader::StringReader()
+  : iss(),
+    mark(0) {
+}
+
+StringReader::StringReader(StringReader& other)
+  : iss(other.iss.str()),
+    mark(other.mark) {
+}
+
+StringReader::StringReader(const std::string& str)
+  : iss(str),
+    mark(0) {
+}
+
+StringReader::StringReader(const char* buf, const unsigned len)
+  : StringReader(buf, 0, len) {
+}
+
+StringReader::StringReader(const char* buf, const unsigned int off, const unsigned len)
+  : iss(std::string(buf, off, len)),
+    mark(0) {
+}
+
+StringReader& StringReader::operator=(StringReader& other) {
+  if(this != &other) {
+    iss.clear();
+    iss.str(other.iss.str());
+    mark = other.mark;
+  }
+}
+
+StringReader& StringReader::operator=(std::istringstream& new_iss) {
+  iss.str(new_iss.str());
+  mark = 0;
+}
+
+StringReader::~StringReader() {
+}
+
+void StringReader::SetValue(std::string& value) {
+  iss.clear();
+  iss.str(value);
+}
+
+void StringReader::SetValue(char* buf, const unsigned int len) {
+  SetValue(buf, 0, len);
+}
+
+void StringReader::SetValue(char* buf, const unsigned int off, const unsigned int len) {
+  std::string value(buf + off, len);
+  SetValue(value);
+}
+
+char StringReader::Read() {
+  char ch = -1;
+  if(!iss.eof()) {
+    iss >> ch;
+  }
+
+  return ch;
+}
+
+int StringReader::Read(char* buf, const unsigned int off, const unsigned int len) {
+  iss.readsome(buf + off, len);
+}
+
+unsigned long StringReader::Skip(const unsigned long n) {
+  iss.seekg(n);
+}
+
+bool StringReader::MarkSupported() {
+  return true;
+}
+
+void StringReader::Mark(unsigned int read_ahead_limit) {
+  mark = read_ahead_limit;
+}
+
+void StringReader::Reset() {
+  iss.seekg(mark);
+}

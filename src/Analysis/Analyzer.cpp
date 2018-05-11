@@ -2,12 +2,14 @@
 #include <Analysis/Analyzer.h>
 
 using namespace lucene::core::analysis;
+using namespace lucene::core::analysis::tokenattributes;
 using namespace lucene::core::util;
+using namespace lucene::core::util::etc;
 
 /**
  *  TokenStreamComponents
  */
-TokenStreamComponents::(Tokenizer* source, TokenStream* result)
+TokenStreamComponents::TokenStreamComponents(Tokenizer* source, TokenStream* result)
   : source(source),
     sink(result) {
 }
@@ -21,12 +23,16 @@ void TokenStreamComponents::SetReader(delete_unique_ptr<Reader>& reader) {
   source->SetReader(reader);
 }
 
-TokenStream& TokenStreamComponents::GetTokenStream() {
-  return *sink;
+TokenStream* TokenStreamComponents::GetTokenStream() {
+  return sink.get();
 }
 
-Tokenizer& TokenStreamComponents::GetTokenizer() {
-  return *source;
+Tokenizer* TokenStreamComponents::GetTokenizer() {
+  return source.get();
+}
+
+StringReader& TokenStreamComponents::GetReusableStringReader() {
+  return reusable_string_reader;
 }
 
 /**
@@ -47,28 +53,28 @@ PreDefinedReuseStrategy::PreDefinedReuseStrategy() {
 PreDefinedReuseStrategy::~PreDefinedReuseStrategy() {
 }
 
-TokenStreamComponents& PreDefinedReuseStrategy::GetReusableComponents() {
-  // TODO Implement it.
+TokenStreamComponents* PreDefinedReuseStrategy::GetReusableComponents(Analyzer& analyzer, const std::string& field_name) {
+  return GetStoredValue<TokenStreamComponents*>(analyzer);
 }
 
-void PreDefinedReuseStrategy::SetReusableComponents(Analyzer* analyzer,
+void PreDefinedReuseStrategy::SetReusableComponents(Analyzer& analyzer,
                                                     const std::string& field_name,
                                                     TokenStreamComponents* component) {
-  // TODO Implement it.
+  // TODO Implement it. std::unique_ptr<TokenStreamComponents>(component)?
 }
 
-PER_FIELD_REUSE_STRATEGY = PreDefinedReuseStrategy();
+PreDefinedReuseStrategy PER_FIELD_REUSE_STRATEGY = PreDefinedReuseStrategy();
 
 /**
  *  StringTokenStream
  */
-StringTokenStream::StringTokenStream(const AttributeSource& input, std::string& value, size_t length)
+StringTokenStream::StringTokenStream(AttributeFactory* input, std::string& value, size_t length)
   : TokenStream(input),
     value(value),
     length(length),
     used(false),
-    term_attribute(AddAttribute<CharTermAttribute>()),
-    offset_attribute(AddAttribute<OffsetAttribute>()) {
+    term_attribute(AddAttribute<tokenattributes::CharTermAttribute>()),
+    offset_attribute(AddAttribute<tokenattributes::OffsetAttribute>()) {
 }
 
 void StringTokenStream::Reset() {
@@ -82,64 +88,69 @@ bool StringTokenStream::IncrementToken() {
 
   ClearAttributes();
   term_attribute->Append(value);
-  offset_attribute.SetOffset(0, length);
+  offset_attribute->SetOffset(0, length);
   used = true;
   return true;
 }
 
 void StringTokenStream::End() {
   TokenStream::End();
-  offset_attribute.SetOffset(length, length);
+  offset_attribute->SetOffset(length, length);
 }
 
 /**
  *  Analyzer
  */
 Analyzer::Analyzer()
-  : Analyzer(&PER_FIELD_REUSE_STRATEGY) {
+  : Analyzer(static_cast<ReuseStrategy&>(PER_FIELD_REUSE_STRATEGY)) {
 }
 
-Analyzer::Analyzer(ReuseStrategy* reuse_strategy)
+Analyzer::Analyzer(ReuseStrategy& reuse_strategy)
   : reuse_strategy(reuse_strategy),
-    version(Version.LATEST) {
+    version(Version::LATEST) {
 }
 
-delete_unique_ptr<Reader> Analyzer::InitReader(const std::string field_name, delete_unique_ptr<Reader> reader) {
+delete_unique_ptr<Reader> Analyzer::InitReader(const std::string& field_name, delete_unique_ptr<Reader> reader) {
   return reader;
 }
 
-delete_unique_ptr<Reader> Analyzer::InitReaderForNormalization(const std::string field_name, delete_unique_ptr<Reader> reader) {
+delete_unique_ptr<Reader> Analyzer::InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader> reader) {
   return reader;
 }
 
-TokenStream Analyzer::Normalize(const std::string& field_name, TokenStream& in) {
+AttributeFactory* Analyzer::GetAttributeFactory(const std::string& field_name) {
+  return TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY;
+}
+
+delete_unique_ptr<TokenStream> Analyzer::Normalize(const std::string& field_name, delete_unique_ptr<TokenStream> in) {
   return in;
 }
 
-TokenStream* Analyzer::TokenStream(const std::string& field_name, Reader* reader) {
-  TokenStreamComponents* components = reuse_strategy->GetReusableComponents();
-  std::unique_ptr<Reader> r = InitReader(field_name, std::unique_ptr<Reader, std::function<void(Reader*)>>(reader, std::default_delete<Reader>()));
+TokenStream* Analyzer::GetTokenStream(const std::string& field_name, Reader* reader) {
+  TokenStreamComponents* components = reuse_strategy.GetReusableComponents(*this, field_name);
+  delete_unique_ptr<Reader> r = InitReader(field_name, std::unique_ptr<Reader, std::function<void(Reader*)>>(reader, std::default_delete<Reader>()));
 
   if(components == nullptr) {
     components = CreateComponents(field_name);
-    reuse_strategy->SetReusableComponents(this, field_name, components);
+    reuse_strategy.SetReusableComponents(*this, field_name, components);
   }
 
   components->SetReader(r);
   return components->GetTokenStream();
 }
 
-TokenStream* Analyzer::TokenStream(const std::string field_name, const std::string& text) {
-  TokenStreamComponents* components = reuse_strategy->GetReusableComponents();
+TokenStream* Analyzer::GetTokenStream(const std::string& field_name, const std::string& text) {
+  TokenStreamComponents* components = reuse_strategy.GetReusableComponents(*this, field_name);
   if(components == nullptr) {
     components = CreateComponents(field_name);
-    reuse_strategy->SetReusableComponents(this, field_name, components);
+    reuse_strategy.SetReusableComponents(*this, field_name, components);
   }
 
-  std::unique_ptr<Reader> r =
-    InitReader(field_name,
+  delete_unique_ptr<Reader> r =
+    InitReader(
+      field_name,
       delete_unique_ptr<Reader>(
-        &components->reusable_string_reader,
+        &components->GetReusableStringReader(),
         [](Reader*){} // No destrucion here, as reusable_string_reader will be reused next time
       )
     );
@@ -147,7 +158,7 @@ TokenStream* Analyzer::TokenStream(const std::string field_name, const std::stri
   return components->GetTokenStream();
 }
 
-void Analyzer::Normalize(const std::string& field_name, const std::string& text, BytesRef& target) {
+BytesRef Analyzer::Normalize(const std::string& field_name, const std::string& text) {
   StringReader reader(text);
   delete_unique_ptr<Reader> filter_reader = InitReaderForNormalization(
     field_name,
@@ -157,10 +168,10 @@ void Analyzer::Normalize(const std::string& field_name, const std::string& text,
     )
   );
 
-  std::filtered_text;
+  std::string filtered_text;
   char buffer[256];
   while(true) {
-    const int read = filter_reader.read(buffer, 0, sizeof(buffer));
+    const int read = filter_reader->Read(buffer, 0, sizeof(buffer));
     if(read == -1) {
       break;
     } else {
@@ -168,7 +179,7 @@ void Analyzer::Normalize(const std::string& field_name, const std::string& text,
     }
   }
 
-  AttributeSource& attribute_factory = AttributeFactory(field_name);
+  AttributeFactory* attribute_factory = GetAttributeFactory(field_name);
   StringTokenStream sts(attribute_factory, filtered_text, filtered_text.size());
   delete_unique_ptr<TokenStream> ts = Normalize(field_name,
     delete_unique_ptr<TokenStream>(

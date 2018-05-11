@@ -1,5 +1,7 @@
+#include <type_traits>
 #include <ctype.h>
 #include <stdexcept>
+#include <Analysis/AttributeImpl.h>
 #include <Analysis/CharacterUtil.h>
 #include <Analysis/TokenStream.h>
 
@@ -9,6 +11,9 @@ using namespace lucene::core::util;
 /**
  *  TokenStream
  */
+
+AttributeFactory* TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY =
+  AttributeFactory::GetStaticImplementation<std::remove_pointer<decltype(AttributeFactory::DEFAULT_ATTRIBUTE_FACTORY)>::type, tokenattributes::PackedTokenAttributeImpl>();
 
 TokenStream::TokenStream()
   : AttributeSource() {
@@ -80,7 +85,6 @@ void Tokenizer::SetReader(delete_unique_ptr<Reader>& input) {
 }
 
 void Tokenizer::Reset() {
-  TokenStream()::Reset();
   input.reset(input_pending.release());
 }
 

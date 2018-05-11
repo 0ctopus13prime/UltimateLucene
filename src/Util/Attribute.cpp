@@ -22,6 +22,7 @@ void AttributeImpl::End() {
 /**
  * AttributeFactory
  */
+AttributeFactory::DefaultAttributeFactory* AttributeFactory::DEFAULT_ATTRIBUTE_FACTORY = new AttributeFactory::DefaultAttributeFactory();
 std::unordered_map<size_t, std::function<AttributeImpl*(void)>>
 AttributeFactory::ATTR_IMPL_TABLE = {
     {typeid(BytesTermAttribute).hash_code(), [](){ return new BytesTermAttributeImpl(); }},
@@ -51,16 +52,16 @@ AttributeFactory::AttributeFactory() {
 }
 
 /**
- * DefaultAttributeImpl
+ * DefaultAttributeFactory
  */
 
-AttributeFactory::DefaultAttributeImpl::DefaultAttributeImpl() {
+AttributeFactory::DefaultAttributeFactory::DefaultAttributeFactory() {
 }
 
-AttributeFactory::DefaultAttributeImpl::~DefaultAttributeImpl() {
+AttributeFactory::DefaultAttributeFactory::~DefaultAttributeFactory() {
 }
 
-AttributeImpl* AttributeFactory::DefaultAttributeImpl::CreateAttributeInstance(size_t attr_hash_code) {
+AttributeImpl* AttributeFactory::DefaultAttributeFactory::CreateAttributeInstance(size_t attr_hash_code) {
   auto ctor = AttributeFactory::FindAttributeImplCtor(attr_hash_code);
   return ctor();
 }
@@ -69,7 +70,7 @@ AttributeImpl* AttributeFactory::DefaultAttributeImpl::CreateAttributeInstance(s
  * AttributeSource
  */
 AttributeSource::AttributeSource()
-  : AttributeSource(new AttributeFactory::DefaultAttributeImpl()) {
+  : AttributeSource(new AttributeFactory::DefaultAttributeFactory()) {
 }
 
 AttributeSource::AttributeSource(const AttributeSource& other)

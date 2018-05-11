@@ -19,6 +19,9 @@ class TokenStream: public lucene::core::util::AttributeSource {
     TokenStream(lucene::core::util::AttributeFactory* factory);
 
   public:
+    static AttributeFactory* DEFAULT_TOKEN_ATTRIBUTE_FACTORY;
+
+  public:
     virtual ~TokenStream();
     virtual bool IncrementToken() = 0;
     virtual void End();

@@ -57,16 +57,19 @@ class AttributeFactory {
     }
 
   public:
-    class DefaultAttributeImpl;
+    class DefaultAttributeFactory;
 
     template<typename ATTR_FACTORY, typename ATTR_IMPL>
     class StaticImplementationAttributeFactory;
+
+  public:
+    static DefaultAttributeFactory* DEFAULT_ATTRIBUTE_FACTORY;
 };
 
-class AttributeFactory::DefaultAttributeImpl: public AttributeFactory {
+class AttributeFactory::DefaultAttributeFactory: public AttributeFactory {
   public:
-    DefaultAttributeImpl();
-    virtual ~DefaultAttributeImpl();
+    DefaultAttributeFactory();
+    virtual ~DefaultAttributeFactory();
     AttributeImpl* CreateAttributeInstance(size_t attr_hash_code) override;
 };
 
