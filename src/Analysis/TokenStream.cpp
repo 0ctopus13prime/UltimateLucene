@@ -1,4 +1,6 @@
+#include <Analysis/CharacterUtil.h>
 #include <Analysis/TokenStream.h>
+#include <ctype.h>
 
 using namespace lucene::core::analysis;
 using namespace lucene::core::util;
@@ -60,8 +62,7 @@ LowerCaseFilter::~LowerCaseFilter() {
 
 bool LowerCaseFilter::IncrementToken() {
   if(input->IncrementToken()) {
-    // TODO Implement it
-    // CharacterUtils.toLowerCase(termAtt.buffer(), 0, termAtt.length());
+    characterutil::ToLowerCase(term_att->Buffer(), 0, term_att->Length());
     return true;
   } else {
     return false;
