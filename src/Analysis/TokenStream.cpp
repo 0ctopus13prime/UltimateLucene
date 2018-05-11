@@ -30,8 +30,8 @@ void TokenStream::End() {
  *  TokenFilter
  */
 
-TokenFilter::TokenFilter(TokenStream& input)
-  : TokenStream(input),
+TokenFilter::TokenFilter(TokenStream* input)
+  : TokenStream(*input),
     input(input) {
 }
 
@@ -39,9 +39,31 @@ TokenFilter::~TokenFilter() {
 }
 
 void TokenFilter::End() {
-  input.End();
+  input->End();
 }
 
 void TokenFilter::Reset() {
-  input.Reset();
+  input->Reset();
+}
+
+/**
+ * LowerCaseFilter
+ */
+
+LowerCaseFilter::LowerCaseFilter(TokenStream* in)
+  : TokenFilter(in),
+    term_att(AddAttribute<tokenattributes::CharTermAttribute>()) {
+}
+
+LowerCaseFilter::~LowerCaseFilter() {
+}
+
+bool LowerCaseFilter::IncrementToken() {
+  if(input->IncrementToken()) {
+    // TODO Implement it
+    // CharacterUtils.toLowerCase(termAtt.buffer(), 0, termAtt.length());
+    return true;
+  } else {
+    return false;
+  }
 }

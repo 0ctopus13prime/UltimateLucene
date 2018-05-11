@@ -1,3 +1,4 @@
+#include <typeinfo>
 #include <stdexcept>
 #include <Util/Attribute.h>
 #include <Analysis/AttributeImpl.h>
@@ -21,31 +22,32 @@ void AttributeImpl::End() {
 /**
  * AttributeFactory
  */
-std::unordered_map<std::string, std::function<AttributeImpl*(void)>>
- AttributeFactory::ATTR_IMPL_TABLE = {
-    {"BytesTermAttribute", [](){ return new BytesTermAttributeImpl(); }},
-    {"CharTermAttribute", [](){ return new CharTermAttributeImpl(); }},
-    {"FlagsAttribute", [](){ return new FlagsAttributeImpl(); }},
-    {"KeywordAttribute", [](){ return new KeywordAttributeImpl(); }},
-    {"OffsetAttribute", [](){ return new OffsetAttributeImpl(); }},
-    {"PayloadAttribute", [](){ return new PayloadAttributeImpl(); }},
-    {"PositionIncrementAttribute", [](){ return new PositionIncrementAttributeImpl(); }},
-    {"PositionLengthAttribute", [](){ return new PositionLengthAttributeImpl(); }},
-    {"TermFrequencyAttribute", [](){ return new TermFrequencyAttributeImpl(); }},
-    {"TypeAttribute", [](){ return new TypeAttributeImpl(); }}
+std::unordered_map<size_t, std::function<AttributeImpl*(void)>>
+AttributeFactory::ATTR_IMPL_TABLE = {
+    {typeid(BytesTermAttribute).hash_code(), [](){ return new BytesTermAttributeImpl(); }},
+    {typeid(CharTermAttribute).hash_code(), [](){ return new CharTermAttributeImpl(); }},
+    {typeid(FlagsAttribute).hash_code(), [](){ return new FlagsAttributeImpl(); }},
+    {typeid(KeywordAttribute).hash_code(), [](){ return new KeywordAttributeImpl(); }},
+    {typeid(OffsetAttribute).hash_code(), [](){ return new OffsetAttributeImpl(); }},
+    {typeid(PayloadAttribute).hash_code(), [](){ return new PayloadAttributeImpl(); }},
+    {typeid(PositionIncrementAttribute).hash_code(), [](){ return new PositionIncrementAttributeImpl(); }},
+    {typeid(PositionLengthAttribute).hash_code(), [](){ return new PositionLengthAttributeImpl(); }},
+    {typeid(TermFrequencyAttribute).hash_code(), [](){ return new TermFrequencyAttributeImpl(); }},
+    {typeid(TypeAttribute).hash_code(), [](){ return new TypeAttributeImpl(); }}
  };
 
-AttributeFactory::AttributeFactory() {
-}
 
-std::function<AttributeImpl*(void)> AttributeFactory::FindAttributeImplCtor(const std::string& attr_name) {
-  auto it = AttributeFactory::ATTR_IMPL_TABLE.find(attr_name);
+std::function<AttributeImpl*(void)> AttributeFactory::FindAttributeImplCtor(size_t attr_hash_code) {
+  auto it = AttributeFactory::ATTR_IMPL_TABLE.find(attr_hash_code);
 
   if(it == AttributeFactory::ATTR_IMPL_TABLE.end()) {
-    throw std::runtime_error("Attribute " + attr_name + " implmentation was not found");
+    throw std::runtime_error("Attribute " + std::to_string(attr_hash_code) + " implmentation was not found");
   }
 
   return it->second;
+}
+
+AttributeFactory::AttributeFactory() {
 }
 
 /**
@@ -58,8 +60,8 @@ AttributeFactory::DefaultAttributeImpl::DefaultAttributeImpl() {
 AttributeFactory::DefaultAttributeImpl::~DefaultAttributeImpl() {
 }
 
-AttributeImpl* AttributeFactory::DefaultAttributeImpl::CreateAttributeInstance(const std::string& attr_name) {
-  auto ctor = AttributeFactory::FindAttributeImplCtor(attr_name);
+AttributeImpl* AttributeFactory::DefaultAttributeImpl::CreateAttributeInstance(size_t attr_hash_code) {
+  auto ctor = AttributeFactory::FindAttributeImplCtor(attr_hash_code);
   return ctor();
 }
 
@@ -96,22 +98,19 @@ AttributeFactory& AttributeSource::GetAttributeFactory() const {
   return *factory;
 }
 
-void AttributeSource::AddAttributeImpl(const std::string& att_name, const std::string& att_impl_name, std::function<AttributeImpl*(void)>& att_impl_factory) {
-  if(attribute_impls.find(att_name) != attribute_impls.end()) {
-    return;
+void AttributeSource::AddAttributeImpl(AttributeImpl* attr_impl) {
+  std::vector<size_t> attr_hash_codes = attr_impl->Attributes();
+  std::shared_ptr<AttributeImpl> attr_impl_shptr(attr_impl);
+
+  for(size_t attr_hash_code : attr_hash_codes) {
+    attributes[attr_hash_code] = attr_impl_shptr;
   }
 
-  AttributeImpl* att_impl = att_impl_factory();
-  attributes[att_name].reset(att_impl);
-  attribute_impls[att_name].reset(att_impl);
+  attribute_impls[typeid(*attr_impl).hash_code()] = attr_impl_shptr;
 }
 
 bool AttributeSource::HasAttributes()  {
   return !attributes.empty();
-}
-
-bool AttributeSource::HasAttribute(const std::string& att_name)  {
-  return (attributes.find(att_name) != attributes.end());
 }
 
 AttributeSource::State* AttributeSource::GetCurrentState() {
@@ -166,14 +165,14 @@ void AttributeSource::RestoreState(AttributeSource::State* state) {
 
   AttributeSource::State* current = state;
   do {
-    std::string attr_impl_name = state->attribute->AttributeImplName();
     AttributeImpl* source_attr = current->attribute.get();
+    size_t attr_impl_hash_code = typeid(*source_attr).hash_code();
 
-    if(attribute_impls.find(attr_impl_name) == attribute_impls.end()) {
-      throw std::invalid_argument("AttributeSource::State contains AttributeImpl of type " + attr_impl_name + " that is not in this AttributeSource");
+    if(attribute_impls.find(attr_impl_hash_code) == attribute_impls.end()) {
+      throw std::invalid_argument("AttributeSource::State contains AttributeImpl of type " + std::to_string(attr_impl_hash_code) + " that is not in this AttributeSource");
     }
 
-    AttributeImpl* target_attr = attribute_impls[attr_impl_name].get();
+    AttributeImpl* target_attr = attribute_impls[attr_impl_hash_code].get();
     *target_attr = *source_attr;
 
     current = current->next;

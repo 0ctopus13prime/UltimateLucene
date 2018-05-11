@@ -48,12 +48,8 @@ bool BytesTermAttributeImpl::operator==(BytesTermAttributeImpl& other) {
   return (bytes == other.bytes);
 }
 
-std::vector<std::string> BytesTermAttributeImpl::AttributeNames() {
-  return {"BytesTermAttribute"};
-}
-
-std::string BytesTermAttributeImpl::AttributeImplName() {
-  return "BytesTermAttributeImpl";
+std::vector<size_t> BytesTermAttributeImpl::Attributes() {
+  return {typeid(BytesTermAttribute).hash_code()};
 }
 
 void BytesTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -61,7 +57,7 @@ void BytesTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     BytesTermAttributeImpl& other = dynamic_cast<BytesTermAttributeImpl&>(attr_impl);
     bytes.ShallowCopyTo(other.bytes);
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -104,12 +100,8 @@ bool FlagsAttributeImpl::operator==(const FlagsAttributeImpl& other) {
   return (flags = other.flags);
 }
 
-std::vector<std::string> FlagsAttributeImpl::AttributeNames() {
-  return {"FlagsAttribute"};
-}
-
-std::string FlagsAttributeImpl::AttributeImplName() {
-  return "FlagsAttributeImpl";
+std::vector<size_t> FlagsAttributeImpl::Attributes() {
+  return {typeid(FlagsAttribute).hash_code()};
 }
 
 void FlagsAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -117,7 +109,7 @@ void FlagsAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     FlagsAttributeImpl& other = dynamic_cast<FlagsAttributeImpl&>(attr_impl);
     other.flags = flags;
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -160,12 +152,8 @@ bool KeywordAttributeImpl::operator==(const KeywordAttributeImpl& other) {
   return (keyword == other.keyword);
 }
 
-std::vector<std::string> KeywordAttributeImpl::AttributeNames() {
-  return {"KeywordAttribute"};
-}
-
-std::string KeywordAttributeImpl::AttributeImplName() {
-  return "KeywordAttributeImpl";
+std::vector<size_t> KeywordAttributeImpl::Attributes() {
+  return {typeid(KeywordAttribute).hash_code()};
 }
 
 void KeywordAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -173,7 +161,8 @@ void KeywordAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     KeywordAttributeImpl& other = dynamic_cast<KeywordAttributeImpl&>(attr_impl);
     other.keyword = keyword;
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -223,12 +212,8 @@ bool OffsetAttributeImpl::operator==(const OffsetAttributeImpl& other) {
   return (start_offset == other.start_offset && end_offset == other.end_offset);
 }
 
-std::vector<std::string> OffsetAttributeImpl::AttributeNames() {
-  return {"OffsetAttribute"};
-}
-
-std::string OffsetAttributeImpl::AttributeImplName() {
-  return "OffsetAttributeImpl";
+std::vector<size_t> OffsetAttributeImpl::Attributes() {
+  return {typeid(OffsetAttribute).hash_code()};
 }
 
 void OffsetAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -237,7 +222,7 @@ void OffsetAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     other.start_offset = start_offset;
     other.end_offset = end_offset;
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -285,12 +270,8 @@ void PayloadAttributeImpl::SetPayload(BytesRef& new_payload) {
   payload = new_payload;
 }
 
-std::vector<std::string> PayloadAttributeImpl::AttributeNames() {
-  return {"PayloadAttribute"};
-}
-
-std::string PayloadAttributeImpl::AttributeImplName() {
-  return "PayloadAttributeImpl";
+std::vector<size_t> PayloadAttributeImpl::Attributes() {
+  return {typeid(PayloadAttribute).hash_code()};
 }
 
 void PayloadAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -298,7 +279,7 @@ void PayloadAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     PayloadAttributeImpl& other = dynamic_cast<PayloadAttributeImpl&>(attr_impl);
     payload.ShallowCopyTo(other.payload);
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -349,12 +330,8 @@ bool PositionIncrementAttributeImpl::operator==(PositionIncrementAttributeImpl& 
   return (position_increment == other.position_increment);
 }
 
-std::vector<std::string> PositionIncrementAttributeImpl::AttributeNames() {
-  return {"PositionIncrementAttribute"};
-}
-
-std::string PositionIncrementAttributeImpl::AttributeImplName() {
-  return "PositionIncrementAttributeImpl";
+std::vector<size_t> PositionIncrementAttributeImpl::Attributes() {
+  return {typeid(PositionIncrementAttribute).hash_code()};
 }
 
 void PositionIncrementAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -362,7 +339,7 @@ void PositionIncrementAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     PositionIncrementAttributeImpl& other = dynamic_cast<PositionIncrementAttributeImpl&>(attr_impl);
     other.position_increment = position_increment;
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -408,12 +385,8 @@ unsigned int PositionLengthAttributeImpl::GetPositionLength() {
   return position_length;
 }
 
-std::vector<std::string> PositionLengthAttributeImpl::AttributeNames() {
-  return {"PositionLengthAttribute"};
-}
-
-std::string PositionLengthAttributeImpl::AttributeImplName() {
-  return "PositionLengthAttributeImpl";
+std::vector<size_t> PositionLengthAttributeImpl::Attributes() {
+  return {typeid(PositionLengthAttribute).hash_code()};
 }
 
 void PositionLengthAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -421,7 +394,7 @@ void PositionLengthAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     PositionLengthAttributeImpl& other = dynamic_cast<PositionLengthAttributeImpl&>(attr_impl);
     other.position_length = position_length;
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -467,12 +440,8 @@ unsigned int TermFrequencyAttributeImpl::GetTermFrequency() {
   return term_frequency;
 }
 
-std::vector<std::string> TermFrequencyAttributeImpl::AttributeNames() {
-  return {"TermFrequencyAttribute"};
-}
-
-std::string TermFrequencyAttributeImpl::AttributeImplName() {
-  return "TermFrequencyAttributeImpl";
+std::vector<size_t> TermFrequencyAttributeImpl::Attributes() {
+  return {typeid(TermFrequencyAttribute).hash_code()};
 }
 
 void TermFrequencyAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -480,7 +449,7 @@ void TermFrequencyAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     TermFrequencyAttributeImpl& other = dynamic_cast<TermFrequencyAttributeImpl&>(attr_impl);
     other.term_frequency = term_frequency;
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -526,12 +495,8 @@ void TypeAttributeImpl::SetType(const std::string& new_type) {
   type = new_type;
 }
 
-std::vector<std::string> TypeAttributeImpl::AttributeNames() {
-  return {"TypeAttribute"};
-}
-
-std::string TypeAttributeImpl::AttributeImplName() {
-  return "TypeAttributeImpl";
+std::vector<size_t> TypeAttributeImpl::Attributes() {
+  return {typeid(TypeAttribute).hash_code()};
 }
 
 void TypeAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -540,7 +505,7 @@ void TypeAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     // It's acutally a deep copy.
     other.type = type;
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -674,12 +639,8 @@ bool CharTermAttributeImpl::operator==(CharTermAttributeImpl& other) {
   return false;
 }
 
-std::vector<std::string> CharTermAttributeImpl::AttributeNames() {
-  return {"CharTermAttribute", "TermToBytesRefAttribute"};
-}
-
-std::string CharTermAttributeImpl::AttributeImplName() {
-  return "CharTermAttributeImpl";
+std::vector<size_t> CharTermAttributeImpl::Attributes() {
+  return {typeid(CharTermAttribute).hash_code(), typeid(TermToBytesRefAttribute).hash_code()};
 }
 
 void CharTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -690,7 +651,7 @@ void CharTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     other.term_length = term_length;
     builder.Get().ShallowCopyTo(other.builder.Get());
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
 
@@ -782,20 +743,16 @@ PackedTokenAttributeImpl& PackedTokenAttributeImpl::operator=(const PackedTokenA
   term_frequency = other.term_frequency;
 }
 
-std::vector<std::string> PackedTokenAttributeImpl::AttributeNames() {
+std::vector<size_t> PackedTokenAttributeImpl::Attributes() {
   return {
-    "CharTermAttribute",
-    "TermToBytesRefAttribute",
-    "TypeAttribute",
-    "PositionIncrementAttribute",
-    "PositionLengthAttribute",
-    "OffsetAttribute",
-    "TermFrequencyAttribute"
+    typeid(CharTermAttribute).hash_code(),
+    typeid(TermToBytesRefAttribute).hash_code(),
+    typeid(TypeAttribute).hash_code(),
+    typeid(PositionIncrementAttribute).hash_code(),
+    typeid(PositionLengthAttribute).hash_code(),
+    typeid(OffsetAttribute).hash_code(),
+    typeid(TermFrequencyAttribute).hash_code()
   };
-}
-
-std::string PackedTokenAttributeImpl::AttributeImplName() {
-  return "PackedTokenAttributeImpl";
 }
 
 void PackedTokenAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -809,6 +766,6 @@ void PackedTokenAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     other.position_length = position_length;
     other.term_frequency = term_frequency;
   } catch(std::bad_cast& e) {
-    throw std::invalid_argument(AttributeImplName() + " can not copy to " + attr_impl.AttributeImplName());
+    throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
 }
