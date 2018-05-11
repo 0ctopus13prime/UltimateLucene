@@ -93,6 +93,9 @@ class AttributeFactory::StaticImplementationAttributeFactory: public AttributeFa
     }
 };
 
+template<typename ATTR_FACTORY, typename ATTR_IMPL>
+std::unordered_set<size_t> AttributeFactory::StaticImplementationAttributeFactory<ATTR_FACTORY, ATTR_IMPL>::DEFAULT_ATTR_NAMES;
+
 class AttributeSource {
   public:
     class State final {

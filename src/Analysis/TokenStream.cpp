@@ -65,6 +65,9 @@ Tokenizer::Tokenizer(AttributeFactory* factory)
   : TokenStream(factory) {
 }
 
+Tokenizer::~Tokenizer() {
+}
+
 unsigned int Tokenizer::CorrectOffset(const unsigned int current_off) {
   Reader* reader = input.get();
   if(dynamic_cast<characterutil::CharFilter*>(reader)) {
