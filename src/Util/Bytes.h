@@ -11,20 +11,20 @@ class BytesRef {
     static std::shared_ptr<char> DEFAULT_BYTES;
 
   private:
-    int CompareTo(const BytesRef& other) const;
+    int32_t CompareTo(const BytesRef& other) const;
 
   public:
     std::shared_ptr<char> bytes;
-    unsigned int offset;
-    unsigned int length;
-    unsigned int capacity;
+    uint32_t offset;
+    uint32_t length;
+    uint32_t capacity;
 
   public:
     BytesRef();
-    BytesRef(char* bytes, unsigned int offset, unsigned int length, unsigned int capacity);
-    BytesRef(char* bytes, unsigned int capacity);
+    BytesRef(char* bytes, uint32_t offset, uint32_t length, uint32_t capacity);
+    BytesRef(char* bytes, uint32_t capacity);
     BytesRef(const BytesRef& other);
-    BytesRef(unsigned int capacity);
+    BytesRef(uint32_t capacity);
     BytesRef(std::string& text);
     ~BytesRef();
     void ShallowCopyTo(BytesRef& target);
@@ -46,20 +46,20 @@ class BytesRefBuilder {
   public:
     BytesRefBuilder();
     const char* Bytes() const;
-    const unsigned int Length() const;
-    void SetLength(const unsigned int length);
-    char& operator[](const unsigned int idx);
-    void Grow(unsigned int capacity);
+    const uint32_t Length() const;
+    void SetLength(const uint32_t length);
+    char& operator[](const uint32_t idx);
+    void Grow(uint32_t capacity);
     void Append(const char c);
-    void Append(const char* c, const unsigned int off, const unsigned int len);
+    void Append(const char* c, const uint32_t off, const uint32_t len);
     void Append(BytesRef& ref);
     void Append(BytesRefBuilder& builder);
     void Clear();
-    void CopyBytes(const char* c, const unsigned int off, unsigned int len);
+    void CopyBytes(const char* c, const uint32_t off, uint32_t len);
     void CopyBytes(BytesRef& ref);
     void CopyBytes(BytesRefBuilder& builder);
     void CopyChars(std::string& text);
-    void CopyChars(std::string& text, const unsigned int off, const unsigned int len);
+    void CopyChars(std::string& text, const uint32_t off, const uint32_t len);
     BytesRef& Get();
     BytesRef ToBytesRef() const;
 };

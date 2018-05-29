@@ -11,34 +11,34 @@
 namespace lucene { namespace core { namespace util { namespace arrayutil {
 
 template <typename T>
-T* CopyOf(const T* original, const unsigned int original_length, const unsigned int new_length) {
+T* CopyOf(const T* original, const uint32_t original_length, const uint32_t new_length) {
   T* copy = new T[new_length];
   std::memcpy(copy, original, std::min(original_length, new_length));
   return copy;
 }
 
 template <typename T>
-T* CopyOf(const T* original, const unsigned int original_length) {
+T* CopyOf(const T* original, const uint32_t original_length) {
   return CopyOf(original, original_length, original_length);
 }
 
 // TODO. I'm not sure this is a valid implementation. How can I limit maximum array size?
-unsigned int Oversize(const unsigned int min_target_size, const unsigned int bytes_per_element);
+uint32_t Oversize(const uint32_t min_target_size, const uint32_t bytes_per_element);
 
 template <typename T>
-std::pair<T*, unsigned int> Grow(const T* array, const unsigned int length, const unsigned int min_size) {
+std::pair<T*, uint32_t> Grow(const T* array, const uint32_t length, const uint32_t min_size) {
   if(length < min_size) {
-    unsigned int new_length = Oversize(min_size, sizeof(T));
+    uint32_t new_length = Oversize(min_size, sizeof(T));
     T* new_array = CopyOf(array, new_length);
-    return std::pair<T*, unsigned int>(new_array, new_length);
-  } 
+    return std::pair<T*, uint32_t>(new_array, new_length);
+  }
 
-  return std::pair<T*, unsigned int>(nullptr, 0);
+  return std::pair<T*, uint32_t>(nullptr, 0);
 }
 
 template <typename T>
-T* CopyOfRange(const T* original, const unsigned int from, const unsigned int to) {
-  const unsigned int new_length = (to - from); 
+T* CopyOfRange(const T* original, const uint32_t from, const uint32_t to) {
+  const uint32_t new_length = (to - from);
   if(new_length < 0) throw std::invalid_argument("Range from > to, " + std::to_string(from) + " > " + std::to_string(to));
   if(new_length > 0) {
     T* copy = new T[new_length];

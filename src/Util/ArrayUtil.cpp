@@ -3,11 +3,11 @@
 using namespace lucene::core::util;
 
 // TODO. I'm not sure this is a valid implementation. How can I limit maximum array size?
-unsigned int arrayutil::Oversize(const unsigned int min_target_size, const unsigned int bytes_per_element) {
-  unsigned int extra = (min_target_size >> 3);
+uint32_t arrayutil::Oversize(const uint32_t min_target_size, const uint32_t bytes_per_element) {
+  uint32_t extra = (min_target_size >> 3);
   extra = (extra < 3 ? 3 : extra);
 
-  unsigned int new_size = (min_target_size + extra);
+  uint32_t new_size = (min_target_size + extra);
   switch(bytes_per_element) {
     case 4:
       return (new_size + 1) & 0xfffffffe;
