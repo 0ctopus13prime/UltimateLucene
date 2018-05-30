@@ -31,7 +31,7 @@ StringReader::StringReader(const char* buf, const unsigned len)
   : StringReader(buf, 0, len) {
 }
 
-StringReader::StringReader(const char* buf, const unsigned int off, const unsigned len)
+StringReader::StringReader(const char* buf, const uint32_t off, const unsigned len)
   : iss(std::string(buf, off, len)),
     mark(0) {
 }
@@ -57,11 +57,11 @@ void StringReader::SetValue(std::string& value) {
   iss.str(value);
 }
 
-void StringReader::SetValue(char* buf, const unsigned int len) {
+void StringReader::SetValue(char* buf, const uint32_t len) {
   SetValue(buf, 0, len);
 }
 
-void StringReader::SetValue(char* buf, const unsigned int off, const unsigned int len) {
+void StringReader::SetValue(char* buf, const uint32_t off, const uint32_t len) {
   std::string value(buf + off, len);
   SetValue(value);
 }
@@ -75,7 +75,7 @@ char StringReader::Read() {
   return ch;
 }
 
-int StringReader::Read(char* buf, const unsigned int off, const unsigned int len) {
+int32_t StringReader::Read(char* buf, const uint32_t off, const uint32_t len) {
   iss.readsome(buf + off, len);
 }
 
@@ -87,7 +87,7 @@ bool StringReader::MarkSupported() {
   return true;
 }
 
-void StringReader::Mark(unsigned int read_ahead_limit) {
+void StringReader::Mark(uint32_t read_ahead_limit) {
   mark = read_ahead_limit;
 }
 

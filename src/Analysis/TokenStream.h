@@ -49,7 +49,7 @@ class Tokenizer: public TokenStream {
   protected:
     Tokenizer();
     Tokenizer(lucene::core::util::AttributeFactory* factory);
-    unsigned int CorrectOffset(const unsigned int current_off);
+    uint32_t CorrectOffset(const uint32_t current_off);
 
   public:
     virtual ~Tokenizer();

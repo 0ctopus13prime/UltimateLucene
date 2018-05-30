@@ -5,7 +5,7 @@
 
 namespace lucene { namespace core { namespace analysis { namespace characterutil {
 
-void ToLowerCase(char* buffer, const unsigned int offset, const unsigned int limit);
+void ToLowerCase(char* buffer, const uint32_t offset, const uint32_t limit);
 
 class CharFilter: public Reader {
 

@@ -33,12 +33,12 @@ class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
 class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, public TermToBytesRefAttribute {
   private:
     char* term_buffer;
-    unsigned int term_capacity;
-    unsigned int term_length;
+    uint32_t term_capacity;
+    uint32_t term_length;
     BytesRefBuilder builder;
 
   private:
-    void GrowTermBuffer(const unsigned int new_size);
+    void GrowTermBuffer(const uint32_t new_size);
 
   public:
     CharTermAttributeImpl();
@@ -46,19 +46,19 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     virtual ~CharTermAttributeImpl();
     BytesRef& GetBytesRef() override;
     void Clear() override;
-    void CopyBuffer(const char* buffer, const unsigned int offset, const unsigned int length) override;
+    void CopyBuffer(const char* buffer, const uint32_t offset, const uint32_t length) override;
     char* Buffer() const override;
-    char* ResizeBuffer(const unsigned int new_size) override;
-    int Length() const override;
-    std::string SubSequence(const unsigned int start, const unsigned int end) override;
-    CharTermAttributeImpl& SetLength(const unsigned int length) override;
+    char* ResizeBuffer(const uint32_t new_size) override;
+    uint32_t Length() const override;
+    std::string SubSequence(const uint32_t start, const uint32_t end) override;
+    CharTermAttributeImpl& SetLength(const uint32_t length) override;
     CharTermAttributeImpl& SetEmpty() override;
     CharTermAttribute& Append(const std::string& csq) override;
-    CharTermAttribute& Append(const std::string& csq, const unsigned int start, const unsigned int end) override;
+    CharTermAttribute& Append(const std::string& csq, const uint32_t start, const uint32_t end) override;
     CharTermAttribute& Append(const char c) override;
     CharTermAttribute& Append(const CharTermAttribute& term_att) override;
     void ReflectWith(AttributeReflector& reflector) override;
-    char& operator[](const unsigned int idx) override;
+    char& operator[](const uint32_t idx) override;
     bool operator==(CharTermAttributeImpl& other);
     std::vector<size_t> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
@@ -67,14 +67,14 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
 
 class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
   private:
-    int flags;
+    int32_t flags;
 
   public:
     FlagsAttributeImpl();
     FlagsAttributeImpl(const FlagsAttributeImpl& other);
     virtual ~FlagsAttributeImpl();
-    int GetFlags() override;
-    void SetFlags(const int flags) override;
+    int32_t GetFlags() override;
+    void SetFlags(const int32_t flags) override;
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(const FlagsAttributeImpl& other);
@@ -103,16 +103,16 @@ class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
 
 class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
   private:
-    unsigned int start_offset;
-    unsigned int end_offset;
+    uint32_t start_offset;
+    uint32_t end_offset;
 
   public:
     OffsetAttributeImpl();
     OffsetAttributeImpl(const OffsetAttributeImpl& other);
     virtual ~OffsetAttributeImpl();
-    int StartOffset() override;
-    void SetOffset(const unsigned int start_offset, const unsigned int end_offset) override;
-    int EndOffset() override;
+    uint32_t StartOffset() override;
+    void SetOffset(const uint32_t start_offset, const uint32_t end_offset) override;
+    uint32_t EndOffset() override;
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(const OffsetAttributeImpl& other);
@@ -126,12 +126,12 @@ class PackedTokenAttributeImpl:
   public PositionLengthAttribute, public OffsetAttribute, public TermFrequencyAttribute {
 
   private:
-    unsigned int start_offset;
-    unsigned int end_offset;
+    uint32_t start_offset;
+    uint32_t end_offset;
     std::string type;
-    unsigned int position_increment;
-    unsigned int position_length;
-    unsigned int term_frequency;
+    uint32_t position_increment;
+    uint32_t position_length;
+    uint32_t term_frequency;
 
   public:
     PackedTokenAttributeImpl();
@@ -139,15 +139,15 @@ class PackedTokenAttributeImpl:
     virtual ~PackedTokenAttributeImpl();
     std::string& Type() override;
     void SetType(const std::string& new_type) override;
-    void SetPositionIncrement(const unsigned int new_position_increment) override;
-    unsigned int GetPositionIncrement() override;
-    void SetPositionLength(const unsigned int new_position_length) override;
-    unsigned int GetPositionLength() override;
-    int StartOffset() override;
-    void SetOffset(const unsigned int new_start_offset, const unsigned int new_end_offset) override;
-    int EndOffset() override;
-    void SetTermFrequency(const unsigned int new_term_frequency) override;
-    unsigned int GetTermFrequency() override;
+    void SetPositionIncrement(const uint32_t new_position_increment) override;
+    uint32_t GetPositionIncrement() override;
+    void SetPositionLength(const uint32_t new_position_length) override;
+    uint32_t GetPositionLength() override;
+    uint32_t StartOffset() override;
+    void SetOffset(const uint32_t new_start_offset, const uint32_t new_end_offset) override;
+    uint32_t EndOffset() override;
+    void SetTermFrequency(const uint32_t new_term_frequency) override;
+    uint32_t GetTermFrequency() override;
     std::vector<size_t> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     PackedTokenAttributeImpl& operator=(const PackedTokenAttributeImpl& other);
@@ -173,14 +173,14 @@ class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
 
 class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncrementAttribute {
   private:
-    unsigned int position_increment;
+    uint32_t position_increment;
 
   public:
     PositionIncrementAttributeImpl();
     PositionIncrementAttributeImpl(const PositionIncrementAttributeImpl& other);
     virtual ~PositionIncrementAttributeImpl();
-    void SetPositionIncrement(const unsigned int position_increment) override;
-    unsigned int GetPositionIncrement() override;
+    void SetPositionIncrement(const uint32_t position_increment) override;
+    uint32_t GetPositionIncrement() override;
     void ReflectWith(AttributeReflector& reflector) override;
     void End() override;
     void Clear() override;
@@ -192,7 +192,7 @@ class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncre
 
 class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAttribute {
   private:
-    unsigned int position_length;
+    uint32_t position_length;
 
   public:
     PositionLengthAttributeImpl();
@@ -201,8 +201,8 @@ class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAt
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(PositionLengthAttributeImpl& other);
-    void SetPositionLength(const unsigned int position_length) override;
-    unsigned int GetPositionLength() override;
+    void SetPositionLength(const uint32_t position_length) override;
+    uint32_t GetPositionLength() override;
     std::vector<size_t> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     PositionLengthAttributeImpl& operator=(const PositionLengthAttributeImpl& other);
@@ -210,7 +210,7 @@ class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAt
 
 class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttribute {
   private:
-    unsigned int term_frequency;
+    uint32_t term_frequency;
 
   public:
     TermFrequencyAttributeImpl();
@@ -219,8 +219,8 @@ class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttr
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(TermFrequencyAttributeImpl& other);
-    void SetTermFrequency(const unsigned int term_frequency) override;
-    unsigned int GetTermFrequency() override;
+    void SetTermFrequency(const uint32_t term_frequency) override;
+    uint32_t GetTermFrequency() override;
     std::vector<size_t> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     TermFrequencyAttributeImpl& operator=(const TermFrequencyAttributeImpl& other);

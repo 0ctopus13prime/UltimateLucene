@@ -80,11 +80,11 @@ FlagsAttributeImpl::FlagsAttributeImpl(const FlagsAttributeImpl& other)
 FlagsAttributeImpl::~FlagsAttributeImpl() {
 }
 
-int FlagsAttributeImpl::GetFlags() {
+int32_t FlagsAttributeImpl::GetFlags() {
   return flags;
 }
 
-void FlagsAttributeImpl::SetFlags(const int new_flags) {
+void FlagsAttributeImpl::SetFlags(const int32_t new_flags) {
   flags = new_flags;
 }
 
@@ -187,16 +187,16 @@ OffsetAttributeImpl::OffsetAttributeImpl(const OffsetAttributeImpl& other)
 OffsetAttributeImpl::~OffsetAttributeImpl() {
 }
 
-int OffsetAttributeImpl::StartOffset() {
+uint32_t OffsetAttributeImpl::StartOffset() {
   return start_offset;
 }
 
-void OffsetAttributeImpl::SetOffset(const unsigned int new_start_offset, const unsigned int new_end_offset) {
+void OffsetAttributeImpl::SetOffset(const uint32_t new_start_offset, const uint32_t new_end_offset) {
   start_offset = new_start_offset;
   end_offset = new_end_offset;
 }
 
-int OffsetAttributeImpl::EndOffset() {
+uint32_t OffsetAttributeImpl::EndOffset() {
   return end_offset;
 }
 
@@ -302,11 +302,11 @@ PositionIncrementAttributeImpl::PositionIncrementAttributeImpl(const PositionInc
 PositionIncrementAttributeImpl::~PositionIncrementAttributeImpl() {
 }
 
-void PositionIncrementAttributeImpl::SetPositionIncrement(const unsigned int new_position_increment) {
+void PositionIncrementAttributeImpl::SetPositionIncrement(const uint32_t new_position_increment) {
   position_increment = new_position_increment;
 }
 
-unsigned int PositionIncrementAttributeImpl::GetPositionIncrement() {
+uint32_t PositionIncrementAttributeImpl::GetPositionIncrement() {
   return position_increment;
 }
 
@@ -377,11 +377,11 @@ bool PositionLengthAttributeImpl::operator==(PositionLengthAttributeImpl& other)
   return (position_length == other.position_length);
 }
 
-void PositionLengthAttributeImpl::SetPositionLength(unsigned int new_position_length) {
+void PositionLengthAttributeImpl::SetPositionLength(uint32_t new_position_length) {
   position_length = new_position_length;
 }
 
-unsigned int PositionLengthAttributeImpl::GetPositionLength() {
+uint32_t PositionLengthAttributeImpl::GetPositionLength() {
   return position_length;
 }
 
@@ -432,11 +432,11 @@ bool TermFrequencyAttributeImpl::operator==(TermFrequencyAttributeImpl& other) {
   return (term_frequency == other.term_frequency);
 }
 
-void TermFrequencyAttributeImpl::SetTermFrequency(unsigned int new_term_frequency) {
+void TermFrequencyAttributeImpl::SetTermFrequency(uint32_t new_term_frequency) {
   term_frequency = new_term_frequency;
 }
 
-unsigned int TermFrequencyAttributeImpl::GetTermFrequency() {
+uint32_t TermFrequencyAttributeImpl::GetTermFrequency() {
   return term_frequency;
 }
 
@@ -537,7 +537,7 @@ CharTermAttributeImpl::~CharTermAttributeImpl() {
   }
 }
 
-void CharTermAttributeImpl::GrowTermBuffer(const unsigned int new_size) {
+void CharTermAttributeImpl::GrowTermBuffer(const uint32_t new_size) {
   if(term_capacity < new_size) {
       // Not big enough; create a new array with slight
       // Over allocation:
@@ -556,7 +556,7 @@ void CharTermAttributeImpl::Clear() {
   term_length = 0;
 }
 
-void CharTermAttributeImpl::CopyBuffer(const char* buffer, const unsigned int offset, const unsigned int length) {
+void CharTermAttributeImpl::CopyBuffer(const char* buffer, const uint32_t offset, const uint32_t length) {
   GrowTermBuffer(length);
   std::memcpy(term_buffer, buffer + offset, length);
   term_length = length;
@@ -566,9 +566,9 @@ char* CharTermAttributeImpl::Buffer() const {
   return term_buffer;
 }
 
-char* CharTermAttributeImpl::ResizeBuffer(const unsigned int new_size) {
+char* CharTermAttributeImpl::ResizeBuffer(const uint32_t new_size) {
   if(term_capacity < new_size) {
-    std::pair<char*, unsigned int> new_term_buffer_info = arrayutil::Grow(term_buffer, term_capacity, new_size);
+    std::pair<char*, uint32_t> new_term_buffer_info = arrayutil::Grow(term_buffer, term_capacity, new_size);
     if(new_term_buffer_info.first) {
       delete[] term_buffer;
       term_buffer = new_term_buffer_info.first;
@@ -579,16 +579,16 @@ char* CharTermAttributeImpl::ResizeBuffer(const unsigned int new_size) {
   return term_buffer;
 }
 
-int CharTermAttributeImpl::Length() const {
+uint32_t CharTermAttributeImpl::Length() const {
   return term_length;
 }
 
-std::string CharTermAttributeImpl::SubSequence(const unsigned int start, const unsigned int end) {
+std::string CharTermAttributeImpl::SubSequence(const uint32_t start, const uint32_t end) {
   arrayutil::CheckFromToIndex(start, end, term_length);
   return std::string(term_buffer, start, end - start);
 }
 
-CharTermAttributeImpl& CharTermAttributeImpl::SetLength(const unsigned int length) {
+CharTermAttributeImpl& CharTermAttributeImpl::SetLength(const uint32_t length) {
   arrayutil::CheckFromIndexSize(0, length, term_capacity);
 }
 
@@ -601,9 +601,9 @@ CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq) {
   Append(csq, 0, csq.size());
 }
 
-CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq, const unsigned int start, const unsigned int end) {
+CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq, const uint32_t start, const uint32_t end) {
   arrayutil::CheckFromToIndex(start, end, csq.size());
-  unsigned int len = (end - start);
+  uint32_t len = (end - start);
   if(len == 0) return *this;
   ResizeBuffer(term_length + len);
 
@@ -616,7 +616,7 @@ CharTermAttribute& CharTermAttributeImpl::Append(const char c) {
 }
 
 CharTermAttribute& CharTermAttributeImpl::Append(const CharTermAttribute& term_att) {
-  const int len = term_att.Length();
+  const int32_t len = term_att.Length();
   std::memcpy(ResizeBuffer(term_length + len) + term_length, term_att.Buffer(), len);
   term_length += len;
   return *this;
@@ -626,7 +626,7 @@ void CharTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
   // TODO Implement it.
 }
 
-char& CharTermAttributeImpl::operator[](const unsigned int index) {
+char& CharTermAttributeImpl::operator[](const uint32_t index) {
   arrayutil::CheckIndex(index, term_length);
   return term_buffer[index];
 }
@@ -696,40 +696,40 @@ void PackedTokenAttributeImpl::SetType(const std::string& new_type) {
   type = new_type;
 }
 
-void PackedTokenAttributeImpl::SetPositionIncrement(const unsigned int new_position_increment) {
+void PackedTokenAttributeImpl::SetPositionIncrement(const uint32_t new_position_increment) {
   position_increment = new_position_increment;
 }
 
-unsigned int PackedTokenAttributeImpl::GetPositionIncrement() {
+uint32_t PackedTokenAttributeImpl::GetPositionIncrement() {
   return position_increment;
 }
 
-void PackedTokenAttributeImpl::SetPositionLength(unsigned int new_position_length) {
+void PackedTokenAttributeImpl::SetPositionLength(uint32_t new_position_length) {
   position_length = new_position_length;
 }
 
-unsigned int PackedTokenAttributeImpl::GetPositionLength() {
+uint32_t PackedTokenAttributeImpl::GetPositionLength() {
   return position_length;
 }
 
-int PackedTokenAttributeImpl::StartOffset() {
+uint32_t PackedTokenAttributeImpl::StartOffset() {
   return start_offset;
 }
 
-void PackedTokenAttributeImpl::SetOffset(const unsigned int new_start_offset, const unsigned int new_end_offset) {
+void PackedTokenAttributeImpl::SetOffset(const uint32_t new_start_offset, const uint32_t new_end_offset) {
   start_offset = new_start_offset;
   end_offset = new_end_offset;
 }
 
-int PackedTokenAttributeImpl::EndOffset() {
+uint32_t PackedTokenAttributeImpl::EndOffset() {
   return end_offset;
 }
 
-void PackedTokenAttributeImpl::SetTermFrequency(unsigned int new_term_frequency) {
+void PackedTokenAttributeImpl::SetTermFrequency(uint32_t new_term_frequency) {
   term_frequency = term_frequency;
 }
 
-unsigned int PackedTokenAttributeImpl::GetTermFrequency() {
+uint32_t PackedTokenAttributeImpl::GetTermFrequency() {
   return term_frequency;
 }
 

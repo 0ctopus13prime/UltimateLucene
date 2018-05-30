@@ -171,7 +171,7 @@ BytesRef Analyzer::Normalize(const std::string& field_name, const std::string& t
   std::string filtered_text;
   char buffer[256];
   while(true) {
-    const int read = filter_reader->Read(buffer, 0, sizeof(buffer));
+    const int32_t read = filter_reader->Read(buffer, 0, sizeof(buffer));
     if(read == -1) {
       break;
     } else {

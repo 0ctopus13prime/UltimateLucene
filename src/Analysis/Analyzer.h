@@ -100,8 +100,8 @@ class Analyzer {
     TokenStream* GetTokenStream(const std::string& field_name, Reader* reader);
     TokenStream* GetTokenStream(const std::string& field_name, const std::string& text);
     BytesRef Normalize(const std::string& field_name, const std::string& text);
-    unsigned int GetPositionIncrementGap(const std::string& field_name);
-    unsigned int GetOffsetGap(const std::string& field_name);
+    uint32_t GetPositionIncrementGap(const std::string& field_name);
+    uint32_t GetOffsetGap(const std::string& field_name);
     ReuseStrategy& GetReuseStrategy();
     void SetVersion(lucene::core::util::etc::Version& v);
 };
