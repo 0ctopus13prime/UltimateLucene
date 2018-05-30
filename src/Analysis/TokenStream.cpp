@@ -6,6 +6,7 @@
 #include <Analysis/TokenStream.h>
 
 using namespace lucene::core::analysis;
+using namespace lucene::core::analysis::tokenattributes;
 using namespace lucene::core::util;
 
 /**
@@ -171,4 +172,39 @@ void CachingTokenFilter::FillCache() {
 
 bool CachingTokenFilter::IsCached() {
   return !first_time;
+}
+
+/**
+ * FilteringTokenFilter
+ */
+FilteringTokenFilter::FilteringTokenFilter(TokenStream* in)
+  : TokenFilter(in),
+    pos_incr_attr(AddAttribute<PositionIncrementAttribute>()),
+    skipped_positions(0) {
+}
+
+bool FilteringTokenFilter::IncrementToken() {
+  skipped_positions = 0;
+  while(input->IncrementToken()) {
+    if(Accept()) {
+      if(skipped_positions != 0) {
+        pos_incr_attr->SetPositionIncrement(pos_incr_attr->GetPositionIncrement() + skipped_positions);
+      }
+      return true;
+    }
+
+    skipped_positions += pos_incr_attr->GetPositionIncrement();
+  }
+
+  return false;
+}
+
+void FilteringTokenFilter::Reset() {
+  TokenFilter::Reset();
+  skipped_positions = 0;
+}
+
+void FilteringTokenFilter::End() {
+  TokenFilter::End();
+  pos_incr_attr->SetPositionIncrement(pos_incr_attr->GetPositionIncrement() + skipped_positions);
 }

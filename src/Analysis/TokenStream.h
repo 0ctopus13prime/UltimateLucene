@@ -91,6 +91,21 @@ class CachingTokenFilter: public TokenFilter {
     bool IncrementToken() override;
 };
 
+class FilteringTokenFilter: public TokenFilter {
+  private:
+   std::shared_ptr<tokenattributes::PositionIncrementAttribute> pos_incr_attr;
+   int32_t skipped_positions;
+
+  protected:
+    virtual bool Accept() = 0;
+
+  public:
+    FilteringTokenFilter(TokenStream* in);
+    bool IncrementToken() override;
+    void Reset() override;
+    void End() override;
+};
+
 }}} // End of namespace
 
 #endif
