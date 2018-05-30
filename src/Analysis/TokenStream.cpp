@@ -70,9 +70,8 @@ Tokenizer::~Tokenizer() {
 
 uint32_t Tokenizer::CorrectOffset(const uint32_t current_off) {
   Reader* reader = input.get();
-  if(dynamic_cast<characterutil::CharFilter*>(reader)) {
-    characterutil::CharFilter* char_filter = dynamic_cast<characterutil::CharFilter*>(reader);
-    // char_filter->CorrectOffset(current_off);
+  if(characterutil::CharFilter* char_filter = dynamic_cast<characterutil::CharFilter*>(reader)) {
+    char_filter->CorrectOffset(current_off);
   } else {
     return current_off;
   }

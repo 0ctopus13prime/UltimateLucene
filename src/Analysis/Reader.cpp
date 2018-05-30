@@ -94,3 +94,7 @@ void StringReader::Mark(uint32_t read_ahead_limit) {
 void StringReader::Reset() {
   iss.seekg(mark);
 }
+
+void StringReader::Close() {
+  iss.seekg(0, iss.end);
+}

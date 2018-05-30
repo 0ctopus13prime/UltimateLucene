@@ -18,6 +18,7 @@ class Reader {
     virtual bool MarkSupported() = 0;
     virtual void Mark(uint32_t read_ahead_limit) = 0;
     virtual void Reset() = 0;
+    virtual void Close() = 0;
 };
 
 class StringReader: public Reader {
@@ -44,6 +45,7 @@ class StringReader: public Reader {
     bool MarkSupported() override;
     void Mark(uint32_t read_ahead_limit) override;
     void Reset() override;
+    void Close() override;
 };
 
 }}}
