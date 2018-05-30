@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <memory>
+#include <vector>
 #include <Util/Attribute.h>
 #include <Analysis/Attribute.h>
 #include <Analysis/CharacterUtil.h>
@@ -69,6 +70,25 @@ class LowerCaseFilter: public TokenFilter {
       LowerCaseFilter(TokenStream* in);
       virtual ~LowerCaseFilter();
       bool IncrementToken() override;
+};
+
+class CachingTokenFilter: public TokenFilter {
+  private:
+    std::vector<lucene::core::util::AttributeSource::State> cache;
+    std::vector<lucene::core::util::AttributeSource::State>::iterator iterator;
+    lucene::core::util::AttributeSource::State final_state;
+    bool first_time;
+
+  private:
+    void FillCache();
+    bool IsCached();
+
+  public:
+    CachingTokenFilter(TokenStream* in);
+    virtual ~CachingTokenFilter();
+    void End() override;
+    void Reset() override;
+    bool IncrementToken() override;
 };
 
 }}} // End of namespace

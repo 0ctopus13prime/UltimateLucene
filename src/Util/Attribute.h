@@ -149,8 +149,8 @@ class AttributeSource {
     void ClearAttributes();
     void EndAttributes();
     void RemoveAllAttributes();
-    State* CaptureState(State& target);
-    void RestoreState(State* state);
+    State CaptureState();
+    void RestoreState(State state);
     std::string ReflectAsString(const bool prepend_att);
     void ReflectWith(AttributeReflector& reflector);
     AttributeSource& operator=(const AttributeSource& other);

@@ -119,3 +119,57 @@ bool LowerCaseFilter::IncrementToken() {
     return false;
   }
 }
+
+/**
+ * CachingTokenFilter
+ */
+CachingTokenFilter::CachingTokenFilter(TokenStream* in)
+  : TokenFilter(in),
+    cache(64),
+    iterator(cache.begin()),
+    first_time(true) {
+}
+
+CachingTokenFilter::~CachingTokenFilter() {
+}
+
+void CachingTokenFilter::End() {
+  if(final_state.attribute.use_count() > 0 || final_state.next) {
+    RestoreState(final_state);
+  }
+}
+
+void CachingTokenFilter::Reset() {
+  if(first_time) {
+    input->Reset();
+  } else {
+    iterator = cache.begin();
+  }
+}
+
+bool CachingTokenFilter::IncrementToken() {
+  if(first_time) {
+    first_time = false;
+    FillCache();
+  }
+
+  if(iterator == cache.end()) {
+    return false;
+  }
+
+  RestoreState(*iterator++);
+  return true;
+}
+
+void CachingTokenFilter::FillCache() {
+  while(input->IncrementToken()) {
+    cache.push_back(CaptureState());
+  }
+
+  input->End();
+  final_state = CaptureState();
+}
+
+bool CachingTokenFilter::IsCached() {
+  return !first_time;
+}

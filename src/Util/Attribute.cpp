@@ -156,15 +156,15 @@ void AttributeSource::RemoveAllAttributes() {
   attribute_impls.clear();
 }
 
-AttributeSource::State* AttributeSource::CaptureState(AttributeSource::State& target) {
+AttributeSource::State AttributeSource::CaptureState() {
   AttributeSource::State* state = GetCurrentState();
-  return new AttributeSource::State(*state);
+  return AttributeSource::State(*state);
 }
 
-void AttributeSource::RestoreState(AttributeSource::State* state) {
-  if(state->attribute.use_count() <= 0) return;
+void AttributeSource::RestoreState(AttributeSource::State state) {
+  if(state.attribute.use_count() <= 0) return;
 
-  AttributeSource::State* current = state;
+  AttributeSource::State* current = &state;
   do {
     AttributeImpl* source_attr = current->attribute.get();
     size_t attr_impl_hash_code = typeid(*source_attr).hash_code();
