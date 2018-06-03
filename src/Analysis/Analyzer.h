@@ -1,6 +1,7 @@
 #ifndef LUCENE_CORE_ANALYSIS_ANALYZER_H_
 #define LUCENE_CORE_ANALYSIS_ANALYZER_H_
 
+#include <vector>
 #include <string>
 #include <sstream>
 #include <Util/Attribute.h>
@@ -8,6 +9,7 @@
 #include <Analysis/AttributeImpl.h>
 #include <Analysis/TokenStream.h>
 #include <Analysis/Reader.h>
+#include <Analysis/CharacterUtil.h>
 
 namespace lucene { namespace core { namespace analysis {
 
@@ -104,6 +106,43 @@ class Analyzer {
     uint32_t GetOffsetGap(const std::string& field_name);
     ReuseStrategy& GetReuseStrategy();
     void SetVersion(lucene::core::util::etc::Version& v);
+};
+
+class StopwordAnalyzerBase: public Analyzer {
+  protected:
+    characterutil::CharSet stop_words;
+
+  protected:
+    StopwordAnalyzerBase(characterutil::CharSet& stop_words);
+    StopwordAnalyzerBase(characterutil::CharSet&& stop_words);
+    StopwordAnalyzerBase();
+    virtual ~StopwordAnalyzerBase();
+
+    static characterutil::CharSet LoadStopWordSet(const std::string& path);
+    static characterutil::CharSet LoadStopWordSet(const Reader& reader);
+
+  public:
+    characterutil::CharSet& GetStopWords();
+};
+
+class WordlistLoader {
+  private:
+    static const uint32_t INITIAL_CAPACITY;
+
+  private:
+    WordlistLoader();
+
+  public:
+    ~WordlistLoader();
+
+    static void GetWordSet(Reader& reader, characterutil::CharSet& result);
+    static characterutil::CharSet GetWordSet(Reader& reader);
+    static characterutil::CharSet GetWordSet(Reader& reader, std::string& comment);
+    static void GetWordSet(Reader& reader, std::string& comment, characterutil::CharSet& result);
+    static void GetSnowballWordSet(Reader& reader, characterutil::CharSet& result);
+    static CharSet GetSnowballWordSet(Reader& reader);
+    static CharMap<std::string> GetStemDict(Reader& reader, CharMap<std::string> result);
+    static std::vector<std::string> GetLines(Reader& reader);
 };
 
 }}} // End of namespace

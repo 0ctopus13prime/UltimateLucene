@@ -110,6 +110,9 @@ Analyzer::Analyzer(ReuseStrategy& reuse_strategy)
     version(Version::LATEST) {
 }
 
+Analyzer::~Analyzer() {
+}
+
 delete_unique_ptr<Reader> Analyzer::InitReader(const std::string& field_name, delete_unique_ptr<Reader> reader) {
   return reader;
 }
@@ -204,4 +207,35 @@ BytesRef Analyzer::Normalize(const std::string& field_name, const std::string& t
   ts->End();
 
   return ref;
+}
+
+/**
+ * StopwordAnalyzerBase
+ */
+StopwordAnalyzerBase::StopwordAnalyzerBase()
+  : Analyzer(),
+    stop_words() {
+}
+
+StopwordAnalyzerBase::StopwordAnalyzerBase(characterutil::CharSet& stop_words)
+  : Analyzer(),
+    stop_words(stop_words) {
+}
+
+StopwordAnalyzerBase::StopwordAnalyzerBase(characterutil::CharSet&& stop_words)
+  : Analyzer(),
+    stop_words(std::forward<characterutil::CharSet>(stop_words)) {
+}
+
+StopwordAnalyzerBase::~StopwordAnalyzerBase() {
+}
+
+characterutil::CharSet StopwordAnalyzerBase::LoadStopWordSet(const std::string& path) {
+  // TODO Implement it
+  return characterutil::CharSet();
+}
+
+characterutil::CharSet StopwordAnalyzerBase::LoadStopWordSet(const Reader& reader) {
+  // TODO Implement it
+  return characterutil::CharSet();
 }
