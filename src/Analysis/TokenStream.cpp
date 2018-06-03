@@ -1,13 +1,15 @@
 #include <type_traits>
-#include <ctype.h>
+#include <cctype>
 #include <stdexcept>
 #include <Analysis/AttributeImpl.h>
 #include <Analysis/CharacterUtil.h>
 #include <Analysis/TokenStream.h>
+#include <Util/ArrayUtil.h>
 
 using namespace lucene::core::analysis;
 using namespace lucene::core::analysis::tokenattributes;
 using namespace lucene::core::util;
+using namespace lucene::core::util::arrayutil;
 
 /**
  *  TokenStream
@@ -183,6 +185,9 @@ FilteringTokenFilter::FilteringTokenFilter(TokenStream* in)
     skipped_positions(0) {
 }
 
+FilteringTokenFilter::~FilteringTokenFilter() {
+}
+
 bool FilteringTokenFilter::IncrementToken() {
   skipped_positions = 0;
   while(input->IncrementToken()) {
@@ -207,4 +212,27 @@ void FilteringTokenFilter::Reset() {
 void FilteringTokenFilter::End() {
   TokenFilter::End();
   pos_incr_attr->SetPositionIncrement(pos_incr_attr->GetPositionIncrement() + skipped_positions);
+}
+
+
+/**
+ *  StopFilter
+ */
+StopFilter::StopFilter(TokenStream* in, characterutil::CharSet& stop_words)
+  : FilteringTokenFilter(in),
+    stop_words(stop_words),
+    term_att(AddAttribute<tokenattributes::CharTermAttribute>()) {
+}
+
+StopFilter::StopFilter(TokenStream* in, characterutil::CharSet&& stop_words)
+  : FilteringTokenFilter(in),
+    stop_words(std::forward<characterutil::CharSet>(stop_words)),
+    term_att(AddAttribute<tokenattributes::CharTermAttribute>()) {
+}
+
+StopFilter::~StopFilter() {
+}
+
+bool StopFilter::Accept() {
+  return stop_words.Contains(term_att->Buffer(), 0, term_att->Length());
 }

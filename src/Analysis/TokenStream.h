@@ -3,7 +3,9 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 #include <vector>
+#include <unordered_set>
 #include <Util/Attribute.h>
 #include <Analysis/Attribute.h>
 #include <Analysis/CharacterUtil.h>
@@ -101,9 +103,26 @@ class FilteringTokenFilter: public TokenFilter {
 
   public:
     FilteringTokenFilter(TokenStream* in);
+    virtual ~FilteringTokenFilter();
     bool IncrementToken() override;
     void Reset() override;
     void End() override;
+};
+
+class StopFilter: public FilteringTokenFilter {
+  private:
+    characterutil::CharSet stop_words;
+    std::shared_ptr<tokenattributes::CharTermAttribute> term_att;
+
+  protected:
+    bool Accept() override;
+
+  public:
+    StopFilter(TokenStream* in, characterutil::CharSet& stop_words);
+    StopFilter(TokenStream* in, characterutil::CharSet&& stop_words);
+    virtual ~StopFilter();
+
+    static characterutil::CharSet MakeStopSet(std::vector<std::string>& stop_words, bool ignore_case = false);
 };
 
 }}} // End of namespace
