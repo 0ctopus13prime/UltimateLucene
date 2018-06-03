@@ -1,5 +1,6 @@
+#include <cstring>
+#include <cctype>
 #include <Analysis/CharacterUtil.h>
-#include <ctype.h>
 
 using namespace lucene::core::analysis::characterutil;
 
@@ -73,7 +74,24 @@ CharPtrRangeInfoEqual::CharPtrRangeInfoEqual(const bool ignore_case/*= false*/)
 }
 
 bool CharPtrRangeInfoEqual::operator()(const CharPtrRangeInfo& o1, const CharPtrRangeInfo& o2) const {
-  return true;
+  if(o1.length != o2.length) {
+    return false;
+  }
+
+  const char* str_o1 = o1.str + o1.offset;
+  const char* str_o2 = o2.str + o2.offset;
+
+  if(ignore_case) {
+    for(uint32_t i = 0 ; i < o1.length ; ++i) {
+      if(std::tolower(str_o1[i]) != std::tolower(str_o2[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  } else {
+    return (std::memcmp(str_o1, str_o2, o1.length) == 0);
+  }
 }
 
 /**
