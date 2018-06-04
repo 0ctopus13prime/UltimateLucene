@@ -43,7 +43,7 @@ main() {
   cmake $src
 
   # Do a make
-  make -j
+  cmake --build .
 }
 
 main "$@"

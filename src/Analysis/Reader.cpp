@@ -17,8 +17,13 @@ StringReader::StringReader()
     mark(0) {
 }
 
-StringReader::StringReader(StringReader& other)
+StringReader::StringReader(const StringReader& other)
   : iss(other.iss.str()),
+    mark(other.mark) {
+}
+
+StringReader::StringReader(StringReader&& other)
+  : iss(std::move(other.iss)),
     mark(other.mark) {
 }
 
@@ -44,8 +49,20 @@ StringReader& StringReader::operator=(StringReader& other) {
   }
 }
 
+StringReader& StringReader::operator=(StringReader&& other) {
+  if(this != &other) {
+    iss = std::move(other.iss);
+    mark = other.mark;
+  }
+}
+
 StringReader& StringReader::operator=(std::istringstream& new_iss) {
   iss.str(new_iss.str());
+  mark = 0;
+}
+
+StringReader& StringReader::operator=(std::istringstream&& new_iss) {
+  iss = std::move(new_iss);
   mark = 0;
 }
 
@@ -75,11 +92,20 @@ char StringReader::Read() {
   return ch;
 }
 
+std::string StringReader::ReadLine() {
+  std::string ret;
+  if(!iss.eof()) {
+    iss >> ret;
+  }
+
+  return ret;
+}
+
 int32_t StringReader::Read(char* buf, const uint32_t off, const uint32_t len) {
   iss.readsome(buf + off, len);
 }
 
-unsigned long StringReader::Skip(const unsigned long n) {
+size_t StringReader::Skip(const unsigned long n) {
   iss.seekg(n);
 }
 

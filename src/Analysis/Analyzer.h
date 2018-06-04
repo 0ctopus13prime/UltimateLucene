@@ -140,8 +140,8 @@ class WordlistLoader {
     static characterutil::CharSet GetWordSet(Reader& reader, std::string& comment);
     static void GetWordSet(Reader& reader, std::string& comment, characterutil::CharSet& result);
     static void GetSnowballWordSet(Reader& reader, characterutil::CharSet& result);
-    static CharSet GetSnowballWordSet(Reader& reader);
-    static CharMap<std::string> GetStemDict(Reader& reader, CharMap<std::string> result);
+    static characterutil::CharSet GetSnowballWordSet(Reader& reader);
+    static characterutil::CharMap<std::string> GetStemDict(Reader& reader, characterutil::CharMap<std::string> result);
     static std::vector<std::string> GetLines(Reader& reader);
 };
 
