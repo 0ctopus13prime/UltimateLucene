@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstring>
 #include <cctype>
 #include <Analysis/CharacterUtil.h>
@@ -201,4 +202,10 @@ bool CharSet::Add(const std::string& str) {
 
 size_t CharSet::Size() {
   return internal_set.size();
+}
+
+void lucene::core::analysis::characterutil::Trim(std::string& str) {
+  auto l = std::find_if_not(str.begin(), str.end(), [](char c){ return std::isspace(c); });
+  auto r = std::find_if_not(str.rbegin(), str.rend(), [](char c){ return std::isspace(c); }).base();
+  str = std::move(std::string(l,r));
 }

@@ -239,3 +239,49 @@ characterutil::CharSet StopwordAnalyzerBase::LoadStopWordSet(const Reader& reade
   // TODO Implement it
   return characterutil::CharSet();
 }
+
+/**
+ * WordlistLoader
+ */
+WordlistLoader::WordlistLoader() {
+}
+
+WordlistLoader::~WordlistLoader() {
+}
+
+void WordlistLoader::GetWordSet(Reader& reader, characterutil::CharSet& result) {
+  std::string line;
+  while(!reader.Eof()) {
+    reader.ReadLine(line);
+    characterutil::Trim(line);
+    result.Add(line);
+  }
+}
+
+characterutil::CharSet GetWordSet(Reader& reader) {
+  return characterutil::CharSet();
+}
+
+characterutil::CharSet GetWordSet(Reader& reader, std::string& comment) {
+  return characterutil::CharSet();
+}
+
+void GetWordSet(Reader& reader, std::string& comment, characterutil::CharSet& result) {
+
+}
+
+void GetSnowballWordSet(Reader& reader, characterutil::CharSet& result) {
+
+}
+
+characterutil::CharSet GetSnowballWordSet(Reader& reader) {
+  return characterutil::CharSet();
+}
+
+characterutil::CharMap<std::string> GetStemDict(Reader& reader, characterutil::CharMap<std::string> result) {
+  return characterutil::CharMap<std::string>();
+}
+
+std::vector<std::string> GetLines(Reader& reader) {
+  return {};
+}

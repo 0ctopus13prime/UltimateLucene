@@ -1,4 +1,5 @@
 #include <Analysis/Reader.h>
+#include <Analysis/CharacterUtil.h>
 
 using namespace lucene::core::analysis;
 
@@ -92,13 +93,10 @@ char StringReader::Read() {
   return ch;
 }
 
-std::string StringReader::ReadLine() {
-  std::string ret;
+void StringReader::ReadLine(std::string& line) {
   if(!iss.eof()) {
-    iss >> ret;
+    iss >> line;
   }
-
-  return ret;
 }
 
 int32_t StringReader::Read(char* buf, const uint32_t off, const uint32_t len) {
@@ -123,4 +121,8 @@ void StringReader::Reset() {
 
 void StringReader::Close() {
   iss.seekg(0, iss.end);
+}
+
+bool StringReader::Eof() {
+  return iss.eof();
 }

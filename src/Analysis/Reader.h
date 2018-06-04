@@ -10,13 +10,14 @@ class Reader {
   public:
     virtual ~Reader();
     virtual char Read() = 0;
-    virtual std::string ReadLine() = 0;
+    virtual void ReadLine(std::string& line) = 0;
     virtual int32_t Read(char* buf, const uint32_t off, const uint32_t len) = 0;
     virtual size_t Skip(const unsigned long n) = 0;
     virtual bool MarkSupported() = 0;
     virtual void Mark(uint32_t read_ahead_limit) = 0;
     virtual void Reset() = 0;
     virtual void Close() = 0;
+    virtual bool Eof() = 0;
 };
 
 class StringReader: public Reader {
@@ -41,13 +42,14 @@ class StringReader: public Reader {
     void SetValue(char* buf, const uint32_t len);
     void SetValue(char* buf, const uint32_t off, const uint32_t len);
     char Read() override;
-    std::string ReadLine() override;
+    void ReadLine(std::string& line) override;
     int32_t Read(char* buf, const uint32_t off, const uint32_t len) override;
     unsigned long Skip(const unsigned long n) override;
     bool MarkSupported() override;
     void Mark(uint32_t read_ahead_limit) override;
     void Reset() override;
     void Close() override;
+    bool Eof() override;
 };
 
 }}}

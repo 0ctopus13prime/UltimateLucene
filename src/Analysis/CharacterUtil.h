@@ -68,13 +68,17 @@ class CharMap {
     INTERNAL_MAP internal_map;
 
   public:
-    CharMap(const uint32_t start_size, const bool ignore_case)
+    CharMap(const bool ignore_case=false)
+      : CharMap(32, ignore_case) {
+    }
+
+    CharMap(const uint32_t start_size, const bool ignore_case=false)
       : ignore_case(ignore_case),
         internal_map(start_size, CharPtrRangeInfoHasher(ignore_case), CharPtrRangeInfoEqual(ignore_case)) {
     }
 
     template<typename InputIt>
-    CharMap(InputIt start, InputIt end, const bool ignore_case)
+    CharMap(InputIt start, InputIt end, const bool ignore_case=false)
       : ignore_case(ignore_case),
         internal_map(start, end, std::distance(start, end), CharPtrRangeInfoHasher(ignore_case), CharPtrRangeInfoEqual(ignore_case)) {
     }
@@ -192,6 +196,8 @@ class CharSet {
     typename INTERNAL_SET::iterator Iterator();
     typename INTERNAL_SET::iterator End();
 };
+
+void Trim(std::string& str);
 
 }}}}
 
