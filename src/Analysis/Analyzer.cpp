@@ -250,38 +250,74 @@ WordlistLoader::~WordlistLoader() {
 }
 
 void WordlistLoader::GetWordSet(Reader& reader, characterutil::CharSet& result) {
-  std::string line;
+  std::string word;
   while(!reader.Eof()) {
-    reader.ReadLine(line);
-    characterutil::Trim(line);
-    result.Add(line);
+    reader.ReadLine(word);
+    characterutil::Trim(word);
+    result.Add(word);
   }
 }
 
-characterutil::CharSet GetWordSet(Reader& reader) {
-  return characterutil::CharSet();
+characterutil::CharSet WordlistLoader::GetWordSet(Reader& reader) {
+  characterutil::CharSet char_set(INITIAL_CAPACITY, false);
+  GetWordSet(reader, char_set);
+  return char_set;
 }
 
-characterutil::CharSet GetWordSet(Reader& reader, std::string& comment) {
-  return characterutil::CharSet();
+characterutil::CharSet WordlistLoader::GetWordSet(Reader& reader, std::string& comment) {
+  characterutil::CharSet char_set(INITIAL_CAPACITY, false);
+  GetWordSet(reader, comment, char_set);
+  return char_set;
 }
 
-void GetWordSet(Reader& reader, std::string& comment, characterutil::CharSet& result) {
-
+void WordlistLoader::GetWordSet(Reader& reader, std::string& comment, characterutil::CharSet& result) {
+  std::string word;
+  while(!reader.Eof()) {
+    reader.ReadLine(word);
+    if(characterutil::IsPrefix(word, comment) == false) {
+      characterutil::Trim(word);
+      result.Add(word);
+    }
+  }
 }
 
 void GetSnowballWordSet(Reader& reader, characterutil::CharSet& result) {
+  std::string line;
+  while(!reader.Eof()) {
+    reader.ReadLine(line);
+    size_t pos = line.find("|");
+    if(pos != std::string::npos) {
+      line = std::string(line, 0, pos);
+    }
 
+    std::vector<std::string> words = characterutil::SplitRegex(line, "\\s+");
+    for(const std::string& word : words) {
+      if(word.size() > 0) {
+        result.Add(word);
+      }
+    }
+  }
 }
 
 characterutil::CharSet GetSnowballWordSet(Reader& reader) {
-  return characterutil::CharSet();
+  characterutil::CharSet char_set(16 /*INITIAL_CAPACITY*/, false);
+  GetSnowballWordSet(reader, char_set);
+  return char_set;
 }
 
-characterutil::CharMap<std::string> GetStemDict(Reader& reader, characterutil::CharMap<std::string> result) {
-  return characterutil::CharMap<std::string>();
+characterutil::CharMap<std::string> GetStemDict(Reader& reader, characterutil::CharMap<std::string>& result) {
+  std::string line;
+  std::string tab_delimiter(1, '\t');
+  while(!reader.Eof()) {
+    reader.ReadLine(line);
+    std::vector<std::string> wordstem = characterutil::Split(line, tab_delimiter, 2);
+    result.Put(wordstem[0], wordstem[1]);
+  }
 }
 
 std::vector<std::string> GetLines(Reader& reader) {
+  // TODO Implement it.
+  // The reason that leave it as a unimplement function is about lacking of support unicode right now.
+  // In Java version, unicode character comparison is required but currently unicode is not supported.
   return {};
 }

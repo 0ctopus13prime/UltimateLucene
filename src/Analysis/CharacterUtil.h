@@ -136,20 +136,20 @@ class CharMap {
 
     bool Put(const char* str, uint32_t offset, uint32_t length, VALUE& value) {
       CharPtrRangeInfo info(lucene::core::util::arrayutil::CopyOfRange(str, offset, length), offset, length);
-      auto it = internal_map.insert(std::make_pair(std::move(info), value));
-      return it->second;
+      auto pair = internal_map.insert(std::make_pair(std::move(info), value));
+      return pair.second;
     }
 
     bool Put(const char* str, uint32_t offset, uint32_t length, VALUE&& value) {
       CharPtrRangeInfo info(lucene::core::util::arrayutil::CopyOfRange(str, offset, length), offset, length);
-      auto it = internal_map.insert(std::make_pair(std::move(info), std::forward(value)));
-      return it->second;
+      auto pair = internal_map.insert(std::make_pair(std::move(info), std::forward(value)));
+      return pair.second;
     }
 
     bool Put(const std::string& str, VALUE& value) {
       CharPtrRangeInfo info(lucene::core::util::arrayutil::CopyOfRange(str.c_str(), 0, str.size()), 0, str.size());
-      auto it = internal_map.insert(std::make_pair(std::move(info), value));
-      return it->second;
+      auto pair = internal_map.insert(std::make_pair(std::move(info), value));
+      return pair.second;
     }
 
     bool Put(const std::string& str, VALUE&& value) {
@@ -198,6 +198,9 @@ class CharSet {
 };
 
 void Trim(std::string& str);
+bool IsPrefix(const std::string& str, const std::string& prefix);
+std::vector<std::string> SplitRegex(const std::string& str, const std::string& expr, const uint32_t limit = 0);
+std::vector<std::string> Split(const std::string& str, const std::string& delimiter, const uint32_t limit = 0);
 
 }}}}
 

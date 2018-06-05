@@ -127,7 +127,7 @@ class StopwordAnalyzerBase: public Analyzer {
 
 class WordlistLoader {
   private:
-    static const uint32_t INITIAL_CAPACITY;
+    static const uint32_t INITIAL_CAPACITY = 16;
 
   private:
     WordlistLoader();
@@ -141,7 +141,7 @@ class WordlistLoader {
     static void GetWordSet(Reader& reader, std::string& comment, characterutil::CharSet& result);
     static void GetSnowballWordSet(Reader& reader, characterutil::CharSet& result);
     static characterutil::CharSet GetSnowballWordSet(Reader& reader);
-    static characterutil::CharMap<std::string> GetStemDict(Reader& reader, characterutil::CharMap<std::string> result);
+    static characterutil::CharMap<std::string> GetStemDict(Reader& reader, characterutil::CharMap<std::string>& result);
     static std::vector<std::string> GetLines(Reader& reader);
 };
 
