@@ -217,7 +217,7 @@ StopwordAnalyzerBase::StopwordAnalyzerBase()
     stop_words() {
 }
 
-StopwordAnalyzerBase::StopwordAnalyzerBase(characterutil::CharSet& stop_words)
+StopwordAnalyzerBase::StopwordAnalyzerBase(const characterutil::CharSet& stop_words)
   : Analyzer(),
     stop_words(stop_words) {
 }

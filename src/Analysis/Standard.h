@@ -2,19 +2,19 @@
 #define LUCENE_CORE_ANALYSIS_STANDARD_H_
 
 #include <string>
-#include <Analyzer/Analyzer.h>
-#include <Analyzer/TokenStream.h>
-#include <Analyzer/CharacterUtil.h>
+#include <Analysis/Analyzer.h>
+#include <Analysis/TokenStream.h>
+#include <Analysis/CharacterUtil.h>
+#include <Analysis/AttributeImpl.h>
+#include <Analysis/Reader.h>
+#include <Util/Attribute.h>
 
 namespace lucene { namespace core { namespace analysis { namespace standard {
-
-template<typename T>
-using delete_unique_ptr = std::unique_ptr<T, std::function<void(T*)>>;
 
 class StandardAnalyzer: public lucene::core::analysis::StopwordAnalyzerBase  {
   public:
     static const uint32_t DEFAULT_MAX_TOKEN_LENGTH = 255;
-    static lucene::core::analysis::characterutil::CharSet STOP_WORDS_SET;
+    static const lucene::core::analysis::characterutil::CharSet STOP_WORDS_SET;
 
   private:
     uint32_t max_token_length;
@@ -25,48 +25,67 @@ class StandardAnalyzer: public lucene::core::analysis::StopwordAnalyzerBase  {
 
   public:
     StandardAnalyzer();
-    StandardAnalyzer(lucene::core::analysis::characterutil::CharSet& stop_words);
+    //StandardAnalyzer(lucene::core::analysis::Reader& stop_words);
+    StandardAnalyzer(const lucene::core::analysis::characterutil::CharSet& stop_words);
     StandardAnalyzer(lucene::core::analysis::characterutil::CharSet&& stop_words);
-    void SetMaxTokenLength(uint32_t length);
+    ~StandardAnalyzer();
+    void SetMaxTokenLength(const uint32_t length);
     uint32_t GetMaxTokenLength();
 };
 
 class StandardFilter: public lucene::core::analysis::TokenFilter {
-  publiic:
+  public:
     StandardFilter(TokenStream* in);
-    bool IncrementToken();
+    virtual ~StandardFilter();
+    bool IncrementToken() override;
 };
 
 class StandardTokenizerImpl {
+  public:
+    static const int32_t YYEOF;
 
+  public:
+    StandardTokenizerImpl(lucene::core::analysis::Reader& in);
+    ~StandardTokenizerImpl();
+    void SetBufferSize(uint32_t length);
+    uint32_t GetNextToken();
+    void GetText(tokenattributes::CharTermAttribute& term_att);
+    uint32_t YyLength();
+    uint32_t YyChar();
+    void YyReset(lucene::core::analysis::Reader& reader);
 };
 
 class StandardTokenizer: public lucene::core::analysis::Tokenizer {
-  private:
-    StandardTokenizerImpl scanner;
-
   public:
-    static const uint32_t ALPHANUM = 0;
-    static const uint32_t NUM = 1;
-    static const uint32_t SOUTHEAST_ASIAN = 2;
-    static const uint32_t IDEOGRAPHIC = 3;
-    static const uint32_t HIRAGANA = 4;
-    static const uint32_t KATAKANA = 5;
-    static const uint32_t HANGUL = 6;
-    /*
-    "<ALPHANUM>",
-    "<NUM>",
-    "<SOUTHEAST_ASIAN>",
-    "<IDEOGRAPHIC>",
-    "<HIRAGANA>",
-    "<KATAKANA>",
-    "<HANGUL>"
-    */
+    static const uint32_t ALPHANUM;
+    static const uint32_t NUM;
+    static const uint32_t SOUTHEAST_ASIAN;
+    static const uint32_t IDEOGRAPHIC;
+    static const uint32_t HIRAGANA;
+    static const uint32_t KATAKANA;
+    static const uint32_t HANGUL;
     static const std::string TOKEN_TYPES[];
-    static const uint32_t MAX_TOKEN_LENGTH_LIMIT = 1024 * 1024;
+    static const uint32_t MAX_TOKEN_LENGTH_LIMIT;
+
   private:
     int32_t skipped_positions;
     int32_t max_token_length/* = StandardAnalyzer.DEFAULT_MAX_TOKEN_LENGTH*/;
+    std::shared_ptr<tokenattributes::CharTermAttribute> term_att;
+    std::shared_ptr<tokenattributes::OffsetAttribute> offset_att;
+    std::shared_ptr<tokenattributes::PositionIncrementAttribute> pos_incr_att;
+    std::shared_ptr<tokenattributes::TypeAttribute> type_att;
+    StandardTokenizerImpl scanner;
+
+  public:
+    StandardTokenizer();
+    StandardTokenizer(lucene::core::util::AttributeFactory* factory);
+    virtual ~StandardTokenizer();
+    void SetMaxTokenLength(uint32_t length);
+    uint32_t GetMaxTokenLength();
+    bool IncrementToken() override;
+    void End();
+    void Close();
+    void Reset();
 };
 
 

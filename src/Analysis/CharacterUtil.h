@@ -180,9 +180,10 @@ class CharSet {
   public:
     CharSet(const bool ignore_case = false);
     CharSet(std::vector<std::string>& c, const bool ignore_case);
+    CharSet(std::vector<std::string>&& c, const bool ignore_case);
     CharSet(const uint32_t start_size, const bool ignore_case);
     CharSet(const CharSet& other);
-    CharSet(const CharSet&& other);
+    CharSet(CharSet&& other);
     ~CharSet();
     CharSet& operator=(const CharSet& other);
     CharSet& operator=(const CharSet&& other);

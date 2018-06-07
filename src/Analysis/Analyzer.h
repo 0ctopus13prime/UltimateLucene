@@ -77,7 +77,7 @@ class StringTokenStream: public TokenStream {
     void End() override;
 };
 
-PreDefinedReuseStrategy PER_FIELD_REUSE_STRATEGY;
+static PreDefinedReuseStrategy PER_FIELD_REUSE_STRATEGY;
 
 class Analyzer {
   private:
@@ -113,7 +113,7 @@ class StopwordAnalyzerBase: public Analyzer {
     characterutil::CharSet stop_words;
 
   protected:
-    StopwordAnalyzerBase(characterutil::CharSet& stop_words);
+    StopwordAnalyzerBase(const characterutil::CharSet& stop_words);
     StopwordAnalyzerBase(characterutil::CharSet&& stop_words);
     StopwordAnalyzerBase();
     virtual ~StopwordAnalyzerBase();

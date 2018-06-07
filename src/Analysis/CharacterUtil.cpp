@@ -142,6 +142,14 @@ CharSet::CharSet(std::vector<std::string>& c, const bool ignore_case)
   }
 }
 
+CharSet::CharSet(std::vector<std::string>&& c, const bool ignore_case)
+  : ignore_case(ignore_case),
+    internal_set(c.size(), CharPtrRangeInfoHasher(ignore_case), CharPtrRangeInfoEqual(ignore_case)) {
+  for(const std::string& str : c) {
+    Add(str);
+  }
+}
+
 CharSet::CharSet(const uint32_t start_size, const bool ignore_case)
   : ignore_case(ignore_case),
     internal_set(start_size, CharPtrRangeInfoHasher(ignore_case), CharPtrRangeInfoEqual(ignore_case)) {
@@ -152,7 +160,7 @@ CharSet::CharSet(const CharSet& other)
     internal_set(other.internal_set) {
 }
 
-CharSet::CharSet(const CharSet&& other)
+CharSet::CharSet(CharSet&& other)
   : ignore_case(other.ignore_case),
     internal_set(std::move(other.internal_set)) {
 }
