@@ -1,3 +1,4 @@
+#include <sstream>
 #include <typeinfo>
 #include <stdexcept>
 #include <Util/Attribute.h>
@@ -9,21 +10,33 @@ using namespace lucene::core::analysis::tokenattributes;
 /**
  * AttributeImpl
  */
-
-std::string AttributeImpl::ReflectAsString(const bool prepend_att_class) {
-  // TODO Implement it.
-  return "";
-}
-
 void AttributeImpl::End() {
   Clear();
+}
+
+std::string AttributeImpl::ReflectAsString(const bool prepend_att_class) {
+  std::stringstream buf;
+  AttributeReflector f = [&buf, &prepend_att_class](const std::string& att_class, const std::string& key, const std::string& value){
+    if(buf.tellp() > 0) {
+      buf << ',';
+    }
+
+    if(prepend_att_class) {
+      buf << att_class << '#';
+    }
+
+    buf << key << '=' << (value.empty() ? "null" : value);
+  };
+
+  ReflectWith(f);
+
+  return buf.str();
 }
 
 /**
  * AttributeFactory
  */
-AttributeFactory::DefaultAttributeFactory* AttributeFactory::DEFAULT_ATTRIBUTE_FACTORY = new AttributeFactory::DefaultAttributeFactory();
-std::unordered_map<size_t, std::function<AttributeImpl*(void)>>
+std::unordered_map<type_id, AttributeImplGenerator>
 AttributeFactory::ATTR_IMPL_TABLE = {
     {typeid(BytesTermAttribute).hash_code(), [](){ return new BytesTermAttributeImpl(); }},
     {typeid(CharTermAttribute).hash_code(), [](){ return new CharTermAttributeImpl(); }},
@@ -38,11 +51,11 @@ AttributeFactory::ATTR_IMPL_TABLE = {
  };
 
 
-std::function<AttributeImpl*(void)> AttributeFactory::FindAttributeImplCtor(size_t attr_hash_code) {
-  auto it = AttributeFactory::ATTR_IMPL_TABLE.find(attr_hash_code);
+AttributeImplGenerator AttributeFactory::FindAttributeImplGenerator(type_id attr_type_id) {
+  auto it = AttributeFactory::ATTR_IMPL_TABLE.find(attr_type_id);
 
   if(it == AttributeFactory::ATTR_IMPL_TABLE.end()) {
-    throw std::runtime_error("Attribute " + std::to_string(attr_hash_code) + " implmentation was not found");
+    throw std::runtime_error("Attribute " + std::to_string(attr_type_id) + " implmentation was not found");
   }
 
   return it->second;
@@ -61,9 +74,9 @@ AttributeFactory::DefaultAttributeFactory::DefaultAttributeFactory() {
 AttributeFactory::DefaultAttributeFactory::~DefaultAttributeFactory() {
 }
 
-AttributeImpl* AttributeFactory::DefaultAttributeFactory::CreateAttributeInstance(size_t attr_hash_code) {
-  auto ctor = AttributeFactory::FindAttributeImplCtor(attr_hash_code);
-  return ctor();
+AttributeImpl* AttributeFactory::DefaultAttributeFactory::CreateAttributeInstance(type_id attr_type_id) {
+  auto generator = AttributeFactory::FindAttributeImplGenerator(attr_type_id);
+  return generator();
 }
 
 /**
@@ -74,8 +87,7 @@ AttributeSource::AttributeSource()
 }
 
 AttributeSource::AttributeSource(const AttributeSource& other)
-  : current_state(other.current_state),
-    current_state_dirty(other.current_state_dirty),
+  : current_state(other.current_state.get() ? new AttributeSource::State(other.current_state.get()) : new AttributeSource::State()),
     attributes(other.attributes),
     attribute_impls(other.attribute_impls),
     factory(other.factory) {
@@ -86,7 +98,6 @@ AttributeSource::AttributeSource(const AttributeSource& other)
 
 AttributeSource::AttributeSource(AttributeFactory* factory)
   : current_state(new AttributeSource::State()),
-    current_state_dirty(true),
     attributes(),
     attribute_impls(),
     factory(factory) {
@@ -100,14 +111,16 @@ AttributeFactory& AttributeSource::GetAttributeFactory() const {
 }
 
 void AttributeSource::AddAttributeImpl(AttributeImpl* attr_impl) {
-  std::vector<size_t> attr_hash_codes = attr_impl->Attributes();
+  std::vector<type_id> attr_type_ids = attr_impl->Attributes();
   std::shared_ptr<AttributeImpl> attr_impl_shptr(attr_impl);
 
-  for(size_t attr_hash_code : attr_hash_codes) {
-    attributes[attr_hash_code] = attr_impl_shptr;
+  for(size_t attr_type_id : attr_type_ids) {
+    attributes[attr_type_id] = attr_impl_shptr;
   }
 
   attribute_impls[typeid(*attr_impl).hash_code()] = attr_impl_shptr;
+  // Invalidate state to force recomputation in CaptureState()
+  current_state.reset(nullptr);
 }
 
 bool AttributeSource::HasAttributes()  {
@@ -115,24 +128,28 @@ bool AttributeSource::HasAttributes()  {
 }
 
 AttributeSource::State* AttributeSource::GetCurrentState() {
-  current_state_dirty = false;
-  if(!current_state_dirty || !HasAttributes()) {
+  if(current_state.get() != nullptr || !HasAttributes()) {
     return current_state.get();
   }
 
+  current_state.reset(new AttributeSource::State());
   AttributeSource::State* head = current_state.get();
   AttributeSource::State* c = head;
   auto it = attribute_impls.begin();
-  c->attribute.reset(it->second.get());
+  c->attribute = it->second.get();
 
   while(it != attribute_impls.end()) {
-    c->next = (c->next == nullptr ? new AttributeSource::State() : c->next);
+    if(c->next == nullptr) {
+      c->next = new AttributeSource::State();
+    }
     c = c->next;
-    c->attribute.reset(it->second.get());
+    c->attribute = it->second.get();
+    it++;
   }
 
   if(c->next != nullptr) {
     c->next->~State();
+    c->next = nullptr;
   }
 
   return head;
@@ -147,7 +164,6 @@ void AttributeSource::ClearAttributes() {
 void AttributeSource::EndAttributes() {
   for(AttributeSource::State* state = GetCurrentState() ; state != nullptr ; state = state->next) {
     state->attribute->End();
-
   }
 }
 
@@ -156,24 +172,25 @@ void AttributeSource::RemoveAllAttributes() {
   attribute_impls.clear();
 }
 
-AttributeSource::State AttributeSource::CaptureState() {
-  AttributeSource::State* state = GetCurrentState();
-  return AttributeSource::State(*state);
+AttributeSource::State* AttributeSource::CaptureState() {
+  AttributeSource::State* curr_state = GetCurrentState();
+  return new AttributeSource::State(*curr_state);
 }
 
-void AttributeSource::RestoreState(AttributeSource::State state) {
-  if(state.attribute.use_count() <= 0) return;
+void AttributeSource::RestoreState(AttributeSource::State* state) {
+  if(state == nullptr || state->attribute == nullptr) return;
 
-  AttributeSource::State* current = &state;
+  AttributeSource::State* current = state;
   do {
-    AttributeImpl* source_attr = current->attribute.get();
-    size_t attr_impl_hash_code = typeid(*source_attr).hash_code();
+    AttributeImpl* source_attr = current->attribute;
+    type_id attr_impl_type_id = typeid(*source_attr).hash_code();
 
-    if(attribute_impls.find(attr_impl_hash_code) == attribute_impls.end()) {
-      throw std::invalid_argument("AttributeSource::State contains AttributeImpl of type " + std::to_string(attr_impl_hash_code) + " that is not in this AttributeSource");
+    auto it = attribute_impls.find(attr_impl_type_id);
+    if(it == attribute_impls.end()) {
+      throw std::invalid_argument("AttributeSource::State contains AttributeImpl of type " + std::to_string(attr_impl_type_id) + " that is not in this AttributeSource");
     }
 
-    AttributeImpl* target_attr = attribute_impls[attr_impl_hash_code].get();
+    AttributeImpl* target_attr = it->second.get();
     *target_attr = *source_attr;
 
     current = current->next;
@@ -190,8 +207,11 @@ void AttributeSource::ReflectWith(AttributeReflector& reflector)  {
 }
 
 AttributeSource& AttributeSource::operator=(const AttributeSource& other) {
-  current_state = other.current_state;
-  current_state_dirty = other.current_state_dirty;
+  if(AttributeSource::State* ptr = other.current_state.get()) {
+    current_state.reset(new AttributeSource::State(*ptr));
+  } else {
+    current_state.reset();
+  }
   attributes = other.attributes;
   attribute_impls = other.attribute_impls;
   factory = other.factory;
@@ -201,23 +221,76 @@ AttributeSource& AttributeSource::operator=(const AttributeSource& other) {
 /**
  *  AttributeSource::State
  */
-AttributeSource::State::State()
-  : attribute(nullptr),
-    next(nullptr) {
+AttributeSource::State::State(bool delete_attribute/*=false*/)
+  : attribute(),
+    next(nullptr),
+    delete_attribute(delete_attribute) {
 }
 
 AttributeSource::State::State(const AttributeSource::State& other)
+  : attribute(other.attribute->Clone()),
+    next(nullptr),
+    delete_attribute(true) {
+
+  AttributeSource::State* curr = this;
+  for(AttributeSource::State* from = other.next ; from != nullptr ; from = from->next) {
+    curr->next = new AttributeSource::State(true);
+    curr->next->attribute = from->attribute->Clone();
+    curr = curr->next;
+  }
+}
+
+AttributeSource::State::State(AttributeSource::State&& other)
   : attribute(other.attribute),
-    next(other.next) {
+    next(other.next),
+    delete_attribute(other.delete_attribute) {
+  other.delete_attribute = false;
+  other.next = nullptr;
 }
 
 AttributeSource::State::~State() {
   if(next != nullptr) {
     next->~State();
   }
+
+  if(delete_attribute && attribute != nullptr) {
+    delete attribute;
+  }
 }
 
 AttributeSource::State& AttributeSource::State::operator=(const AttributeSource::State& other) {
+  CleanAttribute();
+  if(this->next) {
+    this->next->~State();
+  }
+
+  attribute = other.attribute->Clone();
+  delete_attribute = true;
+  AttributeSource::State* curr = this;
+
+  for(AttributeSource::State* from = other.next ; from != nullptr ; from = from->next) {
+    curr->next = new AttributeSource::State(true);
+    curr->next->attribute = from->attribute->Clone();
+    curr = curr->next;
+  }
+}
+
+AttributeSource::State& AttributeSource::State::operator=(AttributeSource::State&& other) {
+  CleanAttribute();
+  if(this->next) {
+    this->next->~State();
+  }
+
   attribute = other.attribute;
   next = other.next;
+
+  other.delete_attribute = false;
+  other.next = nullptr;
+}
+
+void AttributeSource::State::CleanAttribute() {
+  if(delete_attribute && attribute) {
+    delete attribute;
+    attribute = nullptr;
+  }
 }

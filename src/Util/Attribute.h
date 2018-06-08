@@ -10,16 +10,16 @@
 
 namespace lucene { namespace core { namespace util {
 
+using type_id = size_t;
+
 class Attribute {
   public:
     virtual ~Attribute() {}
 };
 
-class AttributeReflector {
-  public:
-    virtual ~AttributeReflector() {}
-    virtual void Reflect() = 0;
-};
+using AttributeReflector = std::function<void(const std::string&/*Attribute class name*/,
+                                              const std::string&/*Key*/,
+                                              const std::string&/*Value*/)>;
 
 class AttributeImpl: public Attribute {
   public:
@@ -27,22 +27,25 @@ class AttributeImpl: public Attribute {
     virtual void ReflectWith(AttributeReflector& reflector) = 0;
     virtual void Clear() = 0;
     virtual void End();
-    virtual std::vector<size_t> Attributes() = 0;
+    virtual std::vector<type_id> Attributes() = 0;
     virtual void ShallowCopyTo(AttributeImpl& attr_impl) = 0;
+    virtual AttributeImpl* Clone() = 0;
     std::string ReflectAsString(const bool prepend_att_class);
 };
 
+using AttributeImplGenerator = std::function<AttributeImpl*(void)>;
+
 class AttributeFactory {
   private:
-    static std::unordered_map<size_t, std::function<AttributeImpl*(void)>> ATTR_IMPL_TABLE;
+    static std::unordered_map<type_id, AttributeImplGenerator> ATTR_IMPL_TABLE;
 
   public:
     AttributeFactory();
     virtual ~AttributeFactory() {}
 
-    virtual AttributeImpl* CreateAttributeInstance(size_t attr_hash_code) = 0;
+    virtual AttributeImpl* CreateAttributeInstance(type_id attr_type_id) = 0;
 
-    static std::function<AttributeImpl*(void)> FindAttributeImplCtor(size_t attr_hash_code);
+    static AttributeImplGenerator FindAttributeImplGenerator(type_id attr_type_id);
 
     template<typename ATTR_FACTORY, typename ATTR_IMPL>
     static AttributeFactory* GetStaticImplementation() {
@@ -61,60 +64,70 @@ class AttributeFactory {
 
     template<typename ATTR_FACTORY, typename ATTR_IMPL>
     class StaticImplementationAttributeFactory;
-
-  public:
-    static DefaultAttributeFactory* DEFAULT_ATTRIBUTE_FACTORY;
 };
 
 class AttributeFactory::DefaultAttributeFactory: public AttributeFactory {
   public:
     DefaultAttributeFactory();
     virtual ~DefaultAttributeFactory();
-    AttributeImpl* CreateAttributeInstance(size_t attr_hash_code) override;
+    AttributeImpl* CreateAttributeInstance(type_id attr_type_id) override;
 };
 
 template<typename ATTR_FACTORY, typename ATTR_IMPL>
 class AttributeFactory::StaticImplementationAttributeFactory: public AttributeFactory {
   private:
     ATTR_FACTORY delegate;
-    static std::unordered_set<size_t> DEFAULT_ATTR_NAMES;
+    static std::unordered_set<type_id> DEFAULT_ATTR_TYPE_IDS;
 
   public:
     StaticImplementationAttributeFactory() {
     }
-    ~StaticImplementationAttributeFactory() {
+    virtual ~StaticImplementationAttributeFactory() {
     }
-    AttributeImpl* CreateAttributeInstance(size_t attr_hash_code) override {
-      if(DEFAULT_ATTR_NAMES.find(attr_hash_code) != DEFAULT_ATTR_NAMES.end()) {
-        return new ATTR_IMPL();
+    AttributeImpl* CreateAttributeInstance(type_id attr_type_id) override {
+      if(DEFAULT_ATTR_TYPE_IDS.find(attr_type_id) != DEFAULT_ATTR_TYPE_IDS.end()) {
+        return delegate.CreateAttributeInstance(attr_type_id);
       } else {
-        return delegate.CreateAttributeInstance(attr_hash_code);
+        return new ATTR_IMPL();
       }
     }
 };
 
 template<typename ATTR_FACTORY, typename ATTR_IMPL>
-std::unordered_set<size_t> AttributeFactory::StaticImplementationAttributeFactory<ATTR_FACTORY, ATTR_IMPL>::DEFAULT_ATTR_NAMES;
+std::unordered_set<type_id>
+AttributeFactory::StaticImplementationAttributeFactory<ATTR_FACTORY, ATTR_IMPL>::DEFAULT_ATTR_TYPE_IDS
+= [](){
+  std::unordered_set<type_id> ret(AttributeFactory::ATTR_IMPL_TABLE.size());
+  for(const auto& p : AttributeFactory::ATTR_IMPL_TABLE) {
+    ret.insert(p.first);
+  }
+  return ret;
+}();
 
 class AttributeSource {
   public:
     class State final {
       public:
-        std::shared_ptr<AttributeImpl> attribute;
+        AttributeImpl* attribute;
         State* next;
+        bool delete_attribute;
 
       public:
-        State();
+        State(bool delete_attribute = false);
         State(const State& other);
+        State(State&& other);
         ~State();
         State& operator=(const State& other);
+        State& operator=(State&& other);
+        void CleanAttribute();
     };
 
   private:
-    std::shared_ptr<State> current_state;
-    bool current_state_dirty;
-    std::unordered_map<size_t, std::shared_ptr<AttributeImpl>> attributes;
-    std::unordered_map<size_t, std::shared_ptr<AttributeImpl>> attribute_impls;
+    std::unique_ptr<State> current_state;
+    // Mapping Attribute's type_id to AttributeImpl instance
+    std::unordered_map<type_id, std::shared_ptr<AttributeImpl>> attributes;
+    // Mapping AttributeImpl's type_id to AttributeImpl instance
+    std::unordered_map<type_id, std::shared_ptr<AttributeImpl>> attribute_impls;
     std::shared_ptr<AttributeFactory> factory;
 
   private:
@@ -123,9 +136,12 @@ class AttributeSource {
   public:
     AttributeSource();
     AttributeSource(const AttributeSource& other);
+    /**
+     * AttributeSource consturctor.
+     * AttributeSource owns a given factory
+     */
     AttributeSource(AttributeFactory* factory);
     AttributeFactory& GetAttributeFactory() const;
-
     void AddAttributeImpl(AttributeImpl* attr_impl);
 
     template <typename ATTR>
@@ -149,8 +165,8 @@ class AttributeSource {
     void ClearAttributes();
     void EndAttributes();
     void RemoveAllAttributes();
-    State CaptureState();
-    void RestoreState(State state);
+    State* CaptureState();
+    void RestoreState(State* state);
     std::string ReflectAsString(const bool prepend_att);
     void ReflectWith(AttributeReflector& reflector);
     AttributeSource& operator=(const AttributeSource& other);

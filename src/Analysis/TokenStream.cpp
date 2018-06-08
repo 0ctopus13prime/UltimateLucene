@@ -16,7 +16,7 @@ using namespace lucene::core::util::arrayutil;
  */
 
 AttributeFactory* TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY =
-  AttributeFactory::GetStaticImplementation<std::remove_pointer<decltype(AttributeFactory::DEFAULT_ATTRIBUTE_FACTORY)>::type, tokenattributes::PackedTokenAttributeImpl>();
+  AttributeFactory::GetStaticImplementation<AttributeFactory::DefaultAttributeFactory, tokenattributes::PackedTokenAttributeImpl>();
 
 TokenStream::TokenStream()
   : AttributeSource() {
@@ -129,6 +129,7 @@ CachingTokenFilter::CachingTokenFilter(TokenStream* in)
   : TokenFilter(in),
     cache(64),
     iterator(cache.begin()),
+    final_state(),
     first_time(true) {
 }
 
@@ -136,8 +137,8 @@ CachingTokenFilter::~CachingTokenFilter() {
 }
 
 void CachingTokenFilter::End() {
-  if(final_state.attribute.use_count() > 0 || final_state.next) {
-    RestoreState(final_state);
+  if(AttributeSource::State* final_state_ptr = final_state.get()) {
+    RestoreState(final_state_ptr);
   }
 }
 
@@ -159,17 +160,18 @@ bool CachingTokenFilter::IncrementToken() {
     return false;
   }
 
-  RestoreState(*iterator++);
+  RestoreState((*iterator).get());
+  iterator++;
   return true;
 }
 
 void CachingTokenFilter::FillCache() {
   while(input->IncrementToken()) {
-    cache.push_back(CaptureState());
+    cache.push_back(std::unique_ptr<AttributeSource::State>(CaptureState()));
   }
 
   input->End();
-  final_state = CaptureState();
+  final_state = std::unique_ptr<AttributeSource::State>(CaptureState());
 }
 
 bool CachingTokenFilter::IsCached() {

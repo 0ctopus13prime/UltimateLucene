@@ -65,6 +65,12 @@ BytesTermAttributeImpl& BytesTermAttributeImpl::operator=(const BytesTermAttribu
   bytes = other.bytes;
 }
 
+AttributeImpl* BytesTermAttributeImpl::Clone() {
+  return new BytesTermAttributeImpl(*this);
+}
+
+
+
 /**
  * FlagsAttributeImpl
  */
@@ -115,6 +121,10 @@ void FlagsAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
 
 FlagsAttributeImpl& FlagsAttributeImpl::operator=(const FlagsAttributeImpl& other) {
   flags = other.flags;
+}
+
+AttributeImpl* FlagsAttributeImpl::Clone() {
+  return new FlagsAttributeImpl(*this);
 }
 
 /**
@@ -168,6 +178,10 @@ void KeywordAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
 
 KeywordAttributeImpl& KeywordAttributeImpl::operator=(const KeywordAttributeImpl& other) {
   keyword = other.keyword;
+}
+
+AttributeImpl* KeywordAttributeImpl::Clone() {
+  return new KeywordAttributeImpl(*this);
 }
 
 /**
@@ -232,6 +246,10 @@ OffsetAttributeImpl& OffsetAttributeImpl::operator=(const OffsetAttributeImpl& o
   end_offset = other.end_offset;
 }
 
+AttributeImpl* OffsetAttributeImpl::Clone() {
+  return new OffsetAttributeImpl(*this);
+}
+
 /**
  * PayloadAttributeImpl
  */
@@ -286,6 +304,10 @@ void PayloadAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
 
 PayloadAttributeImpl& PayloadAttributeImpl::operator=(const PayloadAttributeImpl& other) {
   payload = other.payload;
+}
+
+AttributeImpl* PayloadAttributeImpl::Clone() {
+  return new PayloadAttributeImpl(*this);
 }
 
 /**
@@ -348,6 +370,10 @@ PositionIncrementAttributeImpl& PositionIncrementAttributeImpl::operator=(const 
   position_increment = other.position_increment;
 }
 
+AttributeImpl* PositionIncrementAttributeImpl::Clone() {
+  return new PositionIncrementAttributeImpl(*this);
+}
+
 /**
  * PositionLengthAttributeImpl
  */
@@ -403,6 +429,10 @@ PositionLengthAttributeImpl& PositionLengthAttributeImpl::operator=(const Positi
   position_length = other.position_length;
 }
 
+AttributeImpl* PositionLengthAttributeImpl::Clone() {
+  return new PositionLengthAttributeImpl(*this);
+}
+
 /**
  * TermFrequencyAttributeImpl
  */
@@ -456,6 +486,10 @@ void TermFrequencyAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
 
 TermFrequencyAttributeImpl& TermFrequencyAttributeImpl::operator=(const TermFrequencyAttributeImpl& other) {
   term_frequency = other.term_frequency;
+}
+
+AttributeImpl* TermFrequencyAttributeImpl::Clone() {
+  return new TermFrequencyAttributeImpl(*this);
 }
 
 /**
@@ -514,13 +548,17 @@ TypeAttributeImpl& TypeAttributeImpl::operator=(const TypeAttributeImpl& other) 
   type = other.type;
 }
 
+AttributeImpl* TypeAttributeImpl::Clone() {
+  return new TypeAttributeImpl(*this);
+}
+
 /**
  * CharTermAttributeImpl
  */
 
 CharTermAttributeImpl::CharTermAttributeImpl()
-  : term_buffer(new char[CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE]),
-    term_capacity(CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE),
+  : term_buffer(new char[CharTermAttributeImpl::CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE]),
+    term_capacity(CharTermAttributeImpl::CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE),
     term_length(0),
     builder() {
 }
@@ -664,6 +702,10 @@ CharTermAttributeImpl& CharTermAttributeImpl::operator=(const CharTermAttributeI
   builder.Get() = const_cast<CharTermAttributeImpl&>(other).builder.Get();
 }
 
+AttributeImpl* CharTermAttributeImpl::Clone() {
+  return new CharTermAttributeImpl(*this);
+}
+
 /**
  *  PackedTokenAttributeImpl
  */
@@ -770,4 +812,8 @@ void PackedTokenAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   } catch(std::bad_cast& e) {
     throw std::invalid_argument("Shallow copy failed. " + std::string(typeid(*this).name()) + " -> " + typeid(attr_impl).name());
   }
+}
+
+AttributeImpl* PackedTokenAttributeImpl::Clone() {
+  return new PackedTokenAttributeImpl(*this);
 }

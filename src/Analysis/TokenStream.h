@@ -76,9 +76,9 @@ class LowerCaseFilter: public TokenFilter {
 
 class CachingTokenFilter: public TokenFilter {
   private:
-    std::vector<lucene::core::util::AttributeSource::State> cache;
-    std::vector<lucene::core::util::AttributeSource::State>::iterator iterator;
-    lucene::core::util::AttributeSource::State final_state;
+    std::vector<std::unique_ptr<lucene::core::util::AttributeSource::State>> cache;
+    std::vector<std::unique_ptr<lucene::core::util::AttributeSource::State>>::iterator iterator;
+    std::unique_ptr<lucene::core::util::AttributeSource::State> final_state;
     bool first_time;
 
   private:
