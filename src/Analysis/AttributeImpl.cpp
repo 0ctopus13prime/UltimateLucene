@@ -37,7 +37,7 @@ void BytesTermAttributeImpl::Clear() {
 }
 
 void BytesTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it.
+  reflector("TermToBytesRefAttribute", "bytes", bytes.UTF8ToString());
 }
 
 bool BytesTermAttributeImpl::operator==(BytesTermAttributeImpl& other) {
@@ -89,7 +89,7 @@ void FlagsAttributeImpl::SetFlags(const int32_t new_flags) {
 }
 
 void FlagsAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it.
+  reflector("FlagsAttribute", "flags", std::to_string(flags));
 }
 
 void FlagsAttributeImpl::Clear() {
@@ -141,7 +141,7 @@ void KeywordAttributeImpl::SetKeyword(const bool new_keyword) {
 }
 
 void KeywordAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it
+  reflector("KeywordAttribute", "keyword", (keyword ? "true" : "false"));
 }
 
 void KeywordAttributeImpl::Clear() {
@@ -201,7 +201,8 @@ uint32_t OffsetAttributeImpl::EndOffset() {
 }
 
 void OffsetAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it.
+  reflector("OffsetAttribute", "startOffset", std::to_string(start_offset));
+  reflector("OffsetAttribute", "endOffset", std::to_string(end_offset));
 }
 
 void OffsetAttributeImpl::Clear() {
@@ -247,7 +248,7 @@ PayloadAttributeImpl::~PayloadAttributeImpl() {
 }
 
 void PayloadAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it.
+  reflector("PayloadAttribute", "payload", payload.UTF8ToString());
 }
 
 void PayloadAttributeImpl::Clear() {
@@ -311,7 +312,7 @@ uint32_t PositionIncrementAttributeImpl::GetPositionIncrement() {
 }
 
 void PositionIncrementAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it.
+  reflector("PositionIncrementAttribute", "positionIncrement", std::to_string(position_increment));
 }
 
 void PositionIncrementAttributeImpl::Clear() {
@@ -362,7 +363,7 @@ PositionLengthAttributeImpl::~PositionLengthAttributeImpl() {
 }
 
 void PositionLengthAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it
+  reflector("PositionLengthAttribute", "positionLength", std::to_string(position_length));
 }
 
 void PositionLengthAttributeImpl::Clear() {
@@ -418,7 +419,7 @@ TermFrequencyAttributeImpl::~TermFrequencyAttributeImpl() {
 }
 
 void TermFrequencyAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it
+  reflector("TermFrequencyAttribute", "termFrequency", std::to_string(term_frequency));
 }
 void TermFrequencyAttributeImpl::Clear() {
   term_frequency = 1;
@@ -472,7 +473,7 @@ TypeAttributeImpl::~TypeAttributeImpl() {
 }
 
 void TypeAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it
+  reflector("TypeAttribute", "type", type);
 }
 
 void TypeAttributeImpl::Clear() {
@@ -623,7 +624,8 @@ CharTermAttribute& CharTermAttributeImpl::Append(const CharTermAttribute& term_a
 }
 
 void CharTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  // TODO Implement it.
+  reflector("CharTermAttribute", "term", std::string(term_buffer, 0, term_length));
+  reflector("TermToBytesRefAttribute", "bytes", GetBytesRef().UTF8ToString());
 }
 
 char& CharTermAttributeImpl::operator[](const uint32_t index) {
