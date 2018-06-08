@@ -28,7 +28,7 @@ void CharFilter::Close() {
   input->Close();
 }
 
-int32_t CharFilter::CorrectOffset(int32_t current_off) {
+int32_t CharFilter::CorrectOffset(const int32_t current_off) {
   const int32_t corrected = Correct(current_off);
 
   if(CharFilter* char_filter = dynamic_cast<CharFilter*>(input.get())) {

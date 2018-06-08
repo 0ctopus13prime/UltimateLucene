@@ -19,11 +19,15 @@ class CharFilter: public Reader {
     std::unique_ptr<Reader> input;
 
   public:
+    /**
+     * CharFilter's constructor.
+     * Given input reader is will be owned by CharFilter instance
+     */
     CharFilter(Reader* input);
     virtual ~CharFilter();
     void Close();
-    virtual int32_t Correct(int32_t current_off) = 0;
-    int32_t CorrectOffset(int32_t current_off);
+    virtual int32_t Correct(const int32_t current_off) = 0;
+    int32_t CorrectOffset(const int32_t current_off);
 };
 
 class CharPtrRangeInfo {
