@@ -249,20 +249,14 @@ AttributeSource::State::State(AttributeSource::State&& other)
 }
 
 AttributeSource::State::~State() {
+  CleanAttribute();
   if(next != nullptr) {
     next->~State();
-  }
-
-  if(delete_attribute && attribute != nullptr) {
-    delete attribute;
   }
 }
 
 AttributeSource::State& AttributeSource::State::operator=(const AttributeSource::State& other) {
-  CleanAttribute();
-  if(this->next) {
-    this->next->~State();
-  }
+  ~State();
 
   attribute = other.attribute->Clone();
   delete_attribute = true;
@@ -276,10 +270,7 @@ AttributeSource::State& AttributeSource::State::operator=(const AttributeSource:
 }
 
 AttributeSource::State& AttributeSource::State::operator=(AttributeSource::State&& other) {
-  CleanAttribute();
-  if(this->next) {
-    this->next->~State();
-  }
+  ~State();
 
   attribute = other.attribute;
   next = other.next;
