@@ -25,7 +25,7 @@ class StandardAnalyzer: public lucene::core::analysis::StopwordAnalyzerBase  {
 
   public:
     StandardAnalyzer();
-    //StandardAnalyzer(lucene::core::analysis::Reader& stop_words);
+    StandardAnalyzer(lucene::core::analysis::Reader&& stop_words);
     StandardAnalyzer(const lucene::core::analysis::characterutil::CharSet& stop_words);
     StandardAnalyzer(lucene::core::analysis::characterutil::CharSet&& stop_words);
     ~StandardAnalyzer();
@@ -78,7 +78,7 @@ class StandardTokenizer: public lucene::core::analysis::Tokenizer {
 
   public:
     StandardTokenizer();
-    StandardTokenizer(lucene::core::util::AttributeFactory* factory);
+    StandardTokenizer(lucene::core::util::AttributeFactory& factory);
     virtual ~StandardTokenizer();
     void SetMaxTokenLength(uint32_t length);
     uint32_t GetMaxTokenLength();

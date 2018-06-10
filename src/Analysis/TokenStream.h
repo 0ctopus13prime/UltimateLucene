@@ -19,7 +19,7 @@ class TokenStream: public lucene::core::util::AttributeSource {
   protected:
     TokenStream();
     TokenStream(const lucene::core::util::AttributeSource& input);
-    TokenStream(lucene::core::util::AttributeFactory* factory);
+    TokenStream(lucene::core::util::AttributeFactory& factory);
 
   public:
     static AttributeFactory* DEFAULT_TOKEN_ATTRIBUTE_FACTORY;
@@ -29,6 +29,7 @@ class TokenStream: public lucene::core::util::AttributeSource {
     virtual bool IncrementToken() = 0;
     virtual void End();
     virtual void Reset() = 0;
+    virtual void Close();
 };
 
 class TokenFilter: public TokenStream {
@@ -51,12 +52,12 @@ class Tokenizer: public TokenStream {
 
   protected:
     Tokenizer();
-    Tokenizer(lucene::core::util::AttributeFactory* factory);
+    Tokenizer(lucene::core::util::AttributeFactory& factory);
     uint32_t CorrectOffset(const uint32_t current_off);
 
   public:
     virtual ~Tokenizer();
-    void SetReader(delete_unique_ptr<Reader>& input);
+    void SetReader(delete_unique_ptr<Reader>&& input);
     void Reset() override;
     void Close();
 

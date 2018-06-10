@@ -73,6 +73,8 @@ class AttributeFactory::DefaultAttributeFactory: public AttributeFactory {
     AttributeImpl* CreateAttributeInstance(type_id attr_type_id) override;
 };
 
+static AttributeFactory::DefaultAttributeFactory DEFAULT_ATTRIBUTE_FACTORY;
+
 template<typename ATTR_FACTORY, typename ATTR_IMPL>
 class AttributeFactory::StaticImplementationAttributeFactory: public AttributeFactory {
   private:
@@ -128,7 +130,7 @@ class AttributeSource {
     std::unordered_map<type_id, std::shared_ptr<AttributeImpl>> attributes;
     // Mapping AttributeImpl's type_id to AttributeImpl instance
     std::unordered_map<type_id, std::shared_ptr<AttributeImpl>> attribute_impls;
-    std::shared_ptr<AttributeFactory> factory;
+    AttributeFactory& factory;
 
   private:
     State* GetCurrentState();
@@ -138,9 +140,10 @@ class AttributeSource {
     AttributeSource(const AttributeSource& other);
     /**
      * AttributeSource consturctor.
-     * AttributeSource owns a given factory
+     * AttributeSource shares a given factory.
+     * So factory's life cycle is not managed by this instance.
      */
-    AttributeSource(AttributeFactory* factory);
+    AttributeSource(AttributeFactory& factory);
     AttributeFactory& GetAttributeFactory() const;
     void AddAttributeImpl(AttributeImpl* attr_impl);
 
@@ -148,7 +151,7 @@ class AttributeSource {
     std::shared_ptr<ATTR> AddAttribute() {
       auto attr_it = attributes.find(typeid(ATTR).hash_code());
       if(attr_it == attribute_impls.end()) {
-        AddAttributeImpl(factory->CreateAttributeInstance(typeid(ATTR).hash_code()));
+        AddAttributeImpl(factory.CreateAttributeInstance(typeid(ATTR).hash_code()));
         attr_it = attributes.find(typeid(ATTR).hash_code());
       }
 

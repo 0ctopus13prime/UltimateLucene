@@ -13,9 +13,6 @@
 
 namespace lucene { namespace core { namespace analysis {
 
-template<typename T>
-using delete_unique_ptr = std::unique_ptr<T, std::function<void(T*)>>;
-
 class Analyzer;
 
 class TokenStreamComponents {
@@ -25,24 +22,28 @@ class TokenStreamComponents {
     StringReader reusable_string_reader;
 
   public:
+    /**
+     * TokenStreamComponents constructor.
+     * Both source, result instance owned by this instance.
+     */
     TokenStreamComponents(Tokenizer* source, TokenStream* result);
     TokenStreamComponents(Tokenizer* source);
     TokenStream* GetTokenStream();
     Tokenizer* GetTokenizer();
     StringReader& GetReusableStringReader();
-    virtual void SetReader(delete_unique_ptr<Reader>& reader);
+    virtual void SetReader(delete_unique_ptr<Reader>&& reader);
 };
 
 class ReuseStrategy {
   protected:
     template<typename T>
     T& GetStoredValue(Analyzer& analyzer) {
-
+      // TODO. Implement it.
     }
 
     template<typename T>
     void SetStoredValue(Analyzer& analyzer, T& stored_value) {
-
+      // TODO. Implement it.
     }
 
   public:
@@ -51,7 +52,7 @@ class ReuseStrategy {
     virtual TokenStreamComponents* GetReusableComponents(Analyzer& analyzer, const std::string& field_name) = 0;
     virtual void SetReusableComponents(Analyzer& analyzer, const std::string& field_name, TokenStreamComponents* components) = 0;
 };
-
+euseStrategy
 class PreDefinedReuseStrategy: public ReuseStrategy {
   public:
     PreDefinedReuseStrategy();
@@ -71,7 +72,7 @@ class StringTokenStream: public TokenStream {
     std::shared_ptr<tokenattributes::OffsetAttribute> offset_attribute;
 
   public:
-    StringTokenStream(lucene::core::util::AttributeFactory* input, std::string& value, size_t length);
+    StringTokenStream(lucene::core::util::AttributeFactory& input, std::string& value, size_t length);
     void Reset() override;
     bool IncrementToken() override;
     void End() override;
@@ -86,10 +87,13 @@ class Analyzer {
 
   protected:
     virtual TokenStreamComponents* CreateComponents(const std::string& field_name) = 0;
-    delete_unique_ptr<TokenStream> Normalize(const std::string& field_name, delete_unique_ptr<TokenStream> in);
-    delete_unique_ptr<Reader> InitReader(const std::string& field_name, delete_unique_ptr<Reader> reader);
-    delete_unique_ptr<Reader> InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader> reader);
-    AttributeFactory* GetAttributeFactory(const std::string& field_name);
+    delete_unique_ptr<TokenStream>&& Normalize(const std::string& field_name, delete_unique_ptr<TokenStream>& in);
+    delete_unique_ptr<TokenStream>&& Normalize(const std::string& field_name, delete_unique_ptr<TokenStream>&& in);
+    delete_unique_ptr<Reader>&& InitReader(const std::string& field_name, delete_unique_ptr<Reader>& reader);
+    delete_unique_ptr<Reader>&& InitReader(const std::string& field_name, delete_unique_ptr<Reader>&& reader);
+    delete_unique_ptr<Reader>&& InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader>& reader);
+    delete_unique_ptr<Reader>&& InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader>&& reader);
+    AttributeFactory& GetAttributeFactory(const std::string& field_name);
 
   public:
     Analyzer();

@@ -26,7 +26,7 @@ TokenStream::TokenStream(const AttributeSource& input)
   : AttributeSource(input) {
 }
 
-TokenStream::TokenStream(AttributeFactory* factory)
+TokenStream::TokenStream(AttributeFactory& factory)
   : AttributeSource(factory) {
 }
 
@@ -35,6 +35,9 @@ TokenStream::~TokenStream() {
 
 void TokenStream::End() {
   EndAttributes();
+}
+
+void TokenStream::Close() {
 }
 
 /**
@@ -64,7 +67,7 @@ Tokenizer::Tokenizer()
   : TokenStream() {
 }
 
-Tokenizer::Tokenizer(AttributeFactory* factory)
+Tokenizer::Tokenizer(AttributeFactory& factory)
   : TokenStream(factory) {
 }
 
@@ -80,17 +83,17 @@ uint32_t Tokenizer::CorrectOffset(const uint32_t current_off) {
   }
 }
 
-void Tokenizer::SetReader(delete_unique_ptr<Reader>& input) {
+void Tokenizer::SetReader(delete_unique_ptr<Reader>&& input) {
   if(input.get() != nullptr) {
     throw std::runtime_error("TokenStream contract violation: Close() call missing");
   }
 
-  input_pending = std::move(input);
+  input_pending = std::forward<delete_unique_ptr<Reader>>(input);
   SetReaderTestPoint();
 }
 
 void Tokenizer::Reset() {
-  input.reset(input_pending.release());
+  input = std::move(input_pending);
 }
 
 void Tokenizer::Close() {

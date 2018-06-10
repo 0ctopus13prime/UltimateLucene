@@ -19,8 +19,8 @@ TokenStreamComponents::TokenStreamComponents(Tokenizer* source)
     sink(source) {
 }
 
-void TokenStreamComponents::SetReader(delete_unique_ptr<Reader>& reader) {
-  source->SetReader(reader);
+void TokenStreamComponents::SetReader(delete_unique_ptr<Reader>&& reader) {
+  source->SetReader(std::forward<delete_unique_ptr<Reader>>(reader));
 }
 
 TokenStream* TokenStreamComponents::GetTokenStream() {
@@ -68,7 +68,7 @@ PreDefinedReuseStrategy PER_FIELD_REUSE_STRATEGY = PreDefinedReuseStrategy();
 /**
  *  StringTokenStream
  */
-StringTokenStream::StringTokenStream(AttributeFactory* input, std::string& value, size_t length)
+StringTokenStream::StringTokenStream(AttributeFactory& input, std::string& value, size_t length)
   : TokenStream(input),
     value(value),
     length(length),
@@ -113,20 +113,32 @@ Analyzer::Analyzer(ReuseStrategy& reuse_strategy)
 Analyzer::~Analyzer() {
 }
 
-delete_unique_ptr<Reader> Analyzer::InitReader(const std::string& field_name, delete_unique_ptr<Reader> reader) {
-  return reader;
+delete_unique_ptr<Reader>&& Analyzer::InitReader(const std::string& field_name, delete_unique_ptr<Reader>& reader) {
+  return std::move(reader);
 }
 
-delete_unique_ptr<Reader> Analyzer::InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader> reader) {
-  return reader;
+delete_unique_ptr<Reader>&& Analyzer::InitReader(const std::string& field_name, delete_unique_ptr<Reader>&& reader) {
+  return std::forward<delete_unique_ptr<Reader>>(reader);
 }
 
-AttributeFactory* Analyzer::GetAttributeFactory(const std::string& field_name) {
-  return TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY;
+delete_unique_ptr<Reader>&& Analyzer::InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader>& reader) {
+  return std::move(reader);
 }
 
-delete_unique_ptr<TokenStream> Analyzer::Normalize(const std::string& field_name, delete_unique_ptr<TokenStream> in) {
-  return in;
+delete_unique_ptr<Reader>&& Analyzer::InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader>&& reader) {
+  return std::forward<delete_unique_ptr<Reader>>(reader);
+}
+
+delete_unique_ptr<TokenStream>&& Analyzer::Normalize(const std::string& field_name, delete_unique_ptr<TokenStream>& in) {
+  return std::move(in);
+}
+
+delete_unique_ptr<TokenStream>&& Analyzer::Normalize(const std::string& field_name, delete_unique_ptr<TokenStream>&& in) {
+  return std::forward<delete_unique_ptr<TokenStream>>(in);
+}
+
+AttributeFactory& Analyzer::GetAttributeFactory(const std::string& field_name) {
+  return *TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY;
 }
 
 TokenStream* Analyzer::GetTokenStream(const std::string& field_name, Reader* reader) {
@@ -138,7 +150,7 @@ TokenStream* Analyzer::GetTokenStream(const std::string& field_name, Reader* rea
     reuse_strategy.SetReusableComponents(*this, field_name, components);
   }
 
-  components->SetReader(r);
+  components->SetReader(std::move(r));
   return components->GetTokenStream();
 }
 
@@ -157,7 +169,7 @@ TokenStream* Analyzer::GetTokenStream(const std::string& field_name, const std::
         [](Reader*){} // No destrucion here, as reusable_string_reader will be reused next time
       )
     );
-  components->SetReader(r);
+  components->SetReader(std::move(r));
   return components->GetTokenStream();
 }
 
@@ -182,29 +194,29 @@ BytesRef Analyzer::Normalize(const std::string& field_name, const std::string& t
     }
   }
 
-  AttributeFactory* attribute_factory = GetAttributeFactory(field_name);
-  StringTokenStream sts(attribute_factory, filtered_text, filtered_text.size());
-  delete_unique_ptr<TokenStream> ts = Normalize(field_name,
+  AttributeFactory& attribute_factory = GetAttributeFactory(field_name);
+  StringTokenStream str_token_stream(attribute_factory, filtered_text, filtered_text.size());
+  delete_unique_ptr<TokenStream> token_stream = Normalize(field_name,
     delete_unique_ptr<TokenStream>(
-      &sts,
-      [](TokenStream*){} // No destruction. It's in heap space
+      &str_token_stream,
+      [](TokenStream*){} // No destruction. It's in stack space
     )
   );
 
-  std::shared_ptr<TermToBytesRefAttribute> term_att = ts->AddAttribute<TermToBytesRefAttribute>();
-  ts->Reset();
+  std::shared_ptr<TermToBytesRefAttribute> term_att = token_stream->AddAttribute<TermToBytesRefAttribute>();
+  token_stream->Reset();
 
-  if(ts->IncrementToken() == false) {
+  if(token_stream->IncrementToken() == false) {
     throw std::runtime_error("The normalization token stream is expected to produce exactly 1 token, but go 0 for analyzer this and input '" + text + "'");
   }
 
   BytesRef& ref = term_att->GetBytesRef();
 
-  if(ts->IncrementToken()) {
+  if(token_stream->IncrementToken()) {
     throw std::runtime_error("The normalization token stream is expected to produce exactly 1 token, but go 0 for analyzer this and input '" + text + "'");
   }
 
-  ts->End();
+  token_stream->End();
 
   return ref;
 }

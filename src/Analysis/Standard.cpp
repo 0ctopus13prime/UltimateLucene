@@ -145,7 +145,7 @@ StandardTokenizer::StandardTokenizer()
     scanner(*input) {
 }
 
-StandardTokenizer::StandardTokenizer(AttributeFactory* factory)
+StandardTokenizer::StandardTokenizer(AttributeFactory& factory)
   : Tokenizer(factory),
     skipped_positions(),
     max_token_length(),

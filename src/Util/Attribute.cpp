@@ -67,6 +67,7 @@ AttributeFactory::AttributeFactory() {
 /**
  * DefaultAttributeFactory
  */
+AttributeFactory::DefaultAttributeFactory DEFAULT_ATTRIBUTE_FACTORY();
 
 AttributeFactory::DefaultAttributeFactory::DefaultAttributeFactory() {
 }
@@ -83,7 +84,7 @@ AttributeImpl* AttributeFactory::DefaultAttributeFactory::CreateAttributeInstanc
  * AttributeSource
  */
 AttributeSource::AttributeSource()
-  : AttributeSource(new AttributeFactory::DefaultAttributeFactory()) {
+  : AttributeSource(DEFAULT_ATTRIBUTE_FACTORY) {
 }
 
 AttributeSource::AttributeSource(const AttributeSource& other)
@@ -91,23 +92,17 @@ AttributeSource::AttributeSource(const AttributeSource& other)
     attributes(other.attributes),
     attribute_impls(other.attribute_impls),
     factory(other.factory) {
-  if(factory == nullptr) {
-    throw std::invalid_argument("AttributeFactory must not be null");
-  }
 }
 
-AttributeSource::AttributeSource(AttributeFactory* factory)
+AttributeSource::AttributeSource(AttributeFactory& factory)
   : current_state(new AttributeSource::State()),
     attributes(),
     attribute_impls(),
     factory(factory) {
-  if(factory == nullptr) {
-    throw std::invalid_argument("AttributeFactory must not be null");
-  }
 }
 
 AttributeFactory& AttributeSource::GetAttributeFactory() const {
-  return *factory;
+  return factory;
 }
 
 void AttributeSource::AddAttributeImpl(AttributeImpl* attr_impl) {
@@ -256,7 +251,7 @@ AttributeSource::State::~State() {
 }
 
 AttributeSource::State& AttributeSource::State::operator=(const AttributeSource::State& other) {
-  ~State();
+  this->~State();
 
   attribute = other.attribute->Clone();
   delete_attribute = true;
@@ -270,7 +265,7 @@ AttributeSource::State& AttributeSource::State::operator=(const AttributeSource:
 }
 
 AttributeSource::State& AttributeSource::State::operator=(AttributeSource::State&& other) {
-  ~State();
+  this->~State();
 
   attribute = other.attribute;
   next = other.next;
