@@ -141,9 +141,9 @@ AttributeFactory& Analyzer::GetAttributeFactory(const std::string& field_name) {
   return *TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY;
 }
 
-TokenStream* Analyzer::GetTokenStream(const std::string& field_name, Reader* reader) {
+TokenStream* Analyzer::GetTokenStream(const std::string& field_name, Reader&& reader) {
   TokenStreamComponents* components = reuse_strategy.GetReusableComponents(*this, field_name);
-  delete_unique_ptr<Reader> r = InitReader(field_name, std::unique_ptr<Reader, std::function<void(Reader*)>>(reader, std::default_delete<Reader>()));
+  delete_unique_ptr<Reader> r = InitReader(field_name, std::unique_ptr<Reader, std::function<void(Reader*)>>(&reader, std::default_delete<Reader>()));
 
   if(components == nullptr) {
     components = CreateComponents(field_name);

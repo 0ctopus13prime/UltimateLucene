@@ -20,6 +20,7 @@ endmacro()
 #######################
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/../include)
 
 add_headers_and_sources(DoochiCore Analysis)
 add_headers_and_sources(DoochiCore Util)

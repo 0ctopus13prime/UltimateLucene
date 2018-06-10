@@ -52,7 +52,7 @@ class ReuseStrategy {
     virtual TokenStreamComponents* GetReusableComponents(Analyzer& analyzer, const std::string& field_name) = 0;
     virtual void SetReusableComponents(Analyzer& analyzer, const std::string& field_name, TokenStreamComponents* components) = 0;
 };
-euseStrategy
+
 class PreDefinedReuseStrategy: public ReuseStrategy {
   public:
     PreDefinedReuseStrategy();
@@ -103,7 +103,7 @@ class Analyzer {
     // Create a new TokenStream with given reader.
     // Parameter reader will be destructed once it is given to this instance.
     // Analyzer have a full ownership of reader.
-    TokenStream* GetTokenStream(const std::string& field_name, Reader* reader);
+    TokenStream* GetTokenStream(const std::string& field_name, Reader&& reader);
     TokenStream* GetTokenStream(const std::string& field_name, const std::string& text);
     BytesRef Normalize(const std::string& field_name, const std::string& text);
     uint32_t GetPositionIncrementGap(const std::string& field_name);

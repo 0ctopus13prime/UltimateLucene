@@ -1,0 +1,2 @@
+add_executable(TokenStreamTests TokenStreamTests.cpp)
+target_link_libraries(TokenStreamTests gtest pthread)
