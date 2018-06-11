@@ -103,7 +103,7 @@ int32_t StringReader::Read(char* buf, const uint32_t off, const uint32_t len) {
   iss.readsome(buf + off, len);
 }
 
-size_t StringReader::Skip(const unsigned long n) {
+uint64_t StringReader::Skip(const uint64_t n) {
   iss.seekg(n);
 }
 

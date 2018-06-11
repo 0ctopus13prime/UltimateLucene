@@ -19,16 +19,16 @@ TokenStreamComponents::TokenStreamComponents(Tokenizer* source)
     sink(source) {
 }
 
-void TokenStreamComponents::SetReader(delete_unique_ptr<Reader>&& reader) {
-  source->SetReader(std::forward<delete_unique_ptr<Reader>>(reader));
+void TokenStreamComponents::SetReader(Reader& reader) {
+  source->SetReader(reader);
 }
 
-TokenStream* TokenStreamComponents::GetTokenStream() {
-  return sink.get();
+TokenStream& TokenStreamComponents::GetTokenStream() {
+  return *sink.get();
 }
 
-Tokenizer* TokenStreamComponents::GetTokenizer() {
-  return source.get();
+Tokenizer& TokenStreamComponents::GetTokenizer() {
+  return *source.get();
 }
 
 StringReader& TokenStreamComponents::GetReusableStringReader() {
@@ -113,12 +113,8 @@ Analyzer::Analyzer(ReuseStrategy& reuse_strategy)
 Analyzer::~Analyzer() {
 }
 
-delete_unique_ptr<Reader>&& Analyzer::InitReader(const std::string& field_name, delete_unique_ptr<Reader>& reader) {
-  return std::move(reader);
-}
-
-delete_unique_ptr<Reader>&& Analyzer::InitReader(const std::string& field_name, delete_unique_ptr<Reader>&& reader) {
-  return std::forward<delete_unique_ptr<Reader>>(reader);
+Reader& Analyzer::InitReader(const std::string& field_name, Reader& reader) {
+  return reader;
 }
 
 delete_unique_ptr<Reader>&& Analyzer::InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader>& reader) {
@@ -141,35 +137,28 @@ AttributeFactory& Analyzer::GetAttributeFactory(const std::string& field_name) {
   return *TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY;
 }
 
-TokenStream* Analyzer::GetTokenStream(const std::string& field_name, Reader&& reader) {
+TokenStream& Analyzer::GetTokenStream(const std::string& field_name, Reader& reader) {
   TokenStreamComponents* components = reuse_strategy.GetReusableComponents(*this, field_name);
-  delete_unique_ptr<Reader> r = InitReader(field_name, std::unique_ptr<Reader, std::function<void(Reader*)>>(&reader, std::default_delete<Reader>()));
+  Reader& initialized_reader = InitReader(field_name, reader);
 
   if(components == nullptr) {
     components = CreateComponents(field_name);
     reuse_strategy.SetReusableComponents(*this, field_name, components);
   }
 
-  components->SetReader(std::move(r));
+  components->SetReader(initialized_reader);
   return components->GetTokenStream();
 }
 
-TokenStream* Analyzer::GetTokenStream(const std::string& field_name, const std::string& text) {
+TokenStream& Analyzer::GetTokenStream(const std::string& field_name, const std::string& text) {
   TokenStreamComponents* components = reuse_strategy.GetReusableComponents(*this, field_name);
   if(components == nullptr) {
     components = CreateComponents(field_name);
     reuse_strategy.SetReusableComponents(*this, field_name, components);
   }
 
-  delete_unique_ptr<Reader> r =
-    InitReader(
-      field_name,
-      delete_unique_ptr<Reader>(
-        &components->GetReusableStringReader(),
-        [](Reader*){} // No destrucion here, as reusable_string_reader will be reused next time
-      )
-    );
-  components->SetReader(std::move(r));
+  Reader& initialized_reader = InitReader(field_name, components->GetReusableStringReader());
+  components->SetReader(initialized_reader);
   return components->GetTokenStream();
 }
 

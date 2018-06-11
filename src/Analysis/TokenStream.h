@@ -9,6 +9,7 @@
 #include <Util/Attribute.h>
 #include <Analysis/Attribute.h>
 #include <Analysis/CharacterUtil.h>
+#include <Analysis/Reader.h>
 
 namespace lucene { namespace core { namespace analysis {
 
@@ -34,9 +35,10 @@ class TokenStream: public lucene::core::util::AttributeSource {
 
 class TokenFilter: public TokenStream {
   protected:
-    std::shared_ptr<TokenStream> input;
+    std::unique_ptr<TokenStream> input;
 
   protected:
+    TokenFilter(std::unique_ptr<TokenStream>&& input);
     TokenFilter(TokenStream* input);
 
   public:
@@ -45,10 +47,14 @@ class TokenFilter: public TokenStream {
     void Reset() override;
 };
 
+
 class Tokenizer: public TokenStream {
+  private:
+    static lucene::core::analysis::IllegalStateReader ILLEGAL_STATE_READER;
+
   protected:
-    delete_unique_ptr<Reader> input;
-    delete_unique_ptr<Reader> input_pending;
+    Reader& input;
+    Reader& input_pending;
 
   protected:
     Tokenizer();
@@ -57,7 +63,7 @@ class Tokenizer: public TokenStream {
 
   public:
     virtual ~Tokenizer();
-    void SetReader(delete_unique_ptr<Reader>&& input);
+    void SetReader(Reader& input);
     void Reset() override;
     void Close();
 
@@ -70,6 +76,7 @@ class LowerCaseFilter: public TokenFilter {
     std::shared_ptr<tokenattributes::CharTermAttribute> term_att;
 
   public:
+      LowerCaseFilter(std::shared_ptr<TokenStream> in);
       LowerCaseFilter(TokenStream* in);
       virtual ~LowerCaseFilter();
       bool IncrementToken() override;
@@ -87,6 +94,7 @@ class CachingTokenFilter: public TokenFilter {
     bool IsCached();
 
   public:
+    CachingTokenFilter(std::shared_ptr<TokenStream> in);
     CachingTokenFilter(TokenStream* in);
     virtual ~CachingTokenFilter();
     void End() override;
@@ -103,6 +111,7 @@ class FilteringTokenFilter: public TokenFilter {
     virtual bool Accept() = 0;
 
   public:
+    FilteringTokenFilter(std::shared_ptr<TokenStream> in);
     FilteringTokenFilter(TokenStream* in);
     virtual ~FilteringTokenFilter();
     bool IncrementToken() override;
@@ -121,6 +130,8 @@ class StopFilter: public FilteringTokenFilter {
   public:
     StopFilter(TokenStream* in, characterutil::CharSet& stop_words);
     StopFilter(TokenStream* in, characterutil::CharSet&& stop_words);
+    StopFilter(std::shared_ptr<TokenStream> in, characterutil::CharSet& stop_words);
+    StopFilter(std::shared_ptr<TokenStream> in, characterutil::CharSet&& stop_words);
     virtual ~StopFilter();
 
     static characterutil::CharSet MakeStopSet(std::vector<std::string>& stop_words, bool ignore_case = false);

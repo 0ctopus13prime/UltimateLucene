@@ -60,7 +60,7 @@ INTEGER1 CheckFromToIndex(INTEGER1 from_index, INTEGER2 to_index, INTEGER3 lengt
 
 template <typename INTEGER1, typename INTEGER2, typename INTEGER3>
 INTEGER1 CheckFromIndexSize(INTEGER1 from_index, INTEGER2 size, INTEGER3 length) {
-  long end = from_index + size;
+  int64_t end = from_index + size;
   if(from_index < 0 || from_index > end || end > length) {
     throw std::invalid_argument("Range [" + std::to_string(from_index) + ", " + std::to_string(from_index) + " + " + std::to_string(size) + ") out of bounds for length " + std::to_string(length));
   }

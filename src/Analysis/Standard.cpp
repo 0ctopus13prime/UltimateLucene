@@ -142,7 +142,7 @@ StandardTokenizer::StandardTokenizer()
     offset_att(AddAttribute<tokenattributes::OffsetAttribute>()),
     pos_incr_att(AddAttribute<tokenattributes::PositionIncrementAttribute>()),
     type_att(AddAttribute<tokenattributes::TypeAttribute>()),
-    scanner(*input) {
+    scanner(input) {
 }
 
 StandardTokenizer::StandardTokenizer(AttributeFactory& factory)
@@ -153,7 +153,7 @@ StandardTokenizer::StandardTokenizer(AttributeFactory& factory)
     offset_att(AddAttribute<tokenattributes::OffsetAttribute>()),
     pos_incr_att(AddAttribute<tokenattributes::PositionIncrementAttribute>()),
     type_att(AddAttribute<tokenattributes::TypeAttribute>()),
-    scanner(*input) {
+    scanner(input) {
 }
 
 StandardTokenizer::~StandardTokenizer() {
@@ -211,11 +211,11 @@ void StandardTokenizer::End() {
 
 void StandardTokenizer::Close() {
   Tokenizer::Close();
-  scanner.YyReset(*input.get());
+  scanner.YyReset(input);
 }
 
 void StandardTokenizer::Reset() {
   Tokenizer::Reset();
-  scanner.YyReset(*input.get());
+  scanner.YyReset(input);
   skipped_positions = 0;
 }

@@ -28,10 +28,10 @@ class TokenStreamComponents {
      */
     TokenStreamComponents(Tokenizer* source, TokenStream* result);
     TokenStreamComponents(Tokenizer* source);
-    TokenStream* GetTokenStream();
-    Tokenizer* GetTokenizer();
+    TokenStream& GetTokenStream();
+    Tokenizer& GetTokenizer();
     StringReader& GetReusableStringReader();
-    virtual void SetReader(delete_unique_ptr<Reader>&& reader);
+    virtual void SetReader(Reader& reader);
 };
 
 class ReuseStrategy {
@@ -87,10 +87,9 @@ class Analyzer {
 
   protected:
     virtual TokenStreamComponents* CreateComponents(const std::string& field_name) = 0;
+    virtual Reader& InitReader(const std::string& field_name, Reader& reader);
     delete_unique_ptr<TokenStream>&& Normalize(const std::string& field_name, delete_unique_ptr<TokenStream>& in);
     delete_unique_ptr<TokenStream>&& Normalize(const std::string& field_name, delete_unique_ptr<TokenStream>&& in);
-    delete_unique_ptr<Reader>&& InitReader(const std::string& field_name, delete_unique_ptr<Reader>& reader);
-    delete_unique_ptr<Reader>&& InitReader(const std::string& field_name, delete_unique_ptr<Reader>&& reader);
     delete_unique_ptr<Reader>&& InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader>& reader);
     delete_unique_ptr<Reader>&& InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader>&& reader);
     AttributeFactory& GetAttributeFactory(const std::string& field_name);
@@ -103,8 +102,8 @@ class Analyzer {
     // Create a new TokenStream with given reader.
     // Parameter reader will be destructed once it is given to this instance.
     // Analyzer have a full ownership of reader.
-    TokenStream* GetTokenStream(const std::string& field_name, Reader&& reader);
-    TokenStream* GetTokenStream(const std::string& field_name, const std::string& text);
+    TokenStream& GetTokenStream(const std::string& field_name, Reader& reader);
+    TokenStream& GetTokenStream(const std::string& field_name, const std::string& text);
     BytesRef Normalize(const std::string& field_name, const std::string& text);
     uint32_t GetPositionIncrementGap(const std::string& field_name);
     uint32_t GetOffsetGap(const std::string& field_name);

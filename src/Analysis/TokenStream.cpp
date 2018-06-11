@@ -44,6 +44,11 @@ void TokenStream::Close() {
  *  TokenFilter
  */
 
+TokenFilter::TokenFilter(std::unique_ptr<TokenStream>&& input)
+  : TokenStream(*input),
+    input(std::forward<std::unique_ptr<TokenStream>>(input)) {
+}
+
 TokenFilter::TokenFilter(TokenStream* input)
   : TokenStream(*input),
     input(input) {
@@ -63,32 +68,37 @@ void TokenFilter::Reset() {
 /**
  *  Tokenizer
  */
+IllegalStateReader Tokenizer::ILLEGAL_STATE_READER;
+
 Tokenizer::Tokenizer()
-  : TokenStream() {
+  : TokenStream(),
+    input(ILLEGAL_STATE_READER),
+    input_pending(ILLEGAL_STATE_READER) {
 }
 
 Tokenizer::Tokenizer(AttributeFactory& factory)
-  : TokenStream(factory) {
+  : TokenStream(factory),
+    input(ILLEGAL_STATE_READER),
+    input_pending(ILLEGAL_STATE_READER) {
 }
 
 Tokenizer::~Tokenizer() {
 }
 
 uint32_t Tokenizer::CorrectOffset(const uint32_t current_off) {
-  Reader* reader = input.get();
-  if(characterutil::CharFilter* char_filter = dynamic_cast<characterutil::CharFilter*>(reader)) {
+  if(characterutil::CharFilter* char_filter = dynamic_cast<characterutil::CharFilter*>(&input)) {
     char_filter->CorrectOffset(current_off);
   } else {
     return current_off;
   }
 }
 
-void Tokenizer::SetReader(delete_unique_ptr<Reader>&& input) {
-  if(input.get() != nullptr) {
-    throw std::runtime_error("TokenStream contract violation: Close() call missing");
+void Tokenizer::SetReader(Reader& input) {
+  if(dynamic_cast<IllegalStateReader*>(&input) == nullptr) {
+    throw std::runtime_error("TokenStream contract violation: close() call missing");
   }
 
-  input_pending = std::forward<delete_unique_ptr<Reader>>(input);
+  input_pending = input;
   SetReaderTestPoint();
 }
 
@@ -97,8 +107,9 @@ void Tokenizer::Reset() {
 }
 
 void Tokenizer::Close() {
-  input.reset();
-  input_pending.reset();
+  input.Close();
+  input = ILLEGAL_STATE_READER;
+  input_pending = ILLEGAL_STATE_READER;
 }
 
 void Tokenizer::SetReaderTestPoint() {
