@@ -1,2 +1,2 @@
 add_executable(BytesRefTests BytesRefTests.cpp)
-target_link_libraries(BytesRefTests DoochiCore)
+target_link_libraries(BytesRefTests DoochiCore gtest pthread)
