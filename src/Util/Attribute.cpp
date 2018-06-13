@@ -50,6 +50,8 @@ AttributeFactory::ATTR_IMPL_TABLE = {
     {typeid(TypeAttribute).hash_code(), [](){ return new TypeAttributeImpl(); }}
  };
 
+AttributeFactory::AttributeFactory() {
+}
 
 AttributeImplGenerator AttributeFactory::FindAttributeImplGenerator(type_id attr_type_id) {
   auto it = AttributeFactory::ATTR_IMPL_TABLE.find(attr_type_id);
@@ -61,19 +63,14 @@ AttributeImplGenerator AttributeFactory::FindAttributeImplGenerator(type_id attr
   return it->second;
 }
 
-AttributeFactory::AttributeFactory() {
-}
-
 /**
  * DefaultAttributeFactory
  */
 AttributeFactory::DefaultAttributeFactory DEFAULT_ATTRIBUTE_FACTORY();
 
-AttributeFactory::DefaultAttributeFactory::DefaultAttributeFactory() {
-}
+AttributeFactory::DefaultAttributeFactory::DefaultAttributeFactory() { }
 
-AttributeFactory::DefaultAttributeFactory::~DefaultAttributeFactory() {
-}
+AttributeFactory::DefaultAttributeFactory::~DefaultAttributeFactory() { }
 
 AttributeImpl* AttributeFactory::DefaultAttributeFactory::CreateAttributeInstance(type_id attr_type_id) {
   auto generator = AttributeFactory::FindAttributeImplGenerator(attr_type_id);

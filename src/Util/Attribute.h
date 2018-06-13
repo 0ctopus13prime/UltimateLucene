@@ -1,6 +1,9 @@
 #ifndef LUCENE_CORE_UTIL_ATTRIBUTE_H_
 #define LUCENE_CORE_UTIL_ATTRIBUTE_H_
 
+#include <stdexcept>
+#include <typeinfo>
+#include <type_traits>
 #include <unordered_map>
 #include <vector>
 #include <unordered_set>
@@ -82,10 +85,8 @@ class AttributeFactory::StaticImplementationAttributeFactory: public AttributeFa
     static std::unordered_set<type_id> DEFAULT_ATTR_TYPE_IDS;
 
   public:
-    StaticImplementationAttributeFactory() {
-    }
-    virtual ~StaticImplementationAttributeFactory() {
-    }
+    StaticImplementationAttributeFactory() { }
+    virtual ~StaticImplementationAttributeFactory() { }
     AttributeImpl* CreateAttributeInstance(type_id attr_type_id) override {
       if(DEFAULT_ATTR_TYPE_IDS.find(attr_type_id) != DEFAULT_ATTR_TYPE_IDS.end()) {
         return delegate.CreateAttributeInstance(attr_type_id);
@@ -149,10 +150,11 @@ class AttributeSource {
 
     template <typename ATTR>
     std::shared_ptr<ATTR> AddAttribute() {
-      auto attr_it = attributes.find(typeid(ATTR).hash_code());
+      type_id id = typeid(ATTR).hash_code();
+      auto attr_it = attributes.find(id);
       if(attr_it == attribute_impls.end()) {
         AddAttributeImpl(factory.CreateAttributeInstance(typeid(ATTR).hash_code()));
-        attr_it = attributes.find(typeid(ATTR).hash_code());
+        attr_it = attributes.find(id);
       }
 
       return std::dynamic_pointer_cast<ATTR>(attr_it->second);
