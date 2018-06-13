@@ -1,7 +1,6 @@
 #include <memory>
 #include <string>
 #include <stdexcept>
-#include <typeinfo>
 #include <Analysis/AttributeImpl.h>
 #include <Util/ArrayUtil.h>
 #include <Util/Attribute.h>
@@ -48,8 +47,8 @@ bool BytesTermAttributeImpl::operator==(BytesTermAttributeImpl& other) {
   return (bytes == other.bytes);
 }
 
-std::vector<size_t> BytesTermAttributeImpl::Attributes() {
-  return {typeid(BytesTermAttribute).hash_code()};
+std::vector<type_id> BytesTermAttributeImpl::Attributes() {
+  return {Attribute::TypeId<BytesTermAttribute>()};
 }
 
 void BytesTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -106,8 +105,8 @@ bool FlagsAttributeImpl::operator==(const FlagsAttributeImpl& other) {
   return (flags = other.flags);
 }
 
-std::vector<size_t> FlagsAttributeImpl::Attributes() {
-  return {typeid(FlagsAttribute).hash_code()};
+std::vector<type_id> FlagsAttributeImpl::Attributes() {
+  return {Attribute::TypeId<FlagsAttribute>()};
 }
 
 void FlagsAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -162,8 +161,8 @@ bool KeywordAttributeImpl::operator==(const KeywordAttributeImpl& other) {
   return (keyword == other.keyword);
 }
 
-std::vector<size_t> KeywordAttributeImpl::Attributes() {
-  return {typeid(KeywordAttribute).hash_code()};
+std::vector<type_id> KeywordAttributeImpl::Attributes() {
+  return {Attribute::TypeId<KeywordAttribute>()};
 }
 
 void KeywordAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -227,8 +226,8 @@ bool OffsetAttributeImpl::operator==(const OffsetAttributeImpl& other) {
   return (start_offset == other.start_offset && end_offset == other.end_offset);
 }
 
-std::vector<size_t> OffsetAttributeImpl::Attributes() {
-  return {typeid(OffsetAttribute).hash_code()};
+std::vector<type_id> OffsetAttributeImpl::Attributes() {
+  return {Attribute::TypeId<OffsetAttribute>()};
 }
 
 void OffsetAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -289,8 +288,8 @@ void PayloadAttributeImpl::SetPayload(BytesRef& new_payload) {
   payload = new_payload;
 }
 
-std::vector<size_t> PayloadAttributeImpl::Attributes() {
-  return {typeid(PayloadAttribute).hash_code()};
+std::vector<type_id> PayloadAttributeImpl::Attributes() {
+  return {Attribute::TypeId<PayloadAttribute>()};
 }
 
 void PayloadAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -353,8 +352,8 @@ bool PositionIncrementAttributeImpl::operator==(PositionIncrementAttributeImpl& 
   return (position_increment == other.position_increment);
 }
 
-std::vector<size_t> PositionIncrementAttributeImpl::Attributes() {
-  return {typeid(PositionIncrementAttribute).hash_code()};
+std::vector<type_id> PositionIncrementAttributeImpl::Attributes() {
+  return {Attribute::TypeId<PositionIncrementAttribute>()};
 }
 
 void PositionIncrementAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -412,8 +411,8 @@ uint32_t PositionLengthAttributeImpl::GetPositionLength() {
   return position_length;
 }
 
-std::vector<size_t> PositionLengthAttributeImpl::Attributes() {
-  return {typeid(PositionLengthAttribute).hash_code()};
+std::vector<type_id> PositionLengthAttributeImpl::Attributes() {
+  return {Attribute::TypeId<PositionLengthAttribute>()};
 }
 
 void PositionLengthAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -471,8 +470,8 @@ uint32_t TermFrequencyAttributeImpl::GetTermFrequency() {
   return term_frequency;
 }
 
-std::vector<size_t> TermFrequencyAttributeImpl::Attributes() {
-  return {typeid(TermFrequencyAttribute).hash_code()};
+std::vector<type_id> TermFrequencyAttributeImpl::Attributes() {
+  return {Attribute::TypeId<TermFrequencyAttribute>()};
 }
 
 void TermFrequencyAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -530,8 +529,8 @@ void TypeAttributeImpl::SetType(const std::string& new_type) {
   type = new_type;
 }
 
-std::vector<size_t> TypeAttributeImpl::Attributes() {
-  return {typeid(TypeAttribute).hash_code()};
+std::vector<type_id> TypeAttributeImpl::Attributes() {
+  return {Attribute::TypeId<TypeAttribute>()};
 }
 
 void TypeAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -679,8 +678,8 @@ bool CharTermAttributeImpl::operator==(CharTermAttributeImpl& other) {
   return false;
 }
 
-std::vector<size_t> CharTermAttributeImpl::Attributes() {
-  return {typeid(CharTermAttribute).hash_code(), typeid(TermToBytesRefAttribute).hash_code()};
+std::vector<type_id> CharTermAttributeImpl::Attributes() {
+  return {Attribute::TypeId<CharTermAttribute>(), Attribute::TypeId<TermToBytesRefAttribute>()};
 }
 
 void CharTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
@@ -709,6 +708,7 @@ AttributeImpl* CharTermAttributeImpl::Clone() {
 /**
  *  PackedTokenAttributeImpl
  */
+
 PackedTokenAttributeImpl::PackedTokenAttributeImpl()
   : CharTermAttributeImpl(),
     start_offset(0),
@@ -787,15 +787,15 @@ PackedTokenAttributeImpl& PackedTokenAttributeImpl::operator=(const PackedTokenA
   term_frequency = other.term_frequency;
 }
 
-std::vector<size_t> PackedTokenAttributeImpl::Attributes() {
+std::vector<type_id> PackedTokenAttributeImpl::Attributes() {
   return {
-    typeid(CharTermAttribute).hash_code(),
-    typeid(TermToBytesRefAttribute).hash_code(),
-    typeid(TypeAttribute).hash_code(),
-    typeid(PositionIncrementAttribute).hash_code(),
-    typeid(PositionLengthAttribute).hash_code(),
-    typeid(OffsetAttribute).hash_code(),
-    typeid(TermFrequencyAttribute).hash_code()
+    Attribute::TypeId<CharTermAttribute>(),
+    Attribute::TypeId<TermToBytesRefAttribute>(),
+    Attribute::TypeId<TypeAttribute>(),
+    Attribute::TypeId<PositionIncrementAttribute>(),
+    Attribute::TypeId<PositionLengthAttribute>(),
+    Attribute::TypeId<OffsetAttribute>(),
+    Attribute::TypeId<TermFrequencyAttribute>()
   };
 }
 

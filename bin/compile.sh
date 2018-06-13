@@ -4,6 +4,7 @@ help() {
   echo "Compile Doochi-Core source code"
   echo "  -h : Help, print manual"
   echo "  -c : Clean and compile"
+  echo "  -t : Execute all tests"
 
   exit 0
 }
@@ -11,7 +12,7 @@ help() {
 main() {
   local cmd
 
-  while getopts "ch" cmd
+  while getopts "cht" cmd
   do
     case "$cmd" in
       c)
@@ -19,6 +20,9 @@ main() {
       ;;
       h)
         help
+      ;;
+      t)
+        TESTS="true"
       ;;
       ?)
         help
@@ -44,6 +48,11 @@ main() {
 
   # Do a make
   cmake --build .
+
+  # Tests if have to
+  if [ "$TESTS" = "true" ]; then
+    $currPath/all-tests.sh
+  fi
 }
 
 main "$@"

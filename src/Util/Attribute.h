@@ -1,6 +1,7 @@
 #ifndef LUCENE_CORE_UTIL_ATTRIBUTE_H_
 #define LUCENE_CORE_UTIL_ATTRIBUTE_H_
 
+#include <algorithm>
 #include <stdexcept>
 #include <typeinfo>
 #include <type_traits>
@@ -18,6 +19,11 @@ using type_id = size_t;
 class Attribute {
   public:
     virtual ~Attribute() {}
+
+    template<typename T>
+    static type_id TypeId() {
+      return typeid(T).hash_code();
+    }
 };
 
 using AttributeReflector = std::function<void(const std::string&/*Attribute class name*/,
@@ -45,10 +51,10 @@ class AttributeFactory {
   public:
     AttributeFactory();
     virtual ~AttributeFactory() {}
+    virtual AttributeImpl* CreateAttributeInstance(const type_id attr_type_id) = 0;
 
-    virtual AttributeImpl* CreateAttributeInstance(type_id attr_type_id) = 0;
-
-    static AttributeImplGenerator FindAttributeImplGenerator(type_id attr_type_id);
+  public:
+    static AttributeImplGenerator FindAttributeImplGenerator(const type_id attr_type_id);
 
     template<typename ATTR_FACTORY, typename ATTR_IMPL>
     static AttributeFactory* GetStaticImplementation() {
@@ -57,7 +63,7 @@ class AttributeFactory {
 
     template<typename ATTR, typename ATTR_IMPL_CLASS>
     static void RegisterAttributeImpl() {
-      ATTR_IMPL_TABLE[typeid(ATTR).hash_code()] = [](){
+      ATTR_IMPL_TABLE[Attribute::TypeId<ATTR>()] = [](){
         return new ATTR_IMPL_CLASS();
       };
     }
@@ -73,7 +79,7 @@ class AttributeFactory::DefaultAttributeFactory: public AttributeFactory {
   public:
     DefaultAttributeFactory();
     virtual ~DefaultAttributeFactory();
-    AttributeImpl* CreateAttributeInstance(type_id attr_type_id) override;
+    AttributeImpl* CreateAttributeInstance(const type_id attr_type_id) override;
 };
 
 static AttributeFactory::DefaultAttributeFactory DEFAULT_ATTRIBUTE_FACTORY;
@@ -87,11 +93,14 @@ class AttributeFactory::StaticImplementationAttributeFactory: public AttributeFa
   public:
     StaticImplementationAttributeFactory() { }
     virtual ~StaticImplementationAttributeFactory() { }
-    AttributeImpl* CreateAttributeInstance(type_id attr_type_id) override {
-      if(DEFAULT_ATTR_TYPE_IDS.find(attr_type_id) != DEFAULT_ATTR_TYPE_IDS.end()) {
-        return delegate.CreateAttributeInstance(attr_type_id);
-      } else {
+    AttributeImpl* CreateAttributeInstance(const type_id attr_type_id) override {
+      ATTR_IMPL attr_impl;
+      std::vector<type_id> attributes = attr_impl.Attributes();
+      auto it = std::find(attributes.begin(), attributes.end(), attr_type_id);
+      if(it != attributes.end()) {
         return new ATTR_IMPL();
+      } else {
+        return delegate.CreateAttributeInstance(attr_type_id);
       }
     }
 };
@@ -150,10 +159,10 @@ class AttributeSource {
 
     template <typename ATTR>
     std::shared_ptr<ATTR> AddAttribute() {
-      type_id id = typeid(ATTR).hash_code();
+      type_id id = Attribute::TypeId<ATTR>();
       auto attr_it = attributes.find(id);
       if(attr_it == attribute_impls.end()) {
-        AddAttributeImpl(factory.CreateAttributeInstance(typeid(ATTR).hash_code()));
+        AddAttributeImpl(factory.CreateAttributeInstance(Attribute::TypeId<ATTR>()));
         attr_it = attributes.find(id);
       }
 
@@ -164,7 +173,7 @@ class AttributeSource {
 
     template<typename ATTR>
     bool HasAttribute() {
-      return (attributes.find(typeid(ATTR).hash_code()) != attributes.end());
+      return (attributes.find(Attribute::TypeId<ATTR>()) != attributes.end());
     }
 
     void ClearAttributes();

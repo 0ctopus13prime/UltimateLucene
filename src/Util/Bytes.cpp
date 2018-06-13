@@ -25,7 +25,7 @@ BytesRef::BytesRef(const BytesRef& source)
   : BytesRef(source.bytes.get(), source.offset, source.length, source.capacity) {
 }
 
-BytesRef::BytesRef(char* new_bytes, uint32_t new_offset, uint32_t new_length, uint32_t new_capacity) {
+BytesRef::BytesRef(const char* new_bytes, const uint32_t new_offset, const uint32_t new_length, const uint32_t new_capacity) {
   offset = new_offset;
   length = new_length;
   capacity = new_capacity;
@@ -36,11 +36,11 @@ BytesRef::BytesRef(char* new_bytes, uint32_t new_offset, uint32_t new_length, ui
   assert(IsValid());
 }
 
-BytesRef::BytesRef(char* new_bytes, uint32_t new_capacity)
+BytesRef::BytesRef(const char* new_bytes, const uint32_t new_capacity)
   : BytesRef(new_bytes, 0, new_capacity, new_capacity) {
 }
 
-BytesRef::BytesRef(uint32_t new_capacity)
+BytesRef::BytesRef(const uint32_t new_capacity)
   : bytes(std::shared_ptr<char>(new char[new_capacity], std::default_delete<char[]>())),
     offset(0),
     length(new_capacity),
@@ -48,7 +48,7 @@ BytesRef::BytesRef(uint32_t new_capacity)
   assert(IsValid());
 }
 
-BytesRef::BytesRef(std::string& text) {
+BytesRef::BytesRef(const std::string& text) {
   if(text.empty()) {
     bytes = BytesRef::DEFAULT_BYTES;
     offset = length = 0;

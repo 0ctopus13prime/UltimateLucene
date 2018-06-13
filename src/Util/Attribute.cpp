@@ -1,5 +1,5 @@
-#include <sstream>
 #include <typeinfo>
+#include <sstream>
 #include <stdexcept>
 #include <Util/Attribute.h>
 #include <Analysis/AttributeImpl.h>
@@ -38,22 +38,22 @@ std::string AttributeImpl::ReflectAsString(const bool prepend_att_class) {
  */
 std::unordered_map<type_id, AttributeImplGenerator>
 AttributeFactory::ATTR_IMPL_TABLE = {
-    {typeid(BytesTermAttribute).hash_code(), [](){ return new BytesTermAttributeImpl(); }},
-    {typeid(CharTermAttribute).hash_code(), [](){ return new CharTermAttributeImpl(); }},
-    {typeid(FlagsAttribute).hash_code(), [](){ return new FlagsAttributeImpl(); }},
-    {typeid(KeywordAttribute).hash_code(), [](){ return new KeywordAttributeImpl(); }},
-    {typeid(OffsetAttribute).hash_code(), [](){ return new OffsetAttributeImpl(); }},
-    {typeid(PayloadAttribute).hash_code(), [](){ return new PayloadAttributeImpl(); }},
-    {typeid(PositionIncrementAttribute).hash_code(), [](){ return new PositionIncrementAttributeImpl(); }},
-    {typeid(PositionLengthAttribute).hash_code(), [](){ return new PositionLengthAttributeImpl(); }},
-    {typeid(TermFrequencyAttribute).hash_code(), [](){ return new TermFrequencyAttributeImpl(); }},
-    {typeid(TypeAttribute).hash_code(), [](){ return new TypeAttributeImpl(); }}
+    {Attribute::TypeId<BytesTermAttribute>(), [](){ return new BytesTermAttributeImpl(); }},
+    {Attribute::TypeId<CharTermAttribute>(), [](){ return new CharTermAttributeImpl(); }},
+    {Attribute::TypeId<FlagsAttribute>(), [](){ return new FlagsAttributeImpl(); }},
+    {Attribute::TypeId<KeywordAttribute>(), [](){ return new KeywordAttributeImpl(); }},
+    {Attribute::TypeId<OffsetAttribute>(), [](){ return new OffsetAttributeImpl(); }},
+    {Attribute::TypeId<PayloadAttribute>(), [](){ return new PayloadAttributeImpl(); }},
+    {Attribute::TypeId<PositionIncrementAttribute>(), [](){ return new PositionIncrementAttributeImpl(); }},
+    {Attribute::TypeId<PositionLengthAttribute>(), [](){ return new PositionLengthAttributeImpl(); }},
+    {Attribute::TypeId<TermFrequencyAttribute>(), [](){ return new TermFrequencyAttributeImpl(); }},
+    {Attribute::TypeId<TypeAttribute>(), [](){ return new TypeAttributeImpl(); }}
  };
 
 AttributeFactory::AttributeFactory() {
 }
 
-AttributeImplGenerator AttributeFactory::FindAttributeImplGenerator(type_id attr_type_id) {
+AttributeImplGenerator AttributeFactory::FindAttributeImplGenerator(const type_id attr_type_id) {
   auto it = AttributeFactory::ATTR_IMPL_TABLE.find(attr_type_id);
 
   if(it == AttributeFactory::ATTR_IMPL_TABLE.end()) {

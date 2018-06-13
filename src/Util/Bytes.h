@@ -21,11 +21,11 @@ class BytesRef {
 
   public:
     BytesRef();
-    BytesRef(char* bytes, uint32_t offset, uint32_t length, uint32_t capacity);
-    BytesRef(char* bytes, uint32_t capacity);
+    BytesRef(const char* bytes, const uint32_t offset, const uint32_t length, const uint32_t capacity);
+    BytesRef(const char* bytes, const uint32_t capacity);
     BytesRef(const BytesRef& other);
-    BytesRef(uint32_t capacity);
-    BytesRef(std::string& text);
+    BytesRef(const uint32_t capacity);
+    BytesRef(const std::string& text);
     ~BytesRef();
     void ShallowCopyTo(BytesRef& target);
     BytesRef& operator=(const BytesRef& other);
