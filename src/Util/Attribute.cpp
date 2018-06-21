@@ -214,16 +214,15 @@ AttributeSource& AttributeSource::operator=(const AttributeSource& other) {
  *  AttributeSource::State
  */
 AttributeSource::State::State(bool delete_attribute/*=false*/)
-  : attribute(),
+  : attribute(nullptr),
     next(nullptr),
     delete_attribute(delete_attribute) {
 }
 
 AttributeSource::State::State(const AttributeSource::State& other)
-  : attribute(other.attribute->Clone()),
+  : attribute(other.attribute == nullptr ? nullptr : other.attribute->Clone()),
     next(nullptr),
     delete_attribute(true) {
-
   AttributeSource::State* curr = this;
   for(AttributeSource::State* from = other.next ; from != nullptr ; from = from->next) {
     curr->next = new AttributeSource::State(true);
@@ -271,7 +270,7 @@ AttributeSource::State& AttributeSource::State::operator=(AttributeSource::State
   other.next = nullptr;
 }
 
-void AttributeSource::State::CleanAttribute() {
+void AttributeSource::State::CleanAttribute() noexcept {
   if(delete_attribute && attribute) {
     delete attribute;
     attribute = nullptr;

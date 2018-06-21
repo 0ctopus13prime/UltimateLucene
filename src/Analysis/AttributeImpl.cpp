@@ -39,7 +39,7 @@ void BytesTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
   reflector("TermToBytesRefAttribute", "bytes", bytes.UTF8ToString());
 }
 
-bool BytesTermAttributeImpl::operator==(BytesTermAttributeImpl& other) {
+bool BytesTermAttributeImpl::operator==(const BytesTermAttributeImpl& other) const {
   if(this == &other) {
     return true;
   }
@@ -101,8 +101,8 @@ void FlagsAttributeImpl::Clear() {
   flags = 0;
 }
 
-bool FlagsAttributeImpl::operator==(const FlagsAttributeImpl& other) {
-  return (flags = other.flags);
+bool FlagsAttributeImpl::operator==(const FlagsAttributeImpl& other) const {
+  return (flags == other.flags);
 }
 
 std::vector<type_id> FlagsAttributeImpl::Attributes() {
@@ -157,7 +157,7 @@ void KeywordAttributeImpl::Clear() {
   keyword = false;
 }
 
-bool KeywordAttributeImpl::operator==(const KeywordAttributeImpl& other) {
+bool KeywordAttributeImpl::operator==(const KeywordAttributeImpl& other) const {
   return (keyword == other.keyword);
 }
 
@@ -222,7 +222,7 @@ void OffsetAttributeImpl::Clear() {
   start_offset = end_offset = 0;
 }
 
-bool OffsetAttributeImpl::operator==(const OffsetAttributeImpl& other) {
+bool OffsetAttributeImpl::operator==(const OffsetAttributeImpl& other) const {
   return (start_offset == other.start_offset && end_offset == other.end_offset);
 }
 
@@ -272,7 +272,7 @@ void PayloadAttributeImpl::Clear() {
   payload = BytesRef();
 }
 
-bool PayloadAttributeImpl::operator==(PayloadAttributeImpl& other) {
+bool PayloadAttributeImpl::operator==(const PayloadAttributeImpl& other) const {
   if(this == &other) {
     return true;
   }
@@ -344,7 +344,7 @@ void PositionIncrementAttributeImpl::End() {
   position_increment = 0;
 }
 
-bool PositionIncrementAttributeImpl::operator==(PositionIncrementAttributeImpl& other) {
+bool PositionIncrementAttributeImpl::operator==(const PositionIncrementAttributeImpl& other) const {
   if(this == &other) {
     return true;
   }
@@ -395,7 +395,7 @@ void PositionLengthAttributeImpl::Clear() {
   position_length = 1;
 }
 
-bool PositionLengthAttributeImpl::operator==(PositionLengthAttributeImpl& other) {
+bool PositionLengthAttributeImpl::operator==(const PositionLengthAttributeImpl& other) const {
   if(this == &other) {
     return true;
   }
@@ -454,7 +454,7 @@ void TermFrequencyAttributeImpl::Clear() {
   term_frequency = 1;
 }
 
-bool TermFrequencyAttributeImpl::operator==(TermFrequencyAttributeImpl& other) {
+bool TermFrequencyAttributeImpl::operator==(const TermFrequencyAttributeImpl& other) const {
   if(this == &other) {
     return true;
   }
@@ -513,7 +513,7 @@ void TypeAttributeImpl::Clear() {
   type = TypeAttribute::DEFAULT_TYPE;
 }
 
-bool TypeAttributeImpl::operator==(TypeAttributeImpl& other) {
+bool TypeAttributeImpl::operator==(const TypeAttributeImpl& other) const {
   if(this == &other) {
     return true;
   }
@@ -565,7 +565,7 @@ CharTermAttributeImpl::CharTermAttributeImpl()
 CharTermAttributeImpl::CharTermAttributeImpl(const CharTermAttributeImpl& other)
   : term_buffer(arrayutil::CopyOfRange(other.term_buffer, 0, other.term_capacity)),
     term_capacity(other.term_capacity),
-    term_length(other.term_capacity),
+    term_length(other.term_length),
     builder() {
 }
 
@@ -670,7 +670,7 @@ char& CharTermAttributeImpl::operator[](const uint32_t index) {
   return term_buffer[index];
 }
 
-bool CharTermAttributeImpl::operator==(CharTermAttributeImpl& other) {
+bool CharTermAttributeImpl::operator==(const CharTermAttributeImpl& other) const {
   if(term_length == other.term_length) {
     return (std::memcmp(term_buffer, other.term_buffer, term_length) == 0);
   }

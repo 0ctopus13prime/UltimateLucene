@@ -30,8 +30,10 @@ BytesRef::BytesRef(const char* new_bytes, const uint32_t new_offset, const uint3
   length = new_length;
   capacity = new_capacity;
 
-  char* new_byte_arr = arrayutil::CopyOfRange(new_bytes, offset, offset + length);
-  bytes.reset(new_byte_arr);
+  if(length > 0) {
+    char* new_byte_arr = arrayutil::CopyOfRange(new_bytes, offset, offset + length);
+    bytes.reset(new_byte_arr);
+  }
 
   assert(IsValid());
 }

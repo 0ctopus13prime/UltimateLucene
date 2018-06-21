@@ -23,7 +23,7 @@ class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
     void SetBytesRef(BytesRef& bytes) override;
     void Clear() override;
     void ReflectWith(AttributeReflector& reflector) override;
-    bool operator==(BytesTermAttributeImpl& other);
+    bool operator==(const BytesTermAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     BytesTermAttributeImpl& operator=(const BytesTermAttributeImpl& other);
@@ -61,7 +61,7 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     CharTermAttribute& Append(const CharTermAttribute& term_att) override;
     void ReflectWith(AttributeReflector& reflector) override;
     char& operator[](const uint32_t idx) override;
-    bool operator==(CharTermAttributeImpl& other);
+    bool operator==(const CharTermAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     CharTermAttributeImpl& operator=(const CharTermAttributeImpl& other);
@@ -80,7 +80,7 @@ class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
     void SetFlags(const int32_t flags) override;
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
-    bool operator==(const FlagsAttributeImpl& other);
+    bool operator==(const FlagsAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     FlagsAttributeImpl& operator=(const FlagsAttributeImpl& other);
@@ -99,7 +99,7 @@ class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
     void SetKeyword(const bool is_keyword) override;
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
-    bool operator==(const KeywordAttributeImpl& other);
+    bool operator==(const KeywordAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     KeywordAttributeImpl& operator=(const KeywordAttributeImpl& other);
@@ -120,7 +120,7 @@ class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
     uint32_t EndOffset() override;
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
-    bool operator==(const OffsetAttributeImpl& other);
+    bool operator==(const OffsetAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     OffsetAttributeImpl& operator=(const OffsetAttributeImpl& other);
@@ -170,7 +170,7 @@ class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
     virtual ~PayloadAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
-    bool operator==(PayloadAttributeImpl& other);
+    bool operator==(const PayloadAttributeImpl& other) const;
     BytesRef& GetPayload() override;
     void SetPayload(BytesRef& payload) override;
     std::vector<type_id> Attributes() override;
@@ -192,7 +192,7 @@ class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncre
     void ReflectWith(AttributeReflector& reflector) override;
     void End() override;
     void Clear() override;
-    bool operator==(PositionIncrementAttributeImpl& other);
+    bool operator==(const PositionIncrementAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     PositionIncrementAttributeImpl& operator=(const PositionIncrementAttributeImpl& other);
@@ -209,7 +209,7 @@ class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAt
     virtual ~PositionLengthAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
-    bool operator==(PositionLengthAttributeImpl& other);
+    bool operator==(const PositionLengthAttributeImpl& other) const;
     void SetPositionLength(const uint32_t position_length) override;
     uint32_t GetPositionLength() override;
     std::vector<type_id> Attributes() override;
@@ -228,7 +228,7 @@ class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttr
     virtual ~TermFrequencyAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
-    bool operator==(TermFrequencyAttributeImpl& other);
+    bool operator==(const TermFrequencyAttributeImpl& other) const;
     void SetTermFrequency(const uint32_t term_frequency) override;
     uint32_t GetTermFrequency() override;
     std::vector<type_id> Attributes() override;
@@ -247,7 +247,7 @@ class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
     virtual ~TypeAttributeImpl();
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
-    bool operator==(TypeAttributeImpl& other);
+    bool operator==(const TypeAttributeImpl& other) const;
     std::string& Type() override;
     void SetType(const std::string& type) override;
     std::vector<type_id> Attributes() override;

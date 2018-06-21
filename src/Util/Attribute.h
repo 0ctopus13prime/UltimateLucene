@@ -131,7 +131,7 @@ class AttributeSource {
         ~State();
         State& operator=(const State& other);
         State& operator=(State&& other);
-        void CleanAttribute();
+        void CleanAttribute() noexcept;
     };
 
   private:

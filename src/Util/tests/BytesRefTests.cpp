@@ -5,7 +5,7 @@
 
 using namespace lucene::core::util;
 
-TEST(BytesRefTests, BASIC__TEST) {
+TEST(BYTESREF__TESTSs, BASIC__TEST) {
   // Basic test
   std::string name = "doochi";
   BytesRef bytes_ref(name);
@@ -17,8 +17,23 @@ TEST(BytesRefTests, BASIC__TEST) {
   EXPECT_EQ("doochi", got);
 }
 
-TEST(BytesRefTest, SHALLOW__COPY__DEEP__COPY) {
-  // Shallow copy, Deep copy
+TEST(BYTESREF__TESTS, SHALLOW__COPY__DEEP__COPY__FOR__EMPTY__INSTANCE) {
+  // Shallow copy
+  BytesRef bytes_ref1;
+  BytesRef shared_bytes_ref2;
+  bytes_ref1.ShallowCopyTo(shared_bytes_ref2); // Shallow copy
+  EXPECT_EQ(bytes_ref1, shared_bytes_ref2);
+
+  // Deep copy case
+  BytesRef bytes_ref2(bytes_ref1);
+  EXPECT_EQ(bytes_ref1, bytes_ref2);
+
+  BytesRef bytes_ref3 = bytes_ref2;
+  EXPECT_EQ(bytes_ref2, bytes_ref3);
+}
+
+TEST(BYTESREF__TESTS, SHALLOW__COPY__DEEP__COPY) {
+  // Shallow copy
   std::string str = "doochi";
   BytesRef bytes_ref1(str);
   BytesRef shared_bytes_ref2;
@@ -29,7 +44,7 @@ TEST(BytesRefTest, SHALLOW__COPY__DEEP__COPY) {
   EXPECT_EQ('x', shared_bytes_ref2.bytes.get()[0]);
 
   // Deep copy case, Chage single character at 0 index
-  BytesRef bytes_ref2 = bytes_ref1;
+  BytesRef bytes_ref2(bytes_ref1);
   bytes_ref1.bytes.get()[0] = 'd';
   EXPECT_NE(bytes_ref2.bytes.get()[0], bytes_ref1.bytes.get()[0]);
   EXPECT_EQ('x', bytes_ref2.bytes.get()[0]);
@@ -44,7 +59,7 @@ TEST(BytesRefTest, SHALLOW__COPY__DEEP__COPY) {
   EXPECT_EQ(shared_bytes_ref3, bytes_ref2);
 }
 
-TEST(BytesRefTest, EQ__COMPARE) {
+TEST(BYTESREF__TESTS, EQ__COMPARE) {
   // Compare tests
   std::string str1 = "doochi stupid";
   std::string str2 = str1 + " suffix";
@@ -62,7 +77,7 @@ TEST(BytesRefTest, EQ__COMPARE) {
   EXPECT_EQ(shared_bytes_ref1, shared_bytes_ref2);
 }
 
-TEST(BytesRefTest, NOT__EQ__TEST) {
+TEST(BYTESREF__TESTS, NOT__EQ__TEST) {
   std::string str1 = "doochi stupid";
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
@@ -81,7 +96,7 @@ TEST(BytesRefTest, NOT__EQ__TEST) {
   EXPECT_NE(shared_bytes_ref1, shared_bytes_ref2);
 }
 
-TEST(BytesRefTest, LESS__THEN__TEST) {
+TEST(BYTESREF__TESTS, LESS__THEN__TEST) {
   std::string str1 = "doochi stupid";
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
@@ -107,7 +122,7 @@ TEST(BytesRefTest, LESS__THEN__TEST) {
   EXPECT_LT(shared_bytes_ref1, shared_bytes_ref3);
 }
 
-TEST(BytesRefTest, LESS__OR__EQ__TEST) {
+TEST(BYTESREF__TESTS, LESS__OR__EQ__TEST) {
   std::string str1 = "doochi stupid";
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
@@ -133,7 +148,7 @@ TEST(BytesRefTest, LESS__OR__EQ__TEST) {
   EXPECT_LE(shared_bytes_ref1, shared_bytes_ref3);
 }
 
-TEST(BytesRefTest, GREATER__THEN__TEST) {
+TEST(BYTESREF__TESTS, GREATER__THEN__TEST) {
   std::string str1 = "doochi stupid";
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
@@ -159,7 +174,7 @@ TEST(BytesRefTest, GREATER__THEN__TEST) {
   EXPECT_GT(shared_bytes_ref3, shared_bytes_ref1);
 }
 
-TEST(BytesRefTest, GREATER__OR__EQ__TEST) {
+TEST(BYTESREF__TESTS, GREATER__OR__EQ__TEST) {
   std::string str1 = "doochi stupid";
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
@@ -185,7 +200,7 @@ TEST(BytesRefTest, GREATER__OR__EQ__TEST) {
   EXPECT_GE(shared_bytes_ref3, shared_bytes_ref1);
 }
 
-TEST(BytesRefTest, VALIDATION__TEST) {
+TEST(BYTESREF__TESTS, VALIDATION__TEST) {
   BytesRef bytes_ref;
   bytes_ref.offset = 1; // nullptr && offset > length
   try {
