@@ -171,11 +171,107 @@ TEST(ATTRIBUTE__SOURCE__TEST, ETC__TESTS) {
   attr_source.AddAttribute<FlagsAttribute>();
   EXPECT_TRUE(attr_source.HasAttributes());
 
+  EXPECT_TRUE(attr_source.HasAttribute<BytesTermAttribute>());
+  EXPECT_TRUE(attr_source.HasAttribute<CharTermAttribute>());
+  EXPECT_TRUE(attr_source.HasAttribute<FlagsAttribute>());
+  EXPECT_FALSE(attr_source.HasAttribute<TypeAttribute>());
+
   attr_source.RemoveAllAttributes();
   EXPECT_FALSE(attr_source.HasAttributes());
+  EXPECT_FALSE(attr_source.HasAttribute<BytesTermAttribute>());
+  EXPECT_FALSE(attr_source.HasAttribute<CharTermAttribute>());
+  EXPECT_FALSE(attr_source.HasAttribute<FlagsAttribute>());
 
   AttributeSource::State* pstate = attr_source.CaptureState();
   EXPECT_EQ(nullptr, pstate);
+}
+
+void CompareIdenticalAttributeSource(AttributeSource& attr_source1, AttributeSource& attr_source2, bool shared=false) {
+  // Set flags = 13
+  AttributeSource::State* state = attr_source1.CaptureState();
+  std::unique_ptr<AttributeSource::State> guard1(state);
+  AttributeSource::State* curr = state;
+  while(curr != nullptr && !dynamic_cast<FlagsAttribute*>(curr->attribute))
+    curr = curr->next;
+
+  FlagsAttribute* pflags = dynamic_cast<FlagsAttribute*>(curr->attribute);
+  pflags->SetFlags(13);
+  attr_source1.RestoreState(state);
+
+  // Check to see if attr_source2 that is shallow copied has identical(shared) or different flags value
+  AttributeSource::State* replica_state = attr_source2.CaptureState();
+  std::unique_ptr<AttributeSource::State> guard2(replica_state);
+  curr = replica_state;
+  while(curr != nullptr && !dynamic_cast<FlagsAttribute*>(curr->attribute))
+    curr = curr->next;
+  FlagsAttribute* replica_pflags = dynamic_cast<FlagsAttribute*>(curr->attribute);
+
+  if(shared) {
+    EXPECT_EQ(13, replica_pflags->GetFlags());
+  } else {
+    EXPECT_NE(13, replica_pflags->GetFlags());
+  }
+}
+
+TEST(ATTRIBUTE__SOURCE__TEST, ATTRIBUTE__SOURCE__SHALLOW__COPY__TEST) {
+  AttributeSource attr_source1;
+  attr_source1.AddAttribute<BytesTermAttribute>();
+  attr_source1.AddAttribute<CharTermAttribute>();
+  attr_source1.AddAttribute<FlagsAttribute>();
+
+  // Shallow copy
+  AttributeSource attr_source2;
+  attr_source1.ShallowCopyTo(attr_source2);
+
+  EXPECT_TRUE(attr_source2.HasAttribute<BytesTermAttribute>());
+  EXPECT_TRUE(attr_source2.HasAttribute<CharTermAttribute>());
+  EXPECT_TRUE(attr_source2.HasAttribute<FlagsAttribute>());
+
+  CompareIdenticalAttributeSource(attr_source1, attr_source2, true);
+}
+
+TEST(ATTRIBUTE__SOURCE__TEST, ATTRIBUTE__SOURCE__DEEP__COPY__CONSTRUCTOR__TEST) {
+  AttributeSource attr_source1;
+  attr_source1.AddAttribute<BytesTermAttribute>();
+  attr_source1.AddAttribute<CharTermAttribute>();
+  attr_source1.AddAttribute<FlagsAttribute>();
+
+  // Deep copy
+  AttributeSource attr_source2(attr_source1);
+
+  EXPECT_TRUE(attr_source2.HasAttribute<BytesTermAttribute>());
+  EXPECT_TRUE(attr_source2.HasAttribute<CharTermAttribute>());
+  EXPECT_TRUE(attr_source2.HasAttribute<FlagsAttribute>());
+
+  CompareIdenticalAttributeSource(attr_source1, attr_source2, false);
+}
+
+TEST(ATTRIBUTE__SOURCE__TEST, ATTRIBUTE__SOURCE__DEEP__COPY__ASSIGN__TEST) {
+  AttributeSource attr_source1;
+  attr_source1.AddAttribute<BytesTermAttribute>();
+  attr_source1.AddAttribute<CharTermAttribute>();
+  attr_source1.AddAttribute<FlagsAttribute>();
+
+  // Deep copy
+  AttributeSource attr_source2 = attr_source1;
+
+  EXPECT_TRUE(attr_source2.HasAttribute<BytesTermAttribute>());
+  EXPECT_TRUE(attr_source2.HasAttribute<CharTermAttribute>());
+  EXPECT_TRUE(attr_source2.HasAttribute<FlagsAttribute>());
+
+  CompareIdenticalAttributeSource(attr_source1, attr_source2, false);
+}
+
+TEST(ATTRIBUTE__SOURCE__TEST, ATTRIBUTE__REFLECT__TEST) {
+  AttributeSource attr_source;
+  attr_source.AddAttribute<BytesTermAttribute>();
+  attr_source.AddAttribute<CharTermAttribute>();
+  attr_source.AddAttribute<FlagsAttribute>();
+
+  std::cout << "BytesTermAttribute, CharTermAttribute, FlagsAttribute are reflected (name included) -> "
+    << attr_source.ReflectAsString(true) << std::endl;
+  std::cout << "BytesTermAttribute, CharTermAttribute, FlagsAttribute are reflected -> "
+    << attr_source.ReflectAsString(false) << std::endl;
 }
 
 int main(int argc, char* argv[]) {

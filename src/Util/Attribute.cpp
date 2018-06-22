@@ -85,10 +85,13 @@ AttributeSource::AttributeSource()
 }
 
 AttributeSource::AttributeSource(const AttributeSource& other)
-  : state_holder(other.state_holder),
-    attributes(other.attributes),
-    attribute_impls(other.attribute_impls),
+  : state_holder(),
+    attributes(),
+    attribute_impls(),
     factory(other.factory) {
+  for(auto& id_attrimpl : other.attributes) {
+    AddAttributeImpl(id_attrimpl.second->Clone());
+  }
 }
 
 AttributeSource::AttributeSource(AttributeFactory& factory)
@@ -189,18 +192,39 @@ void AttributeSource::RestoreState(AttributeSource::State* state) {
 }
 
 std::string AttributeSource::ReflectAsString(const bool prepend_att) {
-  // TODO Implement this.
-  return "NOOP";
+  std::stringstream buf;
+  AttributeReflector reflector = [&buf, &prepend_att](const std::string& class_name, const std::string& key, const std::string& value){
+    if(buf.tellp() > 0) {
+      buf << ',';
+    }
+    if(prepend_att) {
+      buf << class_name << '#';
+    }
+    buf << key << '=' << (value.empty() ? "null" : value);
+  };
+  ReflectWith(reflector);
+  return buf.str();
 }
 
 void AttributeSource::ReflectWith(AttributeReflector& reflector)  {
-  // TODO Implement this
+  for(AttributeSource::State* state = GetCurrentState() ; state != nullptr ; state = state->next) {
+    state->attribute->ReflectWith(reflector);
+  }
 }
 
 AttributeSource& AttributeSource::operator=(const AttributeSource& other) {
-  attributes = other.attributes;
-  attribute_impls = other.attribute_impls;
+  for(auto& id_attrimpl : other.attributes) {
+    AddAttributeImpl(id_attrimpl.second->Clone());
+  }
   factory = other.factory;
+}
+
+void AttributeSource::ShallowCopyTo(AttributeSource& other) {
+  other.state_holder = state_holder;
+  other.attributes.clear();
+  other.attributes = attributes;
+  other.attribute_impls = attribute_impls;
+  other.factory = factory;
 }
 
 
