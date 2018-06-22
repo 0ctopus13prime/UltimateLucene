@@ -85,14 +85,14 @@ AttributeSource::AttributeSource()
 }
 
 AttributeSource::AttributeSource(const AttributeSource& other)
-  : current_state(other.current_state.get() ? new AttributeSource::State(other.current_state.get()) : new AttributeSource::State()),
+  : state_holder(other.state_holder),
     attributes(other.attributes),
     attribute_impls(other.attribute_impls),
     factory(other.factory) {
 }
 
 AttributeSource::AttributeSource(AttributeFactory& factory)
-  : current_state(new AttributeSource::State()),
+  : state_holder(),
     attributes(),
     attribute_impls(),
     factory(factory) {
@@ -112,7 +112,7 @@ void AttributeSource::AddAttributeImpl(AttributeImpl* attr_impl) {
 
   attribute_impls[typeid(*attr_impl).hash_code()] = attr_impl_shptr;
   // Invalidate state to force recomputation in CaptureState()
-  current_state.reset(nullptr);
+  state_holder.ClearState();
 }
 
 bool AttributeSource::HasAttributes()  {
@@ -120,12 +120,13 @@ bool AttributeSource::HasAttributes()  {
 }
 
 AttributeSource::State* AttributeSource::GetCurrentState() {
-  if(current_state.get() != nullptr || !HasAttributes()) {
-    return current_state.get();
+  AttributeSource::State* current_state = state_holder.GetState();
+  if(current_state != nullptr || !HasAttributes()) {
+    return current_state;
   }
 
-  current_state.reset(new AttributeSource::State());
-  AttributeSource::State* head = current_state.get();
+  state_holder.NewState();
+  AttributeSource::State* head = state_holder.GetState();
   AttributeSource::State* c = head;
   auto it = attribute_impls.begin();
   c->attribute = it->second.get();
@@ -160,7 +161,11 @@ void AttributeSource::RemoveAllAttributes() {
 
 AttributeSource::State* AttributeSource::CaptureState() {
   AttributeSource::State* curr_state = GetCurrentState();
-  return new AttributeSource::State(*curr_state);
+  if(curr_state == nullptr) {
+    return nullptr;
+  } else {
+    return new AttributeSource::State(*curr_state);
+  }
 }
 
 void AttributeSource::RestoreState(AttributeSource::State* state) {
@@ -193,11 +198,6 @@ void AttributeSource::ReflectWith(AttributeReflector& reflector)  {
 }
 
 AttributeSource& AttributeSource::operator=(const AttributeSource& other) {
-  if(AttributeSource::State* ptr = other.current_state.get()) {
-    current_state.reset(new AttributeSource::State(*ptr));
-  } else {
-    current_state.reset();
-  }
   attributes = other.attributes;
   attribute_impls = other.attribute_impls;
   factory = other.factory;
@@ -269,4 +269,39 @@ void AttributeSource::State::CleanAttribute() noexcept {
     delete attribute;
     attribute = nullptr;
   }
+}
+
+/**
+ * AttributeSource::StateHolder
+ */
+std::function<void(AttributeSource::State**)> AttributeSource::StateHolder::SAFE_DELETER = [](State** state_ptr){
+  if(*state_ptr != nullptr) {
+    delete *state_ptr;
+  }
+
+  delete state_ptr;
+};
+
+AttributeSource::StateHolder::StateHolder()
+  : state_ptr(new State*(nullptr), AttributeSource::StateHolder::SAFE_DELETER) {
+}
+
+void AttributeSource::StateHolder::ResetState(State* state) {
+  if(*state_ptr != nullptr) {
+    delete *state_ptr;
+  }
+
+  *state_ptr = state;
+}
+
+AttributeSource::State* AttributeSource::StateHolder::GetState() {
+  return *state_ptr;
+}
+
+void AttributeSource::StateHolder::NewState() {
+  ResetState(new AttributeSource::State());
+}
+
+void AttributeSource::StateHolder::ClearState() {
+  ResetState(nullptr);
 }

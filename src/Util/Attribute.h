@@ -135,8 +135,23 @@ class AttributeSource {
         void CleanAttribute() noexcept;
     };
 
+    class StateHolder {
+      private:
+        static std::function<void(State**)> SAFE_DELETER;
+        std::shared_ptr<State*> state_ptr;
+
+      private:
+        void ResetState(State* state);
+
+      public:
+        StateHolder();
+        void NewState();
+        void ClearState();
+        State* GetState();
+    };
+
   private:
-    std::unique_ptr<State> current_state;
+    StateHolder state_holder;
     // Mapping Attribute's type_id to AttributeImpl instance
     std::unordered_map<type_id, std::shared_ptr<AttributeImpl>> attributes;
     // Mapping AttributeImpl's type_id to AttributeImpl instance

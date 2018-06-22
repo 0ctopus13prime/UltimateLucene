@@ -82,13 +82,13 @@ TEST(ATTRIBUTE__SOURCE__TEST, STATE__CONSTRUCTOR) {
 }
 
 TEST(ATTRIBUTE__SOURCE__TEST, STATE__HANDLING) {
+  // Add 3 attributes
   AttributeSource attr_source;
   attr_source.AddAttribute<BytesTermAttribute>();
   attr_source.AddAttribute<CharTermAttribute>();
   attr_source.AddAttribute<FlagsAttribute>();
 
-
-  // Add 3 attributes
+  // Count test.
   {
     AttributeSource::State* state = attr_source.CaptureState();
     std::unique_ptr<AttributeSource::State> guard(state);
@@ -160,6 +160,22 @@ TEST(ATTRIBUTE__SOURCE__TEST, STATE__HANDLING) {
     FlagsAttribute* new_pflags = dynamic_cast<FlagsAttribute*>(curr->attribute);
     EXPECT_EQ(new_pflags->GetFlags(), 13);
   }
+}
+
+TEST(ATTRIBUTE__SOURCE__TEST, ETC__TESTS) {
+  AttributeSource attr_source;
+  EXPECT_FALSE(attr_source.HasAttributes());
+
+  attr_source.AddAttribute<BytesTermAttribute>();
+  attr_source.AddAttribute<CharTermAttribute>();
+  attr_source.AddAttribute<FlagsAttribute>();
+  EXPECT_TRUE(attr_source.HasAttributes());
+
+  attr_source.RemoveAllAttributes();
+  EXPECT_FALSE(attr_source.HasAttributes());
+
+  AttributeSource::State* pstate = attr_source.CaptureState();
+  EXPECT_EQ(nullptr, pstate);
 }
 
 int main(int argc, char* argv[]) {
