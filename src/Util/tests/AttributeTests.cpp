@@ -81,6 +81,12 @@ TEST(ATTRIBUTE__TEST, ATTRIBUTE__FACTORY__REGISTER) {
       AttributeImpl* Clone() override {
         return new DummyCustomAttributeImpl();
       }
+      DummyCustomAttributeImpl& operator=(const AttributeImpl& other) {
+        return *this;
+      }
+      DummyCustomAttributeImpl& operator=(const DummyCustomAttributeImpl& other) {
+        return DummyCustomAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
+      }
   };
 
   AttributeFactory::RegisterAttributeImpl<DummyCustomAttribute, DummyCustomAttributeImpl>();

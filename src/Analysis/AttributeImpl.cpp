@@ -60,14 +60,19 @@ void BytesTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+BytesTermAttributeImpl& BytesTermAttributeImpl::operator=(const AttributeImpl& other) {
+  const BytesTermAttributeImpl& other_impl = dynamic_cast<const BytesTermAttributeImpl&>(other);
+  bytes = other_impl.bytes;
+  return *this;
+}
+
 BytesTermAttributeImpl& BytesTermAttributeImpl::operator=(const BytesTermAttributeImpl& other) {
-  bytes = other.bytes;
+  return BytesTermAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* BytesTermAttributeImpl::Clone() {
   return new BytesTermAttributeImpl(*this);
 }
-
 
 
 /**
@@ -118,8 +123,14 @@ void FlagsAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+FlagsAttributeImpl& FlagsAttributeImpl::operator=(const AttributeImpl& other) {
+  const FlagsAttributeImpl& other_impl = dynamic_cast<const FlagsAttributeImpl&>(other);
+  flags = other_impl.flags;
+  return *this;
+}
+
 FlagsAttributeImpl& FlagsAttributeImpl::operator=(const FlagsAttributeImpl& other) {
-  flags = other.flags;
+  return FlagsAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* FlagsAttributeImpl::Clone() {
@@ -175,8 +186,15 @@ void KeywordAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+KeywordAttributeImpl& KeywordAttributeImpl::operator=(const AttributeImpl& other) {
+  const KeywordAttributeImpl& other_impl = dynamic_cast<const KeywordAttributeImpl&>(other);
+  keyword = other_impl.keyword;
+
+  return *this;
+}
+
 KeywordAttributeImpl& KeywordAttributeImpl::operator=(const KeywordAttributeImpl& other) {
-  keyword = other.keyword;
+  return KeywordAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* KeywordAttributeImpl::Clone() {
@@ -240,9 +258,16 @@ void OffsetAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+OffsetAttributeImpl& OffsetAttributeImpl::operator=(const AttributeImpl& other) {
+  const OffsetAttributeImpl& other_impl = dynamic_cast<const OffsetAttributeImpl&>(other);
+  start_offset = other_impl.start_offset;
+  end_offset = other_impl.end_offset;
+
+  return *this;
+}
+
 OffsetAttributeImpl& OffsetAttributeImpl::operator=(const OffsetAttributeImpl& other) {
-  start_offset = other.start_offset;
-  end_offset = other.end_offset;
+  return OffsetAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* OffsetAttributeImpl::Clone() {
@@ -301,8 +326,15 @@ void PayloadAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+PayloadAttributeImpl& PayloadAttributeImpl::operator=(const AttributeImpl& other) {
+  const PayloadAttributeImpl& other_impl = dynamic_cast<const PayloadAttributeImpl&>(other);
+  payload = other_impl.payload;
+
+  return *this;
+}
+
 PayloadAttributeImpl& PayloadAttributeImpl::operator=(const PayloadAttributeImpl& other) {
-  payload = other.payload;
+  return PayloadAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* PayloadAttributeImpl::Clone() {
@@ -365,8 +397,15 @@ void PositionIncrementAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+PositionIncrementAttributeImpl& PositionIncrementAttributeImpl::operator=(const AttributeImpl& other) {
+  const PositionIncrementAttributeImpl& other_impl = dynamic_cast<const PositionIncrementAttributeImpl&>(other);
+  position_increment = other_impl.position_increment;
+
+  return *this;
+}
+
 PositionIncrementAttributeImpl& PositionIncrementAttributeImpl::operator=(const PositionIncrementAttributeImpl& other) {
-  position_increment = other.position_increment;
+  return PositionIncrementAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* PositionIncrementAttributeImpl::Clone() {
@@ -424,8 +463,15 @@ void PositionLengthAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+PositionLengthAttributeImpl& PositionLengthAttributeImpl::operator=(const AttributeImpl& other) {
+  const PositionLengthAttributeImpl& other_impl = dynamic_cast<const PositionLengthAttributeImpl&>(other);
+  position_length = other_impl.position_length;
+
+  return *this;
+}
+
 PositionLengthAttributeImpl& PositionLengthAttributeImpl::operator=(const PositionLengthAttributeImpl& other) {
-  position_length = other.position_length;
+  return PositionLengthAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* PositionLengthAttributeImpl::Clone() {
@@ -483,8 +529,15 @@ void TermFrequencyAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+TermFrequencyAttributeImpl& TermFrequencyAttributeImpl::operator=(const AttributeImpl& other) {
+  const TermFrequencyAttributeImpl& other_impl = dynamic_cast<const TermFrequencyAttributeImpl&>(other);
+  term_frequency = other_impl.term_frequency;
+
+  return *this;
+}
+
 TermFrequencyAttributeImpl& TermFrequencyAttributeImpl::operator=(const TermFrequencyAttributeImpl& other) {
-  term_frequency = other.term_frequency;
+  return TermFrequencyAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* TermFrequencyAttributeImpl::Clone() {
@@ -543,8 +596,15 @@ void TypeAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+TypeAttributeImpl& TypeAttributeImpl::operator=(const AttributeImpl& other) {
+  const TypeAttributeImpl& other_impl = dynamic_cast<const TypeAttributeImpl&>(other);
+  type = other_impl.type;
+
+  return *this;
+}
+
 TypeAttributeImpl& TypeAttributeImpl::operator=(const TypeAttributeImpl& other) {
-  type = other.type;
+  return TypeAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* TypeAttributeImpl::Clone() {
@@ -694,11 +754,19 @@ void CharTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   }
 }
 
+CharTermAttributeImpl& CharTermAttributeImpl::operator=(const AttributeImpl& other) {
+  const CharTermAttributeImpl& other_impl = dynamic_cast<const CharTermAttributeImpl&>(other);
+
+  term_capacity = other_impl.term_capacity;
+  term_length = other_impl.term_length;
+  CopyBuffer(other_impl.term_buffer, 0, other_impl.term_length);
+  builder.Get() = const_cast<CharTermAttributeImpl&>(other_impl).builder.Get();
+
+  return *this;
+}
+
 CharTermAttributeImpl& CharTermAttributeImpl::operator=(const CharTermAttributeImpl& other) {
-  term_buffer = arrayutil::CopyOfRange(other.term_buffer, 0, other.term_capacity);
-  term_capacity = other.term_capacity;
-  term_length = other.term_length;
-  builder.Get() = const_cast<CharTermAttributeImpl&>(other).builder.Get();
+  return CharTermAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 AttributeImpl* CharTermAttributeImpl::Clone() {
@@ -777,14 +845,22 @@ uint32_t PackedTokenAttributeImpl::GetTermFrequency() {
   return term_frequency;
 }
 
+PackedTokenAttributeImpl& PackedTokenAttributeImpl::operator=(const AttributeImpl& other) {
+  const PackedTokenAttributeImpl& other_impl = dynamic_cast<const PackedTokenAttributeImpl&>(other);
+
+  CharTermAttributeImpl::operator=(static_cast<const CharTermAttributeImpl&>(other_impl));
+  start_offset = other_impl.start_offset;
+  end_offset = other_impl.end_offset;
+  type = other_impl.type;
+  position_increment = other_impl.position_increment;
+  position_length = other_impl.position_length;
+  term_frequency = other_impl.term_frequency;
+
+  return *this;
+}
+
 PackedTokenAttributeImpl& PackedTokenAttributeImpl::operator=(const PackedTokenAttributeImpl& other) {
-  CharTermAttributeImpl::operator=(dynamic_cast<const CharTermAttributeImpl&>(other));
-  start_offset = other.start_offset;
-  end_offset = other.end_offset;
-  type = other.type;
-  position_increment = other.position_increment;
-  position_length = other.position_length;
-  term_frequency = other.term_frequency;
+  return PackedTokenAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
 std::vector<type_id> PackedTokenAttributeImpl::Attributes() {

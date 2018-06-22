@@ -105,11 +105,14 @@ int BytesRef::CompareTo(const BytesRef& other) const {
 
 BytesRef& BytesRef::operator=(const BytesRef& source) {
   if(this != &source) {
-    char* new_byte_arr = arrayutil::CopyOfRange(source.bytes.get(), offset, offset + length);
-    bytes.reset(new_byte_arr);
     offset = source.offset;
     length = source.length;
     capacity = source.capacity;
+
+    if(length > 0) {
+      char* new_byte_arr = arrayutil::CopyOfRange(source.bytes.get(), offset, offset + length);
+      bytes.reset(new_byte_arr);
+    }
   }
 
   return *this;

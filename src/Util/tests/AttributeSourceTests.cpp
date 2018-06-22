@@ -81,6 +81,87 @@ TEST(ATTRIBUTE__SOURCE__TEST, STATE__CONSTRUCTOR) {
   }
 }
 
+TEST(ATTRIBUTE__SOURCE__TEST, STATE__HANDLING) {
+  AttributeSource attr_source;
+  attr_source.AddAttribute<BytesTermAttribute>();
+  attr_source.AddAttribute<CharTermAttribute>();
+  attr_source.AddAttribute<FlagsAttribute>();
+
+
+  // Add 3 attributes
+  {
+    AttributeSource::State* state = attr_source.CaptureState();
+    std::unique_ptr<AttributeSource::State> guard(state);
+    AttributeSource::State* curr = state;
+    uint32_t count = 0;
+    while(curr != nullptr) {
+      curr = curr->next;
+      count++;
+    }
+    EXPECT_EQ(3, count);
+  }
+
+  // Different 3 attributes check
+  {
+    AttributeSource::State* state = attr_source.CaptureState();
+    std::unique_ptr<AttributeSource::State> guard(state);
+
+    AttributeSource::State* curr = state;
+    bool has_bytes_attr = false, has_char_attr = false, has_flags_attr = false;
+
+    while(curr != nullptr) {
+      AttributeImpl* pimpl = curr->attribute;
+      if(dynamic_cast<BytesTermAttribute*>(pimpl)) {
+        EXPECT_EQ(has_bytes_attr, false);
+        has_bytes_attr = true;
+      } else if(dynamic_cast<CharTermAttribute*>(pimpl)) {
+        EXPECT_EQ(has_char_attr, false);
+        has_char_attr = true;
+      } else if(dynamic_cast<FlagsAttribute*>(pimpl)) {
+        EXPECT_EQ(has_flags_attr, false);
+        has_flags_attr = true;
+      } else {
+        FAIL();
+      }
+
+      curr = curr->next;
+    }
+  }
+
+  // Restore state check
+  {
+    AttributeSource::State* target_state = attr_source.CaptureState();
+    std::unique_ptr<AttributeSource::State> guard1(target_state);
+    AttributeSource::State* curr = target_state;
+
+    // Find FlagsAttribute and set flags = 13
+    while(curr != nullptr && !dynamic_cast<FlagsAttribute*>(curr->attribute))
+     curr = curr->next;
+    FlagsAttribute* target_pflags = dynamic_cast<FlagsAttribute*>(curr->attribute);
+    target_pflags->SetFlags(13); // Change state
+
+    AttributeSource::State* org_state = attr_source.CaptureState();
+    std::unique_ptr<AttributeSource::State> guard2(org_state);
+    curr = org_state;
+    while(curr != nullptr && !dynamic_cast<FlagsAttribute*>(curr->attribute))
+     curr = curr->next;
+    FlagsAttribute* org_pflags = dynamic_cast<FlagsAttribute*>(curr->attribute);
+
+    // Ensure different
+    EXPECT_NE(org_pflags->GetFlags(), target_pflags->GetFlags());
+
+    // Restore and see flags is 13
+    attr_source.RestoreState(target_state);
+    AttributeSource::State* new_state = attr_source.CaptureState();
+    std::unique_ptr<AttributeSource::State> guard3(new_state);
+    curr = new_state;
+    while(curr != nullptr && !dynamic_cast<FlagsAttribute*>(curr->attribute))
+     curr = curr->next;
+    FlagsAttribute* new_pflags = dynamic_cast<FlagsAttribute*>(curr->attribute);
+    EXPECT_EQ(new_pflags->GetFlags(), 13);
+  }
+}
+
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

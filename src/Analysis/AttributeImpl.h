@@ -26,6 +26,7 @@ class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
     bool operator==(const BytesTermAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    BytesTermAttributeImpl& operator=(const AttributeImpl& other);
     BytesTermAttributeImpl& operator=(const BytesTermAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -64,6 +65,7 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     bool operator==(const CharTermAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    CharTermAttributeImpl& operator=(const AttributeImpl& other);
     CharTermAttributeImpl& operator=(const CharTermAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -83,6 +85,7 @@ class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
     bool operator==(const FlagsAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    FlagsAttributeImpl& operator=(const AttributeImpl& other);
     FlagsAttributeImpl& operator=(const FlagsAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -102,6 +105,7 @@ class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
     bool operator==(const KeywordAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    KeywordAttributeImpl& operator=(const AttributeImpl& other);
     KeywordAttributeImpl& operator=(const KeywordAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -123,6 +127,7 @@ class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
     bool operator==(const OffsetAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    OffsetAttributeImpl& operator=(const AttributeImpl& other);
     OffsetAttributeImpl& operator=(const OffsetAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -156,6 +161,7 @@ class PackedTokenAttributeImpl:
     uint32_t GetTermFrequency() override;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    PackedTokenAttributeImpl& operator=(const AttributeImpl& other);
     PackedTokenAttributeImpl& operator=(const PackedTokenAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -175,6 +181,7 @@ class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
     void SetPayload(BytesRef& payload) override;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    PayloadAttributeImpl& operator=(const AttributeImpl& other);
     PayloadAttributeImpl& operator=(const PayloadAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -195,6 +202,7 @@ class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncre
     bool operator==(const PositionIncrementAttributeImpl& other) const;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    PositionIncrementAttributeImpl& operator=(const AttributeImpl& other);
     PositionIncrementAttributeImpl& operator=(const PositionIncrementAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -214,6 +222,7 @@ class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAt
     uint32_t GetPositionLength() override;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    PositionLengthAttributeImpl& operator=(const AttributeImpl& other);
     PositionLengthAttributeImpl& operator=(const PositionLengthAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -233,6 +242,7 @@ class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttr
     uint32_t GetTermFrequency() override;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    TermFrequencyAttributeImpl& operator=(const AttributeImpl& other);
     TermFrequencyAttributeImpl& operator=(const TermFrequencyAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };
@@ -252,6 +262,7 @@ class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
     void SetType(const std::string& type) override;
     std::vector<type_id> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
+    TypeAttributeImpl& operator=(const AttributeImpl& other);
     TypeAttributeImpl& operator=(const TypeAttributeImpl& other);
     virtual AttributeImpl* Clone() override;
 };

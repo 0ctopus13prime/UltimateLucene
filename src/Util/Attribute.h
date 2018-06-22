@@ -39,6 +39,7 @@ class AttributeImpl: public Attribute {
     virtual std::vector<type_id> Attributes() = 0;
     virtual void ShallowCopyTo(AttributeImpl& attr_impl) = 0;
     virtual AttributeImpl* Clone() = 0;
+    virtual AttributeImpl& operator=(const AttributeImpl& other) = 0;
     std::string ReflectAsString(const bool prepend_att_class);
 };
 

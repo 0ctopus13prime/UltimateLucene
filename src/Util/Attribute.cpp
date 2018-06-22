@@ -129,19 +129,13 @@ AttributeSource::State* AttributeSource::GetCurrentState() {
   AttributeSource::State* c = head;
   auto it = attribute_impls.begin();
   c->attribute = it->second.get();
+  it++;
 
   while(it != attribute_impls.end()) {
-    if(c->next == nullptr) {
-      c->next = new AttributeSource::State();
-    }
+    c->next = new AttributeSource::State();
     c = c->next;
     c->attribute = it->second.get();
     it++;
-  }
-
-  if(c->next != nullptr) {
-    c->next->~State();
-    c->next = nullptr;
   }
 
   return head;
