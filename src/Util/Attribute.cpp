@@ -219,7 +219,7 @@ AttributeSource& AttributeSource::operator=(const AttributeSource& other) {
   factory = other.factory;
 }
 
-void AttributeSource::ShallowCopyTo(AttributeSource& other) {
+void AttributeSource::ShallowCopyTo(AttributeSource& other) const {
   other.state_holder = state_holder;
   other.attributes.clear();
   other.attributes = attributes;

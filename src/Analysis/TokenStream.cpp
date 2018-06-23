@@ -23,7 +23,8 @@ TokenStream::TokenStream()
 }
 
 TokenStream::TokenStream(const AttributeSource& input)
-  : AttributeSource(input) {
+  : AttributeSource() {
+  input.ShallowCopyTo(*this);
 }
 
 TokenStream::TokenStream(AttributeFactory& factory)

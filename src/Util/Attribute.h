@@ -200,7 +200,7 @@ class AttributeSource {
     std::string ReflectAsString(const bool prepend_att);
     void ReflectWith(AttributeReflector& reflector);
     AttributeSource& operator=(const AttributeSource& other);
-    void ShallowCopyTo(AttributeSource& other);
+    void ShallowCopyTo(AttributeSource& other) const;
 };
 
 }}} // End of namespace
