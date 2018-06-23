@@ -31,8 +31,10 @@ class CharFilter: public Reader {
 };
 
 class CharPtrRangeInfo {
+  private:
+    bool is_tmp;
+
   public:
-    const bool is_tmp;
     const char* str;
     const uint32_t offset;
     const uint32_t length;

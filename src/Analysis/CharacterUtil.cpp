@@ -41,7 +41,7 @@ int32_t CharFilter::CorrectOffset(const int32_t current_off) {
 /**
  *  CharPtrRangeInfo
  */
-CharPtrRangeInfo::CharPtrRangeInfo(const char* str, const uint32_t offset, const uint32_t length, const bool is_tmp)
+CharPtrRangeInfo::CharPtrRangeInfo(const char* str, const uint32_t offset, const uint32_t length, bool is_tmp)
   : is_tmp(is_tmp),
     str(is_tmp ? str : lucene::core::util::arrayutil::CopyOfRange(str, offset, length)),
     offset(offset),
@@ -61,6 +61,7 @@ CharPtrRangeInfo::CharPtrRangeInfo(CharPtrRangeInfo&& other)
     offset(other.offset),
     length(other.length) {
   // Prevent deallocation of str from other
+  other.is_tmp = true;
 }
 
 CharPtrRangeInfo::~CharPtrRangeInfo() {
