@@ -236,22 +236,36 @@ std::vector<std::string> lucene::core::analysis::characterutil::SplitRegex(const
   auto parts_end = std::sregex_iterator();
 
   const uint32_t max_full = (limit != 0 ? limit - 1 : limit);
-  auto it_s = str.begin();
+  size_t start = 0;
+  size_t pos = -1;
   std::smatch m;
-  for(auto it_parts = parts_begin ; it_parts != parts_end ; ++it_parts) {
-    m = *it_parts;
-    if(m.position() > 0) {
-      ret.push_back(std::string(it_s, str.begin() + m.position()));
-    }
-    it_s = str.begin() + m.position() + m.length();
 
-    if(limit > 0 && ret.size() >= max_full) {
-      break;
+  if(limit > 0) {
+    for(auto it_parts = parts_begin ; (it_parts != parts_end) && (ret.size() < max_full) ; ++it_parts) {
+      m = *it_parts;
+      auto pos = m.position();
+
+      if(pos > 0 && pos != start) {
+        ret.push_back(std::string(str, start, pos - start));
+      }
+
+      start = pos + m.length();
+    }
+  } else {
+    for(auto it_parts = parts_begin ; it_parts != parts_end ; ++it_parts) {
+      m = *it_parts;
+      auto pos = m.position();
+      if(pos > 0 && pos != start) {
+        ret.push_back(std::string(str, start, pos - start));
+      }
+
+      start = pos + m.length();
     }
   }
 
-  if(it_s != str.end()) {
-    ret.push_back(std::string(it_s, str.end()));
+  if(start < str.size()) {
+    // Last one
+    ret.push_back(std::string(str, start, str.size() - start));
   }
 
   return ret;
@@ -262,20 +276,27 @@ std::vector<std::string> lucene::core::analysis::characterutil::Split(const std:
     return {str};
   }
 
-  std::vector<std::string> ret;
-
+  // if limit = 0 then it means there is no limitation of the number of the splited elements
   const uint32_t max_full = (limit != 0 ? limit - 1 : limit);
   size_t start = 0;
   size_t pos = -1;
-  while((pos = str.find(delimiter, pos + 1)) != std::string::npos) {
-    if(pos != 0) {
-      ret.push_back(std::string(str, start, pos - start));
+  std::vector<std::string> ret;
+
+  if(limit > 0) {
+    while(((pos = str.find(delimiter, pos + 1)) != std::string::npos) && (ret.size() < max_full)) {
+      if(pos != 0 && pos != start) {
+        ret.push_back(std::string(str, start, pos - start));
+      }
+
+      start = pos + 1;
     }
+  } else {
+    while((pos = str.find(delimiter, pos + 1)) != std::string::npos) {
+      if(pos != 0 && pos != start) {
+        ret.push_back(std::string(str, start, pos - start));
+      }
 
-    start = pos + 1;
-
-    if(limit > 0 && ret.size() >= max_full) {
-      break;
+      start = pos + 1;
     }
   }
 
