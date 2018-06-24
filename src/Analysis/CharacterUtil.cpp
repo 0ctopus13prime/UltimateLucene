@@ -215,6 +215,18 @@ size_t CharSet::Size() {
   return internal_set.size();
 }
 
+INTERNAL_SET::iterator CharSet::Begin() {
+  return internal_set.begin();
+}
+
+INTERNAL_SET::iterator CharSet::End() {
+  return internal_set.end();
+}
+
+
+/**
+ * Other functions
+ */
 void lucene::core::analysis::characterutil::Trim(std::string& str) {
   auto l = std::find_if_not(str.begin(), str.end(), [](char c){ return std::isspace(c); });
   auto r = std::find_if_not(str.rbegin(), str.rend(), [](char c){ return std::isspace(c); }).base();

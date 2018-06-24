@@ -183,10 +183,10 @@ class CharMap {
     }
 };
 
+using INTERNAL_SET = std::unordered_set<CharPtrRangeInfo, CharPtrRangeInfoHasher, CharPtrRangeInfoEqual>;
 class CharSet {
   private:
     bool ignore_case;
-    using INTERNAL_SET = std::unordered_set<CharPtrRangeInfo, CharPtrRangeInfoHasher, CharPtrRangeInfoEqual>;
     INTERNAL_SET internal_set;
 
   public:
@@ -206,7 +206,7 @@ class CharSet {
     bool Add(const char* str, uint32_t offset, uint32_t length);
     bool Add(const std::string& str);
     size_t Size();
-    typename INTERNAL_SET::iterator Iterator();
+    typename INTERNAL_SET::iterator Begin();
     typename INTERNAL_SET::iterator End();
 };
 

@@ -166,6 +166,59 @@ TEST(CHARACTER__UTILS, CHAR__MAP__TESTS) {
   }
 }
 
+TEST(CHARACTER__UTILS, CHAR__SET__TESTS) {
+  std::string uppercase_str = "Doochi! Kantata!";
+  std::string lowercase_str = "doochi! kantata!";
+  std::string different_str = "dadatata da tadadada!!";
+
+  {
+    CharSet carecase_set(false);
+
+    carecase_set.Add(uppercase_str);
+    EXPECT_EQ(1, carecase_set.Size());
+    EXPECT_TRUE(carecase_set.Contains(uppercase_str));
+    EXPECT_FALSE(carecase_set.Contains(lowercase_str));
+    EXPECT_TRUE(carecase_set.Contains(uppercase_str.c_str(), 0, uppercase_str.size()));
+    EXPECT_FALSE(carecase_set.Contains(lowercase_str.c_str(), 0, lowercase_str.size()));
+    EXPECT_FALSE(carecase_set.Contains(different_str));
+
+    carecase_set.Clear();
+    EXPECT_EQ(0, carecase_set.Size());
+
+    CharSet dont_carecase_set(true);
+    dont_carecase_set.Add(uppercase_str);
+    EXPECT_EQ(1, dont_carecase_set.Size());
+    EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str));
+    EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str));
+    EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str.c_str(), 0, uppercase_str.size()));
+    EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str.c_str(), 0, lowercase_str.size()));
+    EXPECT_FALSE(dont_carecase_set.Contains(different_str));
+
+    dont_carecase_set.Add(lowercase_str);
+    EXPECT_EQ(1, dont_carecase_set.Size());
+    EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str));
+    EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str));
+    EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str.c_str(), 0, uppercase_str.size()));
+    EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str.c_str(), 0, lowercase_str.size()));
+  }
+
+  // Initialization
+  {
+    std::vector<std::string> list {uppercase_str, lowercase_str, different_str};
+    CharSet carecase_set(list, false);
+    EXPECT_EQ(3, carecase_set.Size());
+    EXPECT_TRUE(carecase_set.Contains(uppercase_str));
+    EXPECT_TRUE(carecase_set.Contains(lowercase_str));
+    EXPECT_TRUE(carecase_set.Contains(different_str));
+
+    CharSet dont_carecase_set(list, true);
+    EXPECT_EQ(2, dont_carecase_set.Size());
+    EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str));
+    EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str));
+    EXPECT_TRUE(dont_carecase_set.Contains(different_str));
+  }
+}
+
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
