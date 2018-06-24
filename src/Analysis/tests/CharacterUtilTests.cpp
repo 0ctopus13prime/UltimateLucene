@@ -1,6 +1,9 @@
+#include <iostream>
+#include <set>
 #include <cstring>
 #include <vector>
 #include <Analysis/CharacterUtil.h>
+#include <Util/ArrayUtil.h>
 #include <gtest/gtest.h>
 
 using namespace lucene::core::analysis::characterutil;
@@ -64,37 +67,102 @@ TEST(CHARACTER__UTILS, FUNCTIONS) {
   }
 
   {
-    const char* cstr1 = "Doochi! Nice meet you!";
-    const char* cstr2 = "Doochi! Nice meet u!";
-    const char* cstr3 = "doochi! nice meet you!";
-    CharPtrRangeInfo info1(cstr1, 0, std::strlen(cstr1));
-    CharPtrRangeInfo info2(cstr1, 0, std::strlen(cstr1));
-    CharPtrRangeInfoEqual equal1(false);
+    const char* upper_case_cstr = "Doochi! Nice meet you!";
+    const char* lower_case_cstr = "doochi! nice meet you!";
+    const char* different_cstr = "Doochi! Nice meet u!";
+    CharPtrRangeInfo upper_case_info(upper_case_cstr, 0, std::strlen(upper_case_cstr));
+    CharPtrRangeInfo upper_case_info1(upper_case_cstr, 0, std::strlen(upper_case_cstr));
+    CharPtrRangeInfoEqual care_care_equal(false);
 
     // Same str, range
-    EXPECT_TRUE(equal1(info1, info2));
+    EXPECT_TRUE(care_care_equal(upper_case_info, upper_case_info1));
 
-    CharPtrRangeInfo info3(cstr2, 0, std::strlen(cstr2));
+    CharPtrRangeInfo lower_case_info(lower_case_cstr, 0, std::strlen(lower_case_cstr));
     // Lower case
-    EXPECT_FALSE(equal1(info1, info3));
+    EXPECT_FALSE(care_care_equal(upper_case_info, lower_case_info));
 
     // Same str, range
-    CharPtrRangeInfo info4(cstr1, 0, 7);
-    CharPtrRangeInfo info5(cstr1, 0, 7);
-    EXPECT_TRUE(equal1(info4, info5));
+    CharPtrRangeInfo upper_case_info2(upper_case_cstr, 0, 7);
+    CharPtrRangeInfo upper_case_info3(upper_case_cstr, 0, 7);
+    EXPECT_TRUE(care_care_equal(upper_case_info2, upper_case_info3));
 
     // Ignore lower case. Same
-    CharPtrRangeInfo info6(cstr3, 0, std::strlen(cstr3));
-    CharPtrRangeInfoEqual equal2(true);
-    EXPECT_TRUE(equal2(info1, info6));
+    CharPtrRangeInfoEqual dont_care_equal(true);
+    EXPECT_TRUE(dont_care_equal(upper_case_info, lower_case_info));
 
     // Hashing test
-    CharPtrRangeInfoHasher hasher1(false);
-    EXPECT_EQ(hasher1(info1), hasher1(info2));
-    EXPECT_NE(hasher1(info1), hasher1(info3));
+    CharPtrRangeInfoHasher care_case_hasher(false);
+    CharPtrRangeInfo different_info(different_cstr, 0, std::strlen(different_cstr));
+    EXPECT_EQ(care_case_hasher(upper_case_info), care_case_hasher(upper_case_info1));
+    EXPECT_NE(care_case_hasher(upper_case_info), care_case_hasher(different_info));
 
-    CharPtrRangeInfoHasher hasher2(true);
-    EXPECT_EQ(hasher2(info1), hasher2(info6));
+    std::string str1("Doochi! Nice meet you!");
+    CharPtrRangeInfo tmp_upper_case_info(lucene::core::util::arrayutil::CopyOfRange(str1.c_str(), 0, str1.size()), 0, str1.size());
+    CharPtrRangeInfo tmp_upper_case_info1(str1.c_str(), 0, str1.size());
+    EXPECT_EQ(care_case_hasher(tmp_upper_case_info), care_case_hasher(tmp_upper_case_info1));
+    EXPECT_TRUE(care_care_equal(tmp_upper_case_info, tmp_upper_case_info1));
+
+    CharPtrRangeInfoHasher dont_care_case_hasher(true);
+    EXPECT_EQ(dont_care_case_hasher(upper_case_info), dont_care_case_hasher(lower_case_info));
+  }
+}
+
+TEST(CHARACTER__UTILS, CHAR__MAP__TESTS) {
+  std::string upper_case_str = "Doochi! I love you!";
+  std::string lower_case_str = "doochi! i love you!";
+  std::string different_str = "Doochi! Don't let me down";
+
+  {
+    // For ordinary string
+    CharMap<int> char_map;
+    char_map.Put(upper_case_str, 13);
+    EXPECT_EQ(1, char_map.Size());
+    EXPECT_TRUE(char_map.ContainsKey(upper_case_str));
+    EXPECT_EQ(13, char_map.Get(upper_case_str)->second);
+    EXPECT_FALSE(char_map.ContainsKey(lower_case_str));
+    EXPECT_FALSE(char_map.ContainsKey(different_str));
+
+    auto it = char_map.Begin();
+    EXPECT_EQ(upper_case_str, std::string(it->first.str, it->first.offset, it->first.length));
+    it++;
+    EXPECT_EQ(char_map.End(), it);
+
+    char_map.Put(different_str, 1313);
+    EXPECT_EQ(2, char_map.Size());
+    EXPECT_TRUE(char_map.ContainsKey(different_str));
+
+    // Because CharMap has an unordinary_map inside, insertion order is not guaranteed.
+    std::set<std::string> check_set;
+    for(auto it = char_map.Begin() ; it != char_map.End() ; ++it) {
+      check_set.insert(std::string(it->first.str, it->first.offset, it->first.length));
+    }
+
+    EXPECT_EQ(2, check_set.size());
+    EXPECT_EQ(char_map.End(), it);
+
+    EXPECT_TRUE(char_map.Erase(upper_case_str));
+    EXPECT_TRUE(char_map.Erase(different_str));
+    EXPECT_FALSE(char_map.Erase(lower_case_str));
+    EXPECT_EQ(0, char_map.Size());
+    char_map.Erase(upper_case_str);
+    char_map.Erase(different_str);
+
+    char_map.Clear();
+    EXPECT_EQ(0, char_map.Size());
+  }
+
+  {
+    // For ordinary string but not case sensitive
+    CharMap<int> char_map(true);
+    char_map.Put(upper_case_str, 13);
+    char_map.Put(lower_case_str, 1313);
+    EXPECT_EQ(1, char_map.Size());
+    EXPECT_TRUE(char_map.ContainsKey(upper_case_str));
+    EXPECT_TRUE(char_map.ContainsKey(lower_case_str));
+    EXPECT_FALSE(char_map.ContainsKey(different_str));
+    EXPECT_EQ(13, char_map.Get(lower_case_str)->second);
+    EXPECT_TRUE(char_map.Erase(upper_case_str));
+    EXPECT_EQ(0, char_map.Size());
   }
 }
 

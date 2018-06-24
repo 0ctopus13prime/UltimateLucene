@@ -148,7 +148,7 @@ class CharMap {
 
     bool Put(const char* str, uint32_t offset, uint32_t length, VALUE&& value) {
       CharPtrRangeInfo info(lucene::core::util::arrayutil::CopyOfRange(str, offset, length), offset, length);
-      auto pair = internal_map.insert(std::make_pair(std::move(info), std::forward(value)));
+      auto pair = internal_map.insert(std::make_pair(std::move(info), std::forward<VALUE>(value)));
       return pair.second;
     }
 
@@ -160,15 +160,21 @@ class CharMap {
 
     bool Put(const std::string& str, VALUE&& value) {
       CharPtrRangeInfo info(lucene::core::util::arrayutil::CopyOfRange(str.c_str(), 0, str.size()), 0, str.size());
-      auto it = internal_map.insert(std::make_pair(std::move(info), std::forward(value)));
-      return it->second;
+      auto pair = internal_map.insert(std::make_pair(std::move(info), std::forward<VALUE>(value)));
+      return pair.second;
+    }
+
+    bool Erase(const std::string& str) {
+      CharPtrRangeInfo info(str.c_str(), 0, str.size(), true);
+      size_t erased = internal_map.erase(info);
+      return (erased > 0);
     }
 
     uint32_t Size() {
       return internal_map.size();
     }
 
-    typename INTERNAL_MAP::iterator Iterator() {
+    typename INTERNAL_MAP::iterator Begin() {
       return internal_map.begin();
     }
 
