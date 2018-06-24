@@ -51,13 +51,13 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     void Clear() override;
     void CopyBuffer(const char* buffer, const uint32_t offset, const uint32_t length) override;
     char* Buffer() const override;
-    char* ResizeBuffer(const uint32_t new_size) override;
+    char* ResizeBuffer(const uint32_t new_capacity) override;
     uint32_t Length() const override;
-    std::string SubSequence(const uint32_t start, const uint32_t end) override;
+    std::string SubSequence(const uint32_t inclusive_start, const uint32_t exclusive_end) override;
     CharTermAttributeImpl& SetLength(const uint32_t length) override;
     CharTermAttributeImpl& SetEmpty() override;
     CharTermAttribute& Append(const std::string& csq) override;
-    CharTermAttribute& Append(const std::string& csq, const uint32_t start, const uint32_t end) override;
+    CharTermAttribute& Append(const std::string& csq, const uint32_t inclusive_start, const uint32_t exclusive_end) override;
     CharTermAttribute& Append(const char c) override;
     CharTermAttribute& Append(const CharTermAttribute& term_att) override;
     void ReflectWith(AttributeReflector& reflector) override;
@@ -268,5 +268,6 @@ class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
 };
 
 }}}} // End of namespace
+
 
 #endif

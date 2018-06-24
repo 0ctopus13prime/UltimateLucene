@@ -1,3 +1,4 @@
+#include <iostream>
 #include <memory>
 #include <string>
 #include <stdexcept>
@@ -36,7 +37,7 @@ void BytesTermAttributeImpl::Clear() {
 }
 
 void BytesTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  reflector("TermToBytesRefAttribute", "bytes", bytes.UTF8ToString());
+  reflector("BytesTermAttributeImpl", "bytes", bytes.UTF8ToString());
 }
 
 bool BytesTermAttributeImpl::operator==(const BytesTermAttributeImpl& other) const {
@@ -664,9 +665,9 @@ char* CharTermAttributeImpl::Buffer() const {
   return term_buffer;
 }
 
-char* CharTermAttributeImpl::ResizeBuffer(const uint32_t new_size) {
-  if(term_capacity < new_size) {
-    std::pair<char*, uint32_t> new_term_buffer_info = arrayutil::Grow(term_buffer, term_capacity, new_size);
+char* CharTermAttributeImpl::ResizeBuffer(const uint32_t new_capacity) {
+  if(term_capacity < new_capacity) {
+    std::pair<char*, uint32_t> new_term_buffer_info = arrayutil::Grow(term_buffer, term_capacity, new_capacity);
     if(new_term_buffer_info.first) {
       delete[] term_buffer;
       term_buffer = new_term_buffer_info.first;
@@ -681,13 +682,15 @@ uint32_t CharTermAttributeImpl::Length() const {
   return term_length;
 }
 
-std::string CharTermAttributeImpl::SubSequence(const uint32_t start, const uint32_t end) {
-  arrayutil::CheckFromToIndex(start, end, term_length);
-  return std::string(term_buffer, start, end - start);
+std::string CharTermAttributeImpl::SubSequence(const uint32_t inclusive_start, const uint32_t exclusive_end) {
+  arrayutil::CheckFromToIndex(inclusive_start, exclusive_end, term_length);
+  return std::string(term_buffer, inclusive_start, exclusive_end - inclusive_start);
 }
 
 CharTermAttributeImpl& CharTermAttributeImpl::SetLength(const uint32_t length) {
   arrayutil::CheckFromIndexSize(0, length, term_capacity);
+  term_length = length;
+  return *this;
 }
 
 CharTermAttributeImpl& CharTermAttributeImpl::SetEmpty() {
@@ -696,21 +699,23 @@ CharTermAttributeImpl& CharTermAttributeImpl::SetEmpty() {
 }
 
 CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq) {
-  Append(csq, 0, csq.size());
+  return Append(csq, 0, csq.size());
 }
 
-CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq, const uint32_t start, const uint32_t end) {
-  arrayutil::CheckFromToIndex(start, end, csq.size());
-  uint32_t len = (end - start);
+CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq, const uint32_t inclusive_start, const uint32_t exclusive_end) {
+  arrayutil::CheckFromToIndex(inclusive_start, exclusive_end, csq.size());
+  uint32_t len = (exclusive_end - inclusive_start);
   if(len == 0) return *this;
   ResizeBuffer(term_length + len);
 
-  std::memcpy(term_buffer + term_length, csq.c_str() + start, len);
+  std::memcpy(term_buffer + term_length, csq.c_str() + inclusive_start, len);
+  term_length += len;
   return *this;
 }
 
 CharTermAttribute& CharTermAttributeImpl::Append(const char c) {
   ResizeBuffer(term_length + 1)[term_length++] = c;
+  return *this;
 }
 
 CharTermAttribute& CharTermAttributeImpl::Append(const CharTermAttribute& term_att) {

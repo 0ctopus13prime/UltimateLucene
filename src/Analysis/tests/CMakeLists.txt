@@ -6,3 +6,6 @@ target_link_libraries(ReaderTests DoochiCore gtest pthread)
 
 add_executable(CharacterUtilTests CharacterUtilTests.cpp)
 target_link_libraries(CharacterUtilTests DoochiCore gtest pthread)
+
+add_executable(AttributeImplTests AttributeImplTests.cpp)
+target_link_libraries(AttributeImplTests DoochiCore gtest pthread)
