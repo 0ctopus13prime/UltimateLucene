@@ -66,6 +66,10 @@ void TokenFilter::Reset() {
   input->Reset();
 }
 
+void TokenFilter::Close() {
+  input->Close();
+}
+
 /**
  *  Tokenizer
  */
@@ -73,44 +77,44 @@ IllegalStateReader Tokenizer::ILLEGAL_STATE_READER;
 
 Tokenizer::Tokenizer()
   : TokenStream(),
-    input(ILLEGAL_STATE_READER),
-    input_pending(ILLEGAL_STATE_READER) {
+    input(&ILLEGAL_STATE_READER),
+    input_pending(&ILLEGAL_STATE_READER) {
 }
 
 Tokenizer::Tokenizer(AttributeFactory& factory)
   : TokenStream(factory),
-    input(ILLEGAL_STATE_READER),
-    input_pending(ILLEGAL_STATE_READER) {
+    input(&ILLEGAL_STATE_READER),
+    input_pending(&ILLEGAL_STATE_READER) {
 }
 
 Tokenizer::~Tokenizer() {
 }
 
 uint32_t Tokenizer::CorrectOffset(const uint32_t current_off) {
-  if(characterutil::CharFilter* char_filter = dynamic_cast<characterutil::CharFilter*>(&input)) {
+  if(characterutil::CharFilter* char_filter = dynamic_cast<characterutil::CharFilter*>(input)) {
     char_filter->CorrectOffset(current_off);
   } else {
     return current_off;
   }
 }
 
-void Tokenizer::SetReader(Reader& input) {
-  if(dynamic_cast<IllegalStateReader*>(&input) == nullptr) {
+void Tokenizer::SetReader(Reader& new_input) {
+  if(dynamic_cast<IllegalStateReader*>(input) == nullptr) {
     throw std::runtime_error("TokenStream contract violation: close() call missing");
   }
 
-  input_pending = input;
+  input_pending = &new_input;
   SetReaderTestPoint();
 }
 
 void Tokenizer::Reset() {
-  input = std::move(input_pending);
+  input = input_pending;
 }
 
 void Tokenizer::Close() {
-  input.Close();
-  input = ILLEGAL_STATE_READER;
-  input_pending = ILLEGAL_STATE_READER;
+  input->Close();
+  input = &ILLEGAL_STATE_READER;
+  input_pending = &ILLEGAL_STATE_READER;
 }
 
 void Tokenizer::SetReaderTestPoint() {
@@ -251,5 +255,5 @@ StopFilter::~StopFilter() {
 }
 
 bool StopFilter::Accept() {
-  return stop_words.Contains(term_att->Buffer(), 0, term_att->Length());
+  return !stop_words.Contains(term_att->Buffer(), 0, term_att->Length());
 }

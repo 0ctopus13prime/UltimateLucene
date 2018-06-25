@@ -45,6 +45,15 @@ class TokenFilter: public TokenStream {
     virtual ~TokenFilter();
     void End() override;
     void Reset() override;
+    void Close() override;
+
+    template <typename ATTR>
+    std::shared_ptr<ATTR> AddAttribute() {
+      std::shared_ptr<ATTR> attr = input->AddAttribute<ATTR>();
+      input->ShallowCopyTo(*this); // For sharing attributes
+
+      return attr;
+    }
 };
 
 
@@ -53,8 +62,8 @@ class Tokenizer: public TokenStream {
     static lucene::core::analysis::IllegalStateReader ILLEGAL_STATE_READER;
 
   protected:
-    Reader& input;
-    Reader& input_pending;
+    Reader* input; // Read onlly
+    Reader* input_pending; // Read only
 
   protected:
     Tokenizer();
@@ -63,7 +72,7 @@ class Tokenizer: public TokenStream {
 
   public:
     virtual ~Tokenizer();
-    void SetReader(Reader& input);
+    void SetReader(Reader& new_input);
     void Reset() override;
     void Close();
 

@@ -76,7 +76,7 @@ bool StandardFilter::IncrementToken() {
 
 const int32_t StandardTokenizerImpl::YYEOF = -1;
 
-StandardTokenizerImpl::StandardTokenizerImpl(Reader& in) {
+StandardTokenizerImpl::StandardTokenizerImpl(Reader* in) {
   // TODO Implement it.
 }
 
@@ -107,7 +107,7 @@ uint32_t StandardTokenizerImpl::YyChar() {
   return 0;
 }
 
-void StandardTokenizerImpl::YyReset(lucene::core::analysis::Reader& reader) {
+void StandardTokenizerImpl::YyReset(lucene::core::analysis::Reader* reader) {
   // TODO. Implement it.
 }
 

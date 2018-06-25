@@ -1,6 +1,5 @@
 #include <cstring>
 #include <algorithm>
-#include <iostream>
 #include <Analysis/Reader.h>
 #include <Analysis/CharacterUtil.h>
 

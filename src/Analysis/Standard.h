@@ -45,14 +45,14 @@ class StandardTokenizerImpl {
     static const int32_t YYEOF;
 
   public:
-    StandardTokenizerImpl(lucene::core::analysis::Reader& in);
+    StandardTokenizerImpl(lucene::core::analysis::Reader* in);
     ~StandardTokenizerImpl();
     void SetBufferSize(uint32_t length);
     uint32_t GetNextToken();
     void GetText(tokenattributes::CharTermAttribute& term_att);
     uint32_t YyLength();
     uint32_t YyChar();
-    void YyReset(lucene::core::analysis::Reader& reader);
+    void YyReset(lucene::core::analysis::Reader* reader);
 };
 
 class StandardTokenizer: public lucene::core::analysis::Tokenizer {
