@@ -259,8 +259,43 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__BASIC) {
   sub = ct_attr_impl.SubSequence(0, all.size());
   EXPECT_EQ(all, sub);
 
-  // TODO. Append const char, other CharTermAttribute
-  // TODO. GetBytesRef, clear
+  // Append sub string
+  std::string append2("another append2");
+  all += append2.substr(0, 7);
+  ct_attr_impl.Append(append2, 0, 7); // Just append 'another'
+  EXPECT_EQ(all.size(), ct_attr_impl.Length());
+
+  sub = ct_attr_impl.SubSequence(0, ct_attr_impl.Length());
+  EXPECT_EQ(all, sub);
+
+  // Append single character
+  const char* cstr2 = "Why everything are so hard to me?";
+  all += std::string(cstr2);
+  for(int i = 0 ; i < std::strlen(cstr2) ; ++i) {
+    ct_attr_impl.Append(cstr2[i]);
+  }
+  EXPECT_EQ(all.size(), ct_attr_impl.Length());
+
+  sub = ct_attr_impl.SubSequence(0, ct_attr_impl.Length());
+  EXPECT_EQ(all, sub);
+
+  // Append another CharTermAttributeImpl
+  CharTermAttributeImpl another_ct_attr_impl;
+  std::string append3("Albeit it does move");
+  all += append3;
+  another_ct_attr_impl.Append(append3);
+  ct_attr_impl.Append(another_ct_attr_impl);
+  EXPECT_EQ(all.size(), ct_attr_impl.Length());
+
+  sub = ct_attr_impl.SubSequence(0, ct_attr_impl.Length());
+  EXPECT_EQ(all, sub);
+
+  // GetBytesRef, Clear
+  BytesRef& got_bref = ct_attr_impl.GetBytesRef();
+  EXPECT_EQ(BytesRef(all), got_bref);
+
+  ct_attr_impl.Clear();
+  EXPECT_EQ(0, ct_attr_impl.Length());
 
   // SetLength
   ct_attr_impl.SetLength(5);
