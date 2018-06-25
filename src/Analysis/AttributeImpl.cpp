@@ -1,4 +1,3 @@
-#include <iostream>
 #include <memory>
 #include <string>
 #include <stdexcept>
@@ -617,37 +616,32 @@ AttributeImpl* TypeAttributeImpl::Clone() {
  */
 
 CharTermAttributeImpl::CharTermAttributeImpl()
-  : term_buffer(new char[CharTermAttributeImpl::CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE]),
+  : term_buffer(new char[CharTermAttributeImpl::CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE], std::default_delete<char[]>()),
     term_capacity(CharTermAttributeImpl::CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE),
     term_length(0),
     builder() {
 }
 
 CharTermAttributeImpl::CharTermAttributeImpl(const CharTermAttributeImpl& other)
-  : term_buffer(arrayutil::CopyOfRange(other.term_buffer, 0, other.term_capacity)),
+  : term_buffer(arrayutil::CopyOfRange(other.term_buffer.get(), 0, other.term_capacity), std::default_delete<char>()),
     term_capacity(other.term_capacity),
     term_length(other.term_length),
     builder() {
 }
 
-CharTermAttributeImpl::~CharTermAttributeImpl() {
-  if(term_buffer != nullptr) {
-    delete[] term_buffer;
-  }
-}
+CharTermAttributeImpl::~CharTermAttributeImpl() { }
 
 void CharTermAttributeImpl::GrowTermBuffer(const uint32_t new_size) {
   if(term_capacity < new_size) {
       // Not big enough; create a new array with slight
       // Over allocation:
       term_capacity = arrayutil::Oversize(new_size, sizeof(char));
-      delete[] term_buffer;
-      term_buffer = new char[term_capacity];
+      term_buffer.reset(new char[term_capacity]);
   }
 }
 
 BytesRef& CharTermAttributeImpl::GetBytesRef() {
-  builder.CopyBytes(term_buffer, 0, term_length);
+  builder.CopyBytes(term_buffer.get(), 0, term_length);
   return builder.Get();
 }
 
@@ -657,25 +651,24 @@ void CharTermAttributeImpl::Clear() {
 
 void CharTermAttributeImpl::CopyBuffer(const char* buffer, const uint32_t offset, const uint32_t length) {
   GrowTermBuffer(length);
-  std::memcpy(term_buffer, buffer + offset, length);
+  std::memcpy(term_buffer.get(), buffer + offset, length);
   term_length = length;
 }
 
 char* CharTermAttributeImpl::Buffer() const {
-  return term_buffer;
+  return term_buffer.get();
 }
 
 char* CharTermAttributeImpl::ResizeBuffer(const uint32_t new_capacity) {
   if(term_capacity < new_capacity) {
-    std::pair<char*, uint32_t> new_term_buffer_info = arrayutil::Grow(term_buffer, term_capacity, new_capacity);
+    std::pair<char*, uint32_t> new_term_buffer_info = arrayutil::Grow(term_buffer.get(), term_capacity, new_capacity);
     if(new_term_buffer_info.first) {
-      delete[] term_buffer;
-      term_buffer = new_term_buffer_info.first;
+      term_buffer.reset(new_term_buffer_info.first);
       term_capacity = new_term_buffer_info.second;
     }
   }
 
-  return term_buffer;
+  return term_buffer.get();
 }
 
 uint32_t CharTermAttributeImpl::Length() const {
@@ -684,7 +677,7 @@ uint32_t CharTermAttributeImpl::Length() const {
 
 std::string CharTermAttributeImpl::SubSequence(const uint32_t inclusive_start, const uint32_t exclusive_end) {
   arrayutil::CheckFromToIndex(inclusive_start, exclusive_end, term_length);
-  return std::string(term_buffer, inclusive_start, exclusive_end - inclusive_start);
+  return std::string(term_buffer.get(), inclusive_start, exclusive_end - inclusive_start);
 }
 
 CharTermAttributeImpl& CharTermAttributeImpl::SetLength(const uint32_t length) {
@@ -708,7 +701,7 @@ CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq, const u
   if(len == 0) return *this;
   ResizeBuffer(term_length + len);
 
-  std::memcpy(term_buffer + term_length, csq.c_str() + inclusive_start, len);
+  std::memcpy(term_buffer.get() + term_length, csq.c_str() + inclusive_start, len);
   term_length += len;
   return *this;
 }
@@ -726,18 +719,18 @@ CharTermAttribute& CharTermAttributeImpl::Append(const CharTermAttribute& term_a
 }
 
 void CharTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
-  reflector("CharTermAttribute", "term", std::string(term_buffer, 0, term_length));
+  reflector("CharTermAttribute", "term", std::string(term_buffer.get(), 0, term_length));
   reflector("TermToBytesRefAttribute", "bytes", GetBytesRef().UTF8ToString());
 }
 
 char& CharTermAttributeImpl::operator[](const uint32_t index) {
   arrayutil::CheckIndex(index, term_length);
-  return term_buffer[index];
+  return term_buffer.get()[index];
 }
 
 bool CharTermAttributeImpl::operator==(const CharTermAttributeImpl& other) const {
   if(term_length == other.term_length) {
-    return (std::memcmp(term_buffer, other.term_buffer, term_length) == 0);
+    return (std::memcmp(term_buffer.get(), other.term_buffer.get(), term_length) == 0);
   }
 
   return false;
@@ -762,9 +755,8 @@ void CharTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
 CharTermAttributeImpl& CharTermAttributeImpl::operator=(const AttributeImpl& other) {
   const CharTermAttributeImpl& other_impl = dynamic_cast<const CharTermAttributeImpl&>(other);
 
-  term_capacity = other_impl.term_capacity;
+  CopyBuffer(other_impl.term_buffer.get(), 0, other_impl.term_capacity);
   term_length = other_impl.term_length;
-  CopyBuffer(other_impl.term_buffer, 0, other_impl.term_length);
   builder.Get() = const_cast<CharTermAttributeImpl&>(other_impl).builder.Get();
 
   return *this;
@@ -843,7 +835,7 @@ uint32_t PackedTokenAttributeImpl::EndOffset() {
 }
 
 void PackedTokenAttributeImpl::SetTermFrequency(uint32_t new_term_frequency) {
-  term_frequency = term_frequency;
+  term_frequency = new_term_frequency;
 }
 
 uint32_t PackedTokenAttributeImpl::GetTermFrequency() {

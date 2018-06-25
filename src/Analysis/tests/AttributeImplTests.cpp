@@ -8,48 +8,55 @@ using namespace lucene::core::analysis::tokenattributes;
 using namespace lucene::core::util;
 
 TEST(ATTRIBUTES__IMPL__TESTS, FlagsAttributeImpl) {
+  // Basic
   FlagsAttributeImpl flags_attr_impl1;
   flags_attr_impl1.SetFlags(13);
   EXPECT_EQ(13, flags_attr_impl1.GetFlags());
 
+  // Clone
   FlagsAttributeImpl* cloned = static_cast<FlagsAttributeImpl*>(flags_attr_impl1.Clone());
   std::unique_ptr<FlagsAttributeImpl> guard(cloned);
   EXPECT_EQ(13, cloned->GetFlags());
   EXPECT_EQ(flags_attr_impl1, *cloned);
 
-  FlagsAttributeImpl flags_attr_impl2 = flags_attr_impl1;
+  // Copy assignment
+  FlagsAttributeImpl flags_attr_impl2; flags_attr_impl2 = flags_attr_impl1;
   EXPECT_EQ(13, flags_attr_impl2.GetFlags());
-
   EXPECT_EQ(flags_attr_impl1, flags_attr_impl2);
 
+  // Copy constructed
   FlagsAttributeImpl flags_attr_impl3(flags_attr_impl2);
   EXPECT_EQ(13, flags_attr_impl3.GetFlags());
   flags_attr_impl3.Clear();
   EXPECT_EQ(0, flags_attr_impl3.GetFlags());
-
 }
 
 TEST(ATTRIBUTES__IMPL__TESTS, TypeAttributeImpl) {
+  // Baisc
   TypeAttributeImpl type_attr_impl1;
   std::string type = "Doochi_Type";
   type_attr_impl1.SetType(type);
   EXPECT_EQ(type, type_attr_impl1.Type());
 
+  // Clone
   TypeAttributeImpl* cloned = static_cast<TypeAttributeImpl*>(type_attr_impl1.Clone());
   std::unique_ptr<TypeAttributeImpl> guard(cloned);
   EXPECT_EQ(type, cloned->Type());
   EXPECT_EQ(type_attr_impl1, *cloned);
 
+  // Copy constructed
   TypeAttributeImpl type_attr_impl2(type_attr_impl1);
   EXPECT_EQ(type, type_attr_impl2.Type());
   EXPECT_EQ(type_attr_impl1, type_attr_impl2);
 
-  TypeAttributeImpl type_attr_impl3 = type_attr_impl2;
+  // Copy assignment
+  TypeAttributeImpl type_attr_impl3; type_attr_impl3 = type_attr_impl2;
   EXPECT_EQ(type, type_attr_impl3.Type());
   EXPECT_EQ(type_attr_impl2, type_attr_impl3);
 }
 
 TEST(ATTRIBUTES__IMPL__TESTS, TermFrequencyAttributeImpl) {
+  // Basic
   TermFrequencyAttributeImpl tf_attr_impl1;
   tf_attr_impl1.SetTermFrequency(13);
   EXPECT_EQ(13, tf_attr_impl1.GetTermFrequency());
@@ -58,16 +65,19 @@ TEST(ATTRIBUTES__IMPL__TESTS, TermFrequencyAttributeImpl) {
   EXPECT_EQ(13, cloned->GetTermFrequency());
   EXPECT_EQ(tf_attr_impl1, *cloned);
 
+  // Copy constructed
   TermFrequencyAttributeImpl tf_attr_impl2(tf_attr_impl1);
   EXPECT_EQ(13, tf_attr_impl2.GetTermFrequency());
   EXPECT_EQ(tf_attr_impl1, tf_attr_impl2);
 
-  TermFrequencyAttributeImpl tf_attr_impl3 = tf_attr_impl1;
+  // Copy assignment
+  TermFrequencyAttributeImpl tf_attr_impl3; tf_attr_impl3 = tf_attr_impl1;
   EXPECT_EQ(13, tf_attr_impl3.GetTermFrequency());
   EXPECT_EQ(tf_attr_impl2, tf_attr_impl3);
 }
 
 TEST(ATTRIBUTES__IMPL__TESTS, PositionLengthAttributeImpl) {
+  // Basic
   PositionLengthAttributeImpl pos_len_attr_impl1;
   pos_len_attr_impl1.SetPositionLength(13);
   EXPECT_EQ(13, pos_len_attr_impl1.GetPositionLength());
@@ -75,11 +85,13 @@ TEST(ATTRIBUTES__IMPL__TESTS, PositionLengthAttributeImpl) {
   EXPECT_EQ(13, cloned->GetPositionLength());
   EXPECT_EQ(pos_len_attr_impl1, *cloned);
 
+  // Copy constructed
   PositionLengthAttributeImpl pos_len_attr_impl2(pos_len_attr_impl1);
   EXPECT_EQ(13, pos_len_attr_impl2.GetPositionLength());
   EXPECT_EQ(pos_len_attr_impl1, pos_len_attr_impl2);
 
-  PositionLengthAttributeImpl pos_len_attr_impl3 = pos_len_attr_impl2;
+  // Copy assignment
+  PositionLengthAttributeImpl pos_len_attr_impl3; pos_len_attr_impl3 = pos_len_attr_impl2;
   EXPECT_EQ(13, pos_len_attr_impl3.GetPositionLength());
   EXPECT_EQ(pos_len_attr_impl2, pos_len_attr_impl3);
 }
@@ -108,6 +120,7 @@ TEST(ATTRIBUTES__IMPL__TESTS, PositionIncrementAttributeImpl) {
 }
 
 TEST(ATTRIBUTES__IMPL__TESTS, PayloadAttributeImpl) {
+  // Basic
   PayloadAttributeImpl payload_attr_impl1;
   BytesRef bref("Doochi's bytesref!");
   payload_attr_impl1.SetPayload(bref);
@@ -307,7 +320,129 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__BASIC) {
 }
 
 TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__ASSIGN) {
-  // TODO. Copy constructor, copy assignment, clone, shallow copied
+  // Prepare
+  CharTermAttributeImpl ct_attr_impl1;
+  std::string str1 = "";
+  ct_attr_impl1.Append(str1);
+
+  // Cloned
+  CharTermAttributeImpl* cloned = static_cast<CharTermAttributeImpl*>(ct_attr_impl1.Clone());
+  std::unique_ptr<CharTermAttributeImpl> guard(cloned);
+  EXPECT_EQ(ct_attr_impl1, *cloned);
+  EXPECT_EQ(ct_attr_impl1.Length(), cloned->Length());
+  BytesRef& org_bref = ct_attr_impl1.GetBytesRef();
+  BytesRef& new_bref = cloned->GetBytesRef();
+  EXPECT_EQ(org_bref, new_bref);
+
+  // Copy constructed
+  CharTermAttributeImpl copy_constructed(ct_attr_impl1);
+  EXPECT_EQ(ct_attr_impl1, copy_constructed);
+  EXPECT_EQ(ct_attr_impl1.Length(), copy_constructed.Length());
+  org_bref = ct_attr_impl1.GetBytesRef();
+  new_bref = copy_constructed.GetBytesRef();
+  EXPECT_EQ(org_bref, new_bref);
+
+  // Copy assignment
+  CharTermAttributeImpl copy_assigned; copy_assigned = ct_attr_impl1;
+  EXPECT_EQ(ct_attr_impl1, copy_assigned);
+  EXPECT_EQ(ct_attr_impl1.Length(), copy_assigned.Length());
+  org_bref = ct_attr_impl1.GetBytesRef();
+  new_bref = copy_assigned.GetBytesRef();
+  EXPECT_EQ(org_bref, new_bref);
+
+  // Shallow copied
+  CharTermAttributeImpl shallow_copied;
+  ct_attr_impl1.ShallowCopyTo(shallow_copied);
+  EXPECT_EQ(ct_attr_impl1, shallow_copied);
+  EXPECT_EQ(ct_attr_impl1.Length(), shallow_copied.Length());
+  org_bref = ct_attr_impl1.GetBytesRef();
+  new_bref = shallow_copied.GetBytesRef();
+  EXPECT_EQ(org_bref, new_bref);
+}
+
+TEST(ATTRIBUTES__IMPL__TESTS, PackedTokenAttributeImpl__BASIC) {
+  // Prepare
+  PackedTokenAttributeImpl packed_attr_impl;
+  std::string type = "Doochi-Type";
+  packed_attr_impl.SetType(type);
+  EXPECT_EQ(type, packed_attr_impl.Type());
+
+  // Position
+  packed_attr_impl.SetPositionIncrement(13);
+  packed_attr_impl.SetPositionLength(1313);
+  EXPECT_EQ(13, packed_attr_impl.GetPositionIncrement());
+  EXPECT_EQ(1313, packed_attr_impl.GetPositionLength());
+
+  // Offset
+  packed_attr_impl.SetOffset(123, 12345);
+  EXPECT_EQ(123, packed_attr_impl.StartOffset());
+  EXPECT_EQ(12345, packed_attr_impl.EndOffset());
+
+  // Term frequency
+  packed_attr_impl.SetTermFrequency(1010);
+  EXPECT_EQ(1010, packed_attr_impl.GetTermFrequency());
+}
+
+TEST(ATTRIBUTES__IMPL__TESTS, PackedTokenAttributeImpl__ASSIGN) {
+  // Prepare
+  PackedTokenAttributeImpl packed_attr_impl1;
+  packed_attr_impl1.SetPositionIncrement(13);
+  packed_attr_impl1.SetPositionLength(1313);
+  packed_attr_impl1.SetOffset(123, 12345);
+  packed_attr_impl1.SetTermFrequency(1010);
+  std::string str("Doochi! Tests are never finish!");
+  packed_attr_impl1.Append(str);
+  BytesRef& org_bref = packed_attr_impl1.GetBytesRef();
+
+  {
+    // Copy constructed
+    PackedTokenAttributeImpl copy_constructed(packed_attr_impl1);
+    EXPECT_EQ(packed_attr_impl1, copy_constructed);
+    EXPECT_EQ(13, copy_constructed.GetPositionIncrement());
+    EXPECT_EQ(1313, copy_constructed.GetPositionLength());
+    EXPECT_EQ(123, copy_constructed.StartOffset());
+    EXPECT_EQ(12345, copy_constructed.EndOffset());
+    BytesRef& copied_bref = copy_constructed.GetBytesRef();
+    EXPECT_EQ(org_bref, copied_bref);
+  }
+
+  {
+    // Cloned
+    PackedTokenAttributeImpl* cloned = static_cast<PackedTokenAttributeImpl*>(packed_attr_impl1.Clone());
+    std::unique_ptr<PackedTokenAttributeImpl> guard(cloned);
+    EXPECT_EQ(packed_attr_impl1, *cloned);
+    EXPECT_EQ(13, cloned->GetPositionIncrement());
+    EXPECT_EQ(1313, cloned->GetPositionLength());
+    EXPECT_EQ(123, cloned->StartOffset());
+    EXPECT_EQ(12345, cloned->EndOffset());
+    BytesRef& copied_bref = cloned->GetBytesRef();
+    EXPECT_EQ(org_bref, copied_bref);
+  }
+
+  {
+    // Shallow copied
+    PackedTokenAttributeImpl shallow_copied;
+    packed_attr_impl1.ShallowCopyTo(shallow_copied);
+    EXPECT_EQ(packed_attr_impl1, shallow_copied);
+    EXPECT_EQ(13, shallow_copied.GetPositionIncrement());
+    EXPECT_EQ(1313, shallow_copied.GetPositionLength());
+    EXPECT_EQ(123, shallow_copied.StartOffset());
+    EXPECT_EQ(12345, shallow_copied.EndOffset());
+    BytesRef& copied_bref = shallow_copied.GetBytesRef();
+    EXPECT_EQ(org_bref, copied_bref);
+  }
+
+  {
+    // Copy assigned
+    PackedTokenAttributeImpl copy_assigned; copy_assigned = packed_attr_impl1;
+    EXPECT_EQ(packed_attr_impl1, copy_assigned);
+    EXPECT_EQ(13, copy_assigned.GetPositionIncrement());
+    EXPECT_EQ(1313, copy_assigned.GetPositionLength());
+    EXPECT_EQ(123, copy_assigned.StartOffset());
+    EXPECT_EQ(12345, copy_assigned.EndOffset());
+    BytesRef& copied_bref = copy_assigned.GetBytesRef();
+    EXPECT_EQ(org_bref, copied_bref);
+  }
 }
 
 int main(int argc, char* argv[]) {

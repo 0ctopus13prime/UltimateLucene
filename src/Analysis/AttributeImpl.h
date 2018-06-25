@@ -1,6 +1,7 @@
 #ifndef LUCENE_CORE_ANALYSIS_TOKEN_ATTRIBUTES_ATTRIBUTES_IMPL_H
 #define LUCENE_CORE_ANALYSIS_TOKEN_ATTRIBUTES_ATTRIBUTES_IMPL_H
 
+#include <memory>
 #include <vector>
 #include <string>
 #include <Analysis/Attribute.h>
@@ -35,7 +36,7 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
   private:
     static const uint32_t CHAR_TERM_ATTRIBUTE_IMPL_MIN_BUFFER_SIZE = 10;
 
-    char* term_buffer;
+    std::shared_ptr<char> term_buffer;
     uint32_t term_capacity;
     uint32_t term_length;
     BytesRefBuilder builder;
