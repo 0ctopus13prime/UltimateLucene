@@ -9,3 +9,6 @@ target_link_libraries(AttributeTests DoochiCore gtest pthread)
 
 add_executable(AttributeSourceTests AttributeSourceTests.cpp)
 target_link_libraries(AttributeSourceTests DoochiCore gtest pthread)
+
+add_executable(ConcurrencyTests ConcurrencyTests.cpp)
+target_link_libraries(ConcurrencyTests DoochiCore gtest pthread)
