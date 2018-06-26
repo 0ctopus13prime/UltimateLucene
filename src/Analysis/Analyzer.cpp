@@ -38,10 +38,10 @@ StringReader& TokenStreamComponents::GetReusableStringReader() {
 /**
  *  ReuseStrategy
  */
-ReuseStrategy::ReuseStrategy() {
+Analyzer::ReuseStrategy::ReuseStrategy() {
 }
 
-ReuseStrategy::~ReuseStrategy() {
+Analyzer::ReuseStrategy::~ReuseStrategy() {
 }
 
 /**
@@ -54,7 +54,7 @@ PreDefinedReuseStrategy::~PreDefinedReuseStrategy() {
 }
 
 TokenStreamComponents* PreDefinedReuseStrategy::GetReusableComponents(Analyzer& analyzer, const std::string& field_name) {
-  return GetStoredValue<TokenStreamComponents*>(analyzer);
+  return GetStoredValue<TokenStreamComponents>(analyzer);
 }
 
 void PreDefinedReuseStrategy::SetReusableComponents(Analyzer& analyzer,

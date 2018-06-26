@@ -6,14 +6,13 @@
 #include <sstream>
 #include <Util/Attribute.h>
 #include <Util/Etc.h>
+#include <Util/Concurrency.h>
 #include <Analysis/AttributeImpl.h>
 #include <Analysis/TokenStream.h>
 #include <Analysis/Reader.h>
 #include <Analysis/CharacterUtil.h>
 
 namespace lucene { namespace core { namespace analysis {
-
-class Analyzer;
 
 class TokenStreamComponents {
   protected:
@@ -34,35 +33,6 @@ class TokenStreamComponents {
     virtual void SetReader(Reader& reader);
 };
 
-class ReuseStrategy {
-  protected:
-    template<typename T>
-    T& GetStoredValue(Analyzer& analyzer) {
-      // TODO. Implement it.
-    }
-
-    template<typename T>
-    void SetStoredValue(Analyzer& analyzer, T& stored_value) {
-      // TODO. Implement it.
-    }
-
-  public:
-    ReuseStrategy();
-    virtual ~ReuseStrategy();
-    virtual TokenStreamComponents* GetReusableComponents(Analyzer& analyzer, const std::string& field_name) = 0;
-    virtual void SetReusableComponents(Analyzer& analyzer, const std::string& field_name, TokenStreamComponents* components) = 0;
-};
-
-class PreDefinedReuseStrategy: public ReuseStrategy {
-  public:
-    PreDefinedReuseStrategy();
-    virtual ~PreDefinedReuseStrategy();
-    TokenStreamComponents* GetReusableComponents(Analyzer& analyzer, const std::string& field_name) override;
-    void SetReusableComponents(Analyzer& analyzer,
-                              const std::string& field_name,
-                              TokenStreamComponents* components) override;
-};
-
 class StringTokenStream: public TokenStream {
   private:
     std::string& value;
@@ -78,12 +48,31 @@ class StringTokenStream: public TokenStream {
     void End() override;
 };
 
-static PreDefinedReuseStrategy PER_FIELD_REUSE_STRATEGY;
-
 class Analyzer {
+  public:
+    class ReuseStrategy {
+      protected:
+        template<typename T>
+        T* GetStoredValue(Analyzer& analyzer) {
+          return analyzer.stored_value.Get<T>();
+        }
+
+        template<typename T>
+        void SetStoredValue(Analyzer& analyzer, T* stored_value) {
+          analyzer.stored_value.Set<T>(stored_value);
+        }
+
+      public:
+        ReuseStrategy();
+        virtual ~ReuseStrategy();
+        virtual TokenStreamComponents* GetReusableComponents(Analyzer& analyzer, const std::string& field_name) = 0;
+        virtual void SetReusableComponents(Analyzer& analyzer, const std::string& field_name, TokenStreamComponents* components) = 0;
+    };
+
   private:
     ReuseStrategy& reuse_strategy;
     lucene::core::util::etc::Version version;
+    lucene::core::util::CloseableThreadLocal stored_value;
 
   protected:
     virtual TokenStreamComponents* CreateComponents(const std::string& field_name) = 0;
@@ -110,6 +99,17 @@ class Analyzer {
     ReuseStrategy& GetReuseStrategy();
     void SetVersion(lucene::core::util::etc::Version& v);
 };
+
+class PreDefinedReuseStrategy: public Analyzer::ReuseStrategy {
+  public:
+    PreDefinedReuseStrategy();
+    virtual ~PreDefinedReuseStrategy();
+    TokenStreamComponents* GetReusableComponents(Analyzer& analyzer, const std::string& field_name) override;
+    void SetReusableComponents(Analyzer& analyzer,
+                              const std::string& field_name,
+                              TokenStreamComponents* components) override;
+};
+static PreDefinedReuseStrategy PER_FIELD_REUSE_STRATEGY;
 
 class StopwordAnalyzerBase: public Analyzer {
   protected:
