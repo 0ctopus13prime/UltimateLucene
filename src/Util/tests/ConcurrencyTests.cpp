@@ -7,15 +7,18 @@
 
 using namespace lucene::core::util;
 
+class DummyClass {};
+
 TEST(CONCURRENCY__TESTS, CloseableThreadLocal__BASIC) {
-  CloseableThreadLocal ctlocal;
+  // DummyClass's thread local associate variable table
+  CloseableThreadLocal<DummyClass> ctlocal;
   int num = 13;
   ctlocal.Set<int>(&num);
   int* got = ctlocal.Get<int>();
   EXPECT_EQ(num, *got);
 }
 
-CloseableThreadLocal global_ctlocal;
+CloseableThreadLocal<DummyClass> global_ctlocal;
 void IncreaseNumber(std::string thread_name, std::promise<int>&& promise) {
   int* got = global_ctlocal.Get<int>();
   if(got == nullptr) {
@@ -45,6 +48,29 @@ TEST(CONCURRENCY__TESTS, CloseableThreadLocal__PARALLEL) {
   EXPECT_EQ(1000, th1_future.get());
   EXPECT_EQ(1000, th2_future.get());
   EXPECT_EQ(1000, main_future.get());
+}
+
+TEST(CONCURRENCY__TESTS, CloseableThreadLocal__EACH) {
+  bool ctlocal1_deleted = false;
+  CloseableThreadLocal<DummyClass> ctlocal1([&ctlocal1_deleted](void* ptr){
+    delete ptr;
+    ctlocal1_deleted = true;
+  });
+  ctlocal1.Set<int>(new int(13));
+
+  bool ctlocal2_deleted = false;
+  CloseableThreadLocal<DummyClass> ctlocal2([&ctlocal2_deleted](void* ptr){
+    delete ptr;
+    ctlocal2_deleted = true;
+  });
+  ctlocal2.Set<int>(new int(1313));
+
+  EXPECT_EQ(13, *(ctlocal1.Get<int>()));
+  EXPECT_EQ(1313, *(ctlocal2.Get<int>()));
+
+  ctlocal1.Close();
+  ctlocal2.Close();
+  EXPECT_TRUE(ctlocal1_deleted && ctlocal2_deleted);
 }
 
 
