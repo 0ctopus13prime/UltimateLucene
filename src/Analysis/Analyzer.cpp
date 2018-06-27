@@ -132,6 +132,7 @@ Analyzer::Analyzer(ReuseStrategy& reuse_strategy)
 }
 
 Analyzer::~Analyzer() {
+  stored_value.Close();
 }
 
 Reader& Analyzer::InitReader(const std::string& field_name, Reader& reader) {
@@ -229,6 +230,10 @@ BytesRef Analyzer::Normalize(const std::string& field_name, const std::string& t
   token_stream->End();
 
   return ref;
+}
+
+void Analyzer::Close() {
+  stored_value.Close();
 }
 
 /**

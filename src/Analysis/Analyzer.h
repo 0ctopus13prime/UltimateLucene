@@ -103,6 +103,8 @@ class Analyzer {
     uint32_t GetOffsetGap(const std::string& field_name);
     ReuseStrategy& GetReuseStrategy();
     void SetVersion(lucene::core::util::etc::Version& v);
+    //const lucene::core::etc::Version& GetVersion()
+    void Cloes();
 };
 
 class GlobalReuseStrategy: public Analyzer::ReuseStrategy {

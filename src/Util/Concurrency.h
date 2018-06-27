@@ -23,6 +23,10 @@ class CloseableThreadLocal {
         cleanup([](void*){}) {
     }
 
+    /**
+     * `cleanup` parameter must guarantee it does not throw any exception.
+     * Because `cleanup` is called when destruct this instance.
+     */
     CloseableThreadLocal(std::function<void(void*)> cleanup)
       : addr_this(reinterpret_cast<size_t>(this)),
         cleanup(cleanup) {
