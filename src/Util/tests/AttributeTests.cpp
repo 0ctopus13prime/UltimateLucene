@@ -71,7 +71,7 @@ TEST(ATTRIBUTE__TEST, ATTRIBUTE__FACTORY__REGISTER) {
       virtual ~DummyCustomAttributeImpl() {}
       void ReflectWith(AttributeReflector& reflector) override {}
       void Clear() override {}
-      std::vector<type_id> Attributes() override {
+      std::vector<std::type_index> Attributes() override {
         return {
           Attribute::TypeId<DummyCustomAttribute>()
         };

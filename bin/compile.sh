@@ -47,7 +47,8 @@ main() {
   cmake $src
 
   # Do a make
-  cmake --build .
+  #cmake --build .
+  make -j
 
   # Tests if have to
   if [ "$TESTS" = "true" ]; then

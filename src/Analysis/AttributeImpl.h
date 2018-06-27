@@ -25,7 +25,7 @@ class BytesTermAttributeImpl: public AttributeImpl, public BytesTermAttribute {
     void Clear() override;
     void ReflectWith(AttributeReflector& reflector) override;
     bool operator==(const BytesTermAttributeImpl& other) const;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     BytesTermAttributeImpl& operator=(const AttributeImpl& other);
     BytesTermAttributeImpl& operator=(const BytesTermAttributeImpl& other);
@@ -64,7 +64,7 @@ class CharTermAttributeImpl: public AttributeImpl, public CharTermAttribute, pub
     void ReflectWith(AttributeReflector& reflector) override;
     char& operator[](const uint32_t idx) override;
     bool operator==(const CharTermAttributeImpl& other) const;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     CharTermAttributeImpl& operator=(const AttributeImpl& other);
     CharTermAttributeImpl& operator=(const CharTermAttributeImpl& other);
@@ -84,7 +84,7 @@ class FlagsAttributeImpl: public AttributeImpl, public FlagsAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(const FlagsAttributeImpl& other) const;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     FlagsAttributeImpl& operator=(const AttributeImpl& other);
     FlagsAttributeImpl& operator=(const FlagsAttributeImpl& other);
@@ -104,7 +104,7 @@ class KeywordAttributeImpl: public AttributeImpl, public KeywordAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(const KeywordAttributeImpl& other) const;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     KeywordAttributeImpl& operator=(const AttributeImpl& other);
     KeywordAttributeImpl& operator=(const KeywordAttributeImpl& other);
@@ -126,7 +126,7 @@ class OffsetAttributeImpl: public AttributeImpl, public OffsetAttribute {
     void ReflectWith(AttributeReflector& reflector) override;
     void Clear() override;
     bool operator==(const OffsetAttributeImpl& other) const;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     OffsetAttributeImpl& operator=(const AttributeImpl& other);
     OffsetAttributeImpl& operator=(const OffsetAttributeImpl& other);
@@ -160,7 +160,7 @@ class PackedTokenAttributeImpl:
     uint32_t EndOffset() override;
     void SetTermFrequency(const uint32_t new_term_frequency) override;
     uint32_t GetTermFrequency() override;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     PackedTokenAttributeImpl& operator=(const AttributeImpl& other);
     PackedTokenAttributeImpl& operator=(const PackedTokenAttributeImpl& other);
@@ -180,7 +180,7 @@ class PayloadAttributeImpl: public AttributeImpl, public PayloadAttribute {
     bool operator==(const PayloadAttributeImpl& other) const;
     BytesRef& GetPayload() override;
     void SetPayload(BytesRef& payload) override;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     PayloadAttributeImpl& operator=(const AttributeImpl& other);
     PayloadAttributeImpl& operator=(const PayloadAttributeImpl& other);
@@ -201,7 +201,7 @@ class PositionIncrementAttributeImpl: public AttributeImpl, public PositionIncre
     void End() override;
     void Clear() override;
     bool operator==(const PositionIncrementAttributeImpl& other) const;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     PositionIncrementAttributeImpl& operator=(const AttributeImpl& other);
     PositionIncrementAttributeImpl& operator=(const PositionIncrementAttributeImpl& other);
@@ -221,7 +221,7 @@ class PositionLengthAttributeImpl: public AttributeImpl, public PositionLengthAt
     bool operator==(const PositionLengthAttributeImpl& other) const;
     void SetPositionLength(const uint32_t position_length) override;
     uint32_t GetPositionLength() override;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     PositionLengthAttributeImpl& operator=(const AttributeImpl& other);
     PositionLengthAttributeImpl& operator=(const PositionLengthAttributeImpl& other);
@@ -241,7 +241,7 @@ class TermFrequencyAttributeImpl: public AttributeImpl, public TermFrequencyAttr
     bool operator==(const TermFrequencyAttributeImpl& other) const;
     void SetTermFrequency(const uint32_t term_frequency) override;
     uint32_t GetTermFrequency() override;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     TermFrequencyAttributeImpl& operator=(const AttributeImpl& other);
     TermFrequencyAttributeImpl& operator=(const TermFrequencyAttributeImpl& other);
@@ -261,7 +261,7 @@ class TypeAttributeImpl: public AttributeImpl, public TypeAttribute {
     bool operator==(const TypeAttributeImpl& other) const;
     std::string& Type() override;
     void SetType(const std::string& type) override;
-    std::vector<type_id> Attributes() override;
+    std::vector<std::type_index> Attributes() override;
     void ShallowCopyTo(AttributeImpl& attr_impl) override;
     TypeAttributeImpl& operator=(const AttributeImpl& other);
     TypeAttributeImpl& operator=(const TypeAttributeImpl& other);

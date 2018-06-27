@@ -47,7 +47,7 @@ bool BytesTermAttributeImpl::operator==(const BytesTermAttributeImpl& other) con
   return (bytes == other.bytes);
 }
 
-std::vector<type_id> BytesTermAttributeImpl::Attributes() {
+std::vector<std::type_index> BytesTermAttributeImpl::Attributes() {
   return {Attribute::TypeId<BytesTermAttribute>()};
 }
 
@@ -110,7 +110,7 @@ bool FlagsAttributeImpl::operator==(const FlagsAttributeImpl& other) const {
   return (flags == other.flags);
 }
 
-std::vector<type_id> FlagsAttributeImpl::Attributes() {
+std::vector<std::type_index> FlagsAttributeImpl::Attributes() {
   return {Attribute::TypeId<FlagsAttribute>()};
 }
 
@@ -172,7 +172,7 @@ bool KeywordAttributeImpl::operator==(const KeywordAttributeImpl& other) const {
   return (keyword == other.keyword);
 }
 
-std::vector<type_id> KeywordAttributeImpl::Attributes() {
+std::vector<std::type_index> KeywordAttributeImpl::Attributes() {
   return {Attribute::TypeId<KeywordAttribute>()};
 }
 
@@ -244,7 +244,7 @@ bool OffsetAttributeImpl::operator==(const OffsetAttributeImpl& other) const {
   return (start_offset == other.start_offset && end_offset == other.end_offset);
 }
 
-std::vector<type_id> OffsetAttributeImpl::Attributes() {
+std::vector<std::type_index> OffsetAttributeImpl::Attributes() {
   return {Attribute::TypeId<OffsetAttribute>()};
 }
 
@@ -313,7 +313,7 @@ void PayloadAttributeImpl::SetPayload(BytesRef& new_payload) {
   payload = new_payload;
 }
 
-std::vector<type_id> PayloadAttributeImpl::Attributes() {
+std::vector<std::type_index> PayloadAttributeImpl::Attributes() {
   return {Attribute::TypeId<PayloadAttribute>()};
 }
 
@@ -384,7 +384,7 @@ bool PositionIncrementAttributeImpl::operator==(const PositionIncrementAttribute
   return (position_increment == other.position_increment);
 }
 
-std::vector<type_id> PositionIncrementAttributeImpl::Attributes() {
+std::vector<std::type_index> PositionIncrementAttributeImpl::Attributes() {
   return {Attribute::TypeId<PositionIncrementAttribute>()};
 }
 
@@ -450,7 +450,7 @@ uint32_t PositionLengthAttributeImpl::GetPositionLength() {
   return position_length;
 }
 
-std::vector<type_id> PositionLengthAttributeImpl::Attributes() {
+std::vector<std::type_index> PositionLengthAttributeImpl::Attributes() {
   return {Attribute::TypeId<PositionLengthAttribute>()};
 }
 
@@ -516,7 +516,7 @@ uint32_t TermFrequencyAttributeImpl::GetTermFrequency() {
   return term_frequency;
 }
 
-std::vector<type_id> TermFrequencyAttributeImpl::Attributes() {
+std::vector<std::type_index> TermFrequencyAttributeImpl::Attributes() {
   return {Attribute::TypeId<TermFrequencyAttribute>()};
 }
 
@@ -582,7 +582,7 @@ void TypeAttributeImpl::SetType(const std::string& new_type) {
   type = new_type;
 }
 
-std::vector<type_id> TypeAttributeImpl::Attributes() {
+std::vector<std::type_index> TypeAttributeImpl::Attributes() {
   return {Attribute::TypeId<TypeAttribute>()};
 }
 
@@ -736,7 +736,7 @@ bool CharTermAttributeImpl::operator==(const CharTermAttributeImpl& other) const
   return false;
 }
 
-std::vector<type_id> CharTermAttributeImpl::Attributes() {
+std::vector<std::type_index> CharTermAttributeImpl::Attributes() {
   return {Attribute::TypeId<CharTermAttribute>(), Attribute::TypeId<TermToBytesRefAttribute>()};
 }
 
@@ -860,7 +860,7 @@ PackedTokenAttributeImpl& PackedTokenAttributeImpl::operator=(const PackedTokenA
   return PackedTokenAttributeImpl::operator=(static_cast<const AttributeImpl&>(other));
 }
 
-std::vector<type_id> PackedTokenAttributeImpl::Attributes() {
+std::vector<std::type_index> PackedTokenAttributeImpl::Attributes() {
   return {
     Attribute::TypeId<CharTermAttribute>(),
     Attribute::TypeId<TermToBytesRefAttribute>(),

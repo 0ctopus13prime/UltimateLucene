@@ -3,8 +3,8 @@
 
 #include <algorithm>
 #include <stdexcept>
+#include <typeindex>
 #include <typeinfo>
-#include <type_traits>
 #include <unordered_map>
 #include <vector>
 #include <unordered_set>
@@ -14,15 +14,13 @@
 
 namespace lucene { namespace core { namespace util {
 
-using type_id = size_t;
-
 class Attribute {
   public:
     virtual ~Attribute() {}
 
     template<typename T>
-    static type_id TypeId() {
-      return typeid(T).hash_code();
+    static std::type_index TypeId() {
+      return std::type_index(typeid(T));
     }
 };
 
@@ -36,7 +34,7 @@ class AttributeImpl: public Attribute {
     virtual void ReflectWith(AttributeReflector& reflector) = 0;
     virtual void Clear() = 0;
     virtual void End();
-    virtual std::vector<type_id> Attributes() = 0;
+    virtual std::vector<std::type_index> Attributes() = 0;
     virtual void ShallowCopyTo(AttributeImpl& attr_impl) = 0;
     virtual AttributeImpl* Clone() = 0;
     virtual AttributeImpl& operator=(const AttributeImpl& other) = 0;
@@ -47,15 +45,15 @@ using AttributeImplGenerator = std::function<AttributeImpl*(void)>;
 
 class AttributeFactory {
   private:
-    static std::unordered_map<type_id, AttributeImplGenerator> ATTR_IMPL_TABLE;
+    static std::unordered_map<std::type_index, AttributeImplGenerator> ATTR_IMPL_TABLE;
 
   public:
     AttributeFactory();
     virtual ~AttributeFactory() {}
-    virtual AttributeImpl* CreateAttributeInstance(const type_id attr_type_id) = 0;
+    virtual AttributeImpl* CreateAttributeInstance(const std::type_index attr_type_id) = 0;
 
   public:
-    static AttributeImplGenerator FindAttributeImplGenerator(const type_id attr_type_id);
+    static AttributeImplGenerator FindAttributeImplGenerator(const std::type_index attr_type_id);
 
     template<typename ATTR_FACTORY, typename ATTR_IMPL>
     static AttributeFactory* GetStaticImplementation() {
@@ -80,7 +78,7 @@ class AttributeFactory::DefaultAttributeFactory: public AttributeFactory {
   public:
     DefaultAttributeFactory();
     virtual ~DefaultAttributeFactory();
-    AttributeImpl* CreateAttributeInstance(const type_id attr_type_id) override;
+    AttributeImpl* CreateAttributeInstance(const std::type_index attr_type_id) override;
 };
 
 static AttributeFactory::DefaultAttributeFactory DEFAULT_ATTRIBUTE_FACTORY;
@@ -89,14 +87,14 @@ template<typename ATTR_FACTORY, typename ATTR_IMPL>
 class AttributeFactory::StaticImplementationAttributeFactory: public AttributeFactory {
   private:
     ATTR_FACTORY delegate;
-    static std::unordered_set<type_id> DEFAULT_ATTR_TYPE_IDS;
+    static std::unordered_set<std::type_index> DEFAULT_ATTR_TYPE_IDS;
 
   public:
     StaticImplementationAttributeFactory() { }
     virtual ~StaticImplementationAttributeFactory() { }
-    AttributeImpl* CreateAttributeInstance(const type_id attr_type_id) override {
+    AttributeImpl* CreateAttributeInstance(const std::type_index attr_type_id) override {
       ATTR_IMPL attr_impl;
-      std::vector<type_id> attributes = attr_impl.Attributes();
+      std::vector<std::type_index> attributes = attr_impl.Attributes();
       auto it = std::find(attributes.begin(), attributes.end(), attr_type_id);
       if(it != attributes.end()) {
         return new ATTR_IMPL();
@@ -107,10 +105,10 @@ class AttributeFactory::StaticImplementationAttributeFactory: public AttributeFa
 };
 
 template<typename ATTR_FACTORY, typename ATTR_IMPL>
-std::unordered_set<type_id>
+std::unordered_set<std::type_index>
 AttributeFactory::StaticImplementationAttributeFactory<ATTR_FACTORY, ATTR_IMPL>::DEFAULT_ATTR_TYPE_IDS
 = [](){
-  std::unordered_set<type_id> ret(AttributeFactory::ATTR_IMPL_TABLE.size());
+  std::unordered_set<std::type_index> ret(AttributeFactory::ATTR_IMPL_TABLE.size());
   for(const auto& p : AttributeFactory::ATTR_IMPL_TABLE) {
     ret.insert(p.first);
   }
@@ -153,9 +151,9 @@ class AttributeSource {
   private:
     StateHolder state_holder;
     // Mapping Attribute's type_id to AttributeImpl instance
-    std::unordered_map<type_id, std::shared_ptr<AttributeImpl>> attributes;
+    std::unordered_map<std::type_index, std::shared_ptr<AttributeImpl>> attributes;
     // Mapping AttributeImpl's type_id to AttributeImpl instance
-    std::unordered_map<type_id, std::shared_ptr<AttributeImpl>> attribute_impls;
+    std::unordered_map<std::type_index, std::shared_ptr<AttributeImpl>> attribute_impls;
     AttributeFactory& factory;
 
   private:
@@ -175,7 +173,7 @@ class AttributeSource {
 
     template <typename ATTR>
     std::shared_ptr<ATTR> AddAttribute() {
-      type_id id = Attribute::TypeId<ATTR>();
+      std::type_index id = Attribute::TypeId<ATTR>();
       auto attr_it = attributes.find(id);
       if(attr_it == attribute_impls.end()) {
         AddAttributeImpl(factory.CreateAttributeInstance(Attribute::TypeId<ATTR>()));

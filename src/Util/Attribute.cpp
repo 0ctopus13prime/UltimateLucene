@@ -36,7 +36,7 @@ std::string AttributeImpl::ReflectAsString(const bool prepend_att_class) {
 /**
  * AttributeFactory
  */
-std::unordered_map<type_id, AttributeImplGenerator>
+std::unordered_map<std::type_index, AttributeImplGenerator>
 AttributeFactory::ATTR_IMPL_TABLE = {
     {Attribute::TypeId<BytesTermAttribute>(), [](){ return new BytesTermAttributeImpl(); }},
     {Attribute::TypeId<CharTermAttribute>(), [](){ return new CharTermAttributeImpl(); }},
@@ -53,11 +53,11 @@ AttributeFactory::ATTR_IMPL_TABLE = {
 AttributeFactory::AttributeFactory() {
 }
 
-AttributeImplGenerator AttributeFactory::FindAttributeImplGenerator(const type_id attr_type_id) {
+AttributeImplGenerator AttributeFactory::FindAttributeImplGenerator(const std::type_index attr_type_id) {
   auto it = AttributeFactory::ATTR_IMPL_TABLE.find(attr_type_id);
 
   if(it == AttributeFactory::ATTR_IMPL_TABLE.end()) {
-    throw std::runtime_error("Attribute " + std::to_string(attr_type_id) + " implmentation was not found");
+    throw std::runtime_error("Attribute " + std::string(attr_type_id.name()) + " implmentation was not found");
   }
 
   return it->second;
@@ -72,7 +72,7 @@ AttributeFactory::DefaultAttributeFactory::DefaultAttributeFactory() { }
 
 AttributeFactory::DefaultAttributeFactory::~DefaultAttributeFactory() { }
 
-AttributeImpl* AttributeFactory::DefaultAttributeFactory::CreateAttributeInstance(type_id attr_type_id) {
+AttributeImpl* AttributeFactory::DefaultAttributeFactory::CreateAttributeInstance(std::type_index attr_type_id) {
   auto generator = AttributeFactory::FindAttributeImplGenerator(attr_type_id);
   return generator();
 }
@@ -106,14 +106,14 @@ AttributeFactory& AttributeSource::GetAttributeFactory() const {
 }
 
 void AttributeSource::AddAttributeImpl(AttributeImpl* attr_impl) {
-  std::vector<type_id> attr_type_ids = attr_impl->Attributes();
+  std::vector<std::type_index> attr_type_ids = attr_impl->Attributes();
   std::shared_ptr<AttributeImpl> attr_impl_shptr(attr_impl);
 
-  for(size_t attr_type_id : attr_type_ids) {
+  for(const std::type_index& attr_type_id : attr_type_ids) {
     attributes[attr_type_id] = attr_impl_shptr;
   }
 
-  attribute_impls[typeid(*attr_impl).hash_code()] = attr_impl_shptr;
+  attribute_impls[std::type_index(typeid(*attr_impl))] = attr_impl_shptr;
   // Invalidate state to force recomputation in CaptureState()
   state_holder.ClearState();
 }
@@ -177,11 +177,11 @@ void AttributeSource::RestoreState(AttributeSource::State* state) {
   AttributeSource::State* current = state;
   do {
     AttributeImpl* source_attr = current->attribute;
-    type_id attr_impl_type_id = typeid(*source_attr).hash_code();
+    std::type_index attr_impl_type_id = std::type_index(typeid(*source_attr));
 
     auto it = attribute_impls.find(attr_impl_type_id);
     if(it == attribute_impls.end()) {
-      throw std::invalid_argument("AttributeSource::State contains AttributeImpl of type " + std::to_string(attr_impl_type_id) + " that is not in this AttributeSource");
+      throw std::invalid_argument("AttributeSource::State contains AttributeImpl of type " + std::string(attr_impl_type_id.name()) + " that is not in this AttributeSource");
     }
 
     AttributeImpl* target_attr = it->second.get();
