@@ -52,21 +52,6 @@ class StringTokenStream: public TokenStream {
 class Analyzer {
   public:
     class ReuseStrategy {
-      protected:
-        template<typename T>
-        T* GetStoredValue(Analyzer& analyzer) {
-          return analyzer.stored_value.Get<T>();
-        }
-
-        /**
-         * The stored_value is a readonly value.
-         * ReuseStrategy does not own the stored_value, thus ReuseStrategy does not manage it's life cycle.
-         */
-        template<typename T>
-        void SetStoredValue(Analyzer& analyzer, T* stored_value) {
-          analyzer.stored_value.Set<T>(stored_value);
-        }
-
       public:
         ReuseStrategy();
         virtual ~ReuseStrategy();
@@ -75,9 +60,9 @@ class Analyzer {
     };
 
   private:
+    bool closed;
     ReuseStrategy& reuse_strategy;
     lucene::core::util::etc::Version version;
-    lucene::core::util::CloseableThreadLocal<Analyzer> stored_value;
 
   protected:
     virtual TokenStreamComponents* CreateComponents(const std::string& field_name) = 0;
@@ -104,10 +89,16 @@ class Analyzer {
     ReuseStrategy& GetReuseStrategy();
     void SetVersion(lucene::core::util::etc::Version& v);
     //const lucene::core::etc::Version& GetVersion()
-    void Cloes();
+    void Close();
+    bool IsClosed() {
+      return closed;
+    }
 };
 
 class GlobalReuseStrategy: public Analyzer::ReuseStrategy {
+  private:
+    lucene::core::util::CloseableThreadLocal<GlobalReuseStrategy, TokenStreamComponents*> stored_value;
+
   public:
     GlobalReuseStrategy();
     virtual ~GlobalReuseStrategy();
@@ -120,7 +111,7 @@ static GlobalReuseStrategy GLOBAL_REUSE_STRATEGY;
 
 class PerFieldReuseStrategy: public Analyzer::ReuseStrategy {
   private:
-    std::unordered_map<std::string, TokenStreamComponents*> components_per_field;
+    lucene::core::util::CloseableThreadLocal<GlobalReuseStrategy, std::unordered_map<std::string, TokenStreamComponents*>> stored_value;
 
   public:
     PerFieldReuseStrategy();

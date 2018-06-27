@@ -1,6 +1,7 @@
 #ifndef LUCENE_CORE_UTIL_CONCURRENCY_H_
 #define LUCENE_CORE_UTIL_CONCURRENCY_H_
 
+#include <stdexcept>
 #include <functional>
 #include <typeindex>
 #include <typeinfo>
@@ -8,10 +9,21 @@
 
 namespace lucene { namespace core { namespace util {
 
-template <typename CLASS>
+class EmptyThreadLocalException: public std::exception{
+  public:
+    EmptyThreadLocalException()
+      : std::exception() {
+    };
+
+    virtual const char* what() const throw() {
+      return "Element was not found";
+    }
+};
+
+template <typename CLASS, typename TYPE>
 class CloseableThreadLocal {
   private:
-    thread_local static std::unordered_map<size_t, void*> reference;
+    thread_local static std::unordered_map<size_t, TYPE> reference;
 
   private:
     size_t addr_this;
@@ -19,49 +31,33 @@ class CloseableThreadLocal {
 
   public:
     CloseableThreadLocal()
-      : addr_this(reinterpret_cast<size_t>(this)),
-        cleanup([](void*){}) {
-    }
-
-    /**
-     * `cleanup` parameter must guarantee it does not throw any exception.
-     * Because `cleanup` is called when destruct this instance.
-     */
-    CloseableThreadLocal(std::function<void(void*)> cleanup)
-      : addr_this(reinterpret_cast<size_t>(this)),
-        cleanup(cleanup) {
+      : addr_this(reinterpret_cast<size_t>(this)) {
     }
 
     ~CloseableThreadLocal() {
       Close();
     }
 
-    template <typename T>
-    T* Get() const {
+    TYPE& Get() {
       auto it = reference.find(addr_this);
       if(it == reference.end()) {
-        return nullptr;
+        throw EmptyThreadLocalException();
       } else {
-        return static_cast<T*>(it->second);
+        return it->second;
       }
     }
 
-    template <typename T>
-    void Set(T* object) {
+    void Set(TYPE object) {
       reference[addr_this] = object;
     }
 
     void Close() {
-      auto it = reference.find(addr_this);
-      if(it != reference.end()) {
-        cleanup(it->second);
-        reference.erase(it);
-      }
+      reference.erase(addr_this);
     }
 };
 
-template <typename CLASS>
-thread_local std::unordered_map<size_t, void*> lucene::core::util::CloseableThreadLocal<CLASS>::reference{};
+template <typename CLASS, typename TYPE>
+thread_local std::unordered_map<size_t, TYPE> lucene::core::util::CloseableThreadLocal<CLASS, TYPE>::reference{};
 
 }}} // End of namespace
 

@@ -54,13 +54,17 @@ GlobalReuseStrategy::~GlobalReuseStrategy() {
 }
 
 TokenStreamComponents* GlobalReuseStrategy::GetReusableComponents(Analyzer& analyzer, const std::string& field_name) {
-  return GetStoredValue<TokenStreamComponents>(analyzer);
+  try {
+    return stored_value.Get();
+  } catch(EmptyThreadLocalException&) {
+    return nullptr;
+  }
 }
 
 void GlobalReuseStrategy::SetReusableComponents(Analyzer& analyzer,
-                                                    const std::string& field_name,
-                                                    TokenStreamComponents* component) {
-  SetStoredValue<TokenStreamComponents>(analyzer, component);
+                                                const std::string& field_name,
+                                                TokenStreamComponents* component) {
+  stored_value.Set(component);
 }
 
 GlobalReuseStrategy GLOBAL_REUSE_STRATEGY();
@@ -76,13 +80,26 @@ PerFieldReuseStrategy::~PerFieldReuseStrategy() {
 }
 
 TokenStreamComponents* PerFieldReuseStrategy::GetReusableComponents(Analyzer& analyzer, const std::string& field_name) {
-  return GetStoredValue<TokenStreamComponents>(analyzer);
+  try {
+    std::unordered_map<std::string, TokenStreamComponents*>& components_per_field = stored_value.Get();
+    auto it = components_per_field.find(field_name);
+    return (it == components_per_field.end() ? nullptr : it->second);
+  } catch(EmptyThreadLocalException&) {
+    return nullptr;
+  }
 }
 
 void PerFieldReuseStrategy::SetReusableComponents(Analyzer& analyzer,
-                                                    const std::string& field_name,
-                                                    TokenStreamComponents* component) {
-  // TODO Implement it. std::unique_ptr<TokenStreamComponents>(component)?
+                                                  const std::string& field_name,
+                                                  TokenStreamComponents* component) {
+  try {
+    std::unordered_map<std::string, TokenStreamComponents*>& components_per_field = stored_value.Get();
+    components_per_field[field_name] = component;
+  } catch(EmptyThreadLocalException&) {
+    stored_value.Set(std::unordered_map<std::string, TokenStreamComponents*>());
+    std::unordered_map<std::string, TokenStreamComponents*>& components_per_field = stored_value.Get();
+    components_per_field[field_name] = component;
+  }
 }
 
 PerFieldReuseStrategy PER_FIELD_REUSE_STRATEGY();
@@ -127,12 +144,13 @@ Analyzer::Analyzer()
 }
 
 Analyzer::Analyzer(ReuseStrategy& reuse_strategy)
-  : reuse_strategy(reuse_strategy),
+  : closed(false),
+    reuse_strategy(reuse_strategy),
     version(Version::LATEST) {
 }
 
 Analyzer::~Analyzer() {
-  stored_value.Close();
+  Close();
 }
 
 Reader& Analyzer::InitReader(const std::string& field_name, Reader& reader) {
@@ -233,7 +251,7 @@ BytesRef Analyzer::Normalize(const std::string& field_name, const std::string& t
 }
 
 void Analyzer::Close() {
-  stored_value.Close();
+  closed = true;
 }
 
 /**
