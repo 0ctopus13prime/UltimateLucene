@@ -47,8 +47,13 @@ class CloseableThreadLocal {
       }
     }
 
-    void Set(TYPE object) {
-      reference[addr_this] = object;
+    void Set(const TYPE& object) {
+      // reference[addr_this] = object; TODO. How to branch using <type_traits>??
+      reference.insert(std::pair<size_t, TYPE>(addr_this, object));
+    }
+
+    void Set(TYPE&& object) {
+      reference[addr_this] = std::forward<TYPE>(object);
     }
 
     void Close() {

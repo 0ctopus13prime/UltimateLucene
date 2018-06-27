@@ -1,3 +1,4 @@
+#include <memory>
 #include <future>
 #include <string>
 #include <mutex>
@@ -63,6 +64,29 @@ TEST(CONCURRENCY__TESTS, CloseableThreadLocal__EACH) {
 
   ctlocal1.Close();
   ctlocal2.Close();
+}
+
+TEST(CONCURRENCY__TESTS, CloseableThreadLocal__MOVE) {
+  std::unique_ptr<int> ptr = std::make_unique<int>(13);
+  CloseableThreadLocal<DummyClass, std::unique_ptr<int>> ctlocal;
+  ctlocal.Set(std::move(ptr));
+
+  std::unique_ptr<int>& got = ctlocal.Get();
+  EXPECT_EQ(13, *got);
+}
+
+TEST(CONCURRENCY__TESTS, CloseableTheadLocal__CLEAN) {
+  {
+    CloseableThreadLocal<DummyClass, int> ctlocal;
+    ctlocal.Set(13);
+  }
+
+  CloseableThreadLocal<DummyClass, int> ctlocal;
+  try {
+    ctlocal.Get();
+    FAIL();
+  } catch(EmptyThreadLocalException&) {
+  }
 }
 
 
