@@ -1,6 +1,7 @@
 #ifndef LUCENE_CORE_ANALYSIS_ANALYZER_H_
 #define LUCENE_CORE_ANALYSIS_ANALYZER_H_
 
+#include <unordered_map>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -57,6 +58,10 @@ class Analyzer {
           return analyzer.stored_value.Get<T>();
         }
 
+        /**
+         * The stored_value is a readonly value.
+         * ReuseStrategy does not own the stored_value, thus ReuseStrategy does not manage it's life cycle.
+         */
         template<typename T>
         void SetStoredValue(Analyzer& analyzer, T* stored_value) {
           analyzer.stored_value.Set<T>(stored_value);
@@ -72,7 +77,7 @@ class Analyzer {
   private:
     ReuseStrategy& reuse_strategy;
     lucene::core::util::etc::Version version;
-    lucene::core::util::CloseableThreadLocal stored_value;
+    lucene::core::util::CloseableThreadLocal<Analyzer> stored_value;
 
   protected:
     virtual TokenStreamComponents* CreateComponents(const std::string& field_name) = 0;
@@ -100,16 +105,30 @@ class Analyzer {
     void SetVersion(lucene::core::util::etc::Version& v);
 };
 
-class PreDefinedReuseStrategy: public Analyzer::ReuseStrategy {
+class GlobalReuseStrategy: public Analyzer::ReuseStrategy {
   public:
-    PreDefinedReuseStrategy();
-    virtual ~PreDefinedReuseStrategy();
+    GlobalReuseStrategy();
+    virtual ~GlobalReuseStrategy();
     TokenStreamComponents* GetReusableComponents(Analyzer& analyzer, const std::string& field_name) override;
     void SetReusableComponents(Analyzer& analyzer,
                               const std::string& field_name,
                               TokenStreamComponents* components) override;
 };
-static PreDefinedReuseStrategy PER_FIELD_REUSE_STRATEGY;
+static GlobalReuseStrategy GLOBAL_REUSE_STRATEGY;
+
+class PerFieldReuseStrategy: public Analyzer::ReuseStrategy {
+  private:
+    std::unordered_map<std::string, TokenStreamComponents*> components_per_field;
+
+  public:
+    PerFieldReuseStrategy();
+    virtual ~PerFieldReuseStrategy();
+    TokenStreamComponents* GetReusableComponents(Analyzer& analyzer, const std::string& field_name) override;
+    void SetReusableComponents(Analyzer& analyzer,
+                              const std::string& field_name,
+                              TokenStreamComponents* components) override;
+};
+static PerFieldReuseStrategy PER_FIELD_REUSE_STRATEGY;
 
 class StopwordAnalyzerBase: public Analyzer {
   protected:

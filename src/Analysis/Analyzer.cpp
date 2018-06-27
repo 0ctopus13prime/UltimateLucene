@@ -45,25 +45,47 @@ Analyzer::ReuseStrategy::~ReuseStrategy() {
 }
 
 /**
- *  PreDefinedReuseStrategy
+ *  GlobalReuseStrategy
  */
-PreDefinedReuseStrategy::PreDefinedReuseStrategy() {
+GlobalReuseStrategy::GlobalReuseStrategy() {
 }
 
-PreDefinedReuseStrategy::~PreDefinedReuseStrategy() {
+GlobalReuseStrategy::~GlobalReuseStrategy() {
 }
 
-TokenStreamComponents* PreDefinedReuseStrategy::GetReusableComponents(Analyzer& analyzer, const std::string& field_name) {
+TokenStreamComponents* GlobalReuseStrategy::GetReusableComponents(Analyzer& analyzer, const std::string& field_name) {
   return GetStoredValue<TokenStreamComponents>(analyzer);
 }
 
-void PreDefinedReuseStrategy::SetReusableComponents(Analyzer& analyzer,
+void GlobalReuseStrategy::SetReusableComponents(Analyzer& analyzer,
+                                                    const std::string& field_name,
+                                                    TokenStreamComponents* component) {
+  SetStoredValue<TokenStreamComponents>(analyzer, component);
+}
+
+GlobalReuseStrategy GLOBAL_REUSE_STRATEGY();
+
+
+/**
+ *  PerFieldReuseStrategy
+ */
+PerFieldReuseStrategy::PerFieldReuseStrategy() {
+}
+
+PerFieldReuseStrategy::~PerFieldReuseStrategy() {
+}
+
+TokenStreamComponents* PerFieldReuseStrategy::GetReusableComponents(Analyzer& analyzer, const std::string& field_name) {
+  return GetStoredValue<TokenStreamComponents>(analyzer);
+}
+
+void PerFieldReuseStrategy::SetReusableComponents(Analyzer& analyzer,
                                                     const std::string& field_name,
                                                     TokenStreamComponents* component) {
   // TODO Implement it. std::unique_ptr<TokenStreamComponents>(component)?
 }
 
-PreDefinedReuseStrategy PER_FIELD_REUSE_STRATEGY = PreDefinedReuseStrategy();
+PerFieldReuseStrategy PER_FIELD_REUSE_STRATEGY();
 
 /**
  *  StringTokenStream
@@ -89,8 +111,7 @@ bool StringTokenStream::IncrementToken() {
   ClearAttributes();
   term_attribute->Append(value);
   offset_attribute->SetOffset(0, length);
-  used = true;
-  return true;
+  return (used = true);
 }
 
 void StringTokenStream::End() {
