@@ -17,8 +17,10 @@ namespace lucene { namespace core { namespace analysis {
 
 class TokenStreamComponents {
   protected:
-    std::unique_ptr<Tokenizer> source;
-    std::unique_ptr<TokenStream> sink;
+    // This is shared between TokenFilter and TokenStreamComponents
+    std::shared_ptr<Tokenizer> source;
+    // It's shared_ptr in case souce and sink are equivalent
+    std::shared_ptr<TokenStream> sink;
     StringReader reusable_string_reader;
 
   public:
@@ -26,8 +28,8 @@ class TokenStreamComponents {
      * TokenStreamComponents constructor.
      * Both source, result instance owned by this instance.
      */
-    TokenStreamComponents(Tokenizer* source, TokenStream* result);
-    TokenStreamComponents(Tokenizer* source);
+    TokenStreamComponents(std::shared_ptr<Tokenizer> source, std::shared_ptr<TokenStream> result);
+    TokenStreamComponents(std::shared_ptr<Tokenizer> source);
     TokenStream& GetTokenStream();
     Tokenizer& GetTokenizer();
     StringReader& GetReusableStringReader();

@@ -9,12 +9,12 @@ using namespace lucene::core::util::etc;
 /**
  *  TokenStreamComponents
  */
-TokenStreamComponents::TokenStreamComponents(Tokenizer* source, TokenStream* result)
+TokenStreamComponents::TokenStreamComponents(std::shared_ptr<Tokenizer> source, std::shared_ptr<TokenStream> sink)
   : source(source),
-    sink(result) {
+    sink(sink) {
 }
 
-TokenStreamComponents::TokenStreamComponents(Tokenizer* source)
+TokenStreamComponents::TokenStreamComponents(std::shared_ptr<Tokenizer> source)
   : source(source),
     sink(source) {
 }
@@ -24,11 +24,11 @@ void TokenStreamComponents::SetReader(Reader& reader) {
 }
 
 TokenStream& TokenStreamComponents::GetTokenStream() {
-  return *sink.get();
+  return *(sink.get());
 }
 
 Tokenizer& TokenStreamComponents::GetTokenizer() {
-  return *source.get();
+  return *(source.get());
 }
 
 StringReader& TokenStreamComponents::GetReusableStringReader() {

@@ -319,6 +319,14 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__BASIC) {
   EXPECT_EQ(0, ct_attr_impl.Length());
 }
 
+TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__GROW__TEST) {
+  CharTermAttributeImpl ct_attr_impl;
+  for(int i = 0 ; i < 1000 ; ++i) {
+    std::string line("line - " + std::to_string(i));
+    ct_attr_impl.Append(line);
+  }
+}
+
 TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__ASSIGN) {
   // Prepare
   CharTermAttributeImpl ct_attr_impl1;

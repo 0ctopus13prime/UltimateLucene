@@ -35,10 +35,10 @@ class TokenStream: public lucene::core::util::AttributeSource {
 
 class TokenFilter: public TokenStream {
   protected:
-    std::unique_ptr<TokenStream> input;
+    std::shared_ptr<TokenStream> input;
 
   protected:
-    TokenFilter(std::unique_ptr<TokenStream>&& input);
+    TokenFilter(std::shared_ptr<TokenStream> input);
     TokenFilter(TokenStream* input);
 
   public:

@@ -45,9 +45,9 @@ void TokenStream::Close() {
  *  TokenFilter
  */
 
-TokenFilter::TokenFilter(std::unique_ptr<TokenStream>&& input)
+TokenFilter::TokenFilter(std::shared_ptr<TokenStream> input)
   : TokenStream(*input),
-    input(std::forward<std::unique_ptr<TokenStream>>(input)) {
+    input(input) {
 }
 
 TokenFilter::TokenFilter(TokenStream* input)
