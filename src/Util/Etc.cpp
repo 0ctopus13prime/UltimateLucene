@@ -81,6 +81,22 @@ bool Version::operator==(Version&& other) const {
   return encoded_value == other.encoded_value;
 }
 
+Version& Version::operator=(const Version& other) {
+  major = other.major;
+  minor = other.minor;
+  bugfix = other.bugfix;
+  prerelease = other.prerelease;
+  encoded_value = other.encoded_value;
+}
+
+Version& Version::operator=(Version&& other) {
+  major = other.major;
+  minor = other.minor;
+  bugfix = other.bugfix;
+  prerelease = other.prerelease;
+  encoded_value = other.encoded_value;
+}
+
 Version Version::FromBits(const uint8_t major, const uint8_t minor, const uint8_t bugfix) {
   return Version(major, minor, bugfix);
 }

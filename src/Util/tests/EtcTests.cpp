@@ -10,10 +10,10 @@ TEST(ETC__TESTS, VERSION__TESTS) {
     std::string version = Version::LATEST.ToString();
     EXPECT_EQ(std::string("7.3.0"), Version::LATEST.ToString());
 
-    EXPECT_EQ(7, Version::LATEST.major);
-    EXPECT_EQ(3, Version::LATEST.minor);
-    EXPECT_EQ(0, Version::LATEST.bugfix);
-    EXPECT_EQ(0, Version::LATEST.prerelease);
+    EXPECT_EQ(7, Version::LATEST.GetMajor());
+    EXPECT_EQ(3, Version::LATEST.GetMinor());
+    EXPECT_EQ(0, Version::LATEST.GetBugfix());
+    EXPECT_EQ(0, Version::LATEST.GetPreRelease());
   }
 
   {

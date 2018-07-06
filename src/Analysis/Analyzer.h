@@ -93,8 +93,13 @@ class Analyzer {
       return 1;
     }
     ReuseStrategy& GetReuseStrategy();
-    void SetVersion(lucene::core::util::etc::Version& v);
-    //const lucene::core::etc::Version& GetVersion()
+    void SetVersion(lucene::core::util::etc::Version& v) {
+      version = v;
+    }
+
+    const lucene::core::util::etc::Version& GetVersion() const {
+      return version;
+    }
 
     void Close() noexcept {
       closed = true;
