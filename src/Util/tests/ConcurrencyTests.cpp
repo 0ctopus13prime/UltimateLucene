@@ -18,15 +18,15 @@ TEST(CONCURRENCY__TESTS, CloseableThreadLocal__BASIC) {
   EXPECT_EQ(13, got);
 }
 
-CloseableThreadLocal<DummyClass, int> global_ctlocal;
 void IncreaseNumber(std::string thread_name, std::promise<int>&& promise) {
+  CloseableThreadLocal<DummyClass, int> ctlocal;
   try {
-    int& got = global_ctlocal.Get();
+    int& got = ctlocal.Get();
   } catch(EmptyThreadLocalException&) {
-    global_ctlocal.Set(0);
+    ctlocal.Set(0);
   }
 
-  int& got = global_ctlocal.Get();
+  int& got = ctlocal.Get();
   for(int i = 0 ; i < 1000 ; ++i) {
     got++;
   }
@@ -88,7 +88,6 @@ TEST(CONCURRENCY__TESTS, CloseableTheadLocal__CLEAN) {
   } catch(EmptyThreadLocalException&) {
   }
 }
-
 
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);

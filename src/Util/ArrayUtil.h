@@ -22,13 +22,22 @@ T* CopyOf(const T* original, const uint32_t original_length) {
   return CopyOf(original, original_length, original_length);
 }
 
-// TODO. I'm not sure this is a valid implementation. How can I limit maximum array size?
-uint32_t Oversize(const uint32_t min_target_size, const uint32_t bytes_per_element);
+// TODO. I'm not sure this is a valid implementation. How can I limit maximum array size like Java does?
+template <typename T>
+uint32_t Oversize(const uint32_t min_target_size) {
+  uint32_t extra = (min_target_size >> 3); // extra <- min_target_size / 8
+  if(extra < 3) {
+    extra = 3;
+  }
+
+  uint32_t new_size = (min_target_size + extra);
+  return new_size;
+}
 
 template <typename T>
 std::pair<T*, uint32_t> Grow(const T* array, const uint32_t length, const uint32_t min_size) {
   if(length < min_size) {
-    uint32_t new_length = Oversize(min_size, sizeof(T));
+    uint32_t new_length = Oversize<T>(min_size);
     T* new_array = CopyOf(array, length, new_length);
     return std::pair<T*, uint32_t>(new_array, new_length);
   }

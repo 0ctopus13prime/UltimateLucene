@@ -1,6 +1,7 @@
 #ifndef LUCENE_CORE_ANALYSIS_ANALYZER_H_
 #define LUCENE_CORE_ANALYSIS_ANALYZER_H_
 
+#include <memory>
 #include <unordered_map>
 #include <vector>
 #include <string>
@@ -30,6 +31,7 @@ class TokenStreamComponents {
      */
     TokenStreamComponents(std::shared_ptr<Tokenizer> source, std::shared_ptr<TokenStream> result);
     TokenStreamComponents(std::shared_ptr<Tokenizer> source);
+    ~TokenStreamComponents();
     TokenStream& GetTokenStream();
     Tokenizer& GetTokenizer();
     StringReader& GetReusableStringReader();
@@ -63,22 +65,20 @@ class Analyzer {
 
   private:
     bool closed;
-    ReuseStrategy& reuse_strategy;
+    std::unique_ptr<ReuseStrategy> reuse_strategy;
     lucene::core::util::etc::Version version;
 
   protected:
     virtual TokenStreamComponents* CreateComponents(const std::string& field_name) = 0;
     virtual Reader& InitReader(const std::string& field_name, Reader& reader);
-    delete_unique_ptr<TokenStream>&& Normalize(const std::string& field_name, delete_unique_ptr<TokenStream>& in);
-    delete_unique_ptr<TokenStream>&& Normalize(const std::string& field_name, delete_unique_ptr<TokenStream>&& in);
-    delete_unique_ptr<Reader>&& InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader>& reader);
-    delete_unique_ptr<Reader>&& InitReaderForNormalization(const std::string& field_name, delete_unique_ptr<Reader>&& reader);
+    TokenStream& Normalize(const std::string& field_name, TokenStream& in);
+    Reader& InitReaderForNormalization(const std::string& field_name, Reader& reader);
     AttributeFactory& GetAttributeFactory(const std::string& field_name);
 
   public:
     Analyzer();
-    Analyzer(ReuseStrategy& reuse_strategy);
-    ~Analyzer();
+    Analyzer(ReuseStrategy* reuse_strategy);
+    virtual ~Analyzer();
 
     // Create a new TokenStream with given reader.
     // Parameter reader will be destructed once it is given to this instance.
@@ -86,20 +86,28 @@ class Analyzer {
     TokenStream& GetTokenStream(const std::string& field_name, Reader& reader);
     TokenStream& GetTokenStream(const std::string& field_name, const std::string& text);
     BytesRef Normalize(const std::string& field_name, const std::string& text);
-    uint32_t GetPositionIncrementGap(const std::string& field_name);
-    uint32_t GetOffsetGap(const std::string& field_name);
+    uint32_t GetPositionIncrementGap(const std::string& field_name) {
+      return 0;
+    }
+    uint32_t GetOffsetGap(const std::string& field_name) {
+      return 1;
+    }
     ReuseStrategy& GetReuseStrategy();
     void SetVersion(lucene::core::util::etc::Version& v);
     //const lucene::core::etc::Version& GetVersion()
-    void Close();
-    bool IsClosed() {
+
+    void Close() noexcept {
+      closed = true;
+    }
+
+    bool IsClosed() const noexcept {
       return closed;
     }
 };
 
 class GlobalReuseStrategy: public Analyzer::ReuseStrategy {
   private:
-    lucene::core::util::CloseableThreadLocal<GlobalReuseStrategy, TokenStreamComponents*> stored_value;
+    lucene::core::util::CloseableThreadLocal<GlobalReuseStrategy, std::unique_ptr<TokenStreamComponents>> stored_value;
 
   public:
     GlobalReuseStrategy();
@@ -109,11 +117,10 @@ class GlobalReuseStrategy: public Analyzer::ReuseStrategy {
                               const std::string& field_name,
                               TokenStreamComponents* components) override;
 };
-static GlobalReuseStrategy GLOBAL_REUSE_STRATEGY;
 
 class PerFieldReuseStrategy: public Analyzer::ReuseStrategy {
   private:
-    lucene::core::util::CloseableThreadLocal<GlobalReuseStrategy, std::unordered_map<std::string, TokenStreamComponents*>> stored_value;
+    lucene::core::util::CloseableThreadLocal<PerFieldReuseStrategy, std::unordered_map<std::string, std::unique_ptr<TokenStreamComponents>>> stored_value;
 
   public:
     PerFieldReuseStrategy();
@@ -123,7 +130,6 @@ class PerFieldReuseStrategy: public Analyzer::ReuseStrategy {
                               const std::string& field_name,
                               TokenStreamComponents* components) override;
 };
-static PerFieldReuseStrategy PER_FIELD_REUSE_STRATEGY;
 
 class StopwordAnalyzerBase: public Analyzer {
   protected:
