@@ -1,12 +1,38 @@
+/*
+ *
+ * Copyright (c) 2018-2019 Doo Yong Kim. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+#include <Analysis/CharacterUtil.h>
+#include <gtest/gtest.h>
+#include <Util/ArrayUtil.h>
+#include <cstring>
 #include <iostream>
 #include <set>
-#include <cstring>
 #include <vector>
-#include <Analysis/CharacterUtil.h>
-#include <Util/ArrayUtil.h>
-#include <gtest/gtest.h>
 
-using namespace lucene::core::analysis::characterutil;
+using lucene::core::analysis::characterutil::CharMap;
+using lucene::core::analysis::characterutil::CharPtrRangeInfo;
+using lucene::core::analysis::characterutil::CharPtrRangeInfoEqual;
+using lucene::core::analysis::characterutil::CharPtrRangeInfoHasher;
+using lucene::core::analysis::characterutil::CharSet;
+using lucene::core::analysis::characterutil::IsPrefix;
+using lucene::core::analysis::characterutil::Split;
+using lucene::core::analysis::characterutil::SplitRegex;
+using lucene::core::analysis::characterutil::ToLowerCase;
+using lucene::core::analysis::characterutil::Trim;
 
 TEST(CHARACTER__UTILS, FUNCTIONS) {
   {
@@ -70,14 +96,20 @@ TEST(CHARACTER__UTILS, FUNCTIONS) {
     const char* upper_case_cstr = "Doochi! Nice meet you!";
     const char* lower_case_cstr = "doochi! nice meet you!";
     const char* different_cstr = "Doochi! Nice meet u!";
-    CharPtrRangeInfo upper_case_info(upper_case_cstr, 0, std::strlen(upper_case_cstr));
-    CharPtrRangeInfo upper_case_info1(upper_case_cstr, 0, std::strlen(upper_case_cstr));
+    CharPtrRangeInfo upper_case_info(upper_case_cstr,
+                                     0,
+                                     std::strlen(upper_case_cstr));
+    CharPtrRangeInfo upper_case_info1(upper_case_cstr,
+                                      0,
+                                      std::strlen(upper_case_cstr));
     CharPtrRangeInfoEqual care_care_equal(false);
 
     // Same str, range
     EXPECT_TRUE(care_care_equal(upper_case_info, upper_case_info1));
 
-    CharPtrRangeInfo lower_case_info(lower_case_cstr, 0, std::strlen(lower_case_cstr));
+    CharPtrRangeInfo lower_case_info(lower_case_cstr,
+                                     0,
+                                     std::strlen(lower_case_cstr));
     // Lower case
     EXPECT_FALSE(care_care_equal(upper_case_info, lower_case_info));
 
@@ -92,18 +124,29 @@ TEST(CHARACTER__UTILS, FUNCTIONS) {
 
     // Hashing test
     CharPtrRangeInfoHasher care_case_hasher(false);
-    CharPtrRangeInfo different_info(different_cstr, 0, std::strlen(different_cstr));
-    EXPECT_EQ(care_case_hasher(upper_case_info), care_case_hasher(upper_case_info1));
-    EXPECT_NE(care_case_hasher(upper_case_info), care_case_hasher(different_info));
+    CharPtrRangeInfo different_info(different_cstr,
+                                    0,
+                                    std::strlen(different_cstr));
+    EXPECT_EQ(care_case_hasher(upper_case_info),
+              care_case_hasher(upper_case_info1));
+    EXPECT_NE(care_case_hasher(upper_case_info),
+              care_case_hasher(different_info));
 
     std::string str1("Doochi! Nice meet you!");
-    CharPtrRangeInfo tmp_upper_case_info(lucene::core::util::arrayutil::CopyOfRange(str1.c_str(), 0, str1.size()), 0, str1.size());
+    CharPtrRangeInfo
+    tmp_upper_case_info(lucene::core::util::arrayutil::CopyOfRange(str1.c_str(),
+                                                                   0,
+                                                                   str1.size()),
+                        0,
+                        str1.size());
     CharPtrRangeInfo tmp_upper_case_info1(str1.c_str(), 0, str1.size());
-    EXPECT_EQ(care_case_hasher(tmp_upper_case_info), care_case_hasher(tmp_upper_case_info1));
+    EXPECT_EQ(care_case_hasher(tmp_upper_case_info),
+              care_case_hasher(tmp_upper_case_info1));
     EXPECT_TRUE(care_care_equal(tmp_upper_case_info, tmp_upper_case_info1));
 
     CharPtrRangeInfoHasher dont_care_case_hasher(true);
-    EXPECT_EQ(dont_care_case_hasher(upper_case_info), dont_care_case_hasher(lower_case_info));
+    EXPECT_EQ(dont_care_case_hasher(upper_case_info),
+              dont_care_case_hasher(lower_case_info));
   }
 }
 
@@ -123,7 +166,8 @@ TEST(CHARACTER__UTILS, CHAR__MAP__TESTS) {
     EXPECT_FALSE(char_map.ContainsKey(different_str));
 
     auto it = char_map.Begin();
-    EXPECT_EQ(upper_case_str, std::string(it->first.str, it->first.offset, it->first.length));
+    EXPECT_EQ(upper_case_str,
+              std::string(it->first.str, it->first.offset, it->first.length));
     it++;
     EXPECT_EQ(char_map.End(), it);
 
@@ -131,10 +175,13 @@ TEST(CHARACTER__UTILS, CHAR__MAP__TESTS) {
     EXPECT_EQ(2, char_map.Size());
     EXPECT_TRUE(char_map.ContainsKey(different_str));
 
-    // Because CharMap has an unordinary_map inside, insertion order is not guaranteed.
+    // Because CharMap has an unordinary_map inside,
+    // insertion order is not guaranteed.
     std::set<std::string> check_set;
-    for(auto it = char_map.Begin() ; it != char_map.End() ; ++it) {
-      check_set.insert(std::string(it->first.str, it->first.offset, it->first.length));
+    for (auto it = char_map.Begin() ; it != char_map.End() ; ++it) {
+      check_set.insert(std::string(it->first.str,
+                                   it->first.offset,
+                                   it->first.length));
     }
 
     EXPECT_EQ(2, check_set.size());
@@ -178,8 +225,12 @@ TEST(CHARACTER__UTILS, CHAR__SET__TESTS) {
     EXPECT_EQ(1, carecase_set.Size());
     EXPECT_TRUE(carecase_set.Contains(uppercase_str));
     EXPECT_FALSE(carecase_set.Contains(lowercase_str));
-    EXPECT_TRUE(carecase_set.Contains(uppercase_str.c_str(), 0, uppercase_str.size()));
-    EXPECT_FALSE(carecase_set.Contains(lowercase_str.c_str(), 0, lowercase_str.size()));
+    EXPECT_TRUE(carecase_set.Contains(uppercase_str.c_str(),
+                                      0,
+                                      uppercase_str.size()));
+    EXPECT_FALSE(carecase_set.Contains(lowercase_str.c_str(),
+                                       0,
+                                       lowercase_str.size()));
     EXPECT_FALSE(carecase_set.Contains(different_str));
 
     carecase_set.Clear();
@@ -190,16 +241,24 @@ TEST(CHARACTER__UTILS, CHAR__SET__TESTS) {
     EXPECT_EQ(1, dont_carecase_set.Size());
     EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str));
     EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str));
-    EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str.c_str(), 0, uppercase_str.size()));
-    EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str.c_str(), 0, lowercase_str.size()));
+    EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str.c_str(),
+                                           0,
+                                           uppercase_str.size()));
+    EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str.c_str(),
+                                           0,
+                                           lowercase_str.size()));
     EXPECT_FALSE(dont_carecase_set.Contains(different_str));
 
     dont_carecase_set.Add(lowercase_str);
     EXPECT_EQ(1, dont_carecase_set.Size());
     EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str));
     EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str));
-    EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str.c_str(), 0, uppercase_str.size()));
-    EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str.c_str(), 0, lowercase_str.size()));
+    EXPECT_TRUE(dont_carecase_set.Contains(uppercase_str.c_str(),
+                                           0,
+                                           uppercase_str.size()));
+    EXPECT_TRUE(dont_carecase_set.Contains(lowercase_str.c_str(),
+                                           0,
+                                           lowercase_str.size()));
   }
 
   // Initialization

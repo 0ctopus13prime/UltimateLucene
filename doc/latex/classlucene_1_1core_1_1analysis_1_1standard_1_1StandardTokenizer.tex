@@ -1,0 +1,265 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:standard\+:\+:Standard\+Tokenizer Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer}\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+
+
+{\ttfamily \#include $<$Standard.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:standard\+:\+:Standard\+Tokenizer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a1277d4a3ee7fd0191250c6871c2a4b87}{Standard\+Tokenizer}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ae0953014758400fc119c58373937abc0}{Standard\+Tokenizer}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory}{lucene\+::core\+::util\+::\+Attribute\+Factory}} \&\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_a1376420a752f337a0fdb582bdf160eba}{factory}})
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_af5cadb92a403f1c41592a1be796eeb8b}{$\sim$\+Standard\+Tokenizer}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ab5b2f4a086ed9ef0f196080fa7de0ceb}{Set\+Max\+Token\+Length}} (uint32\+\_\+t length)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a8c4763c6470ab3724cd8f05191be48a2}{Get\+Max\+Token\+Length}} ()
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a5702119d01489ede9396db0794a98c41}{Increment\+Token}} () override
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a733b678af865ff10e41fba9b74131872}{End}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a108793659fb18bdd695e0c2be91ba730}{Close}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a4d6e42ca0fcaf07cb6615643362891b3}{Reset}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a89e87742cc1d983b876602ddf7c4d823}{A\+L\+P\+H\+A\+N\+UM}} = 0
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a0cc5d40f8afa24869c28e26a21ac9a9a}{N\+UM}} = 1
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a325a7c52ff70ac6004472ce67d2c195d}{S\+O\+U\+T\+H\+E\+A\+S\+T\+\_\+\+A\+S\+I\+AN}} = 2
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a7819d2406e5c2e852740b5123736e66e}{I\+D\+E\+O\+G\+R\+A\+P\+H\+IC}} = 3
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a9493d33d2e50179798c89ee7e21de4c8}{H\+I\+R\+A\+G\+A\+NA}} = 4
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a3177ce400602ef55696803cdf9cf6bd1}{K\+A\+T\+A\+K\+A\+NA}} = 5
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_aaafb4ee36c04de9e70b96bfa4b3ffd71}{H\+A\+N\+G\+UL}} = 6
+\item 
+static const char $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a565064bb569766d9345ab41fdd699cb0}{T\+O\+K\+E\+N\+\_\+\+T\+Y\+P\+ES}} \mbox{[}$\,$\mbox{]}
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ad5781b94208ea9b696dc91efac36e80d}{M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+T\+H\+\_\+\+L\+I\+M\+IT}} = 1024 $\ast$ 1024
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a822d3e10bec987a36a17344f56e043e3}{skipped\+\_\+positions}}
+\item 
+int32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a94d9646f952d3b00e2329adb31dd8ff2}{max\+\_\+token\+\_\+length}}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{tokenattributes\+::\+Char\+Term\+Attribute}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a92fedf9b1a1985ff3f1215004684bf4d}{term\+\_\+att}}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttribute}{tokenattributes\+::\+Offset\+Attribute}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a80ec2aca819b34dc48ad99408a39fc2d}{offset\+\_\+att}}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttribute}{tokenattributes\+::\+Position\+Increment\+Attribute}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a7fda0cbb61043d793db131ccc70eaaec}{pos\+\_\+incr\+\_\+att}}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttribute}{tokenattributes\+::\+Type\+Attribute}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ab3d625b382877b9e75fd3f05bd834e50}{type\+\_\+att}}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl}{Standard\+Tokenizer\+Impl}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_adb4702e24ca7dc4a5ff3e92e5249acbe}{scanner}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a1277d4a3ee7fd0191250c6871c2a4b87}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a1277d4a3ee7fd0191250c6871c2a4b87}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!Standard\+Tokenizer@{Standard\+Tokenizer}}
+\index{Standard\+Tokenizer@{Standard\+Tokenizer}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{Standard\+Tokenizer()}{StandardTokenizer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Standard\+Tokenizer\+::\+Standard\+Tokenizer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ae0953014758400fc119c58373937abc0}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ae0953014758400fc119c58373937abc0}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!Standard\+Tokenizer@{Standard\+Tokenizer}}
+\index{Standard\+Tokenizer@{Standard\+Tokenizer}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{Standard\+Tokenizer()}{StandardTokenizer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Standard\+Tokenizer\+::\+Standard\+Tokenizer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory}{lucene\+::core\+::util\+::\+Attribute\+Factory}} \&}]{factory }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_af5cadb92a403f1c41592a1be796eeb8b}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_af5cadb92a403f1c41592a1be796eeb8b}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!````~Standard\+Tokenizer@{$\sim$\+Standard\+Tokenizer}}
+\index{````~Standard\+Tokenizer@{$\sim$\+Standard\+Tokenizer}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{$\sim$\+Standard\+Tokenizer()}{~StandardTokenizer()}}
+{\footnotesize\ttfamily Standard\+Tokenizer\+::$\sim$\+Standard\+Tokenizer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a108793659fb18bdd695e0c2be91ba730}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a108793659fb18bdd695e0c2be91ba730}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!Close@{Close}}
+\index{Close@{Close}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily void Standard\+Tokenizer\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_ad7963391ddbb2c75610e3738ba5155c8}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a733b678af865ff10e41fba9b74131872}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a733b678af865ff10e41fba9b74131872}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!End@{End}}
+\index{End@{End}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{End()}{End()}}
+{\footnotesize\ttfamily void Standard\+Tokenizer\+::\+End (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_a4693985ca7fb242412049a074027b8b5}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a8c4763c6470ab3724cd8f05191be48a2}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a8c4763c6470ab3724cd8f05191be48a2}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!Get\+Max\+Token\+Length@{Get\+Max\+Token\+Length}}
+\index{Get\+Max\+Token\+Length@{Get\+Max\+Token\+Length}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{Get\+Max\+Token\+Length()}{GetMaxTokenLength()}}
+{\footnotesize\ttfamily uint32\+\_\+t Standard\+Tokenizer\+::\+Get\+Max\+Token\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a5702119d01489ede9396db0794a98c41}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a5702119d01489ede9396db0794a98c41}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!Increment\+Token@{Increment\+Token}}
+\index{Increment\+Token@{Increment\+Token}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{Increment\+Token()}{IncrementToken()}}
+{\footnotesize\ttfamily bool Standard\+Tokenizer\+::\+Increment\+Token (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_a614d4ea24a354d6f4354b4941b5124e2}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a4d6e42ca0fcaf07cb6615643362891b3}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a4d6e42ca0fcaf07cb6615643362891b3}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!Reset@{Reset}}
+\index{Reset@{Reset}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily void Standard\+Tokenizer\+::\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_ae24622f4bc0aeaf0bef924ff1661e023}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ab5b2f4a086ed9ef0f196080fa7de0ceb}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ab5b2f4a086ed9ef0f196080fa7de0ceb}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!Set\+Max\+Token\+Length@{Set\+Max\+Token\+Length}}
+\index{Set\+Max\+Token\+Length@{Set\+Max\+Token\+Length}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{Set\+Max\+Token\+Length()}{SetMaxTokenLength()}}
+{\footnotesize\ttfamily void Standard\+Tokenizer\+::\+Set\+Max\+Token\+Length (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a89e87742cc1d983b876602ddf7c4d823}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a89e87742cc1d983b876602ddf7c4d823}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!A\+L\+P\+H\+A\+N\+UM@{A\+L\+P\+H\+A\+N\+UM}}
+\index{A\+L\+P\+H\+A\+N\+UM@{A\+L\+P\+H\+A\+N\+UM}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{A\+L\+P\+H\+A\+N\+UM}{ALPHANUM}}
+{\footnotesize\ttfamily const uint32\+\_\+t Standard\+Tokenizer\+::\+A\+L\+P\+H\+A\+N\+UM = 0\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_aaafb4ee36c04de9e70b96bfa4b3ffd71}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_aaafb4ee36c04de9e70b96bfa4b3ffd71}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!H\+A\+N\+G\+UL@{H\+A\+N\+G\+UL}}
+\index{H\+A\+N\+G\+UL@{H\+A\+N\+G\+UL}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{H\+A\+N\+G\+UL}{HANGUL}}
+{\footnotesize\ttfamily const uint32\+\_\+t Standard\+Tokenizer\+::\+H\+A\+N\+G\+UL = 6\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a9493d33d2e50179798c89ee7e21de4c8}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a9493d33d2e50179798c89ee7e21de4c8}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!H\+I\+R\+A\+G\+A\+NA@{H\+I\+R\+A\+G\+A\+NA}}
+\index{H\+I\+R\+A\+G\+A\+NA@{H\+I\+R\+A\+G\+A\+NA}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{H\+I\+R\+A\+G\+A\+NA}{HIRAGANA}}
+{\footnotesize\ttfamily const uint32\+\_\+t Standard\+Tokenizer\+::\+H\+I\+R\+A\+G\+A\+NA = 4\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a7819d2406e5c2e852740b5123736e66e}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a7819d2406e5c2e852740b5123736e66e}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!I\+D\+E\+O\+G\+R\+A\+P\+H\+IC@{I\+D\+E\+O\+G\+R\+A\+P\+H\+IC}}
+\index{I\+D\+E\+O\+G\+R\+A\+P\+H\+IC@{I\+D\+E\+O\+G\+R\+A\+P\+H\+IC}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{I\+D\+E\+O\+G\+R\+A\+P\+H\+IC}{IDEOGRAPHIC}}
+{\footnotesize\ttfamily const uint32\+\_\+t Standard\+Tokenizer\+::\+I\+D\+E\+O\+G\+R\+A\+P\+H\+IC = 3\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a3177ce400602ef55696803cdf9cf6bd1}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a3177ce400602ef55696803cdf9cf6bd1}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!K\+A\+T\+A\+K\+A\+NA@{K\+A\+T\+A\+K\+A\+NA}}
+\index{K\+A\+T\+A\+K\+A\+NA@{K\+A\+T\+A\+K\+A\+NA}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{K\+A\+T\+A\+K\+A\+NA}{KATAKANA}}
+{\footnotesize\ttfamily const uint32\+\_\+t Standard\+Tokenizer\+::\+K\+A\+T\+A\+K\+A\+NA = 5\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a94d9646f952d3b00e2329adb31dd8ff2}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a94d9646f952d3b00e2329adb31dd8ff2}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!max\+\_\+token\+\_\+length@{max\+\_\+token\+\_\+length}}
+\index{max\+\_\+token\+\_\+length@{max\+\_\+token\+\_\+length}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{max\+\_\+token\+\_\+length}{max\_token\_length}}
+{\footnotesize\ttfamily int32\+\_\+t lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+::max\+\_\+token\+\_\+length\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ad5781b94208ea9b696dc91efac36e80d}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ad5781b94208ea9b696dc91efac36e80d}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+T\+H\+\_\+\+L\+I\+M\+IT@{M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+T\+H\+\_\+\+L\+I\+M\+IT}}
+\index{M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+T\+H\+\_\+\+L\+I\+M\+IT@{M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+T\+H\+\_\+\+L\+I\+M\+IT}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+T\+H\+\_\+\+L\+I\+M\+IT}{MAX\_TOKEN\_LENGTH\_LIMIT}}
+{\footnotesize\ttfamily const uint32\+\_\+t Standard\+Tokenizer\+::\+M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+T\+H\+\_\+\+L\+I\+M\+IT = 1024 $\ast$ 1024\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a0cc5d40f8afa24869c28e26a21ac9a9a}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a0cc5d40f8afa24869c28e26a21ac9a9a}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!N\+UM@{N\+UM}}
+\index{N\+UM@{N\+UM}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{N\+UM}{NUM}}
+{\footnotesize\ttfamily const uint32\+\_\+t Standard\+Tokenizer\+::\+N\+UM = 1\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a80ec2aca819b34dc48ad99408a39fc2d}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a80ec2aca819b34dc48ad99408a39fc2d}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!offset\+\_\+att@{offset\+\_\+att}}
+\index{offset\+\_\+att@{offset\+\_\+att}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{offset\+\_\+att}{offset\_att}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttribute}{tokenattributes\+::\+Offset\+Attribute}}$>$ lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+::offset\+\_\+att\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a7fda0cbb61043d793db131ccc70eaaec}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a7fda0cbb61043d793db131ccc70eaaec}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!pos\+\_\+incr\+\_\+att@{pos\+\_\+incr\+\_\+att}}
+\index{pos\+\_\+incr\+\_\+att@{pos\+\_\+incr\+\_\+att}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{pos\+\_\+incr\+\_\+att}{pos\_incr\_att}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttribute}{tokenattributes\+::\+Position\+Increment\+Attribute}}$>$ lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+::pos\+\_\+incr\+\_\+att\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_adb4702e24ca7dc4a5ff3e92e5249acbe}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_adb4702e24ca7dc4a5ff3e92e5249acbe}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!scanner@{scanner}}
+\index{scanner@{scanner}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{scanner}{scanner}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl}{Standard\+Tokenizer\+Impl}} lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+::scanner\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a822d3e10bec987a36a17344f56e043e3}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a822d3e10bec987a36a17344f56e043e3}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!skipped\+\_\+positions@{skipped\+\_\+positions}}
+\index{skipped\+\_\+positions@{skipped\+\_\+positions}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{skipped\+\_\+positions}{skipped\_positions}}
+{\footnotesize\ttfamily int32\+\_\+t lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+::skipped\+\_\+positions\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a325a7c52ff70ac6004472ce67d2c195d}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a325a7c52ff70ac6004472ce67d2c195d}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!S\+O\+U\+T\+H\+E\+A\+S\+T\+\_\+\+A\+S\+I\+AN@{S\+O\+U\+T\+H\+E\+A\+S\+T\+\_\+\+A\+S\+I\+AN}}
+\index{S\+O\+U\+T\+H\+E\+A\+S\+T\+\_\+\+A\+S\+I\+AN@{S\+O\+U\+T\+H\+E\+A\+S\+T\+\_\+\+A\+S\+I\+AN}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{S\+O\+U\+T\+H\+E\+A\+S\+T\+\_\+\+A\+S\+I\+AN}{SOUTHEAST\_ASIAN}}
+{\footnotesize\ttfamily const uint32\+\_\+t Standard\+Tokenizer\+::\+S\+O\+U\+T\+H\+E\+A\+S\+T\+\_\+\+A\+S\+I\+AN = 2\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a92fedf9b1a1985ff3f1215004684bf4d}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a92fedf9b1a1985ff3f1215004684bf4d}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!term\+\_\+att@{term\+\_\+att}}
+\index{term\+\_\+att@{term\+\_\+att}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{term\+\_\+att}{term\_att}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{tokenattributes\+::\+Char\+Term\+Attribute}}$>$ lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+::term\+\_\+att\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a565064bb569766d9345ab41fdd699cb0}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_a565064bb569766d9345ab41fdd699cb0}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!T\+O\+K\+E\+N\+\_\+\+T\+Y\+P\+ES@{T\+O\+K\+E\+N\+\_\+\+T\+Y\+P\+ES}}
+\index{T\+O\+K\+E\+N\+\_\+\+T\+Y\+P\+ES@{T\+O\+K\+E\+N\+\_\+\+T\+Y\+P\+ES}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{T\+O\+K\+E\+N\+\_\+\+T\+Y\+P\+ES}{TOKEN\_TYPES}}
+{\footnotesize\ttfamily const char $\ast$ Standard\+Tokenizer\+::\+T\+O\+K\+E\+N\+\_\+\+T\+Y\+P\+ES\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{  \textcolor{stringliteral}{"<ALPHANUM>"},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"<NUM>"},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"<SOUTHEAST\_ASIAN>"},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"<IDEOGRAPHIC>"},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"<HIRAGANA>"},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"<KATAKANA>"},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"<HANGUL>"}}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ab3d625b382877b9e75fd3f05bd834e50}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer_ab3d625b382877b9e75fd3f05bd834e50}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}!type\+\_\+att@{type\+\_\+att}}
+\index{type\+\_\+att@{type\+\_\+att}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer}}
+\subsubsection{\texorpdfstring{type\+\_\+att}{type\_att}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttribute}{tokenattributes\+::\+Type\+Attribute}}$>$ lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+::type\+\_\+att\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{Standard_8h}{Standard.\+h}}\item 
+Analysis/\mbox{\hyperlink{Standard_8cpp}{Standard.\+cpp}}\end{DoxyCompactItemize}

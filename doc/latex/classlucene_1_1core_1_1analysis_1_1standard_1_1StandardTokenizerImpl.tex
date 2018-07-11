@@ -1,0 +1,99 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:standard\+:\+:Standard\+Tokenizer\+Impl Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl}\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+
+
+{\ttfamily \#include $<$Standard.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a64aeb3d3c5c64b3c099a9042930d2072}{Standard\+Tokenizer\+Impl}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{lucene\+::core\+::analysis\+::\+Reader}} $\ast$in)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a7b85d18cb75dd13793a2c067aa41eb0a}{$\sim$\+Standard\+Tokenizer\+Impl}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_afc6d8904d6816baa27c54471da7f8755}{Set\+Buffer\+Size}} (uint32\+\_\+t length)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a4198bd2f50a136429db69c6f4025b571}{Get\+Next\+Token}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a8e389a9a4f8659fcdaead22795c132f3}{Get\+Text}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{tokenattributes\+::\+Char\+Term\+Attribute}} \&term\+\_\+att)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a8305da33749783d1e360abea1d384adb}{Yy\+Length}} ()
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a1dec98b86d7ce0b2dd6a674380599f6c}{Yy\+Char}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_accacb4bb2516823080aaaf0d09855958}{Yy\+Reset}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{lucene\+::core\+::analysis\+::\+Reader}} $\ast$reader)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const int32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a9df3ece23b5c2072b3f9dde3405f56d2}{Y\+Y\+E\+OF}} = -\/1
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a64aeb3d3c5c64b3c099a9042930d2072}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a64aeb3d3c5c64b3c099a9042930d2072}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}!Standard\+Tokenizer\+Impl@{Standard\+Tokenizer\+Impl}}
+\index{Standard\+Tokenizer\+Impl@{Standard\+Tokenizer\+Impl}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+\subsubsection{\texorpdfstring{Standard\+Tokenizer\+Impl()}{StandardTokenizerImpl()}}
+{\footnotesize\ttfamily Standard\+Tokenizer\+Impl\+::\+Standard\+Tokenizer\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{lucene\+::core\+::analysis\+::\+Reader}} $\ast$}]{in }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a7b85d18cb75dd13793a2c067aa41eb0a}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a7b85d18cb75dd13793a2c067aa41eb0a}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}!````~Standard\+Tokenizer\+Impl@{$\sim$\+Standard\+Tokenizer\+Impl}}
+\index{````~Standard\+Tokenizer\+Impl@{$\sim$\+Standard\+Tokenizer\+Impl}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+\subsubsection{\texorpdfstring{$\sim$\+Standard\+Tokenizer\+Impl()}{~StandardTokenizerImpl()}}
+{\footnotesize\ttfamily Standard\+Tokenizer\+Impl\+::$\sim$\+Standard\+Tokenizer\+Impl (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a4198bd2f50a136429db69c6f4025b571}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a4198bd2f50a136429db69c6f4025b571}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}!Get\+Next\+Token@{Get\+Next\+Token}}
+\index{Get\+Next\+Token@{Get\+Next\+Token}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+\subsubsection{\texorpdfstring{Get\+Next\+Token()}{GetNextToken()}}
+{\footnotesize\ttfamily uint32\+\_\+t Standard\+Tokenizer\+Impl\+::\+Get\+Next\+Token (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a8e389a9a4f8659fcdaead22795c132f3}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a8e389a9a4f8659fcdaead22795c132f3}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}!Get\+Text@{Get\+Text}}
+\index{Get\+Text@{Get\+Text}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+\subsubsection{\texorpdfstring{Get\+Text()}{GetText()}}
+{\footnotesize\ttfamily void Standard\+Tokenizer\+Impl\+::\+Get\+Text (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{tokenattributes\+::\+Char\+Term\+Attribute}} \&}]{term\+\_\+att }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_afc6d8904d6816baa27c54471da7f8755}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_afc6d8904d6816baa27c54471da7f8755}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}!Set\+Buffer\+Size@{Set\+Buffer\+Size}}
+\index{Set\+Buffer\+Size@{Set\+Buffer\+Size}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+\subsubsection{\texorpdfstring{Set\+Buffer\+Size()}{SetBufferSize()}}
+{\footnotesize\ttfamily void Standard\+Tokenizer\+Impl\+::\+Set\+Buffer\+Size (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a1dec98b86d7ce0b2dd6a674380599f6c}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a1dec98b86d7ce0b2dd6a674380599f6c}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}!Yy\+Char@{Yy\+Char}}
+\index{Yy\+Char@{Yy\+Char}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+\subsubsection{\texorpdfstring{Yy\+Char()}{YyChar()}}
+{\footnotesize\ttfamily uint32\+\_\+t Standard\+Tokenizer\+Impl\+::\+Yy\+Char (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a8305da33749783d1e360abea1d384adb}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a8305da33749783d1e360abea1d384adb}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}!Yy\+Length@{Yy\+Length}}
+\index{Yy\+Length@{Yy\+Length}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+\subsubsection{\texorpdfstring{Yy\+Length()}{YyLength()}}
+{\footnotesize\ttfamily uint32\+\_\+t Standard\+Tokenizer\+Impl\+::\+Yy\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_accacb4bb2516823080aaaf0d09855958}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_accacb4bb2516823080aaaf0d09855958}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}!Yy\+Reset@{Yy\+Reset}}
+\index{Yy\+Reset@{Yy\+Reset}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+\subsubsection{\texorpdfstring{Yy\+Reset()}{YyReset()}}
+{\footnotesize\ttfamily void Standard\+Tokenizer\+Impl\+::\+Yy\+Reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{lucene\+::core\+::analysis\+::\+Reader}} $\ast$}]{reader }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a9df3ece23b5c2072b3f9dde3405f56d2}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizerImpl_a9df3ece23b5c2072b3f9dde3405f56d2}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}!Y\+Y\+E\+OF@{Y\+Y\+E\+OF}}
+\index{Y\+Y\+E\+OF@{Y\+Y\+E\+OF}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Tokenizer\+Impl}}
+\subsubsection{\texorpdfstring{Y\+Y\+E\+OF}{YYEOF}}
+{\footnotesize\ttfamily const int32\+\_\+t Standard\+Tokenizer\+Impl\+::\+Y\+Y\+E\+OF = -\/1\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{Standard_8h}{Standard.\+h}}\item 
+Analysis/\mbox{\hyperlink{Standard_8cpp}{Standard.\+cpp}}\end{DoxyCompactItemize}

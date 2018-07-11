@@ -1,0 +1,213 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:Analyzer Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1Analyzer}\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+
+
+{\ttfamily \#include $<$Analyzer.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:Analyzer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.754098cm]{classlucene_1_1core_1_1analysis_1_1Analyzer}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy}{Reuse\+Strategy}}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a1be2ff17bba265bdef6e1b44748eaf96}{Analyzer}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_ae9dc5c7b575e336b14185cf403003bba}{Analyzer}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy}{Reuse\+Strategy}} $\ast$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a8c0924436e0392015b0b3df59d35717c}{reuse\+\_\+strategy}})
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_afa899ac3a6aabbe59f791f69368ad740}{$\sim$\+Analyzer}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a010cdb318b51c27c46b8cbf5a1cfe20e}{Get\+Token\+Stream}} (const std\+::string \&field\+\_\+name, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a385dbda39ff79997402b35ddbb296697}{Get\+Token\+Stream}} (const std\+::string \&field\+\_\+name, const std\+::string \&text)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_aff90a96fce2aa5ab99c6c2a880849812}{Normalize}} (const std\+::string \&field\+\_\+name, const std\+::string \&text)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a97cced949f5cfd3e4527b82fc178fa42}{Get\+Position\+Increment\+Gap}} (const std\+::string \&field\+\_\+name) const
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_af535ad197952fbf88c74e4298bb6a9f1}{Get\+Offset\+Gap}} (const std\+::string \&field\+\_\+name) const
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy}{Reuse\+Strategy}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_afbf37ccc45ae5a78ef6f9399ac484c64}{Get\+Reuse\+Strategy}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a9c0504cdb7f9e1fc8e4815505ce55683}{Set\+Version}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1etc_1_1Version}{lucene\+::core\+::util\+::etc\+::\+Version}} \&v)
+\item 
+const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1etc_1_1Version}{lucene\+::core\+::util\+::etc\+::\+Version}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a1679f175b96b88508c148f6d8872623d}{Get\+Version}} () const
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a5c80fc8a7e06ebd552d9d4e42d7466ad}{Close}} () noexcept
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a3a533567be4805332be57160b0364b79}{Is\+Closed}} () const noexcept
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a9b7dc3c598057fbf4e9b5f48066cb54a}{Create\+Components}} (const std\+::string \&field\+\_\+name)=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_aed8b22b06eab4ecd4f3d568cadab8b09}{Init\+Reader}} (const std\+::string \&field\+\_\+name, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a9c76b9071c95ee8347b0f8ae2a208e6e}{Normalize}} (const std\+::string \&field\+\_\+name, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} \&in)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_ae261718804348d65059b44feb6349496}{Init\+Reader\+For\+Normalization}} (const std\+::string \&field\+\_\+name, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory}{lucene\+::core\+::util\+::\+Attribute\+Factory}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_af0c3e02aef0e7a391b0abdbca218951b}{Get\+Attribute\+Factory}} (const std\+::string \&field\+\_\+name)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a869f08194af89da7f8c68e211d73607c}{closed}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy}{Reuse\+Strategy}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a8c0924436e0392015b0b3df59d35717c}{reuse\+\_\+strategy}}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1etc_1_1Version}{lucene\+::core\+::util\+::etc\+::\+Version}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_ac04041d68279aa308509d8e8cfcf89e1}{version}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a1be2ff17bba265bdef6e1b44748eaf96}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a1be2ff17bba265bdef6e1b44748eaf96}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Analyzer@{Analyzer}}
+\index{Analyzer@{Analyzer}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Analyzer()}{Analyzer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Analyzer\+::\+Analyzer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_ae9dc5c7b575e336b14185cf403003bba}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_ae9dc5c7b575e336b14185cf403003bba}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Analyzer@{Analyzer}}
+\index{Analyzer@{Analyzer}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Analyzer()}{Analyzer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Analyzer\+::\+Analyzer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy}{Reuse\+Strategy}} $\ast$}]{reuse\+\_\+strategy }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_afa899ac3a6aabbe59f791f69368ad740}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_afa899ac3a6aabbe59f791f69368ad740}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!````~Analyzer@{$\sim$\+Analyzer}}
+\index{````~Analyzer@{$\sim$\+Analyzer}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{$\sim$\+Analyzer()}{~Analyzer()}}
+{\footnotesize\ttfamily Analyzer\+::$\sim$\+Analyzer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a5c80fc8a7e06ebd552d9d4e42d7466ad}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a5c80fc8a7e06ebd552d9d4e42d7466ad}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Close@{Close}}
+\index{Close@{Close}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily void lucene\+::core\+::analysis\+::\+Analyzer\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a9b7dc3c598057fbf4e9b5f48066cb54a}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a9b7dc3c598057fbf4e9b5f48066cb54a}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Create\+Components@{Create\+Components}}
+\index{Create\+Components@{Create\+Components}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Create\+Components()}{CreateComponents()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}}$\ast$ lucene\+::core\+::analysis\+::\+Analyzer\+::\+Create\+Components (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classDummyAnalyzer_aeeb24aa6449d4bf7c4adc6a5c63a5c0e}{Dummy\+Analyzer}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a0d569e3e48f2060a4698481ec1b49d12}{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_af0c3e02aef0e7a391b0abdbca218951b}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_af0c3e02aef0e7a391b0abdbca218951b}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Get\+Attribute\+Factory@{Get\+Attribute\+Factory}}
+\index{Get\+Attribute\+Factory@{Get\+Attribute\+Factory}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Get\+Attribute\+Factory()}{GetAttributeFactory()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory}{Attribute\+Factory}} \& Analyzer\+::\+Get\+Attribute\+Factory (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_af535ad197952fbf88c74e4298bb6a9f1}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_af535ad197952fbf88c74e4298bb6a9f1}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Get\+Offset\+Gap@{Get\+Offset\+Gap}}
+\index{Get\+Offset\+Gap@{Get\+Offset\+Gap}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Get\+Offset\+Gap()}{GetOffsetGap()}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::analysis\+::\+Analyzer\+::\+Get\+Offset\+Gap (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a97cced949f5cfd3e4527b82fc178fa42}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a97cced949f5cfd3e4527b82fc178fa42}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Get\+Position\+Increment\+Gap@{Get\+Position\+Increment\+Gap}}
+\index{Get\+Position\+Increment\+Gap@{Get\+Position\+Increment\+Gap}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Get\+Position\+Increment\+Gap()}{GetPositionIncrementGap()}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::analysis\+::\+Analyzer\+::\+Get\+Position\+Increment\+Gap (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_afbf37ccc45ae5a78ef6f9399ac484c64}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_afbf37ccc45ae5a78ef6f9399ac484c64}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Get\+Reuse\+Strategy@{Get\+Reuse\+Strategy}}
+\index{Get\+Reuse\+Strategy@{Get\+Reuse\+Strategy}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Get\+Reuse\+Strategy()}{GetReuseStrategy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy}{Reuse\+Strategy}}\& lucene\+::core\+::analysis\+::\+Analyzer\+::\+Get\+Reuse\+Strategy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a010cdb318b51c27c46b8cbf5a1cfe20e}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a010cdb318b51c27c46b8cbf5a1cfe20e}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Get\+Token\+Stream@{Get\+Token\+Stream}}
+\index{Get\+Token\+Stream@{Get\+Token\+Stream}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Get\+Token\+Stream()}{GetTokenStream()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} \& Analyzer\+::\+Get\+Token\+Stream (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a385dbda39ff79997402b35ddbb296697}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a385dbda39ff79997402b35ddbb296697}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Get\+Token\+Stream@{Get\+Token\+Stream}}
+\index{Get\+Token\+Stream@{Get\+Token\+Stream}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Get\+Token\+Stream()}{GetTokenStream()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} \& Analyzer\+::\+Get\+Token\+Stream (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name,  }\item[{const std\+::string \&}]{text }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a1679f175b96b88508c148f6d8872623d}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a1679f175b96b88508c148f6d8872623d}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Get\+Version@{Get\+Version}}
+\index{Get\+Version@{Get\+Version}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Get\+Version()}{GetVersion()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1etc_1_1Version}{lucene\+::core\+::util\+::etc\+::\+Version}}\& lucene\+::core\+::analysis\+::\+Analyzer\+::\+Get\+Version (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_aed8b22b06eab4ecd4f3d568cadab8b09}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_aed8b22b06eab4ecd4f3d568cadab8b09}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Init\+Reader@{Init\+Reader}}
+\index{Init\+Reader@{Init\+Reader}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Init\+Reader()}{InitReader()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \& Analyzer\+::\+Init\+Reader (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_ae261718804348d65059b44feb6349496}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_ae261718804348d65059b44feb6349496}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Init\+Reader\+For\+Normalization@{Init\+Reader\+For\+Normalization}}
+\index{Init\+Reader\+For\+Normalization@{Init\+Reader\+For\+Normalization}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Init\+Reader\+For\+Normalization()}{InitReaderForNormalization()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \& Analyzer\+::\+Init\+Reader\+For\+Normalization (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a3a533567be4805332be57160b0364b79}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a3a533567be4805332be57160b0364b79}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Is\+Closed@{Is\+Closed}}
+\index{Is\+Closed@{Is\+Closed}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Is\+Closed()}{IsClosed()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::analysis\+::\+Analyzer\+::\+Is\+Closed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a9c76b9071c95ee8347b0f8ae2a208e6e}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a9c76b9071c95ee8347b0f8ae2a208e6e}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Normalize@{Normalize}}
+\index{Normalize@{Normalize}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Normalize()}{Normalize()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} \& Analyzer\+::\+Normalize (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} \&}]{in }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_aff90a96fce2aa5ab99c6c2a880849812}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_aff90a96fce2aa5ab99c6c2a880849812}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Normalize@{Normalize}}
+\index{Normalize@{Normalize}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Normalize()}{Normalize()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} Analyzer\+::\+Normalize (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name,  }\item[{const std\+::string \&}]{text }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a9c0504cdb7f9e1fc8e4815505ce55683}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a9c0504cdb7f9e1fc8e4815505ce55683}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!Set\+Version@{Set\+Version}}
+\index{Set\+Version@{Set\+Version}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{Set\+Version()}{SetVersion()}}
+{\footnotesize\ttfamily void lucene\+::core\+::analysis\+::\+Analyzer\+::\+Set\+Version (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1etc_1_1Version}{lucene\+::core\+::util\+::etc\+::\+Version}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a869f08194af89da7f8c68e211d73607c}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a869f08194af89da7f8c68e211d73607c}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!closed@{closed}}
+\index{closed@{closed}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{closed}{closed}}
+{\footnotesize\ttfamily bool lucene\+::core\+::analysis\+::\+Analyzer\+::closed\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_a8c0924436e0392015b0b3df59d35717c}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_a8c0924436e0392015b0b3df59d35717c}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!reuse\+\_\+strategy@{reuse\+\_\+strategy}}
+\index{reuse\+\_\+strategy@{reuse\+\_\+strategy}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{reuse\+\_\+strategy}{reuse\_strategy}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy}{Reuse\+Strategy}}$>$ lucene\+::core\+::analysis\+::\+Analyzer\+::reuse\+\_\+strategy\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Analyzer_ac04041d68279aa308509d8e8cfcf89e1}\label{classlucene_1_1core_1_1analysis_1_1Analyzer_ac04041d68279aa308509d8e8cfcf89e1}} 
+\index{lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}!version@{version}}
+\index{version@{version}!lucene\+::core\+::analysis\+::\+Analyzer@{lucene\+::core\+::analysis\+::\+Analyzer}}
+\subsubsection{\texorpdfstring{version}{version}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1etc_1_1Version}{lucene\+::core\+::util\+::etc\+::\+Version}} lucene\+::core\+::analysis\+::\+Analyzer\+::version\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{Analyzer_8h}{Analyzer.\+h}}\item 
+Analysis/\mbox{\hyperlink{Analyzer_8cpp}{Analyzer.\+cpp}}\end{DoxyCompactItemize}

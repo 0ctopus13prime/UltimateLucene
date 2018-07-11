@@ -1,0 +1,128 @@
+\hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl}{}\section{lucene\+:\+:core\+:\+:util\+:\+:Attribute\+Impl Class Reference}
+\label{classlucene_1_1core_1_1util_1_1AttributeImpl}\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+
+
+{\ttfamily \#include $<$Attribute.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:util\+:\+:Attribute\+Impl\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=8.337469cm]{classlucene_1_1core_1_1util_1_1AttributeImpl}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_aeaca9fe2fd952878945f12a519311ec4}{$\sim$\+Attribute\+Impl}} ()
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_a84d34275fb1ed67ac36fad7ff6388096}{Reflect\+With}} (\mbox{\hyperlink{namespacelucene_1_1core_1_1util_a7dbb701adaed055f73fb95eec83da10a}{Attribute\+Reflector}} \&reflector)=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_a04897a00a902f7a345dd44bbc4b482a8}{Clear}} ()=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_a9a662ddc9b72bc9711883a25b8379ea9}{End}} ()
+\item 
+virtual std\+::vector$<$ std\+::type\+\_\+index $>$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_ac0631e6a7a11044883bc97447716d7cc}{Attributes}} ()=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_a010e8937832f53139c8fe42757476895}{Shallow\+Copy\+To}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}} \&attr\+\_\+impl)=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_a135318ad4c7c17b3d85e625e32fb42cd}{Clone}} ()=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}} \& \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_ab032e399d03ce2f58c76881cf2b92325}{operator=}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}} \&other)=0
+\item 
+std\+::string \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_af3ad346d3dc7bbafa7957bcb48a9453e}{Reflect\+As\+String}} (const bool prepend\+\_\+att\+\_\+class)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl_aeaca9fe2fd952878945f12a519311ec4}\label{classlucene_1_1core_1_1util_1_1AttributeImpl_aeaca9fe2fd952878945f12a519311ec4}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}!````~Attribute\+Impl@{$\sim$\+Attribute\+Impl}}
+\index{````~Attribute\+Impl@{$\sim$\+Attribute\+Impl}!lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+\subsubsection{\texorpdfstring{$\sim$\+Attribute\+Impl()}{~AttributeImpl()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::util\+::\+Attribute\+Impl\+::$\sim$\+Attribute\+Impl (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl_ac0631e6a7a11044883bc97447716d7cc}\label{classlucene_1_1core_1_1util_1_1AttributeImpl_ac0631e6a7a11044883bc97447716d7cc}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}!Attributes@{Attributes}}
+\index{Attributes@{Attributes}!lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+\subsubsection{\texorpdfstring{Attributes()}{Attributes()}}
+{\footnotesize\ttfamily virtual std\+::vector$<$std\+::type\+\_\+index$>$ lucene\+::core\+::util\+::\+Attribute\+Impl\+::\+Attributes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttributeImpl_ae7ba4a6e94fb4f1d1c8111e613793d59}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Type\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttributeImpl_a02e08b89bd1105326aff4d578c759886}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Term\+Frequency\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionLengthAttributeImpl_abb480ef419ad8ee6c27a50e7eda1be29}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Length\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttributeImpl_ab6028133ca375bdcb9774650828e7388}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Increment\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PayloadAttributeImpl_a1f7dbb8afdd42ca827dc6e077445071b}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Payload\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PackedTokenAttributeImpl_a450b5fd90cbf05268800b0f66eebb58f}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Packed\+Token\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttributeImpl_ac2f3c035417acfc9056a900903f1d271}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Offset\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1KeywordAttributeImpl_af338dde5485b5feb1b467fc07534f5cc}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Keyword\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1FlagsAttributeImpl_a3cdbd466551489b6f35ad51aa5ee2255}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Flags\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a7d8986b373cd9c2dfb2de25dd12000fd}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1BytesTermAttributeImpl_aff915b815335534889b45fa2ce773692}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Bytes\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl_a04897a00a902f7a345dd44bbc4b482a8}\label{classlucene_1_1core_1_1util_1_1AttributeImpl_a04897a00a902f7a345dd44bbc4b482a8}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}!Clear@{Clear}}
+\index{Clear@{Clear}!lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+\subsubsection{\texorpdfstring{Clear()}{Clear()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::util\+::\+Attribute\+Impl\+::\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttributeImpl_a373559195f408497ab81408bab95a2b1}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Type\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttributeImpl_aaa575565a7b466b6bdcf4d8042f3f582}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Term\+Frequency\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionLengthAttributeImpl_a0f4a9a4b9ab64ced895b8fa5b9983cbd}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Length\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttributeImpl_a49cd1a34361a145c3b674f1f3d529641}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Increment\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PayloadAttributeImpl_a264f13a218ec4caca8c724e3c34f64b6}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Payload\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttributeImpl_af19f560600cc53e48c592aa6d9c48a91}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Offset\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1KeywordAttributeImpl_a019bfed2dce94170444db84c7575f43c}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Keyword\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1FlagsAttributeImpl_a67ed39990f3f9eac90c91e880ad5cc31}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Flags\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a4e0b1a5a06996822798414f3a41af6e6}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1BytesTermAttributeImpl_a6fa48596a507c937bd874d46ef5ca963}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Bytes\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl_a135318ad4c7c17b3d85e625e32fb42cd}\label{classlucene_1_1core_1_1util_1_1AttributeImpl_a135318ad4c7c17b3d85e625e32fb42cd}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}!Clone@{Clone}}
+\index{Clone@{Clone}!lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+\subsubsection{\texorpdfstring{Clone()}{Clone()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}}$\ast$ lucene\+::core\+::util\+::\+Attribute\+Impl\+::\+Clone (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttributeImpl_a3549b01075ae899b2e6dcfa7aa101eca}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Type\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttributeImpl_a3d973d479d147e3feece05c9988bc7c6}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Term\+Frequency\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionLengthAttributeImpl_a8880c22ea7f0cc06c2f7ed98900286aa}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Length\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttributeImpl_a68907cad12693754f1286678a7c78c21}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Increment\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PayloadAttributeImpl_a5ec30ffd50c79e22ba0166b0e47629b3}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Payload\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PackedTokenAttributeImpl_ab96495b9ba0271afe2597425f925ee91}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Packed\+Token\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttributeImpl_a4cae4e770c4ce5184ae4530edde06bae}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Offset\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1KeywordAttributeImpl_a59d16bdfa3c456ebcd8b3ae90279cd7b}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Keyword\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1FlagsAttributeImpl_aa920978da58dffbf7eb16bfa5e5f84c4}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Flags\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a518bf3f405ddf676ee58fccb02ae3c23}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1BytesTermAttributeImpl_a149760a0122009e6b699862553d43b41}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Bytes\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl_a9a662ddc9b72bc9711883a25b8379ea9}\label{classlucene_1_1core_1_1util_1_1AttributeImpl_a9a662ddc9b72bc9711883a25b8379ea9}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}!End@{End}}
+\index{End@{End}!lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+\subsubsection{\texorpdfstring{End()}{End()}}
+{\footnotesize\ttfamily void Attribute\+Impl\+::\+End (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}} 
+
+Reimplemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttributeImpl_adb934ddcbf6f584c50a72c0980b88761}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Increment\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl_ab032e399d03ce2f58c76881cf2b92325}\label{classlucene_1_1core_1_1util_1_1AttributeImpl_ab032e399d03ce2f58c76881cf2b92325}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}!operator=@{operator=}}
+\index{operator=@{operator=}!lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}}\& lucene\+::core\+::util\+::\+Attribute\+Impl\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttributeImpl_a873153f88f6ec5485c4a0bed1374bb9b}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Type\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttributeImpl_a855437532aa60208023e367fe09926fd}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Term\+Frequency\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionLengthAttributeImpl_a40bda49e6da62bc1c16e8ef11525d840}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Length\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttributeImpl_a8fccb463e29cc9cb90e7689cc7161488}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Increment\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PayloadAttributeImpl_a82dd546c2275107d47d6a152cd43d04e}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Payload\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PackedTokenAttributeImpl_a9519720f5eb790ef3e796cefbcbecc96}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Packed\+Token\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttributeImpl_ad5aee8c4731cfda2c9a1c7b7dbe4dc30}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Offset\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1KeywordAttributeImpl_a30228ce41cc678c1cb85c2fb1179f447}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Keyword\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1FlagsAttributeImpl_a41dfb20fafc327e7832e639695b453fa}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Flags\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ac49b714c3f8e438ddaa27dc1a2421144}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1BytesTermAttributeImpl_acfaef15f10ddfec3e2494c6d2176ac73}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Bytes\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl_af3ad346d3dc7bbafa7957bcb48a9453e}\label{classlucene_1_1core_1_1util_1_1AttributeImpl_af3ad346d3dc7bbafa7957bcb48a9453e}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}!Reflect\+As\+String@{Reflect\+As\+String}}
+\index{Reflect\+As\+String@{Reflect\+As\+String}!lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+\subsubsection{\texorpdfstring{Reflect\+As\+String()}{ReflectAsString()}}
+{\footnotesize\ttfamily std\+::string Attribute\+Impl\+::\+Reflect\+As\+String (\begin{DoxyParamCaption}\item[{const bool}]{prepend\+\_\+att\+\_\+class }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl_a84d34275fb1ed67ac36fad7ff6388096}\label{classlucene_1_1core_1_1util_1_1AttributeImpl_a84d34275fb1ed67ac36fad7ff6388096}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}!Reflect\+With@{Reflect\+With}}
+\index{Reflect\+With@{Reflect\+With}!lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+\subsubsection{\texorpdfstring{Reflect\+With()}{ReflectWith()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::util\+::\+Attribute\+Impl\+::\+Reflect\+With (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacelucene_1_1core_1_1util_a7dbb701adaed055f73fb95eec83da10a}{Attribute\+Reflector}} \&}]{reflector }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttributeImpl_a7194a1e268786f0a45e77b1204246727}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Type\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttributeImpl_aef08e2be7b9a57329ed5df12fcb2a9d9}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Term\+Frequency\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionLengthAttributeImpl_aec63a5cf6bdf55b0f4c95d5b17109e5f}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Length\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttributeImpl_a2ede3f15304f9760ad60009335123ece}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Increment\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PayloadAttributeImpl_ab012363b8b4ce7e15c9c91ba6ec0c325}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Payload\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttributeImpl_ad7eb3a266863f7e14fbe1caa315c7151}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Offset\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1KeywordAttributeImpl_a610aab1880b02caf13fb7f1723c24c94}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Keyword\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1FlagsAttributeImpl_aa479cdc4474246af90f7d54ca64d3a48}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Flags\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ae434068c40b8eab62af50e0e33a71bf4}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1BytesTermAttributeImpl_a6a1789244604f807529de975d4c10171}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Bytes\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeImpl_a010e8937832f53139c8fe42757476895}\label{classlucene_1_1core_1_1util_1_1AttributeImpl_a010e8937832f53139c8fe42757476895}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}!Shallow\+Copy\+To@{Shallow\+Copy\+To}}
+\index{Shallow\+Copy\+To@{Shallow\+Copy\+To}!lucene\+::core\+::util\+::\+Attribute\+Impl@{lucene\+::core\+::util\+::\+Attribute\+Impl}}
+\subsubsection{\texorpdfstring{Shallow\+Copy\+To()}{ShallowCopyTo()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::util\+::\+Attribute\+Impl\+::\+Shallow\+Copy\+To (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}} \&}]{attr\+\_\+impl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttributeImpl_a2eefa7e33a6e060c5493711cd60c9d2e}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Type\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttributeImpl_a82c1cb2877fab77b907b4b03795d0fdf}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Term\+Frequency\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionLengthAttributeImpl_a657ca7b71ea00d5ba609453d0333cafa}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Length\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttributeImpl_a887e391d3db93f6a8e76b6b464d60547}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Position\+Increment\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PayloadAttributeImpl_ae1104df0b599fd494620e2bce9d39b6c}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Payload\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PackedTokenAttributeImpl_ab89c820321f0f5b84c7a392bb8de32f3}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Packed\+Token\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttributeImpl_a426d0cd75306c4ef7cec3c28e34c0029}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Offset\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1KeywordAttributeImpl_a83f442881b35bc26a6edb2e04beeb58a}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Keyword\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1FlagsAttributeImpl_a9c6a676eb175556a2eea6afaae666f8d}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Flags\+Attribute\+Impl}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ae37cc1fbce5614f5e60800d3f9f96d33}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1BytesTermAttributeImpl_aafc25a873ed04661a26d6a7b5f6d2b0d}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Bytes\+Term\+Attribute\+Impl}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Util/\mbox{\hyperlink{Util_2Attribute_8h}{Attribute.\+h}}\item 
+Util/\mbox{\hyperlink{Util_2Attribute_8cpp}{Attribute.\+cpp}}\end{DoxyCompactItemize}

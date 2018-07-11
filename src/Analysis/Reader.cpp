@@ -1,9 +1,28 @@
-#include <cstring>
-#include <algorithm>
-#include <Analysis/Reader.h>
-#include <Analysis/CharacterUtil.h>
+/*
+ *
+ * Copyright (c) 2018-2019 Doo Yong Kim. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
-using namespace lucene::core::analysis;
+#include <Analysis/CharacterUtil.h>
+#include <Analysis/Reader.h>
+#include <algorithm>
+#include <cstring>
+#include <utility>
+
+using lucene::core::analysis::StringReader;
+using lucene::core::analysis::Reader;
 
 /**
  *  Reader
@@ -43,7 +62,9 @@ StringReader::StringReader(const char* cstr, const unsigned len)
   : StringReader(cstr, 0, len) {
 }
 
-StringReader::StringReader(const char* cstr, const uint32_t off, const unsigned len)
+StringReader::StringReader(const char* cstr,
+                           const uint32_t off,
+                           const unsigned len)
   : iss(std::string(cstr, off, len)),
     mark(0) {
 }
@@ -58,8 +79,8 @@ StringReader::StringReader(std::istringstream&& iss)
     mark(0) {
 }
 
-StringReader& StringReader::operator=(StringReader& other) {
-  if(this != &other) {
+StringReader& StringReader::operator=(const StringReader& other) {
+  if (this != &other) {
     iss.clear();
     iss.str(other.iss.str());
     mark = other.mark;
@@ -67,7 +88,7 @@ StringReader& StringReader::operator=(StringReader& other) {
 }
 
 StringReader& StringReader::operator=(StringReader&& other) {
-  if(this != &other) {
+  if (this != &other) {
     iss = std::move(other.iss);
     mark = other.mark;
   }
@@ -87,7 +108,7 @@ StringReader::~StringReader() {
 }
 
 void StringReader::SetValue(const std::string& value) {
-  iss.clear(); // If eofbit is set, clear this state
+  iss.clear();  // If eofbit is set, clear this state
   iss.str(value);
 }
 
@@ -99,7 +120,9 @@ void StringReader::SetValue(const char* cstr, const uint32_t len) {
   SetValue(cstr, 0, len);
 }
 
-void StringReader::SetValue(const char* cstr, const uint32_t off, const uint32_t len) {
+void StringReader::SetValue(const char* cstr,
+                            const uint32_t off,
+                            const uint32_t len) {
   std::string value(cstr + off, len);
   SetValue(value);
 }
@@ -113,14 +136,14 @@ void StringReader::ReadLine(std::string& line) {
 }
 
 int32_t StringReader::Read(char* buf, const uint32_t off, const uint32_t len) {
-  if(iss.eof()) {
+  if (iss.eof()) {
     return -1;
   }
 
   uint32_t read = 0;
-  for(uint32_t i = off; i < len ; ++i) {
+  for (uint32_t i = off; i < len ; ++i) {
     int got = iss.get();
-    if(got != -1) {
+    if (got != -1) {
       buf[i] = got;
       ++read;
     } else {
@@ -148,7 +171,7 @@ void StringReader::Reset() {
   iss.seekg(0, iss.end);
   const int32_t length = iss.tellg();
 
-  if(mark < length) {
+  if (mark < length) {
     iss.clear();
     iss.seekg(mark);
   } else {

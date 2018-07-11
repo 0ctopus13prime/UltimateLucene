@@ -4,7 +4,8 @@ help() {
   echo "Compile Doochi-Core source code"
   echo "  -h : Help, print manual"
   echo "  -c : Clean and compile"
-  echo "  -t : Execute all tests"
+  echo "  -t : Execute all tests after compile"
+  echo "  -d : Generate Doxygen documents after compile"
 
   exit 0
 }
@@ -12,7 +13,7 @@ help() {
 main() {
   local cmd
 
-  while getopts "cht" cmd
+  while getopts "chtd" cmd
   do
     case "$cmd" in
       c)
@@ -23,6 +24,9 @@ main() {
       ;;
       t)
         TESTS="true"
+      ;;
+      d)
+        DOXYGEN="true"
       ;;
       ?)
         help
@@ -52,7 +56,11 @@ main() {
 
   # Tests if have to
   if [ "$TESTS" = "true" ]; then
-    $currPath/all-tests.sh
+    $currPath/execute-test.sh -a
+  fi
+
+  if [ "$DOXYGEN" = "true" ]; then
+    (cd $src && doxygen)
   fi
 }
 

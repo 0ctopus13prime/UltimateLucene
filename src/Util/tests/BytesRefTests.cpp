@@ -1,9 +1,26 @@
-#include <gtest/gtest.h>
-#include <assert.h>
-#include <iostream>
-#include <Util/Bytes.h>
+/*
+ *
+ * Copyright (c) 2018-2019 Doo Yong Kim. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
-using namespace lucene::core::util;
+#include <assert.h>
+#include <gtest/gtest.h>
+#include <Util/Bytes.h>
+#include <iostream>
+
+using lucene::core::util::BytesRef;
 
 TEST(BYTESREF__TESTSs, BASIC__TEST) {
   // Basic test
@@ -21,7 +38,7 @@ TEST(BYTESREF__TESTS, SHALLOW__COPY__DEEP__COPY__FOR__EMPTY__INSTANCE) {
   // Shallow copy
   BytesRef bytes_ref1;
   BytesRef shared_bytes_ref2;
-  bytes_ref1.ShallowCopyTo(shared_bytes_ref2); // Shallow copy
+  bytes_ref1.ShallowCopyTo(shared_bytes_ref2);  // Shallow copy
   EXPECT_EQ(bytes_ref1, shared_bytes_ref2);
 
   // Deep copy case
@@ -37,7 +54,7 @@ TEST(BYTESREF__TESTS, SHALLOW__COPY__DEEP__COPY) {
   std::string str = "doochi";
   BytesRef bytes_ref1(str);
   BytesRef shared_bytes_ref2;
-  bytes_ref1.ShallowCopyTo(shared_bytes_ref2); // Shallow copy
+  bytes_ref1.ShallowCopyTo(shared_bytes_ref2);  // Shallow copy
 
   // Shallow case, Change single character at 0 index
   bytes_ref1.bytes.get()[0] = 'x';
@@ -50,7 +67,7 @@ TEST(BYTESREF__TESTS, SHALLOW__COPY__DEEP__COPY) {
   EXPECT_EQ('x', bytes_ref2.bytes.get()[0]);
 
   // operator =, assign
-  BytesRef bytes_ref3 = bytes_ref2; // Deep copy
+  BytesRef bytes_ref3 = bytes_ref2;  // Deep copy
   EXPECT_EQ(bytes_ref3, bytes_ref2);
 
   BytesRef shared_bytes_ref3;
@@ -202,10 +219,10 @@ TEST(BYTESREF__TESTS, GREATER__OR__EQ__TEST) {
 
 TEST(BYTESREF__TESTS, VALIDATION__TEST) {
   BytesRef bytes_ref;
-  bytes_ref.offset = 1; // nullptr && offset > length
+  bytes_ref.offset = 1;  // nullptr && offset > length
   try {
     bytes_ref.IsValid();
-    assert(false); // Fail here
+    assert(false);  // Fail here
   } catch(...) {
     // Ignore, Exception must be caught in here.
   }

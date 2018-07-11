@@ -1,0 +1,116 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:Stop\+Filter Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1StopFilter}\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+
+
+{\ttfamily \#include $<$Token\+Stream.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:Stop\+Filter\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=5.000000cm]{classlucene_1_1core_1_1analysis_1_1StopFilter}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_ac7db0ba3cf53a65d25442b1a2b290156}{Stop\+Filter}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $\ast$in, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_ace188f785bcebdc0f18a73116da1afd0}{stop\+\_\+words}})
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_a86879713f0135ab08a996e716f87aadb}{Stop\+Filter}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $\ast$in, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&\&\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_ace188f785bcebdc0f18a73116da1afd0}{stop\+\_\+words}})
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_a49efaebf256d312e5fef43b7322c1e52}{Stop\+Filter}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$ in, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_ace188f785bcebdc0f18a73116da1afd0}{stop\+\_\+words}})
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_ae2465c47647c009fd479ada9a7d2cb85}{Stop\+Filter}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$ in, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&\&\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_ace188f785bcebdc0f18a73116da1afd0}{stop\+\_\+words}})
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_a78c7542a5cc8588d60babac01fa27eaf}{$\sim$\+Stop\+Filter}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_ac27f79322c5118e5ac408e250203e17e}{Make\+Stop\+Set}} (std\+::vector$<$ std\+::string $>$ \&\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_ace188f785bcebdc0f18a73116da1afd0}{stop\+\_\+words}}, bool ignore\+\_\+case=false)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_af05114955fb7b1deb340a7fe1e07735e}{Accept}} () override
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_ace188f785bcebdc0f18a73116da1afd0}{stop\+\_\+words}}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{tokenattributes\+::\+Char\+Term\+Attribute}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter_aa625432d1343f5a67be010bde710a986}{term\+\_\+att}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter_ac7db0ba3cf53a65d25442b1a2b290156}\label{classlucene_1_1core_1_1analysis_1_1StopFilter_ac7db0ba3cf53a65d25442b1a2b290156}} 
+\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}!Stop\+Filter@{Stop\+Filter}}
+\index{Stop\+Filter@{Stop\+Filter}!lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+\subsubsection{\texorpdfstring{Stop\+Filter()}{StopFilter()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily Stop\+Filter\+::\+Stop\+Filter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $\ast$}]{in,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&}]{stop\+\_\+words }\end{DoxyParamCaption})}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopFilter}{Stop\+Filter}} \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter_a86879713f0135ab08a996e716f87aadb}\label{classlucene_1_1core_1_1analysis_1_1StopFilter_a86879713f0135ab08a996e716f87aadb}} 
+\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}!Stop\+Filter@{Stop\+Filter}}
+\index{Stop\+Filter@{Stop\+Filter}!lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+\subsubsection{\texorpdfstring{Stop\+Filter()}{StopFilter()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily Stop\+Filter\+::\+Stop\+Filter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $\ast$}]{in,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&\&}]{stop\+\_\+words }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter_a49efaebf256d312e5fef43b7322c1e52}\label{classlucene_1_1core_1_1analysis_1_1StopFilter_a49efaebf256d312e5fef43b7322c1e52}} 
+\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}!Stop\+Filter@{Stop\+Filter}}
+\index{Stop\+Filter@{Stop\+Filter}!lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+\subsubsection{\texorpdfstring{Stop\+Filter()}{StopFilter()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily lucene\+::core\+::analysis\+::\+Stop\+Filter\+::\+Stop\+Filter (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$}]{in,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&}]{stop\+\_\+words }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter_ae2465c47647c009fd479ada9a7d2cb85}\label{classlucene_1_1core_1_1analysis_1_1StopFilter_ae2465c47647c009fd479ada9a7d2cb85}} 
+\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}!Stop\+Filter@{Stop\+Filter}}
+\index{Stop\+Filter@{Stop\+Filter}!lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+\subsubsection{\texorpdfstring{Stop\+Filter()}{StopFilter()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily lucene\+::core\+::analysis\+::\+Stop\+Filter\+::\+Stop\+Filter (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$}]{in,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&\&}]{stop\+\_\+words }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter_a78c7542a5cc8588d60babac01fa27eaf}\label{classlucene_1_1core_1_1analysis_1_1StopFilter_a78c7542a5cc8588d60babac01fa27eaf}} 
+\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}!````~Stop\+Filter@{$\sim$\+Stop\+Filter}}
+\index{````~Stop\+Filter@{$\sim$\+Stop\+Filter}!lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+\subsubsection{\texorpdfstring{$\sim$\+Stop\+Filter()}{~StopFilter()}}
+{\footnotesize\ttfamily Stop\+Filter\+::$\sim$\+Stop\+Filter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter_af05114955fb7b1deb340a7fe1e07735e}\label{classlucene_1_1core_1_1analysis_1_1StopFilter_af05114955fb7b1deb340a7fe1e07735e}} 
+\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}!Accept@{Accept}}
+\index{Accept@{Accept}!lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+\subsubsection{\texorpdfstring{Accept()}{Accept()}}
+{\footnotesize\ttfamily bool Stop\+Filter\+::\+Accept (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1FilteringTokenFilter_a4a2fb2dd2d3bda8eb6cd0d5b14a4ab92}{lucene\+::core\+::analysis\+::\+Filtering\+Token\+Filter}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter_ac27f79322c5118e5ac408e250203e17e}\label{classlucene_1_1core_1_1analysis_1_1StopFilter_ac27f79322c5118e5ac408e250203e17e}} 
+\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}!Make\+Stop\+Set@{Make\+Stop\+Set}}
+\index{Make\+Stop\+Set@{Make\+Stop\+Set}!lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+\subsubsection{\texorpdfstring{Make\+Stop\+Set()}{MakeStopSet()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} lucene\+::core\+::analysis\+::\+Stop\+Filter\+::\+Make\+Stop\+Set (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$ \&}]{stop\+\_\+words,  }\item[{bool}]{ignore\+\_\+case = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter_ace188f785bcebdc0f18a73116da1afd0}\label{classlucene_1_1core_1_1analysis_1_1StopFilter_ace188f785bcebdc0f18a73116da1afd0}} 
+\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}!stop\+\_\+words@{stop\+\_\+words}}
+\index{stop\+\_\+words@{stop\+\_\+words}!lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+\subsubsection{\texorpdfstring{stop\+\_\+words}{stop\_words}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} lucene\+::core\+::analysis\+::\+Stop\+Filter\+::stop\+\_\+words\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1StopFilter_aa625432d1343f5a67be010bde710a986}\label{classlucene_1_1core_1_1analysis_1_1StopFilter_aa625432d1343f5a67be010bde710a986}} 
+\index{lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}!term\+\_\+att@{term\+\_\+att}}
+\index{term\+\_\+att@{term\+\_\+att}!lucene\+::core\+::analysis\+::\+Stop\+Filter@{lucene\+::core\+::analysis\+::\+Stop\+Filter}}
+\subsubsection{\texorpdfstring{term\+\_\+att}{term\_att}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{tokenattributes\+::\+Char\+Term\+Attribute}}$>$ lucene\+::core\+::analysis\+::\+Stop\+Filter\+::term\+\_\+att\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{TokenStream_8h}{Token\+Stream.\+h}}\item 
+Analysis/\mbox{\hyperlink{TokenStream_8cpp}{Token\+Stream.\+cpp}}\end{DoxyCompactItemize}

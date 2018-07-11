@@ -1,11 +1,28 @@
-#include <sstream>
-#include <iostream>
-#include <cstring>
-#include <string>
+/*
+ *
+ * Copyright (c) 2018-2019 Doo Yong Kim. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 #include <gtest/gtest.h>
 #include <Analysis/Reader.h>
+#include <cstring>
+#include <iostream>
+#include <sstream>
+#include <string>
 
-using namespace lucene::core::analysis;
+using lucene::core::analysis::StringReader;
 
 TEST(READER__TESTS, CONSTRUCTOR__TESTS) {
   const char* cstr = "Doochi core is so fast!";
@@ -62,7 +79,7 @@ TEST(READER__TESTS, ASSGIN__TESTS) {
   }
 
   {
-    StringReader reader1= std::move(reader);
+    StringReader reader1 = std::move(reader);
     std::string line;
     reader1.ReadLine(line);
     EXPECT_EQ(str, line);
@@ -108,7 +125,7 @@ TEST(READER_TESTS, READ__TESTS) {
     StringReader reader;
     std::string str(cstr);
     reader.SetValue(str);
-    for(uint32_t i = 0 ; i < std::strlen(cstr) ; ++i) {
+    for (uint32_t i = 0 ; i < std::strlen(cstr) ; ++i) {
       char expected = cstr[i];
       int actual = reader.Read();
       EXPECT_EQ(expected, actual);
@@ -150,9 +167,9 @@ TEST(READER_TESTS, MARK__TESTS) {
   EXPECT_TRUE(reader.MarkSupported());
 
   reader.Mark(1);
-  reader.Read(); // B
-  reader.Read(); // a
-  reader.Read(); // m
+  reader.Read();  // B
+  reader.Read();  // a
+  reader.Read();  // m
 
   reader.Reset();
   EXPECT_EQ('a', reader.Read());

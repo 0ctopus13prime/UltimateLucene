@@ -1,11 +1,39 @@
+/*
+ *
+ * Copyright (c) 2018-2019 Doo Yong Kim. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+#include <Analysis/AttributeImpl.h>
+#include <gtest/gtest.h>
+#include <Util/Bytes.h>
 #include <cstring>
 #include <memory>
-#include <Analysis/AttributeImpl.h>
-#include <Util/Bytes.h>
-#include <gtest/gtest.h>
 
-using namespace lucene::core::analysis::tokenattributes;
-using namespace lucene::core::util;
+using lucene::core::analysis::tokenattributes::BytesTermAttributeImpl;
+using lucene::core::analysis::tokenattributes::CharTermAttributeImpl;
+using lucene::core::analysis::tokenattributes::FlagsAttributeImpl;
+using lucene::core::analysis::tokenattributes::KeywordAttributeImpl;
+using lucene::core::analysis::tokenattributes::OffsetAttributeImpl;
+using lucene::core::analysis::tokenattributes::PackedTokenAttributeImpl;
+using lucene::core::analysis::tokenattributes::PayloadAttributeImpl;
+using lucene::core::analysis::tokenattributes::PositionIncrementAttributeImpl;
+using lucene::core::analysis::tokenattributes::PositionLengthAttributeImpl;
+using lucene::core::analysis::tokenattributes::TermFrequencyAttributeImpl;
+using lucene::core::analysis::tokenattributes::TypeAttributeImpl;
+using lucene::core::util::Attribute;
+using lucene::core::util::BytesRef;
 
 TEST(ATTRIBUTES__IMPL__TESTS, FlagsAttributeImpl) {
   // Basic
@@ -14,7 +42,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, FlagsAttributeImpl) {
   EXPECT_EQ(13, flags_attr_impl1.GetFlags());
 
   // Clone
-  FlagsAttributeImpl* cloned = static_cast<FlagsAttributeImpl*>(flags_attr_impl1.Clone());
+  FlagsAttributeImpl* cloned =
+    static_cast<FlagsAttributeImpl*>(flags_attr_impl1.Clone());
   std::unique_ptr<FlagsAttributeImpl> guard(cloned);
   EXPECT_EQ(13, cloned->GetFlags());
   EXPECT_EQ(flags_attr_impl1, *cloned);
@@ -39,7 +68,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, TypeAttributeImpl) {
   EXPECT_EQ(type, type_attr_impl1.Type());
 
   // Clone
-  TypeAttributeImpl* cloned = static_cast<TypeAttributeImpl*>(type_attr_impl1.Clone());
+  TypeAttributeImpl* cloned =
+    static_cast<TypeAttributeImpl*>(type_attr_impl1.Clone());
   std::unique_ptr<TypeAttributeImpl> guard(cloned);
   EXPECT_EQ(type, cloned->Type());
   EXPECT_EQ(type_attr_impl1, *cloned);
@@ -60,7 +90,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, TermFrequencyAttributeImpl) {
   TermFrequencyAttributeImpl tf_attr_impl1;
   tf_attr_impl1.SetTermFrequency(13);
   EXPECT_EQ(13, tf_attr_impl1.GetTermFrequency());
-  TermFrequencyAttributeImpl* cloned = static_cast<TermFrequencyAttributeImpl*>(tf_attr_impl1.Clone());
+  TermFrequencyAttributeImpl* cloned =
+    static_cast<TermFrequencyAttributeImpl*>(tf_attr_impl1.Clone());
   std::unique_ptr<TermFrequencyAttributeImpl> guard(cloned);
   EXPECT_EQ(13, cloned->GetTermFrequency());
   EXPECT_EQ(tf_attr_impl1, *cloned);
@@ -81,7 +112,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, PositionLengthAttributeImpl) {
   PositionLengthAttributeImpl pos_len_attr_impl1;
   pos_len_attr_impl1.SetPositionLength(13);
   EXPECT_EQ(13, pos_len_attr_impl1.GetPositionLength());
-  std::unique_ptr<PositionLengthAttributeImpl> cloned(static_cast<PositionLengthAttributeImpl*>(pos_len_attr_impl1.Clone()));
+  std::unique_ptr<PositionLengthAttributeImpl>
+  cloned(static_cast<PositionLengthAttributeImpl*>(pos_len_attr_impl1.Clone()));
   EXPECT_EQ(13, cloned->GetPositionLength());
   EXPECT_EQ(pos_len_attr_impl1, *cloned);
 
@@ -91,7 +123,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, PositionLengthAttributeImpl) {
   EXPECT_EQ(pos_len_attr_impl1, pos_len_attr_impl2);
 
   // Copy assignment
-  PositionLengthAttributeImpl pos_len_attr_impl3; pos_len_attr_impl3 = pos_len_attr_impl2;
+  PositionLengthAttributeImpl pos_len_attr_impl3; pos_len_attr_impl3 =
+    pos_len_attr_impl2;
   EXPECT_EQ(13, pos_len_attr_impl3.GetPositionLength());
   EXPECT_EQ(pos_len_attr_impl2, pos_len_attr_impl3);
 }
@@ -103,7 +136,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, PositionIncrementAttributeImpl) {
   EXPECT_EQ(13, pos_incr_attr_impl1.GetPositionIncrement());
 
   // Cloned
-  PositionIncrementAttributeImpl* cloned = static_cast<PositionIncrementAttributeImpl*>(pos_incr_attr_impl1.Clone());
+  PositionIncrementAttributeImpl* cloned =
+    static_cast<PositionIncrementAttributeImpl*>(pos_incr_attr_impl1.Clone());
   std::unique_ptr<PositionIncrementAttributeImpl> guard(cloned);
   EXPECT_EQ(13, cloned->GetPositionIncrement());
   EXPECT_EQ(pos_incr_attr_impl1, *cloned);
@@ -128,7 +162,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, PayloadAttributeImpl) {
   EXPECT_EQ(bref, got_bref);
 
   // Cloned
-  PayloadAttributeImpl* cloned = static_cast<PayloadAttributeImpl*>(payload_attr_impl1.Clone());
+  PayloadAttributeImpl* cloned =
+    static_cast<PayloadAttributeImpl*>(payload_attr_impl1.Clone());
   std::unique_ptr<PayloadAttributeImpl> guard(cloned);
   EXPECT_EQ(bref, cloned->GetPayload());
   EXPECT_EQ(payload_attr_impl1, *cloned);
@@ -158,7 +193,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, OffsetAttributeImpl) {
   EXPECT_EQ(1313, offset_attr_impl1.EndOffset());
 
   // Cloned
-  OffsetAttributeImpl* cloned = static_cast<OffsetAttributeImpl*>(offset_attr_impl1.Clone());
+  OffsetAttributeImpl* cloned =
+    static_cast<OffsetAttributeImpl*>(offset_attr_impl1.Clone());
   std::unique_ptr<OffsetAttributeImpl> guard(cloned);
   EXPECT_EQ(13, cloned->StartOffset());
   EXPECT_EQ(1313, cloned->EndOffset());
@@ -184,7 +220,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, KeywordAttributeImpl) {
   EXPECT_TRUE(kwd_attr_impl1.IsKeyword());
 
   // Cloned
-  KeywordAttributeImpl* cloned = static_cast<KeywordAttributeImpl*>(kwd_attr_impl1.Clone());
+  KeywordAttributeImpl* cloned =
+    static_cast<KeywordAttributeImpl*>(kwd_attr_impl1.Clone());
   std::unique_ptr<KeywordAttributeImpl> guard(cloned);
   EXPECT_TRUE(cloned->IsKeyword());
   EXPECT_EQ(kwd_attr_impl1, *cloned);
@@ -209,7 +246,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, BytesTermAttributeImpl) {
   EXPECT_EQ(bref, got);
 
   // Cloned
-  BytesTermAttributeImpl* cloned = static_cast<BytesTermAttributeImpl*>(bytes_term_attr_impl1.Clone());
+  BytesTermAttributeImpl* cloned =
+    static_cast<BytesTermAttributeImpl*>(bytes_term_attr_impl1.Clone());
   std::unique_ptr<BytesTermAttributeImpl> guard(cloned);
   EXPECT_EQ(bref, cloned->GetBytesRef());
   EXPECT_EQ(bytes_term_attr_impl1, *cloned);
@@ -245,7 +283,7 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__BASIC) {
 
   // operator[], buffer access
   char* buf = ct_attr_impl.Buffer();
-  for(int i = 0 ; i < std::strlen(cstr1) ; ++i) {
+  for (int i = 0 ; i < std::strlen(cstr1) ; ++i) {
     EXPECT_EQ(cstr1[i], buf[i]);
     EXPECT_EQ(cstr1[i], ct_attr_impl[i]);
   }
@@ -258,7 +296,7 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__BASIC) {
   sub = ct_attr_impl.SubSequence(0, 6);
   EXPECT_EQ(std::string("Doochi"), sub);
 
-  for(int i = 0 ; i < 10 ; ++i) {
+  for (int i = 0 ; i < 10 ; ++i) {
     EXPECT_EQ(cstr1[i], buf[i]);
     EXPECT_EQ(cstr1[i], ct_attr_impl[i]);
   }
@@ -275,7 +313,7 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__BASIC) {
   // Append sub string
   std::string append2("another append2");
   all += append2.substr(0, 7);
-  ct_attr_impl.Append(append2, 0, 7); // Just append 'another'
+  ct_attr_impl.Append(append2, 0, 7);  // Just append 'another'
   EXPECT_EQ(all.size(), ct_attr_impl.Length());
 
   sub = ct_attr_impl.SubSequence(0, ct_attr_impl.Length());
@@ -284,7 +322,7 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__BASIC) {
   // Append single character
   const char* cstr2 = "Why everything are so hard to me?";
   all += std::string(cstr2);
-  for(int i = 0 ; i < std::strlen(cstr2) ; ++i) {
+  for (int i = 0 ; i < std::strlen(cstr2) ; ++i) {
     ct_attr_impl.Append(cstr2[i]);
   }
   EXPECT_EQ(all.size(), ct_attr_impl.Length());
@@ -321,7 +359,7 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__BASIC) {
 
 TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__GROW__TEST) {
   CharTermAttributeImpl ct_attr_impl;
-  for(int i = 0 ; i < 1000 ; ++i) {
+  for (int i = 0 ; i < 1000 ; ++i) {
     std::string line("line - " + std::to_string(i));
     ct_attr_impl.Append(line);
   }
@@ -334,7 +372,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__ASSIGN) {
   ct_attr_impl1.Append(str1);
 
   // Cloned
-  CharTermAttributeImpl* cloned = static_cast<CharTermAttributeImpl*>(ct_attr_impl1.Clone());
+  CharTermAttributeImpl* cloned =
+    static_cast<CharTermAttributeImpl*>(ct_attr_impl1.Clone());
   std::unique_ptr<CharTermAttributeImpl> guard(cloned);
   EXPECT_EQ(ct_attr_impl1, *cloned);
   EXPECT_EQ(ct_attr_impl1.Length(), cloned->Length());
@@ -416,7 +455,8 @@ TEST(ATTRIBUTES__IMPL__TESTS, PackedTokenAttributeImpl__ASSIGN) {
 
   {
     // Cloned
-    PackedTokenAttributeImpl* cloned = static_cast<PackedTokenAttributeImpl*>(packed_attr_impl1.Clone());
+    PackedTokenAttributeImpl* cloned =
+      static_cast<PackedTokenAttributeImpl*>(packed_attr_impl1.Clone());
     std::unique_ptr<PackedTokenAttributeImpl> guard(cloned);
     EXPECT_EQ(packed_attr_impl1, *cloned);
     EXPECT_EQ(13, cloned->GetPositionIncrement());

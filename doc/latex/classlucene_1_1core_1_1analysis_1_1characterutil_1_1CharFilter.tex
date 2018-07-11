@@ -1,0 +1,87 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:characterutil\+:\+:Char\+Filter Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter}\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}}
+
+
+{\ttfamily \#include $<$Character\+Util.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:characterutil\+:\+:Char\+Filter\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_ac13b7526b15e97a551071c2b759d1af1}{Char\+Filter}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} $\ast$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a774b34856b115721d2ec012e475413c4}{input}})
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_acf60f32d245a97caebc76508363d61b6}{$\sim$\+Char\+Filter}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a47ff3dc61979b80927ed5779cb55bd09}{Close}} ()
+\item 
+virtual int32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_ad1be13a08cf750862795cb9b29ed4e09}{Correct}} (const int32\+\_\+t current\+\_\+off)=0
+\item 
+int32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a6e4becb7161f99dec056ef207fda3f23}{Correct\+Offset}} (const int32\+\_\+t current\+\_\+off)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a774b34856b115721d2ec012e475413c4}{input}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_ac13b7526b15e97a551071c2b759d1af1}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_ac13b7526b15e97a551071c2b759d1af1}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}!Char\+Filter@{Char\+Filter}}
+\index{Char\+Filter@{Char\+Filter}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}}
+\subsubsection{\texorpdfstring{Char\+Filter()}{CharFilter()}}
+{\footnotesize\ttfamily Char\+Filter\+::\+Char\+Filter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} $\ast$}]{input }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter}{Char\+Filter}}\textquotesingle{}s constructor. Given input reader is will be owned by \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter}{Char\+Filter}} instance
+
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter}{Char\+Filter}} \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_acf60f32d245a97caebc76508363d61b6}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_acf60f32d245a97caebc76508363d61b6}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}!````~Char\+Filter@{$\sim$\+Char\+Filter}}
+\index{````~Char\+Filter@{$\sim$\+Char\+Filter}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}}
+\subsubsection{\texorpdfstring{$\sim$\+Char\+Filter()}{~CharFilter()}}
+{\footnotesize\ttfamily Char\+Filter\+::$\sim$\+Char\+Filter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a47ff3dc61979b80927ed5779cb55bd09}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a47ff3dc61979b80927ed5779cb55bd09}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}!Close@{Close}}
+\index{Close@{Close}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}}
+\subsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily void Char\+Filter\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a4be7e96dccdd3e276e3450e3ad7a70f4}{lucene\+::core\+::analysis\+::\+Reader}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_ad1be13a08cf750862795cb9b29ed4e09}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_ad1be13a08cf750862795cb9b29ed4e09}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}!Correct@{Correct}}
+\index{Correct@{Correct}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}}
+\subsubsection{\texorpdfstring{Correct()}{Correct()}}
+{\footnotesize\ttfamily virtual int32\+\_\+t lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter\+::\+Correct (\begin{DoxyParamCaption}\item[{const int32\+\_\+t}]{current\+\_\+off }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a6e4becb7161f99dec056ef207fda3f23}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a6e4becb7161f99dec056ef207fda3f23}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}!Correct\+Offset@{Correct\+Offset}}
+\index{Correct\+Offset@{Correct\+Offset}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}}
+\subsubsection{\texorpdfstring{Correct\+Offset()}{CorrectOffset()}}
+{\footnotesize\ttfamily int32\+\_\+t Char\+Filter\+::\+Correct\+Offset (\begin{DoxyParamCaption}\item[{const int32\+\_\+t}]{current\+\_\+off }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a774b34856b115721d2ec012e475413c4}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a774b34856b115721d2ec012e475413c4}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}!input@{input}}
+\index{input@{input}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}}
+\subsubsection{\texorpdfstring{input}{input}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}}$>$ lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter\+::input\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{CharacterUtil_8h}{Character\+Util.\+h}}\item 
+Analysis/\mbox{\hyperlink{CharacterUtil_8cpp}{Character\+Util.\+cpp}}\end{DoxyCompactItemize}

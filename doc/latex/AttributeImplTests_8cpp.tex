@@ -1,0 +1,133 @@
+\hypertarget{AttributeImplTests_8cpp}{}\section{Analysis/tests/\+Attribute\+Impl\+Tests.cpp File Reference}
+\label{AttributeImplTests_8cpp}\index{Analysis/tests/\+Attribute\+Impl\+Tests.\+cpp@{Analysis/tests/\+Attribute\+Impl\+Tests.\+cpp}}
+{\ttfamily \#include $<$Analysis/\+Attribute\+Impl.\+h$>$}\newline
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$Util/\+Bytes.\+h$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_a10639d1cf800b57fa7f5d206ae93ef44}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1FlagsAttributeImpl}{Flags\+Attribute\+Impl}})
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_ae8c9bed662e146a48566dcfc0b83ffe1}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttributeImpl}{Type\+Attribute\+Impl}})
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_a8b2c0c2216c657de5544f59fa12a38f9}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttributeImpl}{Term\+Frequency\+Attribute\+Impl}})
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_a1f915c4da7216b3d996394fe3c2da88a}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionLengthAttributeImpl}{Position\+Length\+Attribute\+Impl}})
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_a67ff69a1a7f8830c92f72a5fdf83b0cd}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttributeImpl}{Position\+Increment\+Attribute\+Impl}})
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_a6bd0f8c3bbb6080a8847632b1969a2d2}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PayloadAttributeImpl}{Payload\+Attribute\+Impl}})
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_ad97320aea2ac76e79ce764e20d972110}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttributeImpl}{Offset\+Attribute\+Impl}})
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_a667f60416f8fec452fa25646c0edf9a5}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1KeywordAttributeImpl}{Keyword\+Attribute\+Impl}})
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_a7b2840d4ee342de15fae5ffb575acf17}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1BytesTermAttributeImpl}{Bytes\+Term\+Attribute\+Impl}})
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_a3f2fbab2a422441dfa1b11b3ff1f44b9}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, Char\+Term\+Attribute\+Impl\+\_\+\+\_\+\+B\+A\+S\+IC)
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_a4bf8b616f384400b416ec556e4e6a640}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, Char\+Term\+Attribute\+Impl\+\_\+\+\_\+\+G\+R\+O\+W\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_aa3cb1b0b24cbbd4d928e6b8a22eb6a57}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, Char\+Term\+Attribute\+Impl\+\_\+\+\_\+\+A\+S\+S\+I\+GN)
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_ab9adc3a612e1d39615729e345f5ce6ae}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, Packed\+Token\+Attribute\+Impl\+\_\+\+\_\+\+B\+A\+S\+IC)
+\item 
+\mbox{\hyperlink{AttributeImplTests_8cpp_ace941ae1696fe89ad2b87840553d7e2b}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS, Packed\+Token\+Attribute\+Impl\+\_\+\+\_\+\+A\+S\+S\+I\+GN)
+\item 
+int \mbox{\hyperlink{AttributeImplTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{AttributeImplTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!main@{main}}
+\index{main@{main}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a10639d1cf800b57fa7f5d206ae93ef44}\label{AttributeImplTests_8cpp_a10639d1cf800b57fa7f5d206ae93ef44}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1FlagsAttributeImpl}{Flags\+Attribute\+Impl}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_ae8c9bed662e146a48566dcfc0b83ffe1}\label{AttributeImplTests_8cpp_ae8c9bed662e146a48566dcfc0b83ffe1}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttributeImpl}{Type\+Attribute\+Impl}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a8b2c0c2216c657de5544f59fa12a38f9}\label{AttributeImplTests_8cpp_a8b2c0c2216c657de5544f59fa12a38f9}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttributeImpl}{Term\+Frequency\+Attribute\+Impl}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a1f915c4da7216b3d996394fe3c2da88a}\label{AttributeImplTests_8cpp_a1f915c4da7216b3d996394fe3c2da88a}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [4/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionLengthAttributeImpl}{Position\+Length\+Attribute\+Impl}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a67ff69a1a7f8830c92f72a5fdf83b0cd}\label{AttributeImplTests_8cpp_a67ff69a1a7f8830c92f72a5fdf83b0cd}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [5/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PositionIncrementAttributeImpl}{Position\+Increment\+Attribute\+Impl}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a6bd0f8c3bbb6080a8847632b1969a2d2}\label{AttributeImplTests_8cpp_a6bd0f8c3bbb6080a8847632b1969a2d2}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [6/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1PayloadAttributeImpl}{Payload\+Attribute\+Impl}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_ad97320aea2ac76e79ce764e20d972110}\label{AttributeImplTests_8cpp_ad97320aea2ac76e79ce764e20d972110}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [7/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttributeImpl}{Offset\+Attribute\+Impl}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a667f60416f8fec452fa25646c0edf9a5}\label{AttributeImplTests_8cpp_a667f60416f8fec452fa25646c0edf9a5}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [8/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1KeywordAttributeImpl}{Keyword\+Attribute\+Impl}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a7b2840d4ee342de15fae5ffb575acf17}\label{AttributeImplTests_8cpp_a7b2840d4ee342de15fae5ffb575acf17}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [9/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1BytesTermAttributeImpl}{Bytes\+Term\+Attribute\+Impl}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a3f2fbab2a422441dfa1b11b3ff1f44b9}\label{AttributeImplTests_8cpp_a3f2fbab2a422441dfa1b11b3ff1f44b9}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [10/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Char\+Term\+Attribute\+Impl\+\_\+\+\_\+\+B\+A\+S\+IC}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_a4bf8b616f384400b416ec556e4e6a640}\label{AttributeImplTests_8cpp_a4bf8b616f384400b416ec556e4e6a640}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [11/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Char\+Term\+Attribute\+Impl\+\_\+\+\_\+\+G\+R\+O\+W\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_aa3cb1b0b24cbbd4d928e6b8a22eb6a57}\label{AttributeImplTests_8cpp_aa3cb1b0b24cbbd4d928e6b8a22eb6a57}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [12/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Char\+Term\+Attribute\+Impl\+\_\+\+\_\+\+A\+S\+S\+I\+GN}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_ab9adc3a612e1d39615729e345f5ce6ae}\label{AttributeImplTests_8cpp_ab9adc3a612e1d39615729e345f5ce6ae}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [13/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Packed\+Token\+Attribute\+Impl\+\_\+\+\_\+\+B\+A\+S\+IC}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeImplTests_8cpp_ace941ae1696fe89ad2b87840553d7e2b}\label{AttributeImplTests_8cpp_ace941ae1696fe89ad2b87840553d7e2b}} 
+\index{Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Impl\+Tests.\+cpp@{Attribute\+Impl\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [14/14]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+S\+\_\+\+\_\+\+I\+M\+P\+L\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Packed\+Token\+Attribute\+Impl\+\_\+\+\_\+\+A\+S\+S\+I\+GN}]{ }\end{DoxyParamCaption})}
+

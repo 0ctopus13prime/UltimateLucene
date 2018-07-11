@@ -1,0 +1,130 @@
+\hypertarget{classlucene_1_1core_1_1util_1_1AttributeFactory}{}\section{lucene\+:\+:core\+:\+:util\+:\+:Attribute\+Factory Class Reference}
+\label{classlucene_1_1core_1_1util_1_1AttributeFactory}\index{lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}}
+
+
+{\ttfamily \#include $<$Attribute.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:util\+:\+:Attribute\+Factory\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.907618cm]{classlucene_1_1core_1_1util_1_1AttributeFactory}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_1_1DefaultAttributeFactory}{Default\+Attribute\+Factory}}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_1_1StaticImplementationAttributeFactory}{Static\+Implementation\+Attribute\+Factory}}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_a55d388271f308e3105344163e56dddc4}{Attribute\+Factory}} ()
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_a0388433c20c2b44a344c2f5838060728}{$\sim$\+Attribute\+Factory}} ()
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_a88ccb9965ed78099379eaf9b1256abf3}{Create\+Attribute\+Instance}} (const std\+::type\+\_\+index attr\+\_\+type\+\_\+id)=0
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{namespacelucene_1_1core_1_1util_acbd8821be7d7b29749374e57b0a7c40b}{Attribute\+Impl\+Generator}} \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_af56838e41c83a10b00063e02c3f910e6}{Find\+Attribute\+Impl\+Generator}} (const std\+::type\+\_\+index attr\+\_\+type\+\_\+id)
+\item 
+{\footnotesize template$<$typename A\+T\+T\+R\+\_\+\+F\+A\+C\+T\+O\+RY , typename A\+T\+T\+R\+\_\+\+I\+M\+PL $>$ }\\static \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory}{Attribute\+Factory}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_ac770bcd808b70e6d1d5f8a3c6cd8150d}{Get\+Static\+Implementation}} ()
+\item 
+{\footnotesize template$<$typename A\+T\+TR , typename A\+T\+T\+R\+\_\+\+I\+M\+P\+L\+\_\+\+C\+L\+A\+SS $>$ }\\static void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_a57d5469dd678591652d59bf3db4890e1}{Register\+Attribute\+Impl}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::unordered\+\_\+map$<$ std\+::type\+\_\+index, \mbox{\hyperlink{namespacelucene_1_1core_1_1util_acbd8821be7d7b29749374e57b0a7c40b}{Attribute\+Impl\+Generator}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_a5247e47d95ce30862a15e66ce2266d04}{A\+T\+T\+R\+\_\+\+I\+M\+P\+L\+\_\+\+T\+A\+B\+LE}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeFactory_a55d388271f308e3105344163e56dddc4}\label{classlucene_1_1core_1_1util_1_1AttributeFactory_a55d388271f308e3105344163e56dddc4}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}!Attribute\+Factory@{Attribute\+Factory}}
+\index{Attribute\+Factory@{Attribute\+Factory}!lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}}
+\subsubsection{\texorpdfstring{Attribute\+Factory()}{AttributeFactory()}}
+{\footnotesize\ttfamily Attribute\+Factory\+::\+Attribute\+Factory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeFactory_a0388433c20c2b44a344c2f5838060728}\label{classlucene_1_1core_1_1util_1_1AttributeFactory_a0388433c20c2b44a344c2f5838060728}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}!````~Attribute\+Factory@{$\sim$\+Attribute\+Factory}}
+\index{````~Attribute\+Factory@{$\sim$\+Attribute\+Factory}!lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}}
+\subsubsection{\texorpdfstring{$\sim$\+Attribute\+Factory()}{~AttributeFactory()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::util\+::\+Attribute\+Factory\+::$\sim$\+Attribute\+Factory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeFactory_a88ccb9965ed78099379eaf9b1256abf3}\label{classlucene_1_1core_1_1util_1_1AttributeFactory_a88ccb9965ed78099379eaf9b1256abf3}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}!Create\+Attribute\+Instance@{Create\+Attribute\+Instance}}
+\index{Create\+Attribute\+Instance@{Create\+Attribute\+Instance}!lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}}
+\subsubsection{\texorpdfstring{Create\+Attribute\+Instance()}{CreateAttributeInstance()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{Attribute\+Impl}}$\ast$ lucene\+::core\+::util\+::\+Attribute\+Factory\+::\+Create\+Attribute\+Instance (\begin{DoxyParamCaption}\item[{const std\+::type\+\_\+index}]{attr\+\_\+type\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_1_1StaticImplementationAttributeFactory_a06466469f2cf37e0ef599e617d415c6a}{lucene\+::core\+::util\+::\+Attribute\+Factory\+::\+Static\+Implementation\+Attribute\+Factory$<$ A\+T\+T\+R\+\_\+\+F\+A\+C\+T\+O\+R\+Y, A\+T\+T\+R\+\_\+\+I\+M\+P\+L $>$}}, and \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory_1_1DefaultAttributeFactory_af9b68def67fc7995d2c5e9f3d1560f5e}{lucene\+::core\+::util\+::\+Attribute\+Factory\+::\+Default\+Attribute\+Factory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeFactory_af56838e41c83a10b00063e02c3f910e6}\label{classlucene_1_1core_1_1util_1_1AttributeFactory_af56838e41c83a10b00063e02c3f910e6}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}!Find\+Attribute\+Impl\+Generator@{Find\+Attribute\+Impl\+Generator}}
+\index{Find\+Attribute\+Impl\+Generator@{Find\+Attribute\+Impl\+Generator}!lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}}
+\subsubsection{\texorpdfstring{Find\+Attribute\+Impl\+Generator()}{FindAttributeImplGenerator()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacelucene_1_1core_1_1util_acbd8821be7d7b29749374e57b0a7c40b}{Attribute\+Impl\+Generator}} Attribute\+Factory\+::\+Find\+Attribute\+Impl\+Generator (\begin{DoxyParamCaption}\item[{const std\+::type\+\_\+index}]{attr\+\_\+type\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeFactory_ac770bcd808b70e6d1d5f8a3c6cd8150d}\label{classlucene_1_1core_1_1util_1_1AttributeFactory_ac770bcd808b70e6d1d5f8a3c6cd8150d}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}!Get\+Static\+Implementation@{Get\+Static\+Implementation}}
+\index{Get\+Static\+Implementation@{Get\+Static\+Implementation}!lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}}
+\subsubsection{\texorpdfstring{Get\+Static\+Implementation()}{GetStaticImplementation()}}
+{\footnotesize\ttfamily template$<$typename A\+T\+T\+R\+\_\+\+F\+A\+C\+T\+O\+RY , typename A\+T\+T\+R\+\_\+\+I\+M\+PL $>$ \\
+static \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory}{Attribute\+Factory}}$\ast$ lucene\+::core\+::util\+::\+Attribute\+Factory\+::\+Get\+Static\+Implementation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeFactory_a57d5469dd678591652d59bf3db4890e1}\label{classlucene_1_1core_1_1util_1_1AttributeFactory_a57d5469dd678591652d59bf3db4890e1}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}!Register\+Attribute\+Impl@{Register\+Attribute\+Impl}}
+\index{Register\+Attribute\+Impl@{Register\+Attribute\+Impl}!lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}}
+\subsubsection{\texorpdfstring{Register\+Attribute\+Impl()}{RegisterAttributeImpl()}}
+{\footnotesize\ttfamily template$<$typename A\+T\+TR , typename A\+T\+T\+R\+\_\+\+I\+M\+P\+L\+\_\+\+C\+L\+A\+SS $>$ \\
+static void lucene\+::core\+::util\+::\+Attribute\+Factory\+::\+Register\+Attribute\+Impl (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeFactory_a5247e47d95ce30862a15e66ce2266d04}\label{classlucene_1_1core_1_1util_1_1AttributeFactory_a5247e47d95ce30862a15e66ce2266d04}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}!A\+T\+T\+R\+\_\+\+I\+M\+P\+L\+\_\+\+T\+A\+B\+LE@{A\+T\+T\+R\+\_\+\+I\+M\+P\+L\+\_\+\+T\+A\+B\+LE}}
+\index{A\+T\+T\+R\+\_\+\+I\+M\+P\+L\+\_\+\+T\+A\+B\+LE@{A\+T\+T\+R\+\_\+\+I\+M\+P\+L\+\_\+\+T\+A\+B\+LE}!lucene\+::core\+::util\+::\+Attribute\+Factory@{lucene\+::core\+::util\+::\+Attribute\+Factory}}
+\subsubsection{\texorpdfstring{A\+T\+T\+R\+\_\+\+I\+M\+P\+L\+\_\+\+T\+A\+B\+LE}{ATTR\_IMPL\_TABLE}}
+{\footnotesize\ttfamily std\+::unordered\+\_\+map$<$ std\+::type\+\_\+index, \mbox{\hyperlink{namespacelucene_1_1core_1_1util_acbd8821be7d7b29749374e57b0a7c40b}{Attribute\+Impl\+Generator}} $>$ Attribute\+Factory\+::\+A\+T\+T\+R\+\_\+\+I\+M\+P\+L\+\_\+\+T\+A\+B\+LE\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    \{Attribute::TypeId<BytesTermAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} BytesTermAttributeImpl(); \}\},}
+\DoxyCodeLine{    \{Attribute::TypeId<CharTermAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} CharTermAttributeImpl(); \}\},}
+\DoxyCodeLine{    \{Attribute::TypeId<FlagsAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} FlagsAttributeImpl(); \}\},}
+\DoxyCodeLine{    \{Attribute::TypeId<KeywordAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} KeywordAttributeImpl(); \}\},}
+\DoxyCodeLine{    \{Attribute::TypeId<OffsetAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} OffsetAttributeImpl(); \}\},}
+\DoxyCodeLine{    \{Attribute::TypeId<PayloadAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} PayloadAttributeImpl(); \}\},}
+\DoxyCodeLine{    \{Attribute::TypeId<PositionIncrementAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} PositionIncrementAttributeImpl(); \}\},}
+\DoxyCodeLine{    \{Attribute::TypeId<PositionLengthAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} PositionLengthAttributeImpl(); \}\},}
+\DoxyCodeLine{    \{Attribute::TypeId<TermFrequencyAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} TermFrequencyAttributeImpl(); \}\},}
+\DoxyCodeLine{    \{Attribute::TypeId<TypeAttribute>(),}
+\DoxyCodeLine{      []()\{ \textcolor{keywordflow}{return} \textcolor{keyword}{new} TypeAttributeImpl(); \}\}}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory}{Attribute\+Factory}} 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Util/\mbox{\hyperlink{Util_2Attribute_8h}{Attribute.\+h}}\item 
+Util/\mbox{\hyperlink{Util_2Attribute_8cpp}{Attribute.\+cpp}}\end{DoxyCompactItemize}

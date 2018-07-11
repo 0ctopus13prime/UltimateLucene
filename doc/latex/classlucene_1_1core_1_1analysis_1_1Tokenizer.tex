@@ -1,0 +1,136 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:Tokenizer Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1Tokenizer}\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+
+
+{\ttfamily \#include $<$Token\+Stream.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:Tokenizer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.416397cm]{classlucene_1_1core_1_1analysis_1_1Tokenizer}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_a3f60f887953edf0f95ba5f36102f7017}{$\sim$\+Tokenizer}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_a3e5ea6dde1191ef370f42333bda69113}{Set\+Reader}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&new\+\_\+input)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_a459d9c95a28f3b8aa3ad1cfde1568dd3}{Reset}} () override
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_a95c3c0e37e3276be69fa0992b0e45e94}{Close}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_ad088b90b87896ad88e029f4af370e525}{Set\+Reader\+Test\+Point}} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_a2a6c04ea8c784f66bebcb6df7073769c}{Tokenizer}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_a88b02b1592e51baa95cd41090183ee8b}{Tokenizer}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory}{lucene\+::core\+::util\+::\+Attribute\+Factory}} \&\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_a1376420a752f337a0fdb582bdf160eba}{factory}})
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_a4c10a2cdbd688233cddb87151a8bf168}{Correct\+Offset}} (const uint32\+\_\+t current\+\_\+off)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_a376df6bd42b18d1175168b9529b7665e}{input}}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_ac968137c9d44ef57a69c8df4e6e628ff}{input\+\_\+pending}}
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer_a8ddffe6457c8764f4a14326449a42abc}{I\+L\+L\+E\+G\+A\+L\+\_\+\+S\+T\+A\+T\+E\+\_\+\+R\+E\+A\+D\+ER}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_a2a6c04ea8c784f66bebcb6df7073769c}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_a2a6c04ea8c784f66bebcb6df7073769c}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!Tokenizer@{Tokenizer}}
+\index{Tokenizer@{Tokenizer}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{Tokenizer()}{Tokenizer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Tokenizer\+::\+Tokenizer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_a88b02b1592e51baa95cd41090183ee8b}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_a88b02b1592e51baa95cd41090183ee8b}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!Tokenizer@{Tokenizer}}
+\index{Tokenizer@{Tokenizer}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{Tokenizer()}{Tokenizer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Tokenizer\+::\+Tokenizer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeFactory}{lucene\+::core\+::util\+::\+Attribute\+Factory}} \&}]{factory }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_a3f60f887953edf0f95ba5f36102f7017}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_a3f60f887953edf0f95ba5f36102f7017}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!````~Tokenizer@{$\sim$\+Tokenizer}}
+\index{````~Tokenizer@{$\sim$\+Tokenizer}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{$\sim$\+Tokenizer()}{~Tokenizer()}}
+{\footnotesize\ttfamily Tokenizer\+::$\sim$\+Tokenizer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_a95c3c0e37e3276be69fa0992b0e45e94}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_a95c3c0e37e3276be69fa0992b0e45e94}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!Close@{Close}}
+\index{Close@{Close}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily void Tokenizer\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_ad7963391ddbb2c75610e3738ba5155c8}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_a4c10a2cdbd688233cddb87151a8bf168}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_a4c10a2cdbd688233cddb87151a8bf168}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!Correct\+Offset@{Correct\+Offset}}
+\index{Correct\+Offset@{Correct\+Offset}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{Correct\+Offset()}{CorrectOffset()}}
+{\footnotesize\ttfamily uint32\+\_\+t Tokenizer\+::\+Correct\+Offset (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{current\+\_\+off }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_a459d9c95a28f3b8aa3ad1cfde1568dd3}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_a459d9c95a28f3b8aa3ad1cfde1568dd3}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!Reset@{Reset}}
+\index{Reset@{Reset}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily void Tokenizer\+::\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_ae24622f4bc0aeaf0bef924ff1661e023}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_a3e5ea6dde1191ef370f42333bda69113}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_a3e5ea6dde1191ef370f42333bda69113}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!Set\+Reader@{Set\+Reader}}
+\index{Set\+Reader@{Set\+Reader}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{Set\+Reader()}{SetReader()}}
+{\footnotesize\ttfamily void Tokenizer\+::\+Set\+Reader (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{new\+\_\+input }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_ad088b90b87896ad88e029f4af370e525}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_ad088b90b87896ad88e029f4af370e525}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!Set\+Reader\+Test\+Point@{Set\+Reader\+Test\+Point}}
+\index{Set\+Reader\+Test\+Point@{Set\+Reader\+Test\+Point}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{Set\+Reader\+Test\+Point()}{SetReaderTestPoint()}}
+{\footnotesize\ttfamily void Tokenizer\+::\+Set\+Reader\+Test\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_a8ddffe6457c8764f4a14326449a42abc}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_a8ddffe6457c8764f4a14326449a42abc}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!I\+L\+L\+E\+G\+A\+L\+\_\+\+S\+T\+A\+T\+E\+\_\+\+R\+E\+A\+D\+ER@{I\+L\+L\+E\+G\+A\+L\+\_\+\+S\+T\+A\+T\+E\+\_\+\+R\+E\+A\+D\+ER}}
+\index{I\+L\+L\+E\+G\+A\+L\+\_\+\+S\+T\+A\+T\+E\+\_\+\+R\+E\+A\+D\+ER@{I\+L\+L\+E\+G\+A\+L\+\_\+\+S\+T\+A\+T\+E\+\_\+\+R\+E\+A\+D\+ER}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{I\+L\+L\+E\+G\+A\+L\+\_\+\+S\+T\+A\+T\+E\+\_\+\+R\+E\+A\+D\+ER}{ILLEGAL\_STATE\_READER}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader}{Illegal\+State\+Reader}} Tokenizer\+::\+I\+L\+L\+E\+G\+A\+L\+\_\+\+S\+T\+A\+T\+E\+\_\+\+R\+E\+A\+D\+ER\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Tokenizer}{Tokenizer}} \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_a376df6bd42b18d1175168b9529b7665e}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_a376df6bd42b18d1175168b9529b7665e}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!input@{input}}
+\index{input@{input}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{input}{input}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}}$\ast$ lucene\+::core\+::analysis\+::\+Tokenizer\+::input\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Tokenizer_ac968137c9d44ef57a69c8df4e6e628ff}\label{classlucene_1_1core_1_1analysis_1_1Tokenizer_ac968137c9d44ef57a69c8df4e6e628ff}} 
+\index{lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}!input\+\_\+pending@{input\+\_\+pending}}
+\index{input\+\_\+pending@{input\+\_\+pending}!lucene\+::core\+::analysis\+::\+Tokenizer@{lucene\+::core\+::analysis\+::\+Tokenizer}}
+\subsubsection{\texorpdfstring{input\+\_\+pending}{input\_pending}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}}$\ast$ lucene\+::core\+::analysis\+::\+Tokenizer\+::input\+\_\+pending\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{TokenStream_8h}{Token\+Stream.\+h}}\item 
+Analysis/\mbox{\hyperlink{TokenStream_8cpp}{Token\+Stream.\+cpp}}\end{DoxyCompactItemize}

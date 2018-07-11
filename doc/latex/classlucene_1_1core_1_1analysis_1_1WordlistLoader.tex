@@ -1,0 +1,121 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:Wordlist\+Loader Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader}\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+
+
+{\ttfamily \#include $<$Analyzer.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_ad1c978aae7cd9e657bbe36926e12952e}{$\sim$\+Wordlist\+Loader}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a24b538126a425f139dcec46732bf247c}{Get\+Word\+Set}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&result)
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a73702896dacde3a217abb59460cc197a}{Get\+Word\+Set}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader)
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_af3b4eb90930c09d25d772c760ecf9278}{Get\+Word\+Set}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader, std\+::string \&comment)
+\item 
+static void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a93e88980df89ba7a5574a5dbeabfd502}{Get\+Word\+Set}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader, std\+::string \&comment, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&result)
+\item 
+static void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a38f6cafbcbe8a4a375f2e5a7eb83aaf5}{Get\+Snowball\+Word\+Set}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&result)
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a3da7c25daa42514be8157b894a3e58df}{Get\+Snowball\+Word\+Set}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader)
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{characterutil\+::\+Char\+Map}}$<$ std\+::string $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_abefbb47cbb9b31c92d4f4b0a55f7f258}{Get\+Stem\+Dict}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{characterutil\+::\+Char\+Map}}$<$ std\+::string $>$ \&result)
+\item 
+static std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_aa33dab48a9ce69a8b36dea4a7caa7de8}{Get\+Lines}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&reader)
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a19b09865a0d3f9783ce84e5bca3e8481}{Wordlist\+Loader}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a903bb8e9044b6ce1c4e09ffe405344b8}{I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+TY}} = 16
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a19b09865a0d3f9783ce84e5bca3e8481}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a19b09865a0d3f9783ce84e5bca3e8481}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!Wordlist\+Loader@{Wordlist\+Loader}}
+\index{Wordlist\+Loader@{Wordlist\+Loader}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{Wordlist\+Loader()}{WordlistLoader()}}
+{\footnotesize\ttfamily Wordlist\+Loader\+::\+Wordlist\+Loader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1WordlistLoader}{Wordlist\+Loader}} \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_ad1c978aae7cd9e657bbe36926e12952e}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_ad1c978aae7cd9e657bbe36926e12952e}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!````~Wordlist\+Loader@{$\sim$\+Wordlist\+Loader}}
+\index{````~Wordlist\+Loader@{$\sim$\+Wordlist\+Loader}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{$\sim$\+Wordlist\+Loader()}{~WordlistLoader()}}
+{\footnotesize\ttfamily Wordlist\+Loader\+::$\sim$\+Wordlist\+Loader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_aa33dab48a9ce69a8b36dea4a7caa7de8}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_aa33dab48a9ce69a8b36dea4a7caa7de8}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!Get\+Lines@{Get\+Lines}}
+\index{Get\+Lines@{Get\+Lines}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{Get\+Lines()}{GetLines()}}
+{\footnotesize\ttfamily static std\+::vector$<$std\+::string$>$ lucene\+::core\+::analysis\+::\+Wordlist\+Loader\+::\+Get\+Lines (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a38f6cafbcbe8a4a375f2e5a7eb83aaf5}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a38f6cafbcbe8a4a375f2e5a7eb83aaf5}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!Get\+Snowball\+Word\+Set@{Get\+Snowball\+Word\+Set}}
+\index{Get\+Snowball\+Word\+Set@{Get\+Snowball\+Word\+Set}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{Get\+Snowball\+Word\+Set()}{GetSnowballWordSet()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static void lucene\+::core\+::analysis\+::\+Wordlist\+Loader\+::\+Get\+Snowball\+Word\+Set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&}]{result }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a3da7c25daa42514be8157b894a3e58df}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a3da7c25daa42514be8157b894a3e58df}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!Get\+Snowball\+Word\+Set@{Get\+Snowball\+Word\+Set}}
+\index{Get\+Snowball\+Word\+Set@{Get\+Snowball\+Word\+Set}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{Get\+Snowball\+Word\+Set()}{GetSnowballWordSet()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} lucene\+::core\+::analysis\+::\+Wordlist\+Loader\+::\+Get\+Snowball\+Word\+Set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_abefbb47cbb9b31c92d4f4b0a55f7f258}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_abefbb47cbb9b31c92d4f4b0a55f7f258}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!Get\+Stem\+Dict@{Get\+Stem\+Dict}}
+\index{Get\+Stem\+Dict@{Get\+Stem\+Dict}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{Get\+Stem\+Dict()}{GetStemDict()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{characterutil\+::\+Char\+Map}}$<$std\+::string$>$ lucene\+::core\+::analysis\+::\+Wordlist\+Loader\+::\+Get\+Stem\+Dict (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{characterutil\+::\+Char\+Map}}$<$ std\+::string $>$ \&}]{result }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a24b538126a425f139dcec46732bf247c}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a24b538126a425f139dcec46732bf247c}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!Get\+Word\+Set@{Get\+Word\+Set}}
+\index{Get\+Word\+Set@{Get\+Word\+Set}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{Get\+Word\+Set()}{GetWordSet()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily void Wordlist\+Loader\+::\+Get\+Word\+Set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&}]{result }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a73702896dacde3a217abb59460cc197a}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a73702896dacde3a217abb59460cc197a}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!Get\+Word\+Set@{Get\+Word\+Set}}
+\index{Get\+Word\+Set@{Get\+Word\+Set}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{Get\+Word\+Set()}{GetWordSet()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{Char\+Set}} Wordlist\+Loader\+::\+Get\+Word\+Set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_af3b4eb90930c09d25d772c760ecf9278}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_af3b4eb90930c09d25d772c760ecf9278}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!Get\+Word\+Set@{Get\+Word\+Set}}
+\index{Get\+Word\+Set@{Get\+Word\+Set}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{Get\+Word\+Set()}{GetWordSet()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{Char\+Set}} Wordlist\+Loader\+::\+Get\+Word\+Set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader,  }\item[{std\+::string \&}]{comment }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a93e88980df89ba7a5574a5dbeabfd502}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a93e88980df89ba7a5574a5dbeabfd502}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!Get\+Word\+Set@{Get\+Word\+Set}}
+\index{Get\+Word\+Set@{Get\+Word\+Set}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{Get\+Word\+Set()}{GetWordSet()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily void Wordlist\+Loader\+::\+Get\+Word\+Set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} \&}]{reader,  }\item[{std\+::string \&}]{comment,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{characterutil\+::\+Char\+Set}} \&}]{result }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a903bb8e9044b6ce1c4e09ffe405344b8}\label{classlucene_1_1core_1_1analysis_1_1WordlistLoader_a903bb8e9044b6ce1c4e09ffe405344b8}} 
+\index{lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}!I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+TY@{I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+TY}}
+\index{I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+TY@{I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+TY}!lucene\+::core\+::analysis\+::\+Wordlist\+Loader@{lucene\+::core\+::analysis\+::\+Wordlist\+Loader}}
+\subsubsection{\texorpdfstring{I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+TY}{INITIAL\_CAPACITY}}
+{\footnotesize\ttfamily const uint32\+\_\+t lucene\+::core\+::analysis\+::\+Wordlist\+Loader\+::\+I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+TY = 16\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{Analyzer_8h}{Analyzer.\+h}}\item 
+Analysis/\mbox{\hyperlink{Analyzer_8cpp}{Analyzer.\+cpp}}\end{DoxyCompactItemize}

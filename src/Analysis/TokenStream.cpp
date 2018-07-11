@@ -1,22 +1,51 @@
-#include <type_traits>
-#include <cctype>
-#include <stdexcept>
+/*
+ *
+ * Copyright (c) 2018-2019 Doo Yong Kim. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 #include <Analysis/AttributeImpl.h>
 #include <Analysis/CharacterUtil.h>
 #include <Analysis/TokenStream.h>
 #include <Util/ArrayUtil.h>
+#include <cctype>
+#include <stdexcept>
+#include <type_traits>
+#include <utility>
 
-using namespace lucene::core::analysis;
-using namespace lucene::core::analysis::tokenattributes;
-using namespace lucene::core::util;
-using namespace lucene::core::util::arrayutil;
+using lucene::core::analysis::CachingTokenFilter;
+using lucene::core::analysis::FilteringTokenFilter;
+using lucene::core::analysis::IllegalStateReader;
+using lucene::core::analysis::IllegalStateReader;
+using lucene::core::analysis::LowerCaseFilter;
+using lucene::core::analysis::Reader;
+using lucene::core::analysis::StopFilter;
+using lucene::core::analysis::TokenFilter;
+using lucene::core::analysis::TokenStream;
+using lucene::core::analysis::Tokenizer;
+using lucene::core::analysis::tokenattributes::PositionIncrementAttribute;
+using lucene::core::util::AttributeFactory;
 
 /**
  *  TokenStream
  */
 
-AttributeFactory* TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY =
-  AttributeFactory::GetStaticImplementation<AttributeFactory::DefaultAttributeFactory, tokenattributes::PackedTokenAttributeImpl>();
+AttributeFactory*
+  TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY =
+    AttributeFactory::GetStaticImplementation<
+                              AttributeFactory::DefaultAttributeFactory,
+                              tokenattributes::PackedTokenAttributeImpl>();
 
 TokenStream::TokenStream()
   : AttributeSource() {
@@ -91,7 +120,8 @@ Tokenizer::~Tokenizer() {
 }
 
 uint32_t Tokenizer::CorrectOffset(const uint32_t current_off) {
-  if(characterutil::CharFilter* char_filter = dynamic_cast<characterutil::CharFilter*>(input)) {
+  if (characterutil::CharFilter* char_filter =
+    dynamic_cast<characterutil::CharFilter*>(input)) {
     char_filter->CorrectOffset(current_off);
   } else {
     return current_off;
@@ -99,8 +129,9 @@ uint32_t Tokenizer::CorrectOffset(const uint32_t current_off) {
 }
 
 void Tokenizer::SetReader(Reader& new_input) {
-  if(dynamic_cast<IllegalStateReader*>(input) == nullptr) {
-    throw std::runtime_error("TokenStream contract violation: close() call missing");
+  if (dynamic_cast<IllegalStateReader*>(input) == nullptr) {
+    throw
+    std::runtime_error("TokenStream contract violation: close() call missing");
   }
 
   input_pending = &new_input;
@@ -133,7 +164,7 @@ LowerCaseFilter::~LowerCaseFilter() {
 }
 
 bool LowerCaseFilter::IncrementToken() {
-  if(input->IncrementToken()) {
+  if (input->IncrementToken()) {
     characterutil::ToLowerCase(term_att->Buffer(), 0, term_att->Length());
     return true;
   } else {
@@ -156,13 +187,13 @@ CachingTokenFilter::~CachingTokenFilter() {
 }
 
 void CachingTokenFilter::End() {
-  if(AttributeSource::State* final_state_ptr = final_state.get()) {
+  if (AttributeSource::State* final_state_ptr = final_state.get()) {
     RestoreState(final_state_ptr);
   }
 }
 
 void CachingTokenFilter::Reset() {
-  if(first_time) {
+  if (first_time) {
     input->Reset();
   } else {
     iterator = cache.begin();
@@ -170,12 +201,12 @@ void CachingTokenFilter::Reset() {
 }
 
 bool CachingTokenFilter::IncrementToken() {
-  if(first_time) {
+  if (first_time) {
     first_time = false;
     FillCache();
   }
 
-  if(iterator == cache.end()) {
+  if (iterator == cache.end()) {
     return false;
   }
 
@@ -185,7 +216,7 @@ bool CachingTokenFilter::IncrementToken() {
 }
 
 void CachingTokenFilter::FillCache() {
-  while(input->IncrementToken()) {
+  while (input->IncrementToken()) {
     cache.push_back(std::unique_ptr<AttributeSource::State>(CaptureState()));
   }
 
@@ -211,10 +242,11 @@ FilteringTokenFilter::~FilteringTokenFilter() {
 
 bool FilteringTokenFilter::IncrementToken() {
   skipped_positions = 0;
-  while(input->IncrementToken()) {
-    if(Accept()) {
-      if(skipped_positions != 0) {
-        pos_incr_attr->SetPositionIncrement(pos_incr_attr->GetPositionIncrement() + skipped_positions);
+  while (input->IncrementToken()) {
+    if (Accept()) {
+      if (skipped_positions != 0) {
+        pos_incr_attr->SetPositionIncrement(
+          pos_incr_attr->GetPositionIncrement() + skipped_positions);
       }
       return true;
     }
@@ -232,7 +264,8 @@ void FilteringTokenFilter::Reset() {
 
 void FilteringTokenFilter::End() {
   TokenFilter::End();
-  pos_incr_attr->SetPositionIncrement(pos_incr_attr->GetPositionIncrement() + skipped_positions);
+  pos_incr_attr->SetPositionIncrement(pos_incr_attr->GetPositionIncrement()
+                                        + skipped_positions);
 }
 
 

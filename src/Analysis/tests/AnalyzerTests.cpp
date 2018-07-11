@@ -1,77 +1,110 @@
+/*
+ *
+ * Copyright (c) 2018-2019 Doo Yong Kim. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+#include <Analysis/Analyzer.h>
+#include <Analysis/Attribute.h>
+#include <Analysis/TokenStream.h>
+#include <Util/Concurrency.h>
+#include <gtest/gtest.h>
 #include <thread>
 #include <iostream>
 #include <memory>
 #include <string>
-#include <Analysis/TokenStream.h>
-#include <Analysis/Attribute.h>
-#include <Analysis/Analyzer.h>
-#include <gtest/gtest.h>
 
-using namespace lucene::core::util;
-using namespace lucene::core::analysis;
-using namespace lucene::core::analysis::tokenattributes;
+using lucene::core::analysis::Analyzer;
+using lucene::core::analysis::GlobalReuseStrategy;
+using lucene::core::analysis::PerFieldReuseStrategy;
+using lucene::core::analysis::StringReader;
+using lucene::core::analysis::StringTokenStream;
+using lucene::core::analysis::TokenFilter;
+using lucene::core::analysis::Tokenizer;
+using lucene::core::analysis::TokenStream;
+using lucene::core::analysis::TokenStreamComponents;
+using lucene::core::analysis::Tokenizer;
+using lucene::core::analysis::tokenattributes::CharTermAttribute;
+using lucene::core::analysis::tokenattributes::OffsetAttribute;
+using lucene::core::util::Singleton;
+using lucene::core::util::BytesRef;
 
 class DummyTokenizer: public Tokenizer {
-  public:
-    std::shared_ptr<CharTermAttribute> char_term_attr;
-    bool read;
+ public:
+  std::shared_ptr<CharTermAttribute> char_term_attr;
+  bool read;
 
-  public:
-    DummyTokenizer()
-      : Tokenizer(),
-        char_term_attr(AddAttribute<CharTermAttribute>()),
-        read(false) {
+ public:
+  DummyTokenizer()
+    : Tokenizer(),
+      char_term_attr(AddAttribute<CharTermAttribute>()),
+      read(false) {
+  }
+
+  bool IncrementToken() {
+    if (read) {
+      return false;
     }
 
-    bool IncrementToken() {
-      if(read) {
-        return false;
-      }
-
-      std::string line;
-      input->ReadLine(line);
-      std::string tmp(line);
-      char_term_attr->Append(tmp);
-      return (read = true);
-    }
+    std::string line;
+    input->ReadLine(line);
+    std::string tmp(line);
+    char_term_attr->Append(tmp);
+    return (read = true);
+  }
 };
 
 class DummyTokenFilter: public TokenFilter {
-  public:
-    std::shared_ptr<CharTermAttribute> char_term_attr;
+ public:
+  std::shared_ptr<CharTermAttribute> char_term_attr;
 
-  public:
-    DummyTokenFilter(std::shared_ptr<TokenStream> in)
-      : TokenFilter(in),
-        char_term_attr(AddAttribute<CharTermAttribute>()) {
-    }
+ public:
+  explicit DummyTokenFilter(std::shared_ptr<TokenStream> in)
+    : TokenFilter(in),
+      char_term_attr(AddAttribute<CharTermAttribute>()) {
+  }
 
-    DummyTokenFilter(TokenStream* in)
-      : TokenFilter(in),
-        char_term_attr(AddAttribute<CharTermAttribute>()) {
-    }
+  explicit DummyTokenFilter(TokenStream* in)
+    : TokenFilter(in),
+      char_term_attr(AddAttribute<CharTermAttribute>()) {
+  }
 
-    bool IncrementToken() {
-      return input->IncrementToken();
-    }
+  bool IncrementToken() {
+    return input->IncrementToken();
+  }
 };
 
 class DummyAnalyzer: public Analyzer {
-  protected:
-    TokenStreamComponents* CreateComponents(const std::string& field_name) {
-      std::shared_ptr<Tokenizer> tnz = std::make_shared<DummyTokenizer>();
-      std::shared_ptr<TokenFilter> tf = std::make_shared<DummyTokenFilter>(tnz);
-      return new TokenStreamComponents(tnz, tf);
-    }
+ protected:
+  TokenStreamComponents* CreateComponents(const std::string& field_name) {
+    std::shared_ptr<Tokenizer> tnz = std::make_shared<DummyTokenizer>();
+    std::shared_ptr<TokenFilter> tf = std::make_shared<DummyTokenFilter>(tnz);
+    return new TokenStreamComponents(tnz, tf);
+  }
 };
 
 TEST(ANALYZER__TESTS, StringTokenStream) {
   std::string value("Wow! A miracle is happend in the World Cup!!");
-  StringTokenStream sts(*TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY, value, value.size());
+  StringTokenStream sts(*TokenStream::DEFAULT_TOKEN_ATTRIBUTE_FACTORY,
+                        value,
+                        value.size());
   sts.Reset();
   EXPECT_TRUE(sts.IncrementToken());
-  std::shared_ptr<CharTermAttribute> term_attr = sts.AddAttribute<CharTermAttribute>();
-  std::shared_ptr<OffsetAttribute> offset_attr = sts.AddAttribute<OffsetAttribute>();
+  std::shared_ptr<CharTermAttribute> term_attr =
+    sts.AddAttribute<CharTermAttribute>();
+  std::shared_ptr<OffsetAttribute> offset_attr =
+    sts.AddAttribute<OffsetAttribute>();
 
   EXPECT_EQ(value, std::string(term_attr->Buffer(), 0, term_attr->Length()));
   EXPECT_EQ(0, offset_attr->StartOffset());
@@ -86,7 +119,8 @@ TEST(ANALYZER__TESTS, StringTokenStream) {
 
 TEST(ANALYZER__TESTS, TokenStreamComponents) {
   std::shared_ptr<DummyTokenizer> tnz = std::make_shared<DummyTokenizer>();
-  std::shared_ptr<DummyTokenFilter> tf = std::make_shared<DummyTokenFilter>(tnz);
+  std::shared_ptr<DummyTokenFilter> tf =
+    std::make_shared<DummyTokenFilter>(tnz);
   TokenStreamComponents ts_components(tnz, tf);
 
   EXPECT_EQ(tnz.get(), &(ts_components.GetTokenizer()));
@@ -102,31 +136,43 @@ TEST(ANALYZER__TESTS, TokenStreamComponents) {
   got_tf.Reset();
   got_tf.IncrementToken();
 
-  EXPECT_EQ(line, std::string(tf->char_term_attr->Buffer(), 0, tf->char_term_attr->Length()));
+  EXPECT_EQ(line, std::string(tf->char_term_attr->Buffer(),
+                              0,
+                              tf->char_term_attr->Length()));
 
   got_tf.End();
   got_tf.Close();
 }
 
 TEST(ANALYZER__TESTS, GLOBAL_REUSE_STRATEGY) {
-  // global_reuse_strategy always returns same TokenStreamComponents even if different fields were passed.
+  // global_reuse_strategy always returns same TokenStreamComponents
+  // even if different fields were passed.
   DummyAnalyzer dummy_analyzer;
-  GlobalReuseStrategy& global_reuse_strategy = Singleton<GlobalReuseStrategy>::GetInstance();
+  GlobalReuseStrategy& global_reuse_strategy =
+    Singleton<GlobalReuseStrategy>::GetInstance();
   std::string field1("field1");
   std::shared_ptr<Tokenizer> tnz = std::make_shared<DummyTokenizer>();
   std::shared_ptr<TokenFilter> tf = std::make_shared<DummyTokenFilter>(tnz);
-  TokenStreamComponents* ts_components = global_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
+  TokenStreamComponents* ts_components =
+    global_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
   EXPECT_EQ(nullptr, ts_components);
-  global_reuse_strategy.SetReusableComponents(dummy_analyzer, field1, new TokenStreamComponents(tnz, tf));
+  global_reuse_strategy
+  .SetReusableComponents(dummy_analyzer,
+                         field1,
+                         new TokenStreamComponents(tnz, tf));
 
   std::string field2("field2");
-  ts_components = global_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
+  ts_components =
+  global_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
   EXPECT_NE(nullptr, ts_components);
 
   std::thread another_thread([&dummy_analyzer, &field1](){
-    GlobalReuseStrategy& global_reuse_strategy = Singleton<GlobalReuseStrategy>::GetInstance();
-    // `ts_components` that is outside thread should be invisible at different thread
-    TokenStreamComponents* ts_components = global_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
+    GlobalReuseStrategy& global_reuse_strategy =
+      Singleton<GlobalReuseStrategy>::GetInstance();
+    // `ts_components` that is outside thread
+    // should be invisible at different thread
+    TokenStreamComponents* ts_components =
+      global_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
     EXPECT_EQ(nullptr, ts_components);
   });
 
@@ -138,37 +184,53 @@ TEST(ANALYZER__TESTS, PER_FIELD_REUSE_STRATEGY) {
   std::string field1("field1");
   std::string field2("field2");
 
-  PerFieldReuseStrategy& per_field_reuse_strategy = Singleton<PerFieldReuseStrategy>::GetInstance();
-  TokenStreamComponents* field1_ts = per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
+  PerFieldReuseStrategy& per_field_reuse_strategy =
+    Singleton<PerFieldReuseStrategy>::GetInstance();
+  TokenStreamComponents* field1_ts =
+    per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
   EXPECT_EQ(nullptr, field1_ts);
-  TokenStreamComponents* field2_ts = per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
+  TokenStreamComponents* field2_ts =
+    per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
   EXPECT_EQ(nullptr, field2_ts);
 
   // Set TokenStreamComponents with field1
   {
     std::shared_ptr<Tokenizer> tnz = std::make_shared<DummyTokenizer>();
     std::shared_ptr<TokenFilter> tf = std::make_shared<DummyTokenFilter>(tnz);
-    per_field_reuse_strategy.SetReusableComponents(dummy_analyzer, field1, new TokenStreamComponents(tnz, tf));
+    per_field_reuse_strategy
+      .SetReusableComponents(dummy_analyzer,
+                             field1,
+                             new TokenStreamComponents(tnz, tf));
   }
-  field1_ts = per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
+  field1_ts =
+    per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
   EXPECT_NE(nullptr, field1_ts);
-  field2_ts = per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
+  field2_ts =
+    per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
   EXPECT_EQ(nullptr, field2_ts);
 
   // Set TokenStreamComponents with field2
   {
     std::shared_ptr<Tokenizer> tnz = std::make_shared<DummyTokenizer>();
     std::shared_ptr<TokenFilter> tf = std::make_shared<DummyTokenFilter>(tnz);
-    per_field_reuse_strategy.SetReusableComponents(dummy_analyzer, field2, new TokenStreamComponents(tnz, tf));
+    per_field_reuse_strategy
+      .SetReusableComponents(dummy_analyzer,
+                             field2,
+                             new TokenStreamComponents(tnz, tf));
   }
-  field2_ts = per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
+  field2_ts =
+    per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
   EXPECT_NE(nullptr, field2_ts);
 
   std::thread another_thread([&dummy_analyzer, &field1, &field2](){
-    PerFieldReuseStrategy& per_field_reuse_strategy = Singleton<PerFieldReuseStrategy>::GetInstance();
-    // `ts_components` that is in outside thread should be invisible at different thread
-    TokenStreamComponents* ts1 = per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
-    TokenStreamComponents* ts2 = per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
+    PerFieldReuseStrategy& per_field_reuse_strategy =
+      Singleton<PerFieldReuseStrategy>::GetInstance();
+    // `ts_components` that is in outside thread
+    // should be invisible at different thread
+    TokenStreamComponents* ts1 =
+      per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field1);
+    TokenStreamComponents* ts2 =
+      per_field_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
     EXPECT_EQ(nullptr, ts1);
     EXPECT_EQ(nullptr, ts2);
   });
@@ -188,8 +250,10 @@ TEST(ANALYZER__TESTS, OTHER__TESTS) {
     TokenStream& token_stream = analyzer.GetTokenStream(field1, str_reader);
     token_stream.Reset();
     EXPECT_TRUE(token_stream.IncrementToken());
-    std::shared_ptr<CharTermAttribute> term_attr = token_stream.AddAttribute<CharTermAttribute>();
-    EXPECT_EQ(contents1, std::string(term_attr->Buffer(), 0, term_attr->Length()));
+    std::shared_ptr<CharTermAttribute> term_attr =
+      token_stream.AddAttribute<CharTermAttribute>();
+    EXPECT_EQ(contents1,
+              std::string(term_attr->Buffer(), 0, term_attr->Length()));
     token_stream.End();
 
     token_stream.Reset();
@@ -212,8 +276,10 @@ TEST(ANALYZER__TESTS, OTHER__TESTS) {
     TokenStream& token_stream = analyzer.GetTokenStream(field1, contents1);
     token_stream.Reset();
     EXPECT_TRUE(token_stream.IncrementToken());
-    std::shared_ptr<CharTermAttribute> term_attr = token_stream.AddAttribute<CharTermAttribute>();
-    EXPECT_EQ(contents1, std::string(term_attr->Buffer(), 0, term_attr->Length()));
+    std::shared_ptr<CharTermAttribute> term_attr =
+      token_stream.AddAttribute<CharTermAttribute>();
+    EXPECT_EQ(contents1,
+      std::string(term_attr->Buffer(), 0, term_attr->Length()));
     token_stream.End();
 
     token_stream.Reset();

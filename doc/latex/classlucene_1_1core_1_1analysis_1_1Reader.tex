@@ -1,0 +1,143 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1Reader}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:Reader Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1Reader}\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+
+
+{\ttfamily \#include $<$Reader.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:Reader\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.323877cm]{classlucene_1_1core_1_1analysis_1_1Reader}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a78089542fd27a0ac2df6702fffe8725c}{$\sim$\+Reader}} ()
+\item 
+virtual int \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_ae8e04911b6a4c06bb026ca6e74071cb2}{Read}} ()=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a475ba046fd74e43a1cce4c4702c791c2}{Read\+Line}} (std\+::string \&line)=0
+\item 
+virtual int \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a986e25a49a947dc113a22c6de033ebe9}{Read}} (char $\ast$cstr, const uint32\+\_\+t off, const uint32\+\_\+t len)=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a3bd8e9f3e1d07d698bccabde41970219}{Skip}} (const uint64\+\_\+t n)=0
+\item 
+virtual bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a230fae02ca4a63de33fdaad6f9aafd96}{Mark\+Supported}} ()=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a0b60b07a3f65098a50f10f6618097527}{Mark}} (const uint32\+\_\+t read\+\_\+ahead\+\_\+limit)=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a5299f5469ce4ea9812ec79a59667945a}{Reset}} ()=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a4be7e96dccdd3e276e3450e3ad7a70f4}{Close}} ()=0
+\item 
+virtual bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_af7a24f3904f9c40e9c5c204b3434f1f7}{Eof}} ()=0
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_a78089542fd27a0ac2df6702fffe8725c}\label{classlucene_1_1core_1_1analysis_1_1Reader_a78089542fd27a0ac2df6702fffe8725c}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!````~Reader@{$\sim$\+Reader}}
+\index{````~Reader@{$\sim$\+Reader}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{$\sim$\+Reader()}{~Reader()}}
+{\footnotesize\ttfamily Reader\+::$\sim$\+Reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{Reader}} 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_a4be7e96dccdd3e276e3450e3ad7a70f4}\label{classlucene_1_1core_1_1analysis_1_1Reader_a4be7e96dccdd3e276e3450e3ad7a70f4}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Close@{Close}}
+\index{Close@{Close}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Reader\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_ac2938d531e7842abb8423149982328e3}{lucene\+::core\+::analysis\+::\+String\+Reader}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader_aa92b3c9c3da611e2e44c3edf4078dbe6}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter_a47ff3dc61979b80927ed5779cb55bd09}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_af7a24f3904f9c40e9c5c204b3434f1f7}\label{classlucene_1_1core_1_1analysis_1_1Reader_af7a24f3904f9c40e9c5c204b3434f1f7}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Eof@{Eof}}
+\index{Eof@{Eof}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{Eof()}{Eof()}}
+{\footnotesize\ttfamily virtual bool lucene\+::core\+::analysis\+::\+Reader\+::\+Eof (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_a7697e462ff19e3e8fa135e38fa3e4999}{lucene\+::core\+::analysis\+::\+String\+Reader}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader_a0f3665a702d4b01dc3298e547379339a}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_a0b60b07a3f65098a50f10f6618097527}\label{classlucene_1_1core_1_1analysis_1_1Reader_a0b60b07a3f65098a50f10f6618097527}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Mark@{Mark}}
+\index{Mark@{Mark}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{Mark()}{Mark()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Reader\+::\+Mark (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{read\+\_\+ahead\+\_\+limit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_a0ba42881881e4790dae54bc1c01063f5}{lucene\+::core\+::analysis\+::\+String\+Reader}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader_a96a8cb65743ac1a4db9633b2e0d203fb}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_a230fae02ca4a63de33fdaad6f9aafd96}\label{classlucene_1_1core_1_1analysis_1_1Reader_a230fae02ca4a63de33fdaad6f9aafd96}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Mark\+Supported@{Mark\+Supported}}
+\index{Mark\+Supported@{Mark\+Supported}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{Mark\+Supported()}{MarkSupported()}}
+{\footnotesize\ttfamily virtual bool lucene\+::core\+::analysis\+::\+Reader\+::\+Mark\+Supported (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_a1b9e55036f01d10650fd4026f23da629}{lucene\+::core\+::analysis\+::\+String\+Reader}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader_ae2de5e9375664ca55c80b224ac3cd998}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_ae8e04911b6a4c06bb026ca6e74071cb2}\label{classlucene_1_1core_1_1analysis_1_1Reader_ae8e04911b6a4c06bb026ca6e74071cb2}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Read@{Read}}
+\index{Read@{Read}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual int lucene\+::core\+::analysis\+::\+Reader\+::\+Read (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_ac9c1bb033ee4f5862e47e90c422d3381}{lucene\+::core\+::analysis\+::\+String\+Reader}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader_a9bca98f676ac3d0eeadfd4a2cc78d764}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_a986e25a49a947dc113a22c6de033ebe9}\label{classlucene_1_1core_1_1analysis_1_1Reader_a986e25a49a947dc113a22c6de033ebe9}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Read@{Read}}
+\index{Read@{Read}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual int lucene\+::core\+::analysis\+::\+Reader\+::\+Read (\begin{DoxyParamCaption}\item[{char $\ast$}]{cstr,  }\item[{const uint32\+\_\+t}]{off,  }\item[{const uint32\+\_\+t}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_ab048d6d6d759175eeda5321a480995c3}{lucene\+::core\+::analysis\+::\+String\+Reader}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader_a8017ca4fc795b71e16bb87d4a24bdfa9}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_a475ba046fd74e43a1cce4c4702c791c2}\label{classlucene_1_1core_1_1analysis_1_1Reader_a475ba046fd74e43a1cce4c4702c791c2}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Read\+Line@{Read\+Line}}
+\index{Read\+Line@{Read\+Line}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{Read\+Line()}{ReadLine()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Reader\+::\+Read\+Line (\begin{DoxyParamCaption}\item[{std\+::string \&}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_a5bf198e593389f1255ec7a4f69f3187d}{lucene\+::core\+::analysis\+::\+String\+Reader}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader_a39217e818ee6678830260a10885400f8}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_a5299f5469ce4ea9812ec79a59667945a}\label{classlucene_1_1core_1_1analysis_1_1Reader_a5299f5469ce4ea9812ec79a59667945a}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Reset@{Reset}}
+\index{Reset@{Reset}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Reader\+::\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_ab68ad2d8d2e375cd063c374c570fcffa}{lucene\+::core\+::analysis\+::\+String\+Reader}}, and \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader_a7c457898d46f0dcf7de18a1730330c02}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1Reader_a3bd8e9f3e1d07d698bccabde41970219}\label{classlucene_1_1core_1_1analysis_1_1Reader_a3bd8e9f3e1d07d698bccabde41970219}} 
+\index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Skip@{Skip}}
+\index{Skip@{Skip}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
+\subsubsection{\texorpdfstring{Skip()}{Skip()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Reader\+::\+Skip (\begin{DoxyParamCaption}\item[{const uint64\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1IllegalStateReader_aa2a34d98ca51e81297960b13aa0fa18e}{lucene\+::core\+::analysis\+::\+Illegal\+State\+Reader}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{Reader_8h}{Reader.\+h}}\item 
+Analysis/\mbox{\hyperlink{Reader_8cpp}{Reader.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,140 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:standard\+:\+:Standard\+Analyzer Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer}\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+
+
+{\ttfamily \#include $<$Standard.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:standard\+:\+:Standard\+Analyzer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a96aade9f9e04262af76d6f69d5ba3103}{Standard\+Analyzer}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_afe3086be0798a7a38675170d12ef0d31}{Standard\+Analyzer}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{lucene\+::core\+::analysis\+::\+Reader}} \&\&\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopwordAnalyzerBase_a12ceda198e84aabe357ccd7b28e66d07}{stop\+\_\+words}})
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a50b9c11d1c78184c0518fbf19c6486ce}{Standard\+Analyzer}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Set}} \&\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopwordAnalyzerBase_a12ceda198e84aabe357ccd7b28e66d07}{stop\+\_\+words}})
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_acc4853fc9cc1c394d9d0e8b5d0d98796}{Standard\+Analyzer}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Set}} \&\&\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StopwordAnalyzerBase_a12ceda198e84aabe357ccd7b28e66d07}{stop\+\_\+words}})
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a241082c932a211751c3d437886d50ba0}{$\sim$\+Standard\+Analyzer}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_af00b69646ec366ab9319197824f12e4b}{Set\+Max\+Token\+Length}} (const uint32\+\_\+t length)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a383601d5fa0bcd3883f794c887512517}{Get\+Max\+Token\+Length}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a3c01017747853f232cdceee30fea7a35}{D\+E\+F\+A\+U\+L\+T\+\_\+\+M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+TH}} = 255
+\item 
+static const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Set}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a43ca4db920b102be1fd2d7c2191fc69e}{S\+T\+O\+P\+\_\+\+W\+O\+R\+D\+S\+\_\+\+S\+ET}}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a0d569e3e48f2060a4698481ec1b49d12}{Create\+Components}} (const std\+::string \&field\+\_\+name) override
+\item 
+\mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_a1ecb3e92b19c3afd8060d81a437a7a3b}{delete\+\_\+unique\+\_\+ptr}}$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_aa42382c6504229a195abbc25f048a614}{Normalize}} (const std\+::string \&field\+\_\+name, \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_a1ecb3e92b19c3afd8060d81a437a7a3b}{delete\+\_\+unique\+\_\+ptr}}$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$ in)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a3f094c0fd3d5efa0c8982e7bee81bbef}{max\+\_\+token\+\_\+length}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a96aade9f9e04262af76d6f69d5ba3103}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a96aade9f9e04262af76d6f69d5ba3103}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!Standard\+Analyzer@{Standard\+Analyzer}}
+\index{Standard\+Analyzer@{Standard\+Analyzer}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{Standard\+Analyzer()}{StandardAnalyzer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily Standard\+Analyzer\+::\+Standard\+Analyzer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_afe3086be0798a7a38675170d12ef0d31}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_afe3086be0798a7a38675170d12ef0d31}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!Standard\+Analyzer@{Standard\+Analyzer}}
+\index{Standard\+Analyzer@{Standard\+Analyzer}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{Standard\+Analyzer()}{StandardAnalyzer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer\+::\+Standard\+Analyzer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{lucene\+::core\+::analysis\+::\+Reader}} \&\&}]{stop\+\_\+words }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a50b9c11d1c78184c0518fbf19c6486ce}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a50b9c11d1c78184c0518fbf19c6486ce}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!Standard\+Analyzer@{Standard\+Analyzer}}
+\index{Standard\+Analyzer@{Standard\+Analyzer}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{Standard\+Analyzer()}{StandardAnalyzer()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily Standard\+Analyzer\+::\+Standard\+Analyzer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Set}} \&}]{stop\+\_\+words }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_acc4853fc9cc1c394d9d0e8b5d0d98796}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_acc4853fc9cc1c394d9d0e8b5d0d98796}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!Standard\+Analyzer@{Standard\+Analyzer}}
+\index{Standard\+Analyzer@{Standard\+Analyzer}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{Standard\+Analyzer()}{StandardAnalyzer()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily Standard\+Analyzer\+::\+Standard\+Analyzer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Set}} \&\&}]{stop\+\_\+words }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a241082c932a211751c3d437886d50ba0}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a241082c932a211751c3d437886d50ba0}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!````~Standard\+Analyzer@{$\sim$\+Standard\+Analyzer}}
+\index{````~Standard\+Analyzer@{$\sim$\+Standard\+Analyzer}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{$\sim$\+Standard\+Analyzer()}{~StandardAnalyzer()}}
+{\footnotesize\ttfamily Standard\+Analyzer\+::$\sim$\+Standard\+Analyzer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a0d569e3e48f2060a4698481ec1b49d12}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a0d569e3e48f2060a4698481ec1b49d12}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!Create\+Components@{Create\+Components}}
+\index{Create\+Components@{Create\+Components}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{Create\+Components()}{CreateComponents()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$ Standard\+Analyzer\+::\+Create\+Components (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_a9b7dc3c598057fbf4e9b5f48066cb54a}{lucene\+::core\+::analysis\+::\+Analyzer}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a383601d5fa0bcd3883f794c887512517}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a383601d5fa0bcd3883f794c887512517}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!Get\+Max\+Token\+Length@{Get\+Max\+Token\+Length}}
+\index{Get\+Max\+Token\+Length@{Get\+Max\+Token\+Length}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{Get\+Max\+Token\+Length()}{GetMaxTokenLength()}}
+{\footnotesize\ttfamily uint32\+\_\+t Standard\+Analyzer\+::\+Get\+Max\+Token\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_aa42382c6504229a195abbc25f048a614}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_aa42382c6504229a195abbc25f048a614}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!Normalize@{Normalize}}
+\index{Normalize@{Normalize}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{Normalize()}{Normalize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_a1ecb3e92b19c3afd8060d81a437a7a3b}{delete\+\_\+unique\+\_\+ptr}}$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$ Standard\+Analyzer\+::\+Normalize (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{field\+\_\+name,  }\item[{\mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_a1ecb3e92b19c3afd8060d81a437a7a3b}{delete\+\_\+unique\+\_\+ptr}}$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$}]{in }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_af00b69646ec366ab9319197824f12e4b}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_af00b69646ec366ab9319197824f12e4b}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!Set\+Max\+Token\+Length@{Set\+Max\+Token\+Length}}
+\index{Set\+Max\+Token\+Length@{Set\+Max\+Token\+Length}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{Set\+Max\+Token\+Length()}{SetMaxTokenLength()}}
+{\footnotesize\ttfamily void Standard\+Analyzer\+::\+Set\+Max\+Token\+Length (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a3c01017747853f232cdceee30fea7a35}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a3c01017747853f232cdceee30fea7a35}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!D\+E\+F\+A\+U\+L\+T\+\_\+\+M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+TH@{D\+E\+F\+A\+U\+L\+T\+\_\+\+M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+TH}}
+\index{D\+E\+F\+A\+U\+L\+T\+\_\+\+M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+TH@{D\+E\+F\+A\+U\+L\+T\+\_\+\+M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+TH}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{D\+E\+F\+A\+U\+L\+T\+\_\+\+M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+TH}{DEFAULT\_MAX\_TOKEN\_LENGTH}}
+{\footnotesize\ttfamily const uint32\+\_\+t lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer\+::\+D\+E\+F\+A\+U\+L\+T\+\_\+\+M\+A\+X\+\_\+\+T\+O\+K\+E\+N\+\_\+\+L\+E\+N\+G\+TH = 255\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a3f094c0fd3d5efa0c8982e7bee81bbef}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a3f094c0fd3d5efa0c8982e7bee81bbef}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!max\+\_\+token\+\_\+length@{max\+\_\+token\+\_\+length}}
+\index{max\+\_\+token\+\_\+length@{max\+\_\+token\+\_\+length}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{max\+\_\+token\+\_\+length}{max\_token\_length}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer\+::max\+\_\+token\+\_\+length\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a43ca4db920b102be1fd2d7c2191fc69e}\label{classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer_a43ca4db920b102be1fd2d7c2191fc69e}} 
+\index{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}!S\+T\+O\+P\+\_\+\+W\+O\+R\+D\+S\+\_\+\+S\+ET@{S\+T\+O\+P\+\_\+\+W\+O\+R\+D\+S\+\_\+\+S\+ET}}
+\index{S\+T\+O\+P\+\_\+\+W\+O\+R\+D\+S\+\_\+\+S\+ET@{S\+T\+O\+P\+\_\+\+W\+O\+R\+D\+S\+\_\+\+S\+ET}!lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer@{lucene\+::core\+::analysis\+::standard\+::\+Standard\+Analyzer}}
+\subsubsection{\texorpdfstring{S\+T\+O\+P\+\_\+\+W\+O\+R\+D\+S\+\_\+\+S\+ET}{STOP\_WORDS\_SET}}
+{\footnotesize\ttfamily const Char\+Set Standard\+Analyzer\+::\+S\+T\+O\+P\+\_\+\+W\+O\+R\+D\+S\+\_\+\+S\+ET\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{Standard_8h}{Standard.\+h}}\item 
+Analysis/\mbox{\hyperlink{Standard_8cpp}{Standard.\+cpp}}\end{DoxyCompactItemize}

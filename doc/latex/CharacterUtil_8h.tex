@@ -1,0 +1,55 @@
+\hypertarget{CharacterUtil_8h}{}\section{Analysis/\+Character\+Util.h File Reference}
+\label{CharacterUtil_8h}\index{Analysis/\+Character\+Util.\+h@{Analysis/\+Character\+Util.\+h}}
+{\ttfamily \#include $<$Analysis/\+Reader.\+h$>$}\newline
+{\ttfamily \#include $<$Util/\+Array\+Util.\+h$>$}\newline
+{\ttfamily \#include $<$iterator$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Filter}}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfo}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Ptr\+Range\+Info}}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfoEqual}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Ptr\+Range\+Info\+Equal}}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfoHasher}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Ptr\+Range\+Info\+Hasher}}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map$<$ V\+A\+L\+U\+E $>$}}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Set}}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacelucene}{lucene}}
+\item 
+ \mbox{\hyperlink{namespacelucene_1_1core}{lucene\+::core}}
+\item 
+ \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis}{lucene\+::core\+::analysis}}
+\item 
+ \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_1_1characterutil}{lucene\+::core\+::analysis\+::characterutil}}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_1_1characterutil_a2b64bd3cca4a8e9112fcbfaebc68aeee}{lucene\+::core\+::analysis\+::characterutil\+::\+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+S\+ET}} = std\+::unordered\+\_\+set$<$ Char\+Ptr\+Range\+Info, Char\+Ptr\+Range\+Info\+Hasher, Char\+Ptr\+Range\+Info\+Equal $>$
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_1_1characterutil_a8970bd9664a398220515d53e97cb051c}{lucene\+::core\+::analysis\+::characterutil\+::\+To\+Lower\+Case}} (char $\ast$buffer, const uint32\+\_\+t offset, const uint32\+\_\+t limit)
+\item 
+void \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_1_1characterutil_a8deb75debf79b7151ec2fed2b932bdde}{lucene\+::core\+::analysis\+::characterutil\+::\+Trim}} (std\+::string \&str)
+\item 
+bool \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_1_1characterutil_a95456ad6dbf1995507914b6b32fca8df}{lucene\+::core\+::analysis\+::characterutil\+::\+Is\+Prefix}} (const std\+::string \&str, const std\+::string \&prefix)
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_1_1characterutil_ab8a8fe2b305fad128673af6acf6ed291}{lucene\+::core\+::analysis\+::characterutil\+::\+Split\+Regex}} (const std\+::string \&str, const std\+::string \&expr, const uint32\+\_\+t limit=0)
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespacelucene_1_1core_1_1analysis_1_1characterutil_a9f1e4e8422bdc82acbdd2170e3123271}{lucene\+::core\+::analysis\+::characterutil\+::\+Split}} (const std\+::string \&str, const std\+::string \&delimiter, const uint32\+\_\+t limit=0)
+\end{DoxyCompactItemize}
