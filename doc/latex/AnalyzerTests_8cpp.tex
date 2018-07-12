@@ -1,0 +1,74 @@
+\hypertarget{AnalyzerTests_8cpp}{}\section{Analysis/tests/\+Analyzer\+Tests.cpp File Reference}
+\label{AnalyzerTests_8cpp}\index{Analysis/tests/\+Analyzer\+Tests.\+cpp@{Analysis/tests/\+Analyzer\+Tests.\+cpp}}
+{\ttfamily \#include $<$Analysis/\+Analyzer.\+h$>$}\newline
+{\ttfamily \#include $<$Analysis/\+Attribute.\+h$>$}\newline
+{\ttfamily \#include $<$Analysis/\+Token\+Stream.\+h$>$}\newline
+{\ttfamily \#include $<$Util/\+Concurrency.\+h$>$}\newline
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classDummyTokenizer}{Dummy\+Tokenizer}}
+\item 
+class \mbox{\hyperlink{classDummyTokenFilter}{Dummy\+Token\+Filter}}
+\item 
+class \mbox{\hyperlink{classDummyAnalyzer}{Dummy\+Analyzer}}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{AnalyzerTests_8cpp_a34e494140fcdd2f44def8865d608cbfb}{T\+E\+ST}} (A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringTokenStream}{String\+Token\+Stream}})
+\item 
+\mbox{\hyperlink{AnalyzerTests_8cpp_a9caca5097d164b248eed63cbdabf69ad}{T\+E\+ST}} (A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}})
+\item 
+\mbox{\hyperlink{AnalyzerTests_8cpp_a26c79dc6fdb9c01d28cdc0434114a070}{T\+E\+ST}} (A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS, G\+L\+O\+B\+A\+L\+\_\+\+R\+E\+U\+S\+E\+\_\+\+S\+T\+R\+A\+T\+E\+GY)
+\item 
+\mbox{\hyperlink{AnalyzerTests_8cpp_a5b7d5dc804c7c06f9c36790971d9dce4}{T\+E\+ST}} (A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS, P\+E\+R\+\_\+\+F\+I\+E\+L\+D\+\_\+\+R\+E\+U\+S\+E\+\_\+\+S\+T\+R\+A\+T\+E\+GY)
+\item 
+\mbox{\hyperlink{AnalyzerTests_8cpp_a04dc7c0ab3e3631dc0c34b0ce961d69a}{T\+E\+ST}} (A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS, O\+T\+H\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS)
+\item 
+int \mbox{\hyperlink{AnalyzerTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{AnalyzerTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{AnalyzerTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}!main@{main}}
+\index{main@{main}!Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AnalyzerTests_8cpp_a34e494140fcdd2f44def8865d608cbfb}\label{AnalyzerTests_8cpp_a34e494140fcdd2f44def8865d608cbfb}} 
+\index{Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringTokenStream}{String\+Token\+Stream}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AnalyzerTests_8cpp_a9caca5097d164b248eed63cbdabf69ad}\label{AnalyzerTests_8cpp_a9caca5097d164b248eed63cbdabf69ad}} 
+\index{Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AnalyzerTests_8cpp_a26c79dc6fdb9c01d28cdc0434114a070}\label{AnalyzerTests_8cpp_a26c79dc6fdb9c01d28cdc0434114a070}} 
+\index{Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{G\+L\+O\+B\+A\+L\+\_\+\+R\+E\+U\+S\+E\+\_\+\+S\+T\+R\+A\+T\+E\+GY}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AnalyzerTests_8cpp_a5b7d5dc804c7c06f9c36790971d9dce4}\label{AnalyzerTests_8cpp_a5b7d5dc804c7c06f9c36790971d9dce4}} 
+\index{Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{P\+E\+R\+\_\+\+F\+I\+E\+L\+D\+\_\+\+R\+E\+U\+S\+E\+\_\+\+S\+T\+R\+A\+T\+E\+GY}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AnalyzerTests_8cpp_a04dc7c0ab3e3631dc0c34b0ce961d69a}\label{AnalyzerTests_8cpp_a04dc7c0ab3e3631dc0c34b0ce961d69a}} 
+\index{Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Analyzer\+Tests.\+cpp@{Analyzer\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{O\+T\+H\+E\+R\+\_\+\+\_\+\+T\+E\+S\+TS}]{ }\end{DoxyParamCaption})}
+

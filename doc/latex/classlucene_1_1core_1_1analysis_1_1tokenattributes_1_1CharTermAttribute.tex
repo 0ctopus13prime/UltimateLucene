@@ -1,0 +1,179 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:tokenattributes\+:\+:Char\+Term\+Attribute Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+
+
+{\ttfamily \#include $<$Attribute.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:tokenattributes\+:\+:Char\+Term\+Attribute\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a44922cdddac47f06e60c0e69c78599ad}{$\sim$\+Char\+Term\+Attribute}} ()
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ae03cbeb05b5b1e7c50f407e0025d41da}{Copy\+Buffer}} (const char $\ast$buffer, const uint32\+\_\+t offset, const uint32\+\_\+t length)=0
+\item 
+virtual char $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_abc9fbea4b68b4cdbb1d120970c71d38e}{Buffer}} () const =0
+\item 
+virtual char $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ada68e9c9011b5ac61e9a34caf63aba6d}{Resize\+Buffer}} (const uint32\+\_\+t new\+\_\+size)=0
+\item 
+virtual uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a1e81ad4ff6bc6141f5a6e103cdf7f36d}{Length}} () const =0
+\item 
+virtual char \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_af6a554c50515313093c1ac61c3bddbe7}{operator\mbox{[}$\,$\mbox{]}}} (const uint32\+\_\+t idx)=0
+\item 
+virtual std\+::string \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_af97534d3a549afbbddd5f64b97efc5a4}{Sub\+Sequence}} (const uint32\+\_\+t start, const uint32\+\_\+t end)=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a8186262029561e196e991fc543cd9953}{Set\+Length}} (const uint32\+\_\+t length)=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ac14e6e064418d1d56b0f33724dcfe8b0}{Set\+Empty}} ()=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a721493e2513c3cbb5818cab4ec36e277}{Append}} (const std\+::string \&csq)=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a1fc0d3eaff550a10e8fc17a5e7bb98bc}{Append}} (const std\+::string \&csq, const uint32\+\_\+t start, const uint32\+\_\+t end)=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a069f61e1cb30895a205e615c1d154148}{Append}} (const char c)=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ad8624358a4798446a14fbf35991c43ad}{Append}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \&term\+\_\+att)=0
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a44922cdddac47f06e60c0e69c78599ad}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a44922cdddac47f06e60c0e69c78599ad}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!````~Char\+Term\+Attribute@{$\sim$\+Char\+Term\+Attribute}}
+\index{````~Char\+Term\+Attribute@{$\sim$\+Char\+Term\+Attribute}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{$\sim$\+Char\+Term\+Attribute()}{~CharTermAttribute()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::$\sim$\+Char\+Term\+Attribute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a721493e2513c3cbb5818cab4ec36e277}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a721493e2513c3cbb5818cab4ec36e277}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Append@{Append}}
+\index{Append@{Append}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Append()}{Append()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}}\& lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{csq }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_aaf6bf26fa572599e284845f67b444900}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a1fc0d3eaff550a10e8fc17a5e7bb98bc}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a1fc0d3eaff550a10e8fc17a5e7bb98bc}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Append@{Append}}
+\index{Append@{Append}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Append()}{Append()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}}\& lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{csq,  }\item[{const uint32\+\_\+t}]{start,  }\item[{const uint32\+\_\+t}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a5d2f89510d37dc11bbf22a77ac6bff83}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a069f61e1cb30895a205e615c1d154148}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a069f61e1cb30895a205e615c1d154148}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Append@{Append}}
+\index{Append@{Append}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Append()}{Append()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}}\& lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Append (\begin{DoxyParamCaption}\item[{const char}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a1f8dccf1ecc42396f7f97b6a1972325f}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ad8624358a4798446a14fbf35991c43ad}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ad8624358a4798446a14fbf35991c43ad}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Append@{Append}}
+\index{Append@{Append}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Append()}{Append()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}}\& lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Append (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \&}]{term\+\_\+att }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ab8c8f791a3a504d86b3578a6f43810d1}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_abc9fbea4b68b4cdbb1d120970c71d38e}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_abc9fbea4b68b4cdbb1d120970c71d38e}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Buffer@{Buffer}}
+\index{Buffer@{Buffer}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Buffer()}{Buffer()}}
+{\footnotesize\ttfamily virtual char$\ast$ lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_af6663b6b4481ee51bd166f5c3123f9f8}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ae03cbeb05b5b1e7c50f407e0025d41da}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ae03cbeb05b5b1e7c50f407e0025d41da}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Copy\+Buffer@{Copy\+Buffer}}
+\index{Copy\+Buffer@{Copy\+Buffer}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Copy\+Buffer()}{CopyBuffer()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Copy\+Buffer (\begin{DoxyParamCaption}\item[{const char $\ast$}]{buffer,  }\item[{const uint32\+\_\+t}]{offset,  }\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_aacb3a44d6999a381dc9217616ba91317}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a1e81ad4ff6bc6141f5a6e103cdf7f36d}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a1e81ad4ff6bc6141f5a6e103cdf7f36d}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Length@{Length}}
+\index{Length@{Length}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Length()}{Length()}}
+{\footnotesize\ttfamily virtual uint32\+\_\+t lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a20085f30b788448e61de1f5635cd95f0}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_af6a554c50515313093c1ac61c3bddbe7}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_af6a554c50515313093c1ac61c3bddbe7}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily virtual char\& lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{idx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a65259a0e94791f009d7109f7bbd7d74e}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ada68e9c9011b5ac61e9a34caf63aba6d}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ada68e9c9011b5ac61e9a34caf63aba6d}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Resize\+Buffer@{Resize\+Buffer}}
+\index{Resize\+Buffer@{Resize\+Buffer}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Resize\+Buffer()}{ResizeBuffer()}}
+{\footnotesize\ttfamily virtual char$\ast$ lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Resize\+Buffer (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{new\+\_\+size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_abc195e8927e23632d34d4c081ede76b4}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ac14e6e064418d1d56b0f33724dcfe8b0}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_ac14e6e064418d1d56b0f33724dcfe8b0}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Set\+Empty@{Set\+Empty}}
+\index{Set\+Empty@{Set\+Empty}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Set\+Empty()}{SetEmpty()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}}\& lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Set\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a328d66d5bfd40a9bcd91ffe59933bc15}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a8186262029561e196e991fc543cd9953}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_a8186262029561e196e991fc543cd9953}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Set\+Length@{Set\+Length}}
+\index{Set\+Length@{Set\+Length}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Set\+Length()}{SetLength()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}}\& lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Set\+Length (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a752c93bfaa290094349858306468c9a9}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_af97534d3a549afbbddd5f64b97efc5a4}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute_af97534d3a549afbbddd5f64b97efc5a4}} 
+\index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}!Sub\+Sequence@{Sub\+Sequence}}
+\index{Sub\+Sequence@{Sub\+Sequence}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}
+\subsubsection{\texorpdfstring{Sub\+Sequence()}{SubSequence()}}
+{\footnotesize\ttfamily virtual std\+::string lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+::\+Sub\+Sequence (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{start,  }\item[{const uint32\+\_\+t}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a286d2dd38ce24fb0da4c077e8f06bb25}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{Analysis_2Attribute_8h}{Attribute.\+h}}\end{DoxyCompactItemize}

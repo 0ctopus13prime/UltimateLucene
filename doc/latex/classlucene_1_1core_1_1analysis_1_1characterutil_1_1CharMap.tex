@@ -1,0 +1,258 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:characterutil\+:\+:Char\+Map$<$ V\+A\+L\+UE $>$ Class Template Reference}
+\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map$<$ V\+A\+L\+U\+E $>$@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map$<$ V\+A\+L\+U\+E $>$}}
+
+
+{\ttfamily \#include $<$Character\+Util.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_ab593676daf8740d5f8394fabac807460}{Char\+Map}} (const bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a1a62994159ecb2e6767c0d67238ad35c}{ignore\+\_\+case}}=false)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a797c76287d00853e737c8fcd8006769d}{Char\+Map}} (const uint32\+\_\+t start\+\_\+size, const bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a1a62994159ecb2e6767c0d67238ad35c}{ignore\+\_\+case}}=false)
+\item 
+{\footnotesize template$<$typename Input\+It $>$ }\\\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a7449492bf51315ef11481821b113c0f1}{Char\+Map}} (Input\+It start, Input\+It end, const bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a1a62994159ecb2e6767c0d67238ad35c}{ignore\+\_\+case}}=false)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a0698d6cda30fd0a977a59ada5486f0b8}{Char\+Map}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} \&other)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa83b5c7a819e10d002d8d06bc6ad45a0}{Char\+Map}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} \&\&other)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa149df587eab8317179428d588f4829d}{$\sim$\+Char\+Map}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aabcf4f0d534fb6050aeb140d418a0fba}{operator=}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} \&other)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_adef93a87f617af2b3f949b40ffd82cca}{operator=}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} \&\&other)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa8eb8edcee9f2d66b238baba7ddae641}{Clear}} ()
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a3c99e09a343372fdf0bbadd782e841ce}{Ignore\+Case}} ()
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a3ddc016640b2f1328eb4ccb68d11cc62}{Contains\+Key}} (const std\+::string \&str)
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a81b1167446c7c8988a523446436a313c}{Contains\+Key}} (const char $\ast$str, uint32\+\_\+t offset, uint32\+\_\+t length)
+\item 
+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+A\+P\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a48f8b551ec74f77bfbf6e53649d7ce74}{Get}} (const char $\ast$str, uint32\+\_\+t offset, uint32\+\_\+t length)
+\item 
+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+A\+P\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a753765dd29bb5f8c81ddb6b77d4cfa78}{Get}} (const std\+::string \&str)
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a09382e34715068e50efa4b40a34a4ee5}{Put}} (const char $\ast$str, uint32\+\_\+t offset, uint32\+\_\+t length, V\+A\+L\+UE \&value)
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a3d7b46fba00e762804ba1e953ac6587d}{Put}} (const char $\ast$str, uint32\+\_\+t offset, uint32\+\_\+t length, V\+A\+L\+UE \&\&value)
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa93ef6c5bfec74a0533a9cd967adfc59}{Put}} (const std\+::string \&str, V\+A\+L\+UE \&value)
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a72fcb8b83852bb787de1204635d3bf21}{Put}} (const std\+::string \&str, V\+A\+L\+UE \&\&value)
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa6267a07cdbe6c0d52c02ddad71c52ab}{Erase}} (const std\+::string \&str)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a25bb4efe350f8848e264f63daf72f23e}{Size}} ()
+\item 
+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+A\+P\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a468af607829ccc32601ebb45c1363c7e}{Begin}} ()
+\item 
+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+A\+P\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a036c1820bceb5120f18a798b46db10d0}{End}} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a0fe744ab48aa6f998a3d7e159a351d69}{I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+AP}} = std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfo}{Char\+Ptr\+Range\+Info}}, V\+A\+L\+UE, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfoHasher}{Char\+Ptr\+Range\+Info\+Hasher}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfoEqual}{Char\+Ptr\+Range\+Info\+Equal}} $>$
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a1a62994159ecb2e6767c0d67238ad35c}{ignore\+\_\+case}}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a0fe744ab48aa6f998a3d7e159a351d69}{I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+AP}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa86d94ea61970d00283d8eb72d12e1cf}{internal\+\_\+map}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a0fe744ab48aa6f998a3d7e159a351d69}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a0fe744ab48aa6f998a3d7e159a351d69}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+AP@{I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+AP}}
+\index{I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+AP@{I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+AP}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+AP}{INTERNAL\_MAP}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+using \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a0fe744ab48aa6f998a3d7e159a351d69}{I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+AP}} =  std\+::unordered\+\_\+map$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfo}{Char\+Ptr\+Range\+Info}}, V\+A\+L\+UE, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfoHasher}{Char\+Ptr\+Range\+Info\+Hasher}}, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfoEqual}{Char\+Ptr\+Range\+Info\+Equal}}$>$\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_ab593676daf8740d5f8394fabac807460}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_ab593676daf8740d5f8394fabac807460}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Char\+Map@{Char\+Map}}
+\index{Char\+Map@{Char\+Map}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Char\+Map()}{CharMap()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} (\begin{DoxyParamCaption}\item[{const bool}]{ignore\+\_\+case = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a797c76287d00853e737c8fcd8006769d}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a797c76287d00853e737c8fcd8006769d}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Char\+Map@{Char\+Map}}
+\index{Char\+Map@{Char\+Map}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Char\+Map()}{CharMap()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{start\+\_\+size,  }\item[{const bool}]{ignore\+\_\+case = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a7449492bf51315ef11481821b113c0f1}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a7449492bf51315ef11481821b113c0f1}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Char\+Map@{Char\+Map}}
+\index{Char\+Map@{Char\+Map}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Char\+Map()}{CharMap()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+template$<$typename Input\+It $>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} (\begin{DoxyParamCaption}\item[{Input\+It}]{start,  }\item[{Input\+It}]{end,  }\item[{const bool}]{ignore\+\_\+case = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a0698d6cda30fd0a977a59ada5486f0b8}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a0698d6cda30fd0a977a59ada5486f0b8}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Char\+Map@{Char\+Map}}
+\index{Char\+Map@{Char\+Map}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Char\+Map()}{CharMap()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}}$<$ V\+A\+L\+UE $>$ \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa83b5c7a819e10d002d8d06bc6ad45a0}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa83b5c7a819e10d002d8d06bc6ad45a0}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Char\+Map@{Char\+Map}}
+\index{Char\+Map@{Char\+Map}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Char\+Map()}{CharMap()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}}$<$ V\+A\+L\+UE $>$ \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa149df587eab8317179428d588f4829d}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa149df587eab8317179428d588f4829d}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!````~Char\+Map@{$\sim$\+Char\+Map}}
+\index{````~Char\+Map@{$\sim$\+Char\+Map}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{$\sim$\+Char\+Map()}{~CharMap()}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::$\sim$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a468af607829ccc32601ebb45c1363c7e}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a468af607829ccc32601ebb45c1363c7e}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Begin@{Begin}}
+\index{Begin@{Begin}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Begin()}{Begin()}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+A\+P\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa8eb8edcee9f2d66b238baba7ddae641}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa8eb8edcee9f2d66b238baba7ddae641}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Clear@{Clear}}
+\index{Clear@{Clear}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Clear()}{Clear()}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a3ddc016640b2f1328eb4ccb68d11cc62}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a3ddc016640b2f1328eb4ccb68d11cc62}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Contains\+Key@{Contains\+Key}}
+\index{Contains\+Key@{Contains\+Key}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Contains\+Key()}{ContainsKey()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Contains\+Key (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a81b1167446c7c8988a523446436a313c}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a81b1167446c7c8988a523446436a313c}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Contains\+Key@{Contains\+Key}}
+\index{Contains\+Key@{Contains\+Key}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Contains\+Key()}{ContainsKey()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Contains\+Key (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str,  }\item[{uint32\+\_\+t}]{offset,  }\item[{uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a036c1820bceb5120f18a798b46db10d0}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a036c1820bceb5120f18a798b46db10d0}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!End@{End}}
+\index{End@{End}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{End()}{End()}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+A\+P\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::End (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa6267a07cdbe6c0d52c02ddad71c52ab}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa6267a07cdbe6c0d52c02ddad71c52ab}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Erase@{Erase}}
+\index{Erase@{Erase}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Erase()}{Erase()}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Erase (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a48f8b551ec74f77bfbf6e53649d7ce74}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a48f8b551ec74f77bfbf6e53649d7ce74}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Get@{Get}}
+\index{Get@{Get}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+A\+P\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Get (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str,  }\item[{uint32\+\_\+t}]{offset,  }\item[{uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a753765dd29bb5f8c81ddb6b77d4cfa78}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a753765dd29bb5f8c81ddb6b77d4cfa78}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Get@{Get}}
+\index{Get@{Get}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+A\+P\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Get (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a3c99e09a343372fdf0bbadd782e841ce}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a3c99e09a343372fdf0bbadd782e841ce}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Ignore\+Case@{Ignore\+Case}}
+\index{Ignore\+Case@{Ignore\+Case}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Ignore\+Case()}{IgnoreCase()}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Ignore\+Case (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aabcf4f0d534fb6050aeb140d418a0fba}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aabcf4f0d534fb6050aeb140d418a0fba}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!operator=@{operator=}}
+\index{operator=@{operator=}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}}\& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}}$<$ V\+A\+L\+UE $>$ \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_adef93a87f617af2b3f949b40ffd82cca}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_adef93a87f617af2b3f949b40ffd82cca}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!operator=@{operator=}}
+\index{operator=@{operator=}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}}\& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{Char\+Map}}$<$ V\+A\+L\+UE $>$ \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a09382e34715068e50efa4b40a34a4ee5}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a09382e34715068e50efa4b40a34a4ee5}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Put@{Put}}
+\index{Put@{Put}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Put()}{Put()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Put (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str,  }\item[{uint32\+\_\+t}]{offset,  }\item[{uint32\+\_\+t}]{length,  }\item[{V\+A\+L\+UE \&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a3d7b46fba00e762804ba1e953ac6587d}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a3d7b46fba00e762804ba1e953ac6587d}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Put@{Put}}
+\index{Put@{Put}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Put()}{Put()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Put (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str,  }\item[{uint32\+\_\+t}]{offset,  }\item[{uint32\+\_\+t}]{length,  }\item[{V\+A\+L\+UE \&\&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa93ef6c5bfec74a0533a9cd967adfc59}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa93ef6c5bfec74a0533a9cd967adfc59}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Put@{Put}}
+\index{Put@{Put}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Put()}{Put()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Put (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str,  }\item[{V\+A\+L\+UE \&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a72fcb8b83852bb787de1204635d3bf21}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a72fcb8b83852bb787de1204635d3bf21}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Put@{Put}}
+\index{Put@{Put}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Put()}{Put()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Put (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str,  }\item[{V\+A\+L\+UE \&\&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a25bb4efe350f8848e264f63daf72f23e}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a25bb4efe350f8848e264f63daf72f23e}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!Size@{Size}}
+\index{Size@{Size}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{Size()}{Size()}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a1a62994159ecb2e6767c0d67238ad35c}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a1a62994159ecb2e6767c0d67238ad35c}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!ignore\+\_\+case@{ignore\+\_\+case}}
+\index{ignore\+\_\+case@{ignore\+\_\+case}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{ignore\+\_\+case}{ignore\_case}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::ignore\+\_\+case\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa86d94ea61970d00283d8eb72d12e1cf}\label{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_aa86d94ea61970d00283d8eb72d12e1cf}} 
+\index{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}!internal\+\_\+map@{internal\+\_\+map}}
+\index{internal\+\_\+map@{internal\+\_\+map}!lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map@{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}
+\subsubsection{\texorpdfstring{internal\+\_\+map}{internal\_map}}
+{\footnotesize\ttfamily template$<$typename V\+A\+L\+UE$>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap_a0fe744ab48aa6f998a3d7e159a351d69}{I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+M\+AP}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap}{lucene\+::core\+::analysis\+::characterutil\+::\+Char\+Map}}$<$ V\+A\+L\+UE $>$\+::internal\+\_\+map\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{CharacterUtil_8h}{Character\+Util.\+h}}\end{DoxyCompactItemize}

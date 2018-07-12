@@ -1,0 +1,102 @@
+\hypertarget{AttributeSourceTests_8cpp}{}\section{Util/tests/\+Attribute\+Source\+Tests.cpp File Reference}
+\label{AttributeSourceTests_8cpp}\index{Util/tests/\+Attribute\+Source\+Tests.\+cpp@{Util/tests/\+Attribute\+Source\+Tests.\+cpp}}
+{\ttfamily \#include $<$Analysis/\+Attribute\+Impl.\+h$>$}\newline
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$Util/\+Attribute.\+h$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{AttributeSourceTests_8cpp_a3677871a908b1edec86ecf93107c15a0}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST, S\+T\+A\+T\+E\+\_\+\+\_\+\+B\+A\+S\+I\+C\+\_\+\+\_\+\+C\+O\+N\+S\+T\+R\+U\+C\+T\+OR)
+\item 
+void \mbox{\hyperlink{AttributeSourceTests_8cpp_a705dd17a776093508e6e69c3b7ea0943}{Compare\+Two\+State}} (Attribute\+Source\+::\+State \&expected, Attribute\+Source\+::\+State \&target)
+\item 
+\mbox{\hyperlink{AttributeSourceTests_8cpp_aedd5576e3ce7af7ad8c7d72d0375a257}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST, S\+T\+A\+T\+E\+\_\+\+\_\+\+C\+O\+N\+S\+T\+R\+U\+C\+T\+OR)
+\item 
+\mbox{\hyperlink{AttributeSourceTests_8cpp_acb816576bfed76e7c6f6815a2ed186c9}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST, S\+T\+A\+T\+E\+\_\+\+\_\+\+H\+A\+N\+D\+L\+I\+NG)
+\item 
+\mbox{\hyperlink{AttributeSourceTests_8cpp_a56c46937f74fc23efe9d6a8e9c59a04b}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST, E\+T\+C\+\_\+\+\_\+\+T\+E\+S\+TS)
+\item 
+void \mbox{\hyperlink{AttributeSourceTests_8cpp_afb2803ac0f3f3a35783c459ed2fe3f0c}{Compare\+Identical\+Attribute\+Source}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource}{Attribute\+Source}} \&attr\+\_\+source1, \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource}{Attribute\+Source}} \&attr\+\_\+source2, bool shared=false)
+\item 
+\mbox{\hyperlink{AttributeSourceTests_8cpp_a398b2e4719f0d66db75688a6da2d20ac}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST, A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+S\+H\+A\+L\+L\+O\+W\+\_\+\+\_\+\+C\+O\+P\+Y\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{AttributeSourceTests_8cpp_a5737c5cf9281f801544c023ea94e6636}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST, A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+D\+E\+E\+P\+\_\+\+\_\+\+C\+O\+P\+Y\+\_\+\+\_\+\+C\+O\+N\+S\+T\+R\+U\+C\+T\+O\+R\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{AttributeSourceTests_8cpp_a608467bb9f28d2c547d62810c64089a1}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST, A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+D\+E\+E\+P\+\_\+\+\_\+\+C\+O\+P\+Y\+\_\+\+\_\+\+A\+S\+S\+I\+G\+N\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{AttributeSourceTests_8cpp_a1ea6aaae1ee5f590f1bc3991ffa60b35}{T\+E\+ST}} (A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST, A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+R\+E\+F\+L\+E\+C\+T\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+int \mbox{\hyperlink{AttributeSourceTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_afb2803ac0f3f3a35783c459ed2fe3f0c}\label{AttributeSourceTests_8cpp_afb2803ac0f3f3a35783c459ed2fe3f0c}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!Compare\+Identical\+Attribute\+Source@{Compare\+Identical\+Attribute\+Source}}
+\index{Compare\+Identical\+Attribute\+Source@{Compare\+Identical\+Attribute\+Source}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{Compare\+Identical\+Attribute\+Source()}{CompareIdenticalAttributeSource()}}
+{\footnotesize\ttfamily void Compare\+Identical\+Attribute\+Source (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource}{Attribute\+Source}} \&}]{attr\+\_\+source1,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource}{Attribute\+Source}} \&}]{attr\+\_\+source2,  }\item[{bool}]{shared = {\ttfamily false} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_a705dd17a776093508e6e69c3b7ea0943}\label{AttributeSourceTests_8cpp_a705dd17a776093508e6e69c3b7ea0943}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!Compare\+Two\+State@{Compare\+Two\+State}}
+\index{Compare\+Two\+State@{Compare\+Two\+State}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{Compare\+Two\+State()}{CompareTwoState()}}
+{\footnotesize\ttfamily void Compare\+Two\+State (\begin{DoxyParamCaption}\item[{Attribute\+Source\+::\+State \&}]{expected,  }\item[{Attribute\+Source\+::\+State \&}]{target }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{AttributeSourceTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!main@{main}}
+\index{main@{main}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_a3677871a908b1edec86ecf93107c15a0}\label{AttributeSourceTests_8cpp_a3677871a908b1edec86ecf93107c15a0}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/8]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST}]{,  }\item[{S\+T\+A\+T\+E\+\_\+\+\_\+\+B\+A\+S\+I\+C\+\_\+\+\_\+\+C\+O\+N\+S\+T\+R\+U\+C\+T\+OR}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_aedd5576e3ce7af7ad8c7d72d0375a257}\label{AttributeSourceTests_8cpp_aedd5576e3ce7af7ad8c7d72d0375a257}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/8]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST}]{,  }\item[{S\+T\+A\+T\+E\+\_\+\+\_\+\+C\+O\+N\+S\+T\+R\+U\+C\+T\+OR}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_acb816576bfed76e7c6f6815a2ed186c9}\label{AttributeSourceTests_8cpp_acb816576bfed76e7c6f6815a2ed186c9}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/8]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST}]{,  }\item[{S\+T\+A\+T\+E\+\_\+\+\_\+\+H\+A\+N\+D\+L\+I\+NG}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_a56c46937f74fc23efe9d6a8e9c59a04b}\label{AttributeSourceTests_8cpp_a56c46937f74fc23efe9d6a8e9c59a04b}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [4/8]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST}]{,  }\item[{E\+T\+C\+\_\+\+\_\+\+T\+E\+S\+TS}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_a398b2e4719f0d66db75688a6da2d20ac}\label{AttributeSourceTests_8cpp_a398b2e4719f0d66db75688a6da2d20ac}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [5/8]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST}]{,  }\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+S\+H\+A\+L\+L\+O\+W\+\_\+\+\_\+\+C\+O\+P\+Y\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_a5737c5cf9281f801544c023ea94e6636}\label{AttributeSourceTests_8cpp_a5737c5cf9281f801544c023ea94e6636}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [6/8]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST}]{,  }\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+D\+E\+E\+P\+\_\+\+\_\+\+C\+O\+P\+Y\+\_\+\+\_\+\+C\+O\+N\+S\+T\+R\+U\+C\+T\+O\+R\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_a608467bb9f28d2c547d62810c64089a1}\label{AttributeSourceTests_8cpp_a608467bb9f28d2c547d62810c64089a1}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [7/8]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST}]{,  }\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+D\+E\+E\+P\+\_\+\+\_\+\+C\+O\+P\+Y\+\_\+\+\_\+\+A\+S\+S\+I\+G\+N\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{AttributeSourceTests_8cpp_a1ea6aaae1ee5f590f1bc3991ffa60b35}\label{AttributeSourceTests_8cpp_a1ea6aaae1ee5f590f1bc3991ffa60b35}} 
+\index{Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Attribute\+Source\+Tests.\+cpp@{Attribute\+Source\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [8/8]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+\_\+\+T\+E\+ST}]{,  }\item[{A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+\_\+\+R\+E\+F\+L\+E\+C\+T\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+

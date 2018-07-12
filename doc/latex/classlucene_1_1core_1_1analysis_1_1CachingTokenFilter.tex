@@ -1,0 +1,145 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:Caching\+Token\+Filter Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter}\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+
+
+{\ttfamily \#include $<$Token\+Stream.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:Caching\+Token\+Filter\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_acbcb907639dbeeb5fc0f9925b804438f}{Caching\+Token\+Filter}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$ in)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_ae15751d487684a8d3b0835b69fd8f976}{Caching\+Token\+Filter}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $\ast$in)
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_acbad05f7b0c43c2be38c616c7dbe3dfa}{$\sim$\+Caching\+Token\+Filter}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a7241be5e51e730f4e311572510de147e}{End}} () override
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_adde877fb8c464d6eb2766bd400a1499c}{Reset}} () override
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_acea0a0a5ee61ab8831209c96fde49dc8}{Increment\+Token}} () override
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a9c3602a328bb00156c13ae278cac5f3a}{Fill\+Cache}} ()
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_accc1b57932239f41fd7d97594da49722}{Is\+Cached}} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State}} $>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a84d2af768b782d2ba4eb2c4ebc095d1d}{cache}}
+\item 
+std\+::vector$<$ std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State}} $>$ $>$\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a23615478893652578c8cab6ca5275ff3}{iterator}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a843e6f3b087cb20663ffbd995266704f}{final\+\_\+state}}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_aea35743bf279c67214d8567e6230ed4c}{first\+\_\+time}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_acbcb907639dbeeb5fc0f9925b804438f}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_acbcb907639dbeeb5fc0f9925b804438f}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!Caching\+Token\+Filter@{Caching\+Token\+Filter}}
+\index{Caching\+Token\+Filter@{Caching\+Token\+Filter}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{Caching\+Token\+Filter()}{CachingTokenFilter()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter\+::\+Caching\+Token\+Filter (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $>$}]{in }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_ae15751d487684a8d3b0835b69fd8f976}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_ae15751d487684a8d3b0835b69fd8f976}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!Caching\+Token\+Filter@{Caching\+Token\+Filter}}
+\index{Caching\+Token\+Filter@{Caching\+Token\+Filter}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{Caching\+Token\+Filter()}{CachingTokenFilter()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Caching\+Token\+Filter\+::\+Caching\+Token\+Filter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{Token\+Stream}} $\ast$}]{in }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter}{Caching\+Token\+Filter}} \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_acbad05f7b0c43c2be38c616c7dbe3dfa}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_acbad05f7b0c43c2be38c616c7dbe3dfa}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!````~Caching\+Token\+Filter@{$\sim$\+Caching\+Token\+Filter}}
+\index{````~Caching\+Token\+Filter@{$\sim$\+Caching\+Token\+Filter}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{$\sim$\+Caching\+Token\+Filter()}{~CachingTokenFilter()}}
+{\footnotesize\ttfamily Caching\+Token\+Filter\+::$\sim$\+Caching\+Token\+Filter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a7241be5e51e730f4e311572510de147e}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a7241be5e51e730f4e311572510de147e}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!End@{End}}
+\index{End@{End}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{End()}{End()}}
+{\footnotesize\ttfamily void Caching\+Token\+Filter\+::\+End (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenFilter_ad2e29dd32aa4df385d0f290f10f20721}{lucene\+::core\+::analysis\+::\+Token\+Filter}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a9c3602a328bb00156c13ae278cac5f3a}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a9c3602a328bb00156c13ae278cac5f3a}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!Fill\+Cache@{Fill\+Cache}}
+\index{Fill\+Cache@{Fill\+Cache}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{Fill\+Cache()}{FillCache()}}
+{\footnotesize\ttfamily void Caching\+Token\+Filter\+::\+Fill\+Cache (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_acea0a0a5ee61ab8831209c96fde49dc8}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_acea0a0a5ee61ab8831209c96fde49dc8}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!Increment\+Token@{Increment\+Token}}
+\index{Increment\+Token@{Increment\+Token}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{Increment\+Token()}{IncrementToken()}}
+{\footnotesize\ttfamily bool Caching\+Token\+Filter\+::\+Increment\+Token (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_a614d4ea24a354d6f4354b4941b5124e2}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_accc1b57932239f41fd7d97594da49722}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_accc1b57932239f41fd7d97594da49722}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!Is\+Cached@{Is\+Cached}}
+\index{Is\+Cached@{Is\+Cached}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{Is\+Cached()}{IsCached()}}
+{\footnotesize\ttfamily bool Caching\+Token\+Filter\+::\+Is\+Cached (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_adde877fb8c464d6eb2766bd400a1499c}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_adde877fb8c464d6eb2766bd400a1499c}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!Reset@{Reset}}
+\index{Reset@{Reset}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily void Caching\+Token\+Filter\+::\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenFilter_a0671ee825db7735a7b72b7a27a457ed9}{lucene\+::core\+::analysis\+::\+Token\+Filter}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a84d2af768b782d2ba4eb2c4ebc095d1d}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a84d2af768b782d2ba4eb2c4ebc095d1d}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!cache@{cache}}
+\index{cache@{cache}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{cache}{cache}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State}}$>$ $>$ lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter\+::cache\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a843e6f3b087cb20663ffbd995266704f}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a843e6f3b087cb20663ffbd995266704f}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!final\+\_\+state@{final\+\_\+state}}
+\index{final\+\_\+state@{final\+\_\+state}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{final\+\_\+state}{final\_state}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State}}$>$ lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter\+::final\+\_\+state\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_aea35743bf279c67214d8567e6230ed4c}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_aea35743bf279c67214d8567e6230ed4c}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!first\+\_\+time@{first\+\_\+time}}
+\index{first\+\_\+time@{first\+\_\+time}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{first\+\_\+time}{first\_time}}
+{\footnotesize\ttfamily bool lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter\+::first\+\_\+time\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a23615478893652578c8cab6ca5275ff3}\label{classlucene_1_1core_1_1analysis_1_1CachingTokenFilter_a23615478893652578c8cab6ca5275ff3}} 
+\index{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}!iterator@{iterator}}
+\index{iterator@{iterator}!lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter@{lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter}}
+\subsubsection{\texorpdfstring{iterator}{iterator}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State}}$>$ $>$\+::iterator lucene\+::core\+::analysis\+::\+Caching\+Token\+Filter\+::iterator\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{TokenStream_8h}{Token\+Stream.\+h}}\item 
+Analysis/\mbox{\hyperlink{TokenStream_8cpp}{Token\+Stream.\+cpp}}\end{DoxyCompactItemize}

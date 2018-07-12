@@ -1,0 +1,80 @@
+\hypertarget{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference}{}\section{lucene\+:\+:core\+:\+:util\+:\+:Closeable\+Thread\+Local\+Reference$<$ C\+L\+A\+SS, T\+Y\+PE $>$ Class Template Reference}
+\label{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference}\index{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference$<$ C\+L\+A\+S\+S, T\+Y\+P\+E $>$@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference$<$ C\+L\+A\+S\+S, T\+Y\+P\+E $>$}}
+
+
+{\ttfamily \#include $<$Concurrency.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+T\+Y\+PE \& \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a3cb386298ca2b0b974705f591b313891}{Get}} (const size\+\_\+t instance\+\_\+id)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a0492bd60f1e06eef9e03020d97bb7c91}{Set}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocal}{Closeable\+Thread\+Local}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$ $\ast$ctl, const T\+Y\+PE \&object)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a2a565539a30bc0a9cac563262989775f}{Set}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocal}{Closeable\+Thread\+Local}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$ $\ast$ctl, T\+Y\+PE \&\&object)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a7f6be51394814fe98af69803fd978359}{Erase}} (const size\+\_\+t instance\+\_\+id)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a4088bd7d403b38fea1399bd592a6c73e}{$\sim$\+Closeable\+Thread\+Local\+Reference}} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unordered\+\_\+map$<$ size\+\_\+t, \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1ThreadLocalItemWrapper}{Thread\+Local\+Item\+Wrapper}}$<$ T\+Y\+PE $>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a1df112eff02d74eb49b69c548c197a5f}{reference}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a4088bd7d403b38fea1399bd592a6c73e}\label{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a4088bd7d403b38fea1399bd592a6c73e}} 
+\index{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}!````~Closeable\+Thread\+Local\+Reference@{$\sim$\+Closeable\+Thread\+Local\+Reference}}
+\index{````~Closeable\+Thread\+Local\+Reference@{$\sim$\+Closeable\+Thread\+Local\+Reference}!lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}
+\subsubsection{\texorpdfstring{$\sim$\+Closeable\+Thread\+Local\+Reference()}{~CloseableThreadLocalReference()}}
+{\footnotesize\ttfamily template$<$typename C\+L\+A\+SS, typename T\+Y\+PE$>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference}{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$\+::$\sim$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference}{Closeable\+Thread\+Local\+Reference}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a7f6be51394814fe98af69803fd978359}\label{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a7f6be51394814fe98af69803fd978359}} 
+\index{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}!Erase@{Erase}}
+\index{Erase@{Erase}!lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}
+\subsubsection{\texorpdfstring{Erase()}{Erase()}}
+{\footnotesize\ttfamily template$<$typename C\+L\+A\+SS, typename T\+Y\+PE$>$ \\
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference}{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$\+::Erase (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{instance\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a3cb386298ca2b0b974705f591b313891}\label{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a3cb386298ca2b0b974705f591b313891}} 
+\index{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}!Get@{Get}}
+\index{Get@{Get}!lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}
+\subsubsection{\texorpdfstring{Get()}{Get()}}
+{\footnotesize\ttfamily template$<$typename C\+L\+A\+SS, typename T\+Y\+PE$>$ \\
+T\+Y\+PE\& \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference}{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$\+::Get (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{instance\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a0492bd60f1e06eef9e03020d97bb7c91}\label{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a0492bd60f1e06eef9e03020d97bb7c91}} 
+\index{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}!Set@{Set}}
+\index{Set@{Set}!lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}
+\subsubsection{\texorpdfstring{Set()}{Set()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename C\+L\+A\+SS, typename T\+Y\+PE$>$ \\
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference}{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$\+::Set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocal}{Closeable\+Thread\+Local}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$ $\ast$}]{ctl,  }\item[{const T\+Y\+PE \&}]{object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a2a565539a30bc0a9cac563262989775f}\label{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a2a565539a30bc0a9cac563262989775f}} 
+\index{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}!Set@{Set}}
+\index{Set@{Set}!lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}
+\subsubsection{\texorpdfstring{Set()}{Set()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename C\+L\+A\+SS, typename T\+Y\+PE$>$ \\
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference}{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$\+::Set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocal}{Closeable\+Thread\+Local}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$ $\ast$}]{ctl,  }\item[{T\+Y\+PE \&\&}]{object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a1df112eff02d74eb49b69c548c197a5f}\label{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference_a1df112eff02d74eb49b69c548c197a5f}} 
+\index{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}!reference@{reference}}
+\index{reference@{reference}!lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference@{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}
+\subsubsection{\texorpdfstring{reference}{reference}}
+{\footnotesize\ttfamily template$<$typename C\+L\+A\+SS, typename T\+Y\+PE$>$ \\
+std\+::unordered\+\_\+map$<$size\+\_\+t, \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1ThreadLocalItemWrapper}{Thread\+Local\+Item\+Wrapper}}$<$T\+Y\+PE$>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference}{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local\+Reference}}$<$ C\+L\+A\+SS, T\+Y\+PE $>$\+::reference\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Util/\mbox{\hyperlink{Concurrency_8h}{Concurrency.\+h}}\end{DoxyCompactItemize}

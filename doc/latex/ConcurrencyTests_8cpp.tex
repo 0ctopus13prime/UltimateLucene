@@ -1,0 +1,76 @@
+\hypertarget{ConcurrencyTests_8cpp}{}\section{Util/tests/\+Concurrency\+Tests.cpp File Reference}
+\label{ConcurrencyTests_8cpp}\index{Util/tests/\+Concurrency\+Tests.\+cpp@{Util/tests/\+Concurrency\+Tests.\+cpp}}
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$Util/\+Concurrency.\+h$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$future$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classDummyClass}{Dummy\+Class}}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{ConcurrencyTests_8cpp_a88ebe80322857387bf9fd608ef64a998}{T\+E\+ST}} (C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS, Closeable\+Thread\+Local\+\_\+\+\_\+\+B\+A\+S\+IC)
+\item 
+void \mbox{\hyperlink{ConcurrencyTests_8cpp_ab4dfaa58b95e3afcad865aff93f58777}{Increase\+Number}} (std\+::string thread\+\_\+name, std\+::promise$<$ int $>$ \&\&promise)
+\item 
+\mbox{\hyperlink{ConcurrencyTests_8cpp_a7e53bdd3c1c5773c49088d1da3cfd27e}{T\+E\+ST}} (C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS, Closeable\+Thread\+Local\+\_\+\+\_\+\+P\+A\+R\+A\+L\+L\+EL)
+\item 
+\mbox{\hyperlink{ConcurrencyTests_8cpp_ac0c33bf2d87fdb856dfb230546f1b598}{T\+E\+ST}} (C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS, Closeable\+Thread\+Local\+\_\+\+\_\+\+E\+A\+CH)
+\item 
+\mbox{\hyperlink{ConcurrencyTests_8cpp_a0245ba9338e9fc0a9cf43d811227172c}{T\+E\+ST}} (C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS, Closeable\+Thread\+Local\+\_\+\+\_\+\+M\+O\+VE)
+\item 
+\mbox{\hyperlink{ConcurrencyTests_8cpp_ae17f88db185afab626c17b66ab5f650d}{T\+E\+ST}} (C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS, Closeable\+Thead\+Local\+\_\+\+\_\+\+C\+L\+E\+AN)
+\item 
+int \mbox{\hyperlink{ConcurrencyTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{ConcurrencyTests_8cpp_ab4dfaa58b95e3afcad865aff93f58777}\label{ConcurrencyTests_8cpp_ab4dfaa58b95e3afcad865aff93f58777}} 
+\index{Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}!Increase\+Number@{Increase\+Number}}
+\index{Increase\+Number@{Increase\+Number}!Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{Increase\+Number()}{IncreaseNumber()}}
+{\footnotesize\ttfamily void Increase\+Number (\begin{DoxyParamCaption}\item[{std\+::string}]{thread\+\_\+name,  }\item[{std\+::promise$<$ int $>$ \&\&}]{promise }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{ConcurrencyTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{ConcurrencyTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}!main@{main}}
+\index{main@{main}!Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{ConcurrencyTests_8cpp_a88ebe80322857387bf9fd608ef64a998}\label{ConcurrencyTests_8cpp_a88ebe80322857387bf9fd608ef64a998}} 
+\index{Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Closeable\+Thread\+Local\+\_\+\+\_\+\+B\+A\+S\+IC}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{ConcurrencyTests_8cpp_a7e53bdd3c1c5773c49088d1da3cfd27e}\label{ConcurrencyTests_8cpp_a7e53bdd3c1c5773c49088d1da3cfd27e}} 
+\index{Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Closeable\+Thread\+Local\+\_\+\+\_\+\+P\+A\+R\+A\+L\+L\+EL}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{ConcurrencyTests_8cpp_ac0c33bf2d87fdb856dfb230546f1b598}\label{ConcurrencyTests_8cpp_ac0c33bf2d87fdb856dfb230546f1b598}} 
+\index{Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Closeable\+Thread\+Local\+\_\+\+\_\+\+E\+A\+CH}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{ConcurrencyTests_8cpp_a0245ba9338e9fc0a9cf43d811227172c}\label{ConcurrencyTests_8cpp_a0245ba9338e9fc0a9cf43d811227172c}} 
+\index{Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Closeable\+Thread\+Local\+\_\+\+\_\+\+M\+O\+VE}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{ConcurrencyTests_8cpp_ae17f88db185afab626c17b66ab5f650d}\label{ConcurrencyTests_8cpp_ae17f88db185afab626c17b66ab5f650d}} 
+\index{Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Concurrency\+Tests.\+cpp@{Concurrency\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{C\+O\+N\+C\+U\+R\+R\+E\+N\+C\+Y\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{Closeable\+Thead\+Local\+\_\+\+\_\+\+C\+L\+E\+AN}]{ }\end{DoxyParamCaption})}
+

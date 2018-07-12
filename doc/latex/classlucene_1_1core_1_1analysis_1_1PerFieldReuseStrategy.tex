@@ -1,0 +1,81 @@
+\hypertarget{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy}{}\section{lucene\+:\+:core\+:\+:analysis\+:\+:Per\+Field\+Reuse\+Strategy Class Reference}
+\label{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy}\index{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}}
+
+
+{\ttfamily \#include $<$Analyzer.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:Per\+Field\+Reuse\+Strategy\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab2081194878f10803b28ff228db7327c}{Per\+Field\+Reuse\+Strategy}} ()
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab5af1cea75460e48364696c8a89bdbeb}{$\sim$\+Per\+Field\+Reuse\+Strategy}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab0d86155823842bb28e43bbbec7c06d3}{Get\+Reusable\+Components}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&analyzer, const std\+::string \&field\+\_\+name) override
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab23b95640469c639fd36ac888eeda1c3}{Set\+Reusable\+Components}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&analyzer, const std\+::string \&field\+\_\+name, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$components) override
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocal}{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local}}$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy}{Per\+Field\+Reuse\+Strategy}}, std\+::unordered\+\_\+map$<$ std\+::string, std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $>$ $>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_a641b5ee9fc538da0504ae9f13438d89e}{stored\+\_\+value}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab2081194878f10803b28ff228db7327c}\label{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab2081194878f10803b28ff228db7327c}} 
+\index{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}!Per\+Field\+Reuse\+Strategy@{Per\+Field\+Reuse\+Strategy}}
+\index{Per\+Field\+Reuse\+Strategy@{Per\+Field\+Reuse\+Strategy}!lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}}
+\subsubsection{\texorpdfstring{Per\+Field\+Reuse\+Strategy()}{PerFieldReuseStrategy()}}
+{\footnotesize\ttfamily Per\+Field\+Reuse\+Strategy\+::\+Per\+Field\+Reuse\+Strategy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy}{Per\+Field\+Reuse\+Strategy}} \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab5af1cea75460e48364696c8a89bdbeb}\label{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab5af1cea75460e48364696c8a89bdbeb}} 
+\index{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}!````~Per\+Field\+Reuse\+Strategy@{$\sim$\+Per\+Field\+Reuse\+Strategy}}
+\index{````~Per\+Field\+Reuse\+Strategy@{$\sim$\+Per\+Field\+Reuse\+Strategy}!lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}}
+\subsubsection{\texorpdfstring{$\sim$\+Per\+Field\+Reuse\+Strategy()}{~PerFieldReuseStrategy()}}
+{\footnotesize\ttfamily Per\+Field\+Reuse\+Strategy\+::$\sim$\+Per\+Field\+Reuse\+Strategy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab0d86155823842bb28e43bbbec7c06d3}\label{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab0d86155823842bb28e43bbbec7c06d3}} 
+\index{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}!Get\+Reusable\+Components@{Get\+Reusable\+Components}}
+\index{Get\+Reusable\+Components@{Get\+Reusable\+Components}!lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}}
+\subsubsection{\texorpdfstring{Get\+Reusable\+Components()}{GetReusableComponents()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$ Per\+Field\+Reuse\+Strategy\+::\+Get\+Reusable\+Components (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&}]{analyzer,  }\item[{const std\+::string \&}]{field\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy_ab180767950f392037e8ddf78c2f11f95}{lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab23b95640469c639fd36ac888eeda1c3}\label{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_ab23b95640469c639fd36ac888eeda1c3}} 
+\index{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}!Set\+Reusable\+Components@{Set\+Reusable\+Components}}
+\index{Set\+Reusable\+Components@{Set\+Reusable\+Components}!lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}}
+\subsubsection{\texorpdfstring{Set\+Reusable\+Components()}{SetReusableComponents()}}
+{\footnotesize\ttfamily void Per\+Field\+Reuse\+Strategy\+::\+Set\+Reusable\+Components (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&}]{analyzer,  }\item[{const std\+::string \&}]{field\+\_\+name,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$}]{components }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy_a78a1328d5564e78e2168169b73094b23}{lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_a641b5ee9fc538da0504ae9f13438d89e}\label{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy_a641b5ee9fc538da0504ae9f13438d89e}} 
+\index{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}!stored\+\_\+value@{stored\+\_\+value}}
+\index{stored\+\_\+value@{stored\+\_\+value}!lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy}}
+\subsubsection{\texorpdfstring{stored\+\_\+value}{stored\_value}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1CloseableThreadLocal}{lucene\+::core\+::util\+::\+Closeable\+Thread\+Local}}$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy}{Per\+Field\+Reuse\+Strategy}}, std\+::unordered\+\_\+map$<$std\+::string, std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}}$>$ $>$ $>$ lucene\+::core\+::analysis\+::\+Per\+Field\+Reuse\+Strategy\+::stored\+\_\+value\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Analysis/\mbox{\hyperlink{Analyzer_8h}{Analyzer.\+h}}\item 
+Analysis/\mbox{\hyperlink{Analyzer_8cpp}{Analyzer.\+cpp}}\end{DoxyCompactItemize}

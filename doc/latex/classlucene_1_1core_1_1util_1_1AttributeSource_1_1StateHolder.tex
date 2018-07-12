@@ -1,0 +1,99 @@
+\hypertarget{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder}{}\section{lucene\+:\+:core\+:\+:util\+:\+:Attribute\+Source\+:\+:State\+Holder Class Reference}
+\label{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder}\index{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}}
+
+
+{\ttfamily \#include $<$Attribute.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a7a10250b2097309a9c2a47d667b985e0}{State\+Holder}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a317bf081b0546b931a86dc092d8d9f00}{New\+State}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a8c24d6cc62226e191f2eea91f330a849}{Clear\+State}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{State}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_aff5a7f5ea72cc4bf7b74a74d5ced6259}{Get\+State}} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a093296ee1a32474162996d0b8f222994}{Reset\+State}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{State}} $\ast$state)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{State}} $\ast$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_ad7727b8b1f2305be0b68c4b39818037a}{state\+\_\+ptr}}
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::function$<$ void(\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{State}} $\ast$$\ast$)$>$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a80c499eff1fca9e1f1974065371c9d72}{S\+A\+F\+E\+\_\+\+D\+E\+L\+E\+T\+ER}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a7a10250b2097309a9c2a47d667b985e0}\label{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a7a10250b2097309a9c2a47d667b985e0}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}!State\+Holder@{State\+Holder}}
+\index{State\+Holder@{State\+Holder}!lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}}
+\subsubsection{\texorpdfstring{State\+Holder()}{StateHolder()}}
+{\footnotesize\ttfamily Attribute\+Source\+::\+State\+Holder\+::\+State\+Holder (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a8c24d6cc62226e191f2eea91f330a849}\label{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a8c24d6cc62226e191f2eea91f330a849}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}!Clear\+State@{Clear\+State}}
+\index{Clear\+State@{Clear\+State}!lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}}
+\subsubsection{\texorpdfstring{Clear\+State()}{ClearState()}}
+{\footnotesize\ttfamily void Attribute\+Source\+::\+State\+Holder\+::\+Clear\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_aff5a7f5ea72cc4bf7b74a74d5ced6259}\label{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_aff5a7f5ea72cc4bf7b74a74d5ced6259}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}!Get\+State@{Get\+State}}
+\index{Get\+State@{Get\+State}!lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}}
+\subsubsection{\texorpdfstring{Get\+State()}{GetState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{Attribute\+Source\+::\+State}} $\ast$ Attribute\+Source\+::\+State\+Holder\+::\+Get\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a317bf081b0546b931a86dc092d8d9f00}\label{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a317bf081b0546b931a86dc092d8d9f00}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}!New\+State@{New\+State}}
+\index{New\+State@{New\+State}!lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}}
+\subsubsection{\texorpdfstring{New\+State()}{NewState()}}
+{\footnotesize\ttfamily void Attribute\+Source\+::\+State\+Holder\+::\+New\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a093296ee1a32474162996d0b8f222994}\label{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a093296ee1a32474162996d0b8f222994}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}!Reset\+State@{Reset\+State}}
+\index{Reset\+State@{Reset\+State}!lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}}
+\subsubsection{\texorpdfstring{Reset\+State()}{ResetState()}}
+{\footnotesize\ttfamily void Attribute\+Source\+::\+State\+Holder\+::\+Reset\+State (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{State}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a80c499eff1fca9e1f1974065371c9d72}\label{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_a80c499eff1fca9e1f1974065371c9d72}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}!S\+A\+F\+E\+\_\+\+D\+E\+L\+E\+T\+ER@{S\+A\+F\+E\+\_\+\+D\+E\+L\+E\+T\+ER}}
+\index{S\+A\+F\+E\+\_\+\+D\+E\+L\+E\+T\+ER@{S\+A\+F\+E\+\_\+\+D\+E\+L\+E\+T\+ER}!lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}}
+\subsubsection{\texorpdfstring{S\+A\+F\+E\+\_\+\+D\+E\+L\+E\+T\+ER}{SAFE\_DELETER}}
+{\footnotesize\ttfamily std\+::function$<$ void(\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{Attribute\+Source\+::\+State}} $\ast$$\ast$)$>$ Attribute\+Source\+::\+State\+Holder\+::\+S\+A\+F\+E\+\_\+\+D\+E\+L\+E\+T\+ER\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\DoxyCodeLine{= [](State** \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_ad7727b8b1f2305be0b68c4b39818037a}{state\_ptr}})\{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (*\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_ad7727b8b1f2305be0b68c4b39818037a}{state\_ptr}} != \textcolor{keyword}{nullptr}) \{}
+\DoxyCodeLine{    \textcolor{keyword}{delete} *\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_ad7727b8b1f2305be0b68c4b39818037a}{state\_ptr}};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keyword}{delete} \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_ad7727b8b1f2305be0b68c4b39818037a}{state\_ptr}};}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder}{Attribute\+Source\+::\+State\+Holder}} \mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_ad7727b8b1f2305be0b68c4b39818037a}\label{classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder_ad7727b8b1f2305be0b68c4b39818037a}} 
+\index{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}!state\+\_\+ptr@{state\+\_\+ptr}}
+\index{state\+\_\+ptr@{state\+\_\+ptr}!lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder@{lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder}}
+\subsubsection{\texorpdfstring{state\+\_\+ptr}{state\_ptr}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeSource_1_1State}{State}}$\ast$$>$ lucene\+::core\+::util\+::\+Attribute\+Source\+::\+State\+Holder\+::state\+\_\+ptr\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Util/\mbox{\hyperlink{Util_2Attribute_8h}{Attribute.\+h}}\item 
+Util/\mbox{\hyperlink{Util_2Attribute_8cpp}{Attribute.\+cpp}}\end{DoxyCompactItemize}
