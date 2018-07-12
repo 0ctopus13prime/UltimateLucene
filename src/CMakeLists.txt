@@ -28,3 +28,4 @@ add_library(DoochiCore SHARED ${DoochiCore_headers} ${DoochiCore_sources})
 
 add_subdirectory(Analysis)
 add_subdirectory(Util)
+add_subdirectory(Document)
