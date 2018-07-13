@@ -77,6 +77,102 @@ class Version {
                           const uint8_t bugfix);
 };
 
+class Number {
+  private:
+    union NumberRepresentation {
+      int64_t int64_value;
+      double double_value;
+    } rprs;
+    bool is_integral;
+
+  public:
+    Number() { }
+
+    template <typename T>
+    explicit Number(T value) {
+      if (std::is_integral<T>()) {
+        rprs.int64_value = value;
+        is_integral = true;
+      } else {
+        rprs.double_value = value;
+        is_integral = false;
+      }
+    }
+
+    Number(const Number& other)
+      : rprs(other.rprs),
+        is_integral(other.is_integral) {
+    }
+
+    template <typename T>
+    Number& operator=(T value) noexcept {
+      if (std::is_integral<T>()) {
+        rprs.int64_value = value;
+        is_integral = true;
+      } else {
+        rprs.double_value = value;
+        is_integral = false;
+      }
+
+      return *this;
+    }
+
+    Number& operator=(const Number& other) noexcept {
+      rprs = other.rprs;
+      is_integral = other.is_integral;
+
+      return *this;
+    }
+
+    int8_t ByteValue() const noexcept {
+      if (is_integral) {
+        return static_cast<int8_t>(rprs.int64_value);
+      } else {
+        return static_cast<int8_t>(rprs.double_value);
+      }
+    }
+
+    int16_t ShortValue() const noexcept {
+      if (is_integral) {
+        return static_cast<int16_t>(rprs.int64_value);
+      } else {
+        return static_cast<int16_t>(rprs.double_value);
+      }
+    }
+
+    int32_t IntValue() const noexcept {
+      if (is_integral) {
+        return static_cast<int32_t>(rprs.int64_value);
+      } else {
+        return static_cast<int32_t>(rprs.double_value);
+      }
+    }
+
+    int64_t LongValue() const noexcept {
+      if (is_integral) {
+        return rprs.int64_value;
+      } else {
+        return static_cast<int64_t>(rprs.double_value);
+      }
+    }
+
+    float FloatValue() const noexcept {
+      if (is_integral) {
+        return static_cast<float>(rprs.int64_value);
+      } else {
+        return static_cast<float>(rprs.double_value);
+      }
+    }
+
+    double DoubleValue() const noexcept {
+      if (is_integral) {
+        return static_cast<double>(rprs.int64_value);
+      } else {
+        return rprs.double_value;
+      }
+    }
+};
+
 }  // namespace etc
 }  // namespace util
 }  // namespace core

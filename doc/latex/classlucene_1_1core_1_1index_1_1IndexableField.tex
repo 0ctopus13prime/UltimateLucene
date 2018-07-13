@@ -1,0 +1,118 @@
+\hypertarget{classlucene_1_1core_1_1index_1_1IndexableField}{}\section{lucene\+:\+:core\+:\+:index\+:\+:Indexable\+Field Class Reference}
+\label{classlucene_1_1core_1_1index_1_1IndexableField}\index{lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}}
+
+
+{\ttfamily \#include $<$Field.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:index\+:\+:Indexable\+Field\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1index_1_1IndexableField}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableField_ab396dd630f47c4671bc47788ae19175b}{$\sim$\+Indexable\+Field}} ()
+\item 
+virtual const std\+::string \& \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableField_a3eddf99b22a00458195e80429fa5ca82}{Name}} ()=0
+\item 
+virtual const \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType}{Indexable\+Field\+Type}} \& \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableField_a008a8b0a96618b1600ad2b44e9357451}{Field\+Type}} ()=0
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{lucene\+::core\+::analysis\+::\+Token\+Stream}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableField_a9df5c2708bdb7936a7e070ee9866ee27}{Get\+Token\+Stream}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{lucene\+::core\+::analysis\+::\+Analyzer}} \&analyzer, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{lucene\+::core\+::analysis\+::\+Token\+Stream}} \&reuse)=0
+\item 
+virtual std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} $>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableField_a77b0b5e4f1ae25eaaab3d9f13b9204cb}{Binary\+Value}} ()=0
+\item 
+virtual std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ std\+::string $>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableField_ac06f4371ff3011ab247a07e219f43223}{String\+Value}} ()=0
+\item 
+virtual std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{lucene\+::core\+::analysis\+::\+Reader}} $>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableField_a5d1bcc66e1f03e2ce8c328302a735486}{Reader\+Value}} ()=0
+\item 
+virtual std\+::optional$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1etc_1_1Number}{lucene\+::core\+::util\+::etc\+::\+Number}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableField_ad57489328069fd1e227a0b1489159b85}{Numeric\+Value}} ()=0
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1index_1_1IndexableField_ab396dd630f47c4671bc47788ae19175b}\label{classlucene_1_1core_1_1index_1_1IndexableField_ab396dd630f47c4671bc47788ae19175b}} 
+\index{lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}!````~Indexable\+Field@{$\sim$\+Indexable\+Field}}
+\index{````~Indexable\+Field@{$\sim$\+Indexable\+Field}!lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}}
+\subsubsection{\texorpdfstring{$\sim$\+Indexable\+Field()}{~IndexableField()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::index\+::\+Indexable\+Field\+::$\sim$\+Indexable\+Field (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1index_1_1IndexableField_a77b0b5e4f1ae25eaaab3d9f13b9204cb}\label{classlucene_1_1core_1_1index_1_1IndexableField_a77b0b5e4f1ae25eaaab3d9f13b9204cb}} 
+\index{lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}!Binary\+Value@{Binary\+Value}}
+\index{Binary\+Value@{Binary\+Value}!lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}}
+\subsubsection{\texorpdfstring{Binary\+Value()}{BinaryValue()}}
+{\footnotesize\ttfamily virtual std\+::optional$<$std\+::reference\+\_\+wrapper$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}}$>$ $>$ lucene\+::core\+::index\+::\+Indexable\+Field\+::\+Binary\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a5415bfa7681238c59d6e0acb2da13bd4}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1index_1_1IndexableField_a008a8b0a96618b1600ad2b44e9357451}\label{classlucene_1_1core_1_1index_1_1IndexableField_a008a8b0a96618b1600ad2b44e9357451}} 
+\index{lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}!Field\+Type@{Field\+Type}}
+\index{Field\+Type@{Field\+Type}!lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}}
+\subsubsection{\texorpdfstring{Field\+Type()}{FieldType()}}
+{\footnotesize\ttfamily virtual const \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType}{Indexable\+Field\+Type}}\& lucene\+::core\+::index\+::\+Indexable\+Field\+::\+Field\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_ab6ffe62bb06b157049af54cd2b674007}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1index_1_1IndexableField_a9df5c2708bdb7936a7e070ee9866ee27}\label{classlucene_1_1core_1_1index_1_1IndexableField_a9df5c2708bdb7936a7e070ee9866ee27}} 
+\index{lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}!Get\+Token\+Stream@{Get\+Token\+Stream}}
+\index{Get\+Token\+Stream@{Get\+Token\+Stream}!lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}}
+\subsubsection{\texorpdfstring{Get\+Token\+Stream()}{GetTokenStream()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{lucene\+::core\+::analysis\+::\+Token\+Stream}}$\ast$ lucene\+::core\+::index\+::\+Indexable\+Field\+::\+Get\+Token\+Stream (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{lucene\+::core\+::analysis\+::\+Analyzer}} \&}]{analyzer,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream}{lucene\+::core\+::analysis\+::\+Token\+Stream}} \&}]{reuse }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_aa3d6b7ab7cb42820491c036872190317}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1index_1_1IndexableField_a3eddf99b22a00458195e80429fa5ca82}\label{classlucene_1_1core_1_1index_1_1IndexableField_a3eddf99b22a00458195e80429fa5ca82}} 
+\index{lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}!Name@{Name}}
+\index{Name@{Name}!lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}}
+\subsubsection{\texorpdfstring{Name()}{Name()}}
+{\footnotesize\ttfamily virtual const std\+::string\& lucene\+::core\+::index\+::\+Indexable\+Field\+::\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_aec97d60c8348878b7fbaed0be2e3c023}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1index_1_1IndexableField_ad57489328069fd1e227a0b1489159b85}\label{classlucene_1_1core_1_1index_1_1IndexableField_ad57489328069fd1e227a0b1489159b85}} 
+\index{lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}!Numeric\+Value@{Numeric\+Value}}
+\index{Numeric\+Value@{Numeric\+Value}!lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}}
+\subsubsection{\texorpdfstring{Numeric\+Value()}{NumericValue()}}
+{\footnotesize\ttfamily virtual std\+::optional$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1etc_1_1Number}{lucene\+::core\+::util\+::etc\+::\+Number}}$>$ lucene\+::core\+::index\+::\+Indexable\+Field\+::\+Numeric\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_af119306e6d6bf072d815f0f317dd287e}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1index_1_1IndexableField_a5d1bcc66e1f03e2ce8c328302a735486}\label{classlucene_1_1core_1_1index_1_1IndexableField_a5d1bcc66e1f03e2ce8c328302a735486}} 
+\index{lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}!Reader\+Value@{Reader\+Value}}
+\index{Reader\+Value@{Reader\+Value}!lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}}
+\subsubsection{\texorpdfstring{Reader\+Value()}{ReaderValue()}}
+{\footnotesize\ttfamily virtual std\+::optional$<$std\+::reference\+\_\+wrapper$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader}{lucene\+::core\+::analysis\+::\+Reader}}$>$ $>$ lucene\+::core\+::index\+::\+Indexable\+Field\+::\+Reader\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a00a928f1bbae6e9d0e6fe1b3af302160}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1index_1_1IndexableField_ac06f4371ff3011ab247a07e219f43223}\label{classlucene_1_1core_1_1index_1_1IndexableField_ac06f4371ff3011ab247a07e219f43223}} 
+\index{lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}!String\+Value@{String\+Value}}
+\index{String\+Value@{String\+Value}!lucene\+::core\+::index\+::\+Indexable\+Field@{lucene\+::core\+::index\+::\+Indexable\+Field}}
+\subsubsection{\texorpdfstring{String\+Value()}{StringValue()}}
+{\footnotesize\ttfamily virtual std\+::optional$<$std\+::reference\+\_\+wrapper$<$std\+::string$>$ $>$ lucene\+::core\+::index\+::\+Indexable\+Field\+::\+String\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a9eaf712354f0a787e45d4f41b17aeae8}{lucene\+::core\+::document\+::\+Field}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Index/\mbox{\hyperlink{Index_2Field_8h}{Field.\+h}}\end{DoxyCompactItemize}

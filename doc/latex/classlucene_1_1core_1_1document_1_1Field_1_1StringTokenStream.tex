@@ -1,0 +1,145 @@
+\hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream}{}\section{lucene\+:\+:core\+:\+:document\+:\+:Field\+:\+:String\+Token\+Stream Class Reference}
+\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream}\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+
+
+{\ttfamily \#include $<$Field.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:document\+:\+:Field\+:\+:String\+Token\+Stream\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_afccecc9c42efd7a2f877f1603dc6fe24}{String\+Token\+Stream}} ()
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a6331ec9abcbb378340d8d3b529984877}{$\sim$\+String\+Token\+Stream}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a0727fbba4424072d259632cb89b74d35}{Set\+Value}} (const std\+::string \&new\+\_\+value)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a34c53a9c739f3ceba09c86b1fd66285f}{Set\+Value}} (std\+::string \&\&new\+\_\+value)
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a161893ca5de24e392426fea5999334fb}{Increment\+Token}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_acbadfa77de855b030af35f1206231525}{End}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_ac0073673de4b2eb307408d1aee40625c}{Reset}} () noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_acbf15ee849ed8055143c77b96f116cf0}{Close}} () noexcept
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_aabbaa8158852b07018168503d8256738}{term\+\_\+attr}}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttribute}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Offset\+Attribute}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a551065a875bdfd07f13d7af976bb0978}{offset\+\_\+attr}}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a52dfe7dde7eebff97018a9ef2e80a460}{used}}
+\item 
+std\+::string \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_aca92e020d7ef40f5515d0d5f1a994700}{value}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_afccecc9c42efd7a2f877f1603dc6fe24}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_afccecc9c42efd7a2f877f1603dc6fe24}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!String\+Token\+Stream@{String\+Token\+Stream}}
+\index{String\+Token\+Stream@{String\+Token\+Stream}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{String\+Token\+Stream()}{StringTokenStream()}}
+{\footnotesize\ttfamily lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::\+String\+Token\+Stream (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a6331ec9abcbb378340d8d3b529984877}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a6331ec9abcbb378340d8d3b529984877}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!````~String\+Token\+Stream@{$\sim$\+String\+Token\+Stream}}
+\index{````~String\+Token\+Stream@{$\sim$\+String\+Token\+Stream}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{$\sim$\+String\+Token\+Stream()}{~StringTokenStream()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::$\sim$\+String\+Token\+Stream (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_acbf15ee849ed8055143c77b96f116cf0}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_acbf15ee849ed8055143c77b96f116cf0}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!Close@{Close}}
+\index{Close@{Close}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_ad7963391ddbb2c75610e3738ba5155c8}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_acbadfa77de855b030af35f1206231525}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_acbadfa77de855b030af35f1206231525}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!End@{End}}
+\index{End@{End}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{End()}{End()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::\+End (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_a4693985ca7fb242412049a074027b8b5}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a161893ca5de24e392426fea5999334fb}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a161893ca5de24e392426fea5999334fb}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!Increment\+Token@{Increment\+Token}}
+\index{Increment\+Token@{Increment\+Token}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{Increment\+Token()}{IncrementToken()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::\+Increment\+Token (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_a614d4ea24a354d6f4354b4941b5124e2}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_ac0073673de4b2eb307408d1aee40625c}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_ac0073673de4b2eb307408d1aee40625c}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!Reset@{Reset}}
+\index{Reset@{Reset}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStream_ae24622f4bc0aeaf0bef924ff1661e023}{lucene\+::core\+::analysis\+::\+Token\+Stream}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a0727fbba4424072d259632cb89b74d35}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a0727fbba4424072d259632cb89b74d35}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!Set\+Value@{Set\+Value}}
+\index{Set\+Value@{Set\+Value}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{Set\+Value()}{SetValue()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::\+Set\+Value (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{new\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a34c53a9c739f3ceba09c86b1fd66285f}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a34c53a9c739f3ceba09c86b1fd66285f}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!Set\+Value@{Set\+Value}}
+\index{Set\+Value@{Set\+Value}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{Set\+Value()}{SetValue()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::\+Set\+Value (\begin{DoxyParamCaption}\item[{std\+::string \&\&}]{new\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a551065a875bdfd07f13d7af976bb0978}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a551065a875bdfd07f13d7af976bb0978}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!offset\+\_\+attr@{offset\+\_\+attr}}
+\index{offset\+\_\+attr@{offset\+\_\+attr}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{offset\+\_\+attr}{offset\_attr}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1OffsetAttribute}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Offset\+Attribute}}$>$ lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::offset\+\_\+attr\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_aabbaa8158852b07018168503d8256738}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_aabbaa8158852b07018168503d8256738}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!term\+\_\+attr@{term\+\_\+attr}}
+\index{term\+\_\+attr@{term\+\_\+attr}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{term\+\_\+attr}{term\_attr}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute}}$>$ lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::term\+\_\+attr\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a52dfe7dde7eebff97018a9ef2e80a460}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_a52dfe7dde7eebff97018a9ef2e80a460}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!used@{used}}
+\index{used@{used}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{used}{used}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::used\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_aca92e020d7ef40f5515d0d5f1a994700}\label{classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream_aca92e020d7ef40f5515d0d5f1a994700}} 
+\index{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}!value@{value}}
+\index{value@{value}!lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream@{lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream}}
+\subsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily std\+::string lucene\+::core\+::document\+::\+Field\+::\+String\+Token\+Stream\+::value\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Document/\mbox{\hyperlink{Document_2Field_8h}{Field.\+h}}\end{DoxyCompactItemize}

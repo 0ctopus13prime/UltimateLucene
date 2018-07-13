@@ -50,6 +50,12 @@ BytesRef::BytesRef(const BytesRef& source)
 
 BytesRef::BytesRef(const char* new_bytes,
                    const uint32_t new_offset,
+                   const uint32_t new_length)
+  : BytesRef(new_bytes, new_offset, new_length, new_length) {
+}
+
+BytesRef::BytesRef(const char* new_bytes,
+                   const uint32_t new_offset,
                    const uint32_t new_length,
                    const uint32_t new_capacity) {
   offset = new_offset;

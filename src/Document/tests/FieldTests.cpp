@@ -15,28 +15,29 @@
  *
  */
 
-#ifndef SRC_DOCUMENT_INDEXABLEFIELD_H_
-#define SRC_DOCUMENT_INDEXABLEFIELD_H_
-
+#include <Analysis/Reader.h>
+#include <Document/Field.h>
+#include <gtest/gtest.h>
+#include <iostream>
 #include <string>
 
-namespace lucene {
-namespace core {
-namespace document {
+using lucene::core::analysis::StringReader;
+using lucene::core::document::Field;
+using lucene::core::document::FieldType;
 
-class IndexableField {
- public:
-  virtual const string& name() = 0;
-  virtual IndexableFieldType& fieldType() = 0;
-  virtual TokenStream& tokenStream(Analyzer& analyzer, TokenStream& reuse) = 0;
-  virtual BytesRef& binaryValue() = 0;
-  virtual string& stringValue() = 0;
-  virtual Reader& readerValue() = 0;
-  virtual Number numericValue() = 0;
-};
+TEST(FIELD__TESTS, BASIC__TEST) {
+  StringReader* reader = new StringReader(); 
+  std::string value("xxxxxxxx");
+  reader->SetValue(value);
+  std::string name("kkk");
+  FieldType type;
 
-}  // namespace document
-}  // namespace core
-}  // namespace lucene
+  // Field field(name, reader, type);
+  const char buf[] = "asdfasdf";
+  Field field(name, buf, sizeof(buf), type);
+}
 
-#endif  // SRC_DOCUMENT_INDEXABLEFIELD_H_
+int main(int argc, char* argv[]) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

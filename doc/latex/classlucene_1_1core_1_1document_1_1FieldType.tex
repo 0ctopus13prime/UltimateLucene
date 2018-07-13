@@ -1,0 +1,356 @@
+\hypertarget{classlucene_1_1core_1_1document_1_1FieldType}{}\section{lucene\+:\+:core\+:\+:document\+:\+:Field\+Type Class Reference}
+\label{classlucene_1_1core_1_1document_1_1FieldType}\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+
+
+{\ttfamily \#include $<$Field.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:document\+:\+:Field\+Type\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1document_1_1FieldType}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a8e7a413c31bb8225b7fef2acc596ee30}{Field\+Type}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a6dc48b19b7db06668283b220b6dee364}{Field\+Type}} (\mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}} \&ref)
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a602c3c4d7c55e3d4e29c68876b822ceb}{$\sim$\+Field\+Type}} ()
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a7f3538d7e8046e64fda651af0c368292}{Stored}} () const noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a90ff0100378b168a5adeff9515f911f7}{Set\+Stored}} (const bool value) noexcept
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_ad46702a08ecdf7c0138bc950865f074c}{Tokenized}} () const noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a47fba625f69a19d9cce15e382fef0614}{Set\+Tokenized}} (const bool value) noexcept
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a435252ecad335aa118a4af5349342d0b}{Store\+Term\+Vectors}} () const
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_ad6291f33c009a52c6f51ac86d23d65bc}{Set\+Store\+Term\+Vectors}} (const bool value) noexcept
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a4a1396db204e1f64194b6628662ba6d5}{Store\+Term\+Vector\+Offsets}} () const noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_ab4bed951e0425edea547a45c1c442aa9}{Set\+Store\+Term\+Vector\+Offsets}} (const bool value) noexcept
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a72efd28a7f75bff7751e34edd7688c99}{Store\+Term\+Vector\+Positions}} () const noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_aaefba2c5e643161bbaeaa297ea1121fa}{Set\+Store\+Term\+Vector\+Positions}} (const bool value) noexcept
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_aba23cb0e0fc850b1958c9fbd1997c1a9}{Store\+Term\+Vector\+Payloads}} () const noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a57615db669cf727ed97701df05df6e84}{Set\+Store\+Term\+Vector\+Payloads}} (const bool value) noexcept
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_adf65107f5dfea8171b284e14bc7344f5}{Omit\+Norms}} () const noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_ad1a9c9763e28363d3acd146a0fdd8e07}{Set\+Omit\+Norms}} (const bool value) noexcept
+\item 
+\mbox{\hyperlink{namespacelucene_1_1core_1_1index_a0d5e1f98471a76de106056cf3b5a7897}{lucene\+::core\+::index\+::\+Index\+Options}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_ae51c6c54d9992fbe3102715ff94778ec}{Get\+Index\+Options}} () const noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a915acc2ea4cb0ca7edce3f629d83158e}{Set\+Index\+Options}} (const \mbox{\hyperlink{namespacelucene_1_1core_1_1index_a0d5e1f98471a76de106056cf3b5a7897}{lucene\+::core\+::index\+::\+Index\+Options}} value) noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a17e71a728e6e6ec2271ec9a2f4fc7398}{Set\+Dimensions}} (const uint32\+\_\+t new\+\_\+dimension\+\_\+count, const uint32\+\_\+t new\+\_\+dimension\+\_\+num\+\_\+bytes) noexcept
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_ad9774147fe3ca9abf5f66870e4083363}{Point\+Dimension\+Count}} () const noexcept
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_af4b18f524ccaa560b6ba667f153c5880}{Point\+Num\+Bytes}} () const noexcept
+\item 
+\mbox{\hyperlink{namespacelucene_1_1core_1_1index_a2f7ffaef6429b5df542c8aa12f8b9883}{lucene\+::core\+::index\+::\+Doc\+Values\+Type}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_ac5b53a2d9ebbb926199f9e2f58dc0537}{Get\+Doc\+Values\+Type}} () const noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a703c8ceafd844b1e36d0e0a907465bc5}{Set\+Doc\+Values\+Type}} (const \mbox{\hyperlink{namespacelucene_1_1core_1_1index_a2f7ffaef6429b5df542c8aa12f8b9883}{lucene\+::core\+::index\+::\+Doc\+Values\+Type}} type) noexcept
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a56b81575dbaea749036201c379034cc8}{stored}}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_abe04c4af1aafbe73f3e1a0333f08cfd8}{tokenized}}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_af8c77a78e7e5749cbff0044ad5bc94b1}{store\+\_\+term\+\_\+vectors}}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a8aae5a6917e9d3d02c00966df5169504}{store\+\_\+term\+\_\+vector\+\_\+offsets}}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a0c763a29f6d5b3c9b29b585935332f90}{store\+\_\+term\+\_\+vector\+\_\+positions}}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a7e6c868f2767a9045f55239448eb56fa}{store\+\_\+term\+\_\+vector\+\_\+payloads}}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a608b14ab36f164f6fc88fc47401dfdd8}{omit\+\_\+norms}}
+\item 
+\mbox{\hyperlink{namespacelucene_1_1core_1_1index_a0d5e1f98471a76de106056cf3b5a7897}{lucene\+::core\+::index\+::\+Index\+Options}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_ace77c2df2db83441226f4c72e7455910}{index\+\_\+options}}
+\item 
+\mbox{\hyperlink{namespacelucene_1_1core_1_1index_a2f7ffaef6429b5df542c8aa12f8b9883}{lucene\+::core\+::index\+::\+Doc\+Values\+Type}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_ac90952580a0964ee3ca3c9a8c6fe65a9}{doc\+\_\+values\+\_\+type}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a86df8398e9e9765cda2d2e48c2ec8cce}{dimension\+\_\+count}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType_a66764229077763f23d13537795f7efe3}{dimension\+\_\+num\+\_\+bytes}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a8e7a413c31bb8225b7fef2acc596ee30}\label{classlucene_1_1core_1_1document_1_1FieldType_a8e7a413c31bb8225b7fef2acc596ee30}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Field\+Type@{Field\+Type}}
+\index{Field\+Type@{Field\+Type}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Field\+Type()}{FieldType()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily lucene\+::core\+::document\+::\+Field\+Type\+::\+Field\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a6dc48b19b7db06668283b220b6dee364}\label{classlucene_1_1core_1_1document_1_1FieldType_a6dc48b19b7db06668283b220b6dee364}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Field\+Type@{Field\+Type}}
+\index{Field\+Type@{Field\+Type}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Field\+Type()}{FieldType()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily lucene\+::core\+::document\+::\+Field\+Type\+::\+Field\+Type (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}} \&}]{ref }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a602c3c4d7c55e3d4e29c68876b822ceb}\label{classlucene_1_1core_1_1document_1_1FieldType_a602c3c4d7c55e3d4e29c68876b822ceb}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!````~Field\+Type@{$\sim$\+Field\+Type}}
+\index{````~Field\+Type@{$\sim$\+Field\+Type}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{$\sim$\+Field\+Type()}{~FieldType()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::document\+::\+Field\+Type\+::$\sim$\+Field\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_ac5b53a2d9ebbb926199f9e2f58dc0537}\label{classlucene_1_1core_1_1document_1_1FieldType_ac5b53a2d9ebbb926199f9e2f58dc0537}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Get\+Doc\+Values\+Type@{Get\+Doc\+Values\+Type}}
+\index{Get\+Doc\+Values\+Type@{Get\+Doc\+Values\+Type}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Get\+Doc\+Values\+Type()}{GetDocValuesType()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacelucene_1_1core_1_1index_a2f7ffaef6429b5df542c8aa12f8b9883}{lucene\+::core\+::index\+::\+Doc\+Values\+Type}} lucene\+::core\+::document\+::\+Field\+Type\+::\+Get\+Doc\+Values\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_a3caeba48e5779f266829e82b9d45e996}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_ae51c6c54d9992fbe3102715ff94778ec}\label{classlucene_1_1core_1_1document_1_1FieldType_ae51c6c54d9992fbe3102715ff94778ec}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Get\+Index\+Options@{Get\+Index\+Options}}
+\index{Get\+Index\+Options@{Get\+Index\+Options}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Get\+Index\+Options()}{GetIndexOptions()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacelucene_1_1core_1_1index_a0d5e1f98471a76de106056cf3b5a7897}{lucene\+::core\+::index\+::\+Index\+Options}} lucene\+::core\+::document\+::\+Field\+Type\+::\+Get\+Index\+Options (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_afe678be1fafcb17c6142fc662ee793e4}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_adf65107f5dfea8171b284e14bc7344f5}\label{classlucene_1_1core_1_1document_1_1FieldType_adf65107f5dfea8171b284e14bc7344f5}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Omit\+Norms@{Omit\+Norms}}
+\index{Omit\+Norms@{Omit\+Norms}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Omit\+Norms()}{OmitNorms()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::\+Omit\+Norms (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_afc45bc2031d22fc941ea89b1ba881526}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_ad9774147fe3ca9abf5f66870e4083363}\label{classlucene_1_1core_1_1document_1_1FieldType_ad9774147fe3ca9abf5f66870e4083363}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Point\+Dimension\+Count@{Point\+Dimension\+Count}}
+\index{Point\+Dimension\+Count@{Point\+Dimension\+Count}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Point\+Dimension\+Count()}{PointDimensionCount()}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::document\+::\+Field\+Type\+::\+Point\+Dimension\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_a14e8fab7ab6c22ed05a9049767b88e4b}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_af4b18f524ccaa560b6ba667f153c5880}\label{classlucene_1_1core_1_1document_1_1FieldType_af4b18f524ccaa560b6ba667f153c5880}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Point\+Num\+Bytes@{Point\+Num\+Bytes}}
+\index{Point\+Num\+Bytes@{Point\+Num\+Bytes}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Point\+Num\+Bytes()}{PointNumBytes()}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::document\+::\+Field\+Type\+::\+Point\+Num\+Bytes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_aaf9f4d10246fa5e7b0265d11774883ef}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a17e71a728e6e6ec2271ec9a2f4fc7398}\label{classlucene_1_1core_1_1document_1_1FieldType_a17e71a728e6e6ec2271ec9a2f4fc7398}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Dimensions@{Set\+Dimensions}}
+\index{Set\+Dimensions@{Set\+Dimensions}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Dimensions()}{SetDimensions()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Dimensions (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{new\+\_\+dimension\+\_\+count,  }\item[{const uint32\+\_\+t}]{new\+\_\+dimension\+\_\+num\+\_\+bytes }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a703c8ceafd844b1e36d0e0a907465bc5}\label{classlucene_1_1core_1_1document_1_1FieldType_a703c8ceafd844b1e36d0e0a907465bc5}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Doc\+Values\+Type@{Set\+Doc\+Values\+Type}}
+\index{Set\+Doc\+Values\+Type@{Set\+Doc\+Values\+Type}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Doc\+Values\+Type()}{SetDocValuesType()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Doc\+Values\+Type (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacelucene_1_1core_1_1index_a2f7ffaef6429b5df542c8aa12f8b9883}{lucene\+::core\+::index\+::\+Doc\+Values\+Type}}}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a915acc2ea4cb0ca7edce3f629d83158e}\label{classlucene_1_1core_1_1document_1_1FieldType_a915acc2ea4cb0ca7edce3f629d83158e}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Index\+Options@{Set\+Index\+Options}}
+\index{Set\+Index\+Options@{Set\+Index\+Options}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Index\+Options()}{SetIndexOptions()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Index\+Options (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacelucene_1_1core_1_1index_a0d5e1f98471a76de106056cf3b5a7897}{lucene\+::core\+::index\+::\+Index\+Options}}}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_ad1a9c9763e28363d3acd146a0fdd8e07}\label{classlucene_1_1core_1_1document_1_1FieldType_ad1a9c9763e28363d3acd146a0fdd8e07}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Omit\+Norms@{Set\+Omit\+Norms}}
+\index{Set\+Omit\+Norms@{Set\+Omit\+Norms}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Omit\+Norms()}{SetOmitNorms()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Omit\+Norms (\begin{DoxyParamCaption}\item[{const bool}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a90ff0100378b168a5adeff9515f911f7}\label{classlucene_1_1core_1_1document_1_1FieldType_a90ff0100378b168a5adeff9515f911f7}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Stored@{Set\+Stored}}
+\index{Set\+Stored@{Set\+Stored}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Stored()}{SetStored()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Stored (\begin{DoxyParamCaption}\item[{const bool}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_ab4bed951e0425edea547a45c1c442aa9}\label{classlucene_1_1core_1_1document_1_1FieldType_ab4bed951e0425edea547a45c1c442aa9}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Store\+Term\+Vector\+Offsets@{Set\+Store\+Term\+Vector\+Offsets}}
+\index{Set\+Store\+Term\+Vector\+Offsets@{Set\+Store\+Term\+Vector\+Offsets}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Store\+Term\+Vector\+Offsets()}{SetStoreTermVectorOffsets()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Store\+Term\+Vector\+Offsets (\begin{DoxyParamCaption}\item[{const bool}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a57615db669cf727ed97701df05df6e84}\label{classlucene_1_1core_1_1document_1_1FieldType_a57615db669cf727ed97701df05df6e84}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Store\+Term\+Vector\+Payloads@{Set\+Store\+Term\+Vector\+Payloads}}
+\index{Set\+Store\+Term\+Vector\+Payloads@{Set\+Store\+Term\+Vector\+Payloads}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Store\+Term\+Vector\+Payloads()}{SetStoreTermVectorPayloads()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Store\+Term\+Vector\+Payloads (\begin{DoxyParamCaption}\item[{const bool}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_aaefba2c5e643161bbaeaa297ea1121fa}\label{classlucene_1_1core_1_1document_1_1FieldType_aaefba2c5e643161bbaeaa297ea1121fa}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Store\+Term\+Vector\+Positions@{Set\+Store\+Term\+Vector\+Positions}}
+\index{Set\+Store\+Term\+Vector\+Positions@{Set\+Store\+Term\+Vector\+Positions}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Store\+Term\+Vector\+Positions()}{SetStoreTermVectorPositions()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Store\+Term\+Vector\+Positions (\begin{DoxyParamCaption}\item[{const bool}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_ad6291f33c009a52c6f51ac86d23d65bc}\label{classlucene_1_1core_1_1document_1_1FieldType_ad6291f33c009a52c6f51ac86d23d65bc}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Store\+Term\+Vectors@{Set\+Store\+Term\+Vectors}}
+\index{Set\+Store\+Term\+Vectors@{Set\+Store\+Term\+Vectors}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Store\+Term\+Vectors()}{SetStoreTermVectors()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Store\+Term\+Vectors (\begin{DoxyParamCaption}\item[{const bool}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a47fba625f69a19d9cce15e382fef0614}\label{classlucene_1_1core_1_1document_1_1FieldType_a47fba625f69a19d9cce15e382fef0614}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Set\+Tokenized@{Set\+Tokenized}}
+\index{Set\+Tokenized@{Set\+Tokenized}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Set\+Tokenized()}{SetTokenized()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Field\+Type\+::\+Set\+Tokenized (\begin{DoxyParamCaption}\item[{const bool}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a7f3538d7e8046e64fda651af0c368292}\label{classlucene_1_1core_1_1document_1_1FieldType_a7f3538d7e8046e64fda651af0c368292}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Stored@{Stored}}
+\index{Stored@{Stored}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Stored()}{Stored()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::\+Stored (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_a0f394bc94f0920220a59214e52c0e9ef}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a4a1396db204e1f64194b6628662ba6d5}\label{classlucene_1_1core_1_1document_1_1FieldType_a4a1396db204e1f64194b6628662ba6d5}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Store\+Term\+Vector\+Offsets@{Store\+Term\+Vector\+Offsets}}
+\index{Store\+Term\+Vector\+Offsets@{Store\+Term\+Vector\+Offsets}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Store\+Term\+Vector\+Offsets()}{StoreTermVectorOffsets()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::\+Store\+Term\+Vector\+Offsets (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_a2e9b5d67129a715da34e642a74690099}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_aba23cb0e0fc850b1958c9fbd1997c1a9}\label{classlucene_1_1core_1_1document_1_1FieldType_aba23cb0e0fc850b1958c9fbd1997c1a9}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Store\+Term\+Vector\+Payloads@{Store\+Term\+Vector\+Payloads}}
+\index{Store\+Term\+Vector\+Payloads@{Store\+Term\+Vector\+Payloads}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Store\+Term\+Vector\+Payloads()}{StoreTermVectorPayloads()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::\+Store\+Term\+Vector\+Payloads (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_ab286c5d9995b85a8b0a45d3d0e49d905}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a72efd28a7f75bff7751e34edd7688c99}\label{classlucene_1_1core_1_1document_1_1FieldType_a72efd28a7f75bff7751e34edd7688c99}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Store\+Term\+Vector\+Positions@{Store\+Term\+Vector\+Positions}}
+\index{Store\+Term\+Vector\+Positions@{Store\+Term\+Vector\+Positions}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Store\+Term\+Vector\+Positions()}{StoreTermVectorPositions()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::\+Store\+Term\+Vector\+Positions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_aad7c41e8fcf68b958dabb383525c1897}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a435252ecad335aa118a4af5349342d0b}\label{classlucene_1_1core_1_1document_1_1FieldType_a435252ecad335aa118a4af5349342d0b}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Store\+Term\+Vectors@{Store\+Term\+Vectors}}
+\index{Store\+Term\+Vectors@{Store\+Term\+Vectors}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Store\+Term\+Vectors()}{StoreTermVectors()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::\+Store\+Term\+Vectors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_a21794361c1b7739d8cb8e11a39e23970}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_ad46702a08ecdf7c0138bc950865f074c}\label{classlucene_1_1core_1_1document_1_1FieldType_ad46702a08ecdf7c0138bc950865f074c}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!Tokenized@{Tokenized}}
+\index{Tokenized@{Tokenized}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{Tokenized()}{Tokenized()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::\+Tokenized (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1index_1_1IndexableFieldType_a107c742e5d273bbf4d1b36da7509c9ad}{lucene\+::core\+::index\+::\+Indexable\+Field\+Type}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a86df8398e9e9765cda2d2e48c2ec8cce}\label{classlucene_1_1core_1_1document_1_1FieldType_a86df8398e9e9765cda2d2e48c2ec8cce}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!dimension\+\_\+count@{dimension\+\_\+count}}
+\index{dimension\+\_\+count@{dimension\+\_\+count}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{dimension\+\_\+count}{dimension\_count}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::document\+::\+Field\+Type\+::dimension\+\_\+count\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a66764229077763f23d13537795f7efe3}\label{classlucene_1_1core_1_1document_1_1FieldType_a66764229077763f23d13537795f7efe3}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!dimension\+\_\+num\+\_\+bytes@{dimension\+\_\+num\+\_\+bytes}}
+\index{dimension\+\_\+num\+\_\+bytes@{dimension\+\_\+num\+\_\+bytes}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{dimension\+\_\+num\+\_\+bytes}{dimension\_num\_bytes}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::document\+::\+Field\+Type\+::dimension\+\_\+num\+\_\+bytes\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_ac90952580a0964ee3ca3c9a8c6fe65a9}\label{classlucene_1_1core_1_1document_1_1FieldType_ac90952580a0964ee3ca3c9a8c6fe65a9}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!doc\+\_\+values\+\_\+type@{doc\+\_\+values\+\_\+type}}
+\index{doc\+\_\+values\+\_\+type@{doc\+\_\+values\+\_\+type}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{doc\+\_\+values\+\_\+type}{doc\_values\_type}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacelucene_1_1core_1_1index_a2f7ffaef6429b5df542c8aa12f8b9883}{lucene\+::core\+::index\+::\+Doc\+Values\+Type}} lucene\+::core\+::document\+::\+Field\+Type\+::doc\+\_\+values\+\_\+type\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_ace77c2df2db83441226f4c72e7455910}\label{classlucene_1_1core_1_1document_1_1FieldType_ace77c2df2db83441226f4c72e7455910}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!index\+\_\+options@{index\+\_\+options}}
+\index{index\+\_\+options@{index\+\_\+options}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{index\+\_\+options}{index\_options}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacelucene_1_1core_1_1index_a0d5e1f98471a76de106056cf3b5a7897}{lucene\+::core\+::index\+::\+Index\+Options}} lucene\+::core\+::document\+::\+Field\+Type\+::index\+\_\+options\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a608b14ab36f164f6fc88fc47401dfdd8}\label{classlucene_1_1core_1_1document_1_1FieldType_a608b14ab36f164f6fc88fc47401dfdd8}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!omit\+\_\+norms@{omit\+\_\+norms}}
+\index{omit\+\_\+norms@{omit\+\_\+norms}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{omit\+\_\+norms}{omit\_norms}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::omit\+\_\+norms\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a8aae5a6917e9d3d02c00966df5169504}\label{classlucene_1_1core_1_1document_1_1FieldType_a8aae5a6917e9d3d02c00966df5169504}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!store\+\_\+term\+\_\+vector\+\_\+offsets@{store\+\_\+term\+\_\+vector\+\_\+offsets}}
+\index{store\+\_\+term\+\_\+vector\+\_\+offsets@{store\+\_\+term\+\_\+vector\+\_\+offsets}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{store\+\_\+term\+\_\+vector\+\_\+offsets}{store\_term\_vector\_offsets}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::store\+\_\+term\+\_\+vector\+\_\+offsets\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a7e6c868f2767a9045f55239448eb56fa}\label{classlucene_1_1core_1_1document_1_1FieldType_a7e6c868f2767a9045f55239448eb56fa}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!store\+\_\+term\+\_\+vector\+\_\+payloads@{store\+\_\+term\+\_\+vector\+\_\+payloads}}
+\index{store\+\_\+term\+\_\+vector\+\_\+payloads@{store\+\_\+term\+\_\+vector\+\_\+payloads}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{store\+\_\+term\+\_\+vector\+\_\+payloads}{store\_term\_vector\_payloads}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::store\+\_\+term\+\_\+vector\+\_\+payloads\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a0c763a29f6d5b3c9b29b585935332f90}\label{classlucene_1_1core_1_1document_1_1FieldType_a0c763a29f6d5b3c9b29b585935332f90}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!store\+\_\+term\+\_\+vector\+\_\+positions@{store\+\_\+term\+\_\+vector\+\_\+positions}}
+\index{store\+\_\+term\+\_\+vector\+\_\+positions@{store\+\_\+term\+\_\+vector\+\_\+positions}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{store\+\_\+term\+\_\+vector\+\_\+positions}{store\_term\_vector\_positions}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::store\+\_\+term\+\_\+vector\+\_\+positions\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_af8c77a78e7e5749cbff0044ad5bc94b1}\label{classlucene_1_1core_1_1document_1_1FieldType_af8c77a78e7e5749cbff0044ad5bc94b1}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!store\+\_\+term\+\_\+vectors@{store\+\_\+term\+\_\+vectors}}
+\index{store\+\_\+term\+\_\+vectors@{store\+\_\+term\+\_\+vectors}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{store\+\_\+term\+\_\+vectors}{store\_term\_vectors}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::store\+\_\+term\+\_\+vectors\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_a56b81575dbaea749036201c379034cc8}\label{classlucene_1_1core_1_1document_1_1FieldType_a56b81575dbaea749036201c379034cc8}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!stored@{stored}}
+\index{stored@{stored}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{stored}{stored}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::stored\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FieldType_abe04c4af1aafbe73f3e1a0333f08cfd8}\label{classlucene_1_1core_1_1document_1_1FieldType_abe04c4af1aafbe73f3e1a0333f08cfd8}} 
+\index{lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}!tokenized@{tokenized}}
+\index{tokenized@{tokenized}!lucene\+::core\+::document\+::\+Field\+Type@{lucene\+::core\+::document\+::\+Field\+Type}}
+\subsubsection{\texorpdfstring{tokenized}{tokenized}}
+{\footnotesize\ttfamily bool lucene\+::core\+::document\+::\+Field\+Type\+::tokenized\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Document/\mbox{\hyperlink{Document_2Field_8h}{Field.\+h}}\end{DoxyCompactItemize}

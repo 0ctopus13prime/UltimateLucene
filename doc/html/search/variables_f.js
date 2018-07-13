@@ -11,6 +11,11 @@ var searchData=
   ['state_5fptr',['state_ptr',['../classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder.html#ad7727b8b1f2305be0b68c4b39818037a',1,'lucene::core::util::AttributeSource::StateHolder']]],
   ['stop_5fwords',['stop_words',['../classlucene_1_1core_1_1analysis_1_1StopwordAnalyzerBase.html#a12ceda198e84aabe357ccd7b28e66d07',1,'lucene::core::analysis::StopwordAnalyzerBase::stop_words()'],['../classlucene_1_1core_1_1analysis_1_1StopFilter.html#ace188f785bcebdc0f18a73116da1afd0',1,'lucene::core::analysis::StopFilter::stop_words()']]],
   ['stop_5fwords_5fset',['STOP_WORDS_SET',['../classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer.html#a43ca4db920b102be1fd2d7c2191fc69e',1,'lucene::core::analysis::standard::StandardAnalyzer']]],
+  ['store_5fterm_5fvector_5foffsets',['store_term_vector_offsets',['../classlucene_1_1core_1_1document_1_1FieldType.html#a8aae5a6917e9d3d02c00966df5169504',1,'lucene::core::document::FieldType']]],
+  ['store_5fterm_5fvector_5fpayloads',['store_term_vector_payloads',['../classlucene_1_1core_1_1document_1_1FieldType.html#a7e6c868f2767a9045f55239448eb56fa',1,'lucene::core::document::FieldType']]],
+  ['store_5fterm_5fvector_5fpositions',['store_term_vector_positions',['../classlucene_1_1core_1_1document_1_1FieldType.html#a0c763a29f6d5b3c9b29b585935332f90',1,'lucene::core::document::FieldType']]],
+  ['store_5fterm_5fvectors',['store_term_vectors',['../classlucene_1_1core_1_1document_1_1FieldType.html#af8c77a78e7e5749cbff0044ad5bc94b1',1,'lucene::core::document::FieldType']]],
+  ['stored',['stored',['../classlucene_1_1core_1_1document_1_1FieldType.html#a56b81575dbaea749036201c379034cc8',1,'lucene::core::document::FieldType']]],
   ['stored_5fvalue',['stored_value',['../classlucene_1_1core_1_1analysis_1_1GlobalReuseStrategy.html#aa46c26280248f8f15c138db30d2a5991',1,'lucene::core::analysis::GlobalReuseStrategy::stored_value()'],['../classlucene_1_1core_1_1analysis_1_1PerFieldReuseStrategy.html#a641b5ee9fc538da0504ae9f13438d89e',1,'lucene::core::analysis::PerFieldReuseStrategy::stored_value()']]],
   ['str',['str',['../classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharPtrRangeInfo.html#a353ede88ef69e0a7c11523fd7d419ef6',1,'lucene::core::analysis::characterutil::CharPtrRangeInfo']]]
 ];

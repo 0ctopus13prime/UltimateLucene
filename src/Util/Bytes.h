@@ -42,6 +42,9 @@ class BytesRef {
   BytesRef();
   BytesRef(const char* bytes,
            const uint32_t offset,
+           const uint32_t length);
+  BytesRef(const char* bytes,
+           const uint32_t offset,
            const uint32_t length,
            const uint32_t capacity);
   BytesRef(const char* bytes, const uint32_t capacity);
