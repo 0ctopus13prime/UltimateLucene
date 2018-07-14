@@ -82,7 +82,7 @@ class IndexableField {
  public:
   virtual ~IndexableField() { }
   virtual const std::string& Name() = 0;
-  virtual const IndexableFieldType& FieldType() = 0;
+  virtual const IndexableFieldType& GetFieldType() = 0;
   virtual lucene::core::analysis::TokenStream*
     GetTokenStream(lucene::core::analysis::Analyzer& analyzer,
                 lucene::core::analysis::TokenStream& reuse) = 0;

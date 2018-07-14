@@ -36,7 +36,7 @@ namespace core {
 namespace document {
 
 class Field : public lucene::core::index::IndexableField {
- private:
+ protected:
   const lucene::core::index::IndexableFieldType& type;
   const std::string& name;
   std::variant<lucene::core::util::BytesRef,
@@ -152,7 +152,7 @@ class Field : public lucene::core::index::IndexableField {
     throw std::runtime_error("Field data can not be assigned from std::string");
   }
 
-  void SetShortValue(const int16_t value) {
+  virtual void SetShortValue(const int16_t value) {
     if (auto org_value =
           std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
       *org_value = value;
@@ -163,7 +163,7 @@ class Field : public lucene::core::index::IndexableField {
                              "It is not a Number");
   }
 
-  void SetIntValue(const int32_t value) {
+  virtual void SetIntValue(const int32_t value) {
     if (auto org_value =
           std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
       *org_value = value;
@@ -174,7 +174,7 @@ class Field : public lucene::core::index::IndexableField {
                              "It is not a Number");
   }
 
-  void SetLongValue(const int64_t value) {
+  virtual void SetLongValue(const int64_t value) {
     if (auto org_value =
         std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
       *org_value = value;
@@ -185,7 +185,7 @@ class Field : public lucene::core::index::IndexableField {
                              "It is not a Number");
   }
 
-  void SetFloatValue(const float value) {
+  virtual void SetFloatValue(const float value) {
     if (auto org_value =
           std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
       *org_value = value;
@@ -196,7 +196,7 @@ class Field : public lucene::core::index::IndexableField {
                              "It is not a Number");
   }
 
-  void SetDoubleValue(const double value) {
+  virtual void SetDoubleValue(const double value) {
     if (auto org_value =
           std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
       *org_value = value;
@@ -254,7 +254,7 @@ class Field : public lucene::core::index::IndexableField {
     return {};
   }
 
-  const lucene::core::index::IndexableFieldType& FieldType() noexcept {
+  const lucene::core::index::IndexableFieldType& GetFieldType() noexcept {
     return type;
   }
 
@@ -358,7 +358,112 @@ class Field::StringTokenStream: public lucene::core::analysis::TokenStream {
   }
 };
 
+class FieldTypeBuilder;
+
 class FieldType: public lucene::core::index::IndexableFieldType {
+ private:
+  friend class FieldTypeBuilder;
+
+  const bool stored;
+  const bool tokenized;
+  const bool store_term_vectors;
+  const bool store_term_vector_offsets;
+  const bool store_term_vector_positions;
+  const bool store_term_vector_payloads;
+  const bool omit_norms;
+  const lucene::core::index::IndexOptions index_options;
+  const lucene::core::index::DocValuesType doc_values_type;
+  const uint32_t dimension_count;
+  const uint32_t dimension_num_bytes;
+
+ private:
+  FieldType(const bool stored,
+            const bool tokenized,
+            const bool store_term_vectors,
+            const bool store_term_vector_offsets,
+            const bool store_term_vector_positions,
+            const bool store_term_vector_payloads,
+            const bool omit_norms,
+            const lucene::core::index::IndexOptions index_options,
+            const lucene::core::index::DocValuesType doc_values_type,
+            const uint32_t dimension_count,
+            const uint32_t dimension_num_bytes)
+    : stored(stored),
+      tokenized(tokenized),
+      store_term_vectors(store_term_vectors),
+      store_term_vector_offsets(store_term_vector_offsets),
+      store_term_vector_positions(store_term_vector_positions),
+      store_term_vector_payloads(store_term_vector_payloads),
+      omit_norms(omit_norms),
+      index_options(index_options),
+      doc_values_type(doc_values_type),
+      dimension_count(dimension_count),
+      dimension_num_bytes(dimension_num_bytes) {
+  }
+
+ public:
+  explicit FieldType(const lucene::core::index::IndexableFieldType& ref)
+    : FieldType(ref.Stored(),
+                ref.Tokenized(),
+                ref.StoreTermVectors(),
+                ref.StoreTermVectorOffsets(),
+                ref.StoreTermVectorPositions(),
+                ref.StoreTermVectorPayloads(),
+                ref.OmitNorms(),
+                ref.GetIndexOptions(),
+                ref.GetDocValuesType(),
+                ref.PointDimensionCount(),
+                ref.PointNumBytes()) {
+  }
+
+  virtual ~FieldType() { }
+
+  bool Stored() const noexcept {
+    return stored;
+  }
+
+  bool Tokenized() const noexcept {
+    return tokenized;
+  }
+
+  bool StoreTermVectors() const {
+    return store_term_vectors;
+  }
+
+  bool StoreTermVectorOffsets() const noexcept {
+    return store_term_vector_offsets;
+  }
+
+  bool StoreTermVectorPositions() const noexcept {
+    return store_term_vector_positions;
+  }
+
+  bool StoreTermVectorPayloads() const noexcept {
+    return store_term_vector_payloads;
+  }
+
+  bool OmitNorms() const noexcept {
+    return omit_norms;
+  }
+
+  lucene::core::index::IndexOptions GetIndexOptions() const noexcept {
+    return index_options;
+  }
+
+  uint32_t PointDimensionCount() const noexcept {
+    return dimension_count;
+  }
+
+  uint32_t PointNumBytes() const noexcept {
+    return dimension_num_bytes;
+  }
+
+  lucene::core::index::DocValuesType GetDocValuesType() const noexcept {
+    return doc_values_type;
+  }
+};
+
+class FieldTypeBuilder {
  private:
   bool stored;
   bool tokenized;
@@ -373,117 +478,374 @@ class FieldType: public lucene::core::index::IndexableFieldType {
   uint32_t dimension_num_bytes;
 
  public:
-  FieldType()
-    : lucene::core::index::IndexableFieldType() {
-    tokenized = true;
-    index_options = lucene::core::index::IndexOptions::NONE;
-    doc_values_type = lucene::core::index::DocValuesType::NONE;
+  FieldTypeBuilder()
+    : stored(false),
+      tokenized(true),
+      store_term_vectors(false),
+      store_term_vector_offsets(false),
+      store_term_vector_positions(false),
+      store_term_vector_payloads(false),
+      omit_norms(false),
+      index_options(lucene::core::index::IndexOptions::NONE),
+      doc_values_type(lucene::core::index::DocValuesType::NONE),
+      dimension_count(0),
+      dimension_num_bytes(0) {
   }
 
-  explicit FieldType(lucene::core::index::IndexableFieldType& ref)
-    : FieldType() {
-    stored = ref.Stored();
-    tokenized = ref.Tokenized();
-    store_term_vectors = ref.StoreTermVectors();
-    store_term_vector_offsets = ref.StoreTermVectorOffsets();
-    store_term_vector_positions = ref.StoreTermVectorPositions();
-    store_term_vector_payloads = ref.StoreTermVectorPayloads();
-    omit_norms = ref.OmitNorms();
-    index_options = ref.GetIndexOptions();
-    doc_values_type = ref.GetDocValuesType();
-    dimension_count = ref.PointDimensionCount();
-    dimension_num_bytes = ref.PointNumBytes();
-  }
-
-  virtual ~FieldType() {
-  }
-
-  bool Stored() const noexcept {
-    return stored;
-  }
-
-  void SetStored(const bool value) noexcept {
+  FieldTypeBuilder& SetStored(const bool value) noexcept {
     stored = value;
+    return *this;
   }
 
-  bool Tokenized() const noexcept {
-    return tokenized;
-  }
-
-  void SetTokenized(const bool value) noexcept {
+  FieldTypeBuilder& SetTokenized(const bool value) noexcept {
     tokenized = value;
+    return *this;
   }
 
-  bool StoreTermVectors() const {
-    return store_term_vectors;
-  }
-
-  void SetStoreTermVectors(const bool value) noexcept {
+  FieldTypeBuilder& SetStoreTermVectors(const bool value) noexcept {
     store_term_vectors = value;
+    return *this;
   }
 
-  bool StoreTermVectorOffsets() const noexcept {
-    return store_term_vector_offsets;
-  }
-
-  void SetStoreTermVectorOffsets(const bool value) noexcept {
+  FieldTypeBuilder& SetStoreTermVectorOffsets(const bool value) noexcept {
     store_term_vector_offsets = value;
+    return *this;
   }
 
-  bool StoreTermVectorPositions() const noexcept {
-    return store_term_vector_positions;
-  }
-
-  void SetStoreTermVectorPositions(const bool value) noexcept {
+  FieldTypeBuilder& SetStoreTermVectorPositions(const bool value) noexcept {
     store_term_vector_positions = value;
+    return *this;
   }
 
-  bool StoreTermVectorPayloads() const noexcept {
-    return store_term_vector_payloads;
-  }
-
-  void SetStoreTermVectorPayloads(const bool value) noexcept {
+  FieldTypeBuilder& SetStoreTermVectorPayloads(const bool value) noexcept {
     store_term_vector_payloads = value;
+    return *this;
   }
 
-  bool OmitNorms() const noexcept {
-    return omit_norms;
-  }
-
-  void SetOmitNorms(const bool value) noexcept {
+  FieldTypeBuilder& SetOmitNorms(const bool value) noexcept {
     omit_norms = value;
+    return *this;
   }
 
-  lucene::core::index::IndexOptions GetIndexOptions() const noexcept {
-    return index_options;
-  }
-
-  void SetIndexOptions(const lucene::core::index::IndexOptions value) noexcept {
+  FieldTypeBuilder&
+  SetIndexOptions(const lucene::core::index::IndexOptions value) noexcept {
     index_options = value;
+    return *this;
   }
 
-  void SetDimensions(const uint32_t new_dimension_count,
-                     const uint32_t new_dimension_num_bytes) noexcept {
-    dimension_count = new_dimension_count;
-    dimension_num_bytes = new_dimension_num_bytes;
-  }
-
-  uint32_t PointDimensionCount() const noexcept {
-    return dimension_count;
-  }
-
-  uint32_t PointNumBytes() const noexcept {
-    return dimension_num_bytes;
-  }
-
-  lucene::core::index::DocValuesType GetDocValuesType() const noexcept {
-    return doc_values_type;
-  }
-
-  void
+  FieldTypeBuilder&
   SetDocValuesType(const lucene::core::index::DocValuesType type) noexcept {
     doc_values_type = type;
+    return *this;
   }
+
+  FieldTypeBuilder&
+  SetDimensions(const uint32_t new_dimension_count,
+                const uint32_t new_dimension_num_bytes) noexcept {
+    dimension_count = new_dimension_count; 
+    dimension_num_bytes = new_dimension_num_bytes;
+    return *this;
+  }
+
+  FieldType Build() {
+    return FieldType(stored,
+                     tokenized,
+                     store_term_vectors,
+                     store_term_vector_offsets,
+                     store_term_vector_positions,
+                     store_term_vector_payloads,
+                     omit_norms,
+                     index_options,
+                     doc_values_type,
+                     dimension_count,
+                     dimension_num_bytes);
+  }
+};
+
+class TextField : public Field {
+ public:
+  static FieldType TYPE_NOT_STORED;
+  static FieldType TYPE_STORED;
+
+ public:
+  TextField(const std::string& name, lucene::core::analysis::Reader* reader)
+    : Field(name, reader, TYPE_NOT_STORED) {
+  }
+
+  TextField(const std::string& name,
+            const std::string& value,
+            const Field::Store store)
+    : Field(name,
+            value,
+            (store == Field::Store::YES ? TYPE_STORED : TYPE_NOT_STORED)) {
+  }
+
+  TextField(const std::string& name,
+            std::string&& value,
+            const Field::Store store)
+    : Field(name,
+            std::forward<std::string>(value),
+            (store == Field::Store::YES ? TYPE_STORED : TYPE_NOT_STORED)) {
+  }
+
+  TextField(const std::string& name,
+            lucene::core::analysis::TokenStream* tokenstream)
+    : Field(name, tokenstream, TYPE_NOT_STORED) {
+  }
+};
+
+class StringField : public Field {
+ public:
+  static FieldType TYPE_NOT_STORED;
+  static FieldType TYPE_STORED;
+
+ public:
+  StringField(const std::string& name,
+              const std::string& value,
+              Field::Store stored)
+    : Field(name, value, (stored == Field::Store::YES ?
+                          TYPE_STORED : TYPE_NOT_STORED)) {
+  }
+
+  StringField(const std::string& name,
+              std::string&& value,
+              Field::Store stored)
+    : Field(name,
+            std::forward<std::string>(value),
+            (stored == Field::Store::YES ? TYPE_STORED : TYPE_NOT_STORED)) {
+  }
+
+  StringField(const std::string& name,
+              const lucene::core::util::BytesRef& value,
+              Field::Store stored)
+    : Field(name,
+            value,
+            (stored == Field::Store::YES ? TYPE_STORED : TYPE_NOT_STORED)) {
+  }
+
+  StringField(const std::string& name,
+              lucene::core::util::BytesRef&& value,
+              Field::Store stored)
+    : Field(name,
+            std::forward<lucene::core::util::BytesRef>(value),
+            (stored == Field::Store::YES ? TYPE_STORED : TYPE_NOT_STORED)) {
+  }
+};
+
+class StoredField : public Field {
+ public:
+  static FieldType TYPE;
+
+ protected:
+  StoredField(const std::string& name, const FieldType& type)
+    : Field(name, type) {
+  }
+
+ public:
+  StoredField(const std::string& name,
+              const lucene::core::util::BytesRef& bytes,
+              const FieldType& type)
+    : Field(name, bytes, type) {
+  }
+
+  StoredField(const std::string& name,
+              lucene::core::util::BytesRef&& bytes,
+              const FieldType& type)
+    : Field(name, bytes, type) {
+  }
+
+  StoredField(const std::string& name,
+              char* value,
+              uint32_t length)
+    : Field(name, value, length, TYPE) {
+  }
+
+  StoredField(const std::string& name,
+              char* value,
+              uint32_t offset,
+              uint32_t length)
+    : Field(name, value, offset, length, TYPE) {
+  }
+
+  StoredField(const std::string& name,
+              const lucene::core::util::BytesRef& bytes)
+    : Field(name, bytes, TYPE) {
+  }
+ 
+  StoredField(const std::string& name,
+              lucene::core::util::BytesRef&& bytes)
+    : Field(name, bytes, TYPE) {
+  }
+
+  StoredField(const std::string& name,
+              const std::string& value)
+    : Field(name, value, TYPE) {
+  }
+
+  StoredField(const std::string& name,
+              std::string&& value)
+    : Field(name, std::forward<std::string>(value), TYPE) {
+  }
+
+  StoredField(const std::string& name,
+              const std::string& value,
+              const FieldType& type)
+    : Field(name, value, type) {
+  }
+
+  StoredField(const std::string& name,
+              std::string&& value,
+              const FieldType& type)
+    : Field(name, std::forward<std::string>(value), type) {
+  }
+
+  StoredField(const std::string& name, int32_t value)
+    : Field(name, TYPE) {
+      fields_data = lucene::core::util::etc::Number(value);
+  }
+
+  StoredField(const std::string& name, int64_t value)
+    : Field(name, TYPE) {
+      fields_data = lucene::core::util::etc::Number(value);
+  }
+
+  StoredField(const std::string& name, float value)
+    : Field(name, TYPE) {
+      fields_data = lucene::core::util::etc::Number(value);
+  }
+
+  StoredField(const std::string& name, double value)
+    : Field(name, TYPE) {
+      fields_data = lucene::core::util::etc::Number(value);
+  }
+};
+
+class NumericDocValuesField : public Field {
+ public:
+  static FieldType TYPE; 
+
+  NumericDocValuesField(const std::string& name, const int64_t value)
+    : Field(name, TYPE) {
+    fields_data = lucene::core::util::etc::Number(value);
+  }
+
+  // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
+  // static newSlowExactQuery TODO(0ctopus13prime): Implement it.
+};
+
+class FloatDocValuesField : public NumericDocValuesField {
+ public:
+  FloatDocValuesField(const std::string& name, const float value)
+    : NumericDocValuesField(
+                    name,
+                    lucene::core::util::etc::Float::FloatToRawIntBits(value)) {
+  }
+
+  void SetFloatValue(const float value) {
+    NumericDocValuesField::SetLongValue(
+                      lucene::core::util::etc::Float::FloatToRawIntBits(value));
+  }
+
+  void SetLongValue(const int64_t) {
+    throw
+    std::invalid_argument("Could not change value type from Float to Long");
+  }
+};
+
+class DoubleDocValuesField : public NumericDocValuesField {
+ public:
+  DoubleDocValuesField(const std::string& name, const double value)
+    : NumericDocValuesField(
+                  name,
+                  lucene::core::util::etc::Double::DoubleToRawLongBits(value)) {
+  }
+
+  void SetDoubleValue(const double value) {
+    NumericDocValuesField::SetLongValue(
+      lucene::core::util::etc::Double::DoubleToRawLongBits(value));
+  }
+
+  void SetLongValue(const int64_t) {
+    throw
+    std::invalid_argument("Could not change value type from Float to Long");
+  }
+
+  // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
+  // static newSlowExactQuery TODO(0ctopus13prime): Implement it.
+};
+
+class BinaryDocValuesField : public Field {
+ public:
+  static FieldType TYPE;
+
+ public:
+  BinaryDocValuesField(const std::string& name,
+                       const lucene::core::util::BytesRef& value)
+    : Field(name, TYPE) {
+    fields_data = value;
+  }
+
+  BinaryDocValuesField(const std::string& name,
+                       lucene::core::util::BytesRef&& value)
+    : Field(name, TYPE) {
+    fields_data = std::forward<lucene::core::util::BytesRef>(value);
+  }
+};
+
+class SortedDocValuesField : public Field {
+ public:
+  static FieldType TYPE;
+
+ public:
+  SortedDocValuesField(const std::string& name,
+                       const lucene::core::util::BytesRef& bytes)
+    : Field(name, TYPE) {
+    fields_data = bytes;
+  }
+
+  SortedDocValuesField(const std::string& name,
+                       lucene::core::util::BytesRef&& bytes)
+    : Field(name, TYPE) {
+    fields_data = std::forward<lucene::core::util::BytesRef>(bytes);
+  }
+
+  // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
+  // static newSlowExactQuery TODO(0ctopus13prime): Implement it.
+};
+
+class SortedNumericDocValuesField : public Field {
+ public:
+  static FieldType TYPE;
+
+ public:
+  SortedNumericDocValuesField(const std::string& name, const uint64_t value)
+    : Field(name, TYPE) {
+    fields_data = lucene::core::util::etc::Number(value);
+  }
+
+  // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
+  // static newSlowExactQuery TODO(0ctopus13prime): Implement it.
+};
+
+class SortedSetDocValuesField : public Field {
+ public:
+  static FieldType TYPE;
+
+ public:
+  SortedSetDocValuesField(const std::string& name,
+                          const lucene::core::util::BytesRef& bytes)
+    : Field(name, TYPE) {
+    fields_data = bytes;
+  }
+
+  SortedSetDocValuesField(const std::string& name,
+                          lucene::core::util::BytesRef&& bytes)
+    : Field(name, TYPE) {
+    fields_data = std::forward<lucene::core::util::BytesRef>(bytes);
+  }
+
+  // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
+  // static newSlowExactQuery TODO(0ctopus13prime): Implement it.
 };
 
 }  // namespace document

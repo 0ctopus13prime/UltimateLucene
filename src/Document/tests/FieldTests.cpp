@@ -24,13 +24,14 @@
 using lucene::core::analysis::StringReader;
 using lucene::core::document::Field;
 using lucene::core::document::FieldType;
+using lucene::core::document::FieldTypeBuilder;
 
 TEST(FIELD__TESTS, BASIC__TEST) {
   StringReader* reader = new StringReader(); 
   std::string value("xxxxxxxx");
   reader->SetValue(value);
   std::string name("kkk");
-  FieldType type;
+  FieldType type = FieldTypeBuilder().Build();
 
   // Field field(name, reader, type);
   const char buf[] = "asdfasdf";
