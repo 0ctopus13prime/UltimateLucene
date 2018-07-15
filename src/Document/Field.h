@@ -24,6 +24,8 @@
 #include <Index/Field.h>
 #include <Util/Bytes.h>
 #include <Util/Etc.h>
+#include <cstring>
+#include <initializer_list>
 #include <variant>
 #include <optional>
 #include <stdexcept>
@@ -847,6 +849,107 @@ class SortedSetDocValuesField : public Field {
   // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
   // static newSlowExactQuery TODO(0ctopus13prime): Implement it.
 };
+
+class BinaryPoint : public Field {
+ private:
+  static FieldType GetType(const uint32_t num_dims,
+                           const uint32_t bytes_per_dim) {
+    return FieldTypeBuilder()
+           .SetDimensions(num_dims, bytes_per_dim)
+           .Build();
+  }
+
+  /**
+   *  Pack point values into a single byte array.
+   *  For example, input [ [0,1], [1,2], [2,3] ] should be packed as
+   *  [0, 1, 1, 2, 2, 3]
+   *  But not like Java implementation we do not check if they have same
+   *  number of bytes.
+   *  Rather we expect given point values to have all same bytes_per_dim.
+   *  So, in Java [ [0,1], [0, 1, 2] ] this values are not acceptable, 
+   *  but in C++ implementation we just treat it as [ [0, 1], [0, 1] ]
+   */
+  static lucene::core::util::BytesRef
+  Pack(const uint32_t bytes_per_dim,
+       const std::initializer_list<const char*>& point) {
+    uint32_t size = bytes_per_dim * point.size();  
+    char packed[size];
+    uint32_t idx = 0;
+    for (const char* p : point) {
+      std::memcpy(packed + idx, p, bytes_per_dim); 
+      idx += bytes_per_dim;
+    }
+
+    return lucene::core::util::BytesRef(packed, 0, size);
+  }
+
+ public:
+  BinaryPoint(const std::string& name,
+              const std::initializer_list<const char*>& point,
+              const uint32_t bytes_per_dim)
+    : Field(name,
+            Pack(bytes_per_dim, point),
+            GetType(point.size(), bytes_per_dim)) {
+  }
+
+  BinaryPoint(const std::string& name,
+              const char* point,
+              const uint32_t bytes_per_dim,
+              const lucene::core::index::IndexableFieldType& type)
+    : Field(name, point, bytes_per_dim, type) {
+    if (bytes_per_dim != type.PointDimensionCount() * type.PointNumBytes()) {
+      throw std::runtime_error("Packed point is length=" +
+                               std::to_string(bytes_per_dim) +
+                               " but type.PointDimensionCount()=" + 
+                               std::to_string(type.PointDimensionCount()) + 
+                               " and type.PointNumBytes()=" +
+                               std::to_string(type.PointNumBytes()));
+    }
+  }
+
+  // static Query newExactQuery TODO(0ctopus13prime): Implement it.
+  // static Query newRangeQuery TODO(0ctopus13prime): Implement it.
+  // static Query newRangeQuery TODO(0ctopus13prime): Implement it.
+  // static Query newSetQuery TODO(0ctopus13prime): Implement it.
+};
+
+class DoublePoint : public Field {
+  // TODO(0ctopus13prime): Implement it.
+};
+
+class DoubleRange : public Field {
+  // TODO(0ctopus13prime): Implement it.
+};
+
+class FloatPoint : public Field {
+  // TODO(0ctopus13prime): Implement it.
+};
+
+class FloatRange : public Field {
+  // TODO(0ctopus13prime): Implement it.
+};
+
+class IntPoint : public Field {
+  // TODO(0ctopus13prime): Implement it.
+};
+
+class IntRange : public Field {
+  // TODO(0ctopus13prime): Implement it.
+};
+
+class LongPoint : public Field {
+  // TODO(0ctopus13prime): Implement it.
+};
+
+class LongRange : public Field {
+  // TODO(0ctopus13prime): Implement it.
+};
+
+class LongRange : public Field {
+  // TODO(0ctopus13prime): Implement it.
+};
+
+
 
 }  // namespace document
 }  // namespace core
