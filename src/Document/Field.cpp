@@ -36,7 +36,7 @@ using lucene::core::index::IndexableField;
 using lucene::core::index::IndexableFieldType;
 using lucene::core::index::DocValuesType;
 using lucene::core::util::BytesRef;
-using lucene::core::util::etc::Number;
+using lucene::core::util::numeric::Number;
 
 /**
  *  Field

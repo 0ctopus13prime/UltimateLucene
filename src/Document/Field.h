@@ -22,8 +22,9 @@
 #include <Analysis/TokenStream.h>
 #include <Index/DocValue.h>
 #include <Index/Field.h>
+#include <Util/ArrayUtil.h>
 #include <Util/Bytes.h>
-#include <Util/Etc.h>
+#include <Util/Numeric.h>
 #include <cstring>
 #include <initializer_list>
 #include <variant>
@@ -44,7 +45,7 @@ class Field : public lucene::core::index::IndexableField {
   std::variant<lucene::core::util::BytesRef,
                std::string,
                std::unique_ptr<lucene::core::analysis::Reader>,
-               lucene::core::util::etc::Number> fields_data;
+               lucene::core::util::numeric::Number> fields_data;
   std::unique_ptr<lucene::core::analysis::TokenStream> tokenstream;
 
  protected:
@@ -156,7 +157,7 @@ class Field : public lucene::core::index::IndexableField {
 
   virtual void SetShortValue(const int16_t value) {
     if (auto org_value =
-          std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -167,7 +168,7 @@ class Field : public lucene::core::index::IndexableField {
 
   virtual void SetIntValue(const int32_t value) {
     if (auto org_value =
-          std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -178,7 +179,7 @@ class Field : public lucene::core::index::IndexableField {
 
   virtual void SetLongValue(const int64_t value) {
     if (auto org_value =
-        std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
+        std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -189,7 +190,7 @@ class Field : public lucene::core::index::IndexableField {
 
   virtual void SetFloatValue(const float value) {
     if (auto org_value =
-          std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -200,7 +201,7 @@ class Field : public lucene::core::index::IndexableField {
 
   virtual void SetDoubleValue(const double value) {
     if (auto org_value =
-          std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -238,9 +239,9 @@ class Field : public lucene::core::index::IndexableField {
     return {};
   }
 
-  std::optional<lucene::core::util::etc::Number> NumericValue() noexcept {
+  std::optional<lucene::core::util::numeric::Number> NumericValue() noexcept {
     if (auto number =
-          std::get_if<lucene::core::util::etc::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
       return *number;
     }
 
@@ -703,22 +704,22 @@ class StoredField : public Field {
 
   StoredField(const std::string& name, int32_t value)
     : Field(name, TYPE) {
-      fields_data = lucene::core::util::etc::Number(value);
+      fields_data = lucene::core::util::numeric::Number(value);
   }
 
   StoredField(const std::string& name, int64_t value)
     : Field(name, TYPE) {
-      fields_data = lucene::core::util::etc::Number(value);
+      fields_data = lucene::core::util::numeric::Number(value);
   }
 
   StoredField(const std::string& name, float value)
     : Field(name, TYPE) {
-      fields_data = lucene::core::util::etc::Number(value);
+      fields_data = lucene::core::util::numeric::Number(value);
   }
 
   StoredField(const std::string& name, double value)
     : Field(name, TYPE) {
-      fields_data = lucene::core::util::etc::Number(value);
+      fields_data = lucene::core::util::numeric::Number(value);
   }
 };
 
@@ -728,7 +729,7 @@ class NumericDocValuesField : public Field {
 
   NumericDocValuesField(const std::string& name, const int64_t value)
     : Field(name, TYPE) {
-    fields_data = lucene::core::util::etc::Number(value);
+    fields_data = lucene::core::util::numeric::Number(value);
   }
 
   // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
@@ -739,13 +740,13 @@ class FloatDocValuesField : public NumericDocValuesField {
  public:
   FloatDocValuesField(const std::string& name, const float value)
     : NumericDocValuesField(
-                    name,
-                    lucene::core::util::etc::Float::FloatToRawIntBits(value)) {
+                name,
+                lucene::core::util::numeric::Float::FloatToRawIntBits(value)) {
   }
 
   void SetFloatValue(const float value) {
     NumericDocValuesField::SetLongValue(
-                      lucene::core::util::etc::Float::FloatToRawIntBits(value));
+                  lucene::core::util::numeric::Float::FloatToRawIntBits(value));
   }
 
   void SetLongValue(const int64_t) {
@@ -758,13 +759,13 @@ class DoubleDocValuesField : public NumericDocValuesField {
  public:
   DoubleDocValuesField(const std::string& name, const double value)
     : NumericDocValuesField(
-                  name,
-                  lucene::core::util::etc::Double::DoubleToRawLongBits(value)) {
+              name,
+              lucene::core::util::numeric::Double::DoubleToRawLongBits(value)) {
   }
 
   void SetDoubleValue(const double value) {
     NumericDocValuesField::SetLongValue(
-      lucene::core::util::etc::Double::DoubleToRawLongBits(value));
+      lucene::core::util::numeric::Double::DoubleToRawLongBits(value));
   }
 
   void SetLongValue(const int64_t) {
@@ -822,7 +823,7 @@ class SortedNumericDocValuesField : public Field {
  public:
   SortedNumericDocValuesField(const std::string& name, const uint64_t value)
     : Field(name, TYPE) {
-    fields_data = lucene::core::util::etc::Number(value);
+    fields_data = lucene::core::util::numeric::Number(value);
   }
 
   // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
@@ -914,11 +915,224 @@ class BinaryPoint : public Field {
 };
 
 class DoublePoint : public Field {
-  // TODO(0ctopus13prime): Implement it.
+ private:
+  static FieldType GetType(const int32_t num_dims) {
+
+  }
+
+  static lucene::core::util::BytesRef
+  Pack(const std::initializer_list<double>& point) {
+    uint32_t size = point.size();
+    uint32_t packed_size = size * sizeof(double);
+    char packed[packed_size];
+
+    uint32_t offset = 0;
+    for(const double p : point) {
+      DoublePoint::EncodeDimension(p, packed, offset);
+      offset += sizeof(double);
+    }
+
+    return lucene::core::util::BytesRef(packed, 0, packed_size);
+  }
+
+  static lucene::core::util::BytesRef
+  Pack(const double* point,
+       const uint32_t point_size) {
+    uint32_t packed_size = point_size * sizeof(double);
+    char packed[packed_size];
+
+    for(uint32_t i = 0 ; i < point_size ; ++i) {
+      DoublePoint::EncodeDimension(point[i], packed, i * sizeof(double));
+    }
+
+    return lucene::core::util::BytesRef(packed, 0, packed_size);
+  }
+
+  static void EncodeDimension(const double value,
+                              char* dest,
+                              const int32_t offset) {
+     
+  }
+
+  static double DecodeDimension(char* value,
+                                int32_t value_size,
+                                const int32_t offset) {
+
+  }
+
+
+ public:
+  static double NextUp(const double d) {
+
+  }
+
+  static double NextDown(const double d) {
+
+  }
+
+  void SetDoubleValue(const double value) {
+
+  }
+
+  void SetDoubleValues(const std::initializer_list<double>& point) {
+
+  }
+
+  void SetBytesValue(const lucene::core::util::BytesRef bytes) {
+
+  }
+
+  std::optional<lucene::core::util::numeric::Number> NumericValue() noexcept {
+    // TODO(0ctopus13prime): Implement it.
+    return lucene::core::util::numeric::Number(1);
+  }
+
+  DoublePoint(const std::string& name,
+              const double* point,
+              int32_t point_size)
+    : Field(name,
+            DoublePoint::Pack(point, point_size),
+            DoublePoint::GetType(point_size)) {
+  }
+
+  // TODO(0ctopus13prime): Implement Query stuffs
 };
 
 class DoubleRange : public Field {
-  // TODO(0ctopus13prime): Implement it.
+ public:
+  static constexpr int32_t BYTES = sizeof(double);
+
+ private:
+  static FieldType GetType(const uint32_t dimensions) {
+    if (dimensions > 4) {
+      throw std::invalid_argument("DoubleRange does not support greater"
+                                  "than 4 dimensions");
+    }
+    
+    return FieldTypeBuilder()
+           .SetDimensions(dimensions * 2, DoubleRange::BYTES) 
+           .Build();
+  }
+
+  static void CheckArgs(const double* min,
+                        const double* max,
+                        const uint32_t length) {
+    if (min == nullptr || max == nullptr || length == 0) {
+      throw std::invalid_argument("min/max range values cannot be "
+                                  "null or empty");
+    }
+
+    if (length > 4) {
+      throw std::invalid_argument("DoubleRange does not support "
+                                  "greater than 4 dimensions");
+    }
+  }
+
+  static void Encode(const double val, char* bytes, const int32_t offset) {
+    lucene::core::util::numeric::NumericUtils::LongToSortableBytes(
+      lucene::core::util::numeric::NumericUtils::DoubleToSortableLong(val),
+      bytes, offset);
+  }
+
+  static void VerifyAndEncode(const double* min,
+                              const double* max,
+                              const uint32_t length,
+                              char* bytes) {
+    for (int32_t d = 0, i = 0, j = length * DoubleRange::BYTES
+         ; d < length
+         ; ++d, i += DoubleRange::BYTES, j += DoubleRange::BYTES) {
+      if (lucene::core::util::numeric::Double::IsNaN(min[d])) {
+        throw std::invalid_argument(std::string("Invalid min value(")
+                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + ") in DoubleRange");
+      }
+      if (lucene::core::util::numeric::Double::IsNaN(max[d])) {
+        throw std::invalid_argument(std::string("Invalid max value(")
+                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + ") in DoubleRange");
+      }
+      if (min[d] > max[d]) {
+        throw std::invalid_argument(std::string("Min value (")
+                                    + std::to_string(min[d])
+                                    + ") is greater than nax value ("
+                                    + std::to_string(max[d]) + ")");
+      }
+
+      DoubleRange::Encode(min[d], bytes, i);
+      DoubleRange::Encode(max[d], bytes, j);
+    }
+  }
+
+ public:
+  static double DecodeMin(char* bytes, const uint32_t dimension) {
+    const uint32_t offset = dimension * DoubleRange::BYTES; 
+    return lucene::core::util::numeric::NumericUtils::SortableLongToDouble(
+    lucene::core::util::numeric::NumericUtils::SortableBytesToLong(bytes,
+                                                                   offset));
+  }
+
+  static double DecodeMax(char* bytes, const uint32_t dimension) {
+    const uint32_t offset = (dimension >> 1) + DoubleRange::BYTES; 
+    return lucene::core::util::numeric::NumericUtils::SortableLongToDouble(
+    lucene::core::util::numeric::NumericUtils::SortableBytesToLong(bytes,
+                                                                   offset));
+  }
+
+  // TODO(0ctopus13prime): Implement Query stuffs
+
+ public:
+  DoubleRange(const std::string& name,
+              const double* min,
+              const double* max,
+              const uint32_t length)
+    : Field(name, GetType(length)) {
+    SetRangeValues(min, max, length);
+  }
+
+  void SetRangeValues(const double* min,
+                      const double* max,
+                      const uint32_t length) {
+    CheckArgs(min, max, length);
+    if (length * 2 != type.PointDimensionCount()) {
+      throw
+      std::invalid_argument(std::string("Field (name=")
+                            + name + ") uses "
+                            + std::to_string(type.PointDimensionCount() / 2)
+                            + " dimensions; cannot change to (incoming) "
+                            + std::to_string(length) + " dimensions");
+    }
+
+    if (!std::get_if<lucene::core::util::BytesRef>(&fields_data)) {
+      fields_data =
+      lucene::core::util::BytesRef(DoubleRange::BYTES * 2 * length);
+    }
+
+    lucene::core::util::BytesRef& bytes_ref = 
+      std::get<lucene::core::util::BytesRef>(fields_data);
+
+    DoubleRange::VerifyAndEncode(min,
+                                 max,
+                                 length,
+                                 bytes_ref.bytes.get());
+
+  }
+
+  double GetMin(const int32_t dimension) {
+    lucene::core::util::arrayutil::CheckIndex(dimension,
+                                              type.PointDimensionCount() / 2);
+
+    lucene::core::util::BytesRef& bytes_ref =
+      std::get<lucene::core::util::BytesRef>(fields_data);
+    return DoubleRange::DecodeMin(bytes_ref.bytes.get(), dimension);
+  }
+
+  double GetMax(const int32_t dimension) {
+    lucene::core::util::arrayutil::CheckIndex(dimension,
+                                              type.PointDimensionCount() / 2);
+    lucene::core::util::BytesRef& bytes_ref =
+      std::get<lucene::core::util::BytesRef>(fields_data);
+    return DoubleRange::DecodeMax(bytes_ref.bytes.get(), dimension);
+  }
 };
 
 class FloatPoint : public Field {
@@ -944,12 +1158,6 @@ class LongPoint : public Field {
 class LongRange : public Field {
   // TODO(0ctopus13prime): Implement it.
 };
-
-class LongRange : public Field {
-  // TODO(0ctopus13prime): Implement it.
-};
-
-
 
 }  // namespace document
 }  // namespace core

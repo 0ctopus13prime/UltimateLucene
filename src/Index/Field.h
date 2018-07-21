@@ -23,7 +23,7 @@
 #include <Analysis/TokenStream.h>
 #include <Index/DocValue.h>
 #include <Util/Bytes.h>
-#include <Util/Etc.h>
+#include <Util/Numeric.h>
 #include <optional>
 #include <string>
 
@@ -91,7 +91,7 @@ class IndexableField {
   virtual std::optional<std::reference_wrapper<std::string>> StringValue() = 0;
   virtual std::optional<std::reference_wrapper<lucene::core::analysis::Reader>>
     ReaderValue() = 0;
-  virtual std::optional<lucene::core::util::etc::Number> NumericValue() = 0;
+  virtual std::optional<lucene::core::util::numeric::Number> NumericValue() = 0;
 };
 
 }  // namespace index
