@@ -47,6 +47,10 @@ class FloatConsts {
 
 class Float {
  public:
+  static bool IsNaN(const float v) noexcept {
+    return (v != v);
+  }
+
   static int32_t FloatToIntBits(const float value) noexcept {
     const int32_t result = Float::FloatToRawIntBits(value);
     // Check for NaN based on values of bit fields, maximum
@@ -403,6 +407,27 @@ class NumericUtils {
   //                                          byte[] result, int offset) {
   // public static BigInteger sortableBytesToBigInt(byte[] encoded, int offset,
   //                                                int length) {
+
+  static float NextUp(const float f) noexcept {
+    if (Float::IsNaN(f) || f == FloatConsts::POSITIVE_INFINITY) {
+      return f;
+    } else {
+      float tmp = f + 0.0F;
+      return Float::IntBitsToFloat(Float::FloatToRawIntBits(tmp) + (tmp >= 0.0F ? 1 : -1));
+    }
+  }
+
+  static float NextDown(const float f) noexcept {
+    if (Float::IsNaN(f) || f == FloatConsts::NEGATIVE_INFINITY) {
+      return f;
+    } else {
+      if (f == 0.0F) {
+        return -FloatConsts::MIN_VALUE;
+      } else {
+        return Float::IntBitsToFloat(Float::FloatToRawIntBits(f) + (f >= 0.0F ? -1 : 1));
+      }
+    }
+  }
 };
 
 }  // namespace numeric 

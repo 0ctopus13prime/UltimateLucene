@@ -1136,7 +1136,106 @@ class DoubleRange : public Field {
 };
 
 class FloatPoint : public Field {
-  // TODO(0ctopus13prime): Implement it.
+ public:
+  static float NextUp(const float f) {
+    if (lucene::core::util::numeric::Float::FloatToIntBits(f)
+        == 0x80000000) {
+      return +0.0F;
+    }
+    return lucene::core::util::numeric::NumericUtils::NextUp(f);
+  }
+
+  static float NextDown(const float f) {
+    if (lucene::core::util::numeric::Float::FloatToIntBits(f)
+        == 0) {
+      return -0.0F;
+    }
+    return lucene::core::util::numeric::NumericUtils::NextDown(f);
+  }
+
+  static void EncodeDimension(const float value,
+                              char* dest,
+                              const uint32_t offset) {
+    lucene::core::util::numeric::NumericUtils::IntToSortableBytes(
+      lucene::core::util::numeric::NumericUtils::FloatToSortableInt(value),
+      dest, offset);
+  }
+
+  static float DecodeDimension(const char* value,
+                               const uint32_t offset) {
+    return lucene::core::util::numeric::NumericUtils::SortableIntToFloat(
+      lucene::core::util::numeric::NumericUtils::SortableBytesToInt(value,
+                                                                    offset));
+  }
+
+  // TODO(0ctopus13prime): Implement other Query stuffs
+
+ private:
+  static FieldType GetType(const uint32_t num_dims) {
+    return FieldTypeBuilder()
+           .SetDimensions(num_dims, sizeof(float))
+           .Build();
+  }
+
+  lucene::core::util::BytesRef
+  Pack(const float* points, const uint32_t length) {
+    if (points == nullptr) {
+      throw std::invalid_argument("Points must not be null");
+    }
+
+    if (length == 0) {
+      throw std::invalid_argument("Points must not be 0 dimensions");
+    }
+
+    uint32_t packed_size = length * sizeof(float);
+    char packed[packed_size];
+
+    for (uint32_t dim = 0 ; dim < length ; ++dim) {
+      FloatPoint::EncodeDimension(points[dim], packed, dim * sizeof(float));
+    }
+
+    return lucene::core::util::BytesRef(packed, packed_size);
+  }
+
+ public:
+  FloatPoint(const std::string& name,
+             const float* points,
+             const uint32_t length)
+    : Field(name,
+            FloatPoint::Pack(points, length),
+            FloatPoint::GetType(length)) {
+  }
+
+  void SetFloatValue(const float value) {
+    SetFloatValues(&value, 1);    
+  }
+
+  void SetFloatValues(const float* points,
+                      const uint32_t length) {
+    if (type.PointDimensionCount() != length) {
+      throw std::domain_error(std::string("This field (name=")
+                              + name + ") uses "
+                              + std::to_string(type.PointDimensionCount())
+                              + " dimensions; cannot change to (incoming) "
+                              + std::to_string(length)
+                              + " dimensions");
+    }
+
+    fields_data = FloatPoint::Pack(points, length);
+  }
+
+  void SetBytesValue(const lucene::core::util::BytesRef& value) {
+    throw std::invalid_argument("Cannot change value type "
+                                "from float to BytesRef");
+  }
+
+  std::optional<lucene::core::util::numeric::Number> NumericValue() noexcept {
+    lucene::core::util::BytesRef& bytes =
+    std::get<lucene::core::util::BytesRef>(fields_data);
+    lucene::core::util::numeric::Number number(FloatPoint::DecodeDimension(
+                                              bytes.bytes.get(), bytes.offset));
+    return number;
+  }
 };
 
 class FloatRange : public Field {
