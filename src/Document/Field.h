@@ -1239,23 +1239,457 @@ class FloatPoint : public Field {
 };
 
 class FloatRange : public Field {
-  // TODO(0ctopus13prime): Implement it.
+ private:
+  static FieldType GetType(const uint32_t dimensions) {
+    return FieldTypeBuilder()
+           .SetDimensions(dimensions * 2, sizeof(float))
+           .Build();
+  }
+
+  static void CheckArgs(const float* min,
+                        const float* max,
+                        const uint32_t length) {
+    if (min == nullptr
+        || max == nullptr
+        || length == 0) {
+      throw std::invalid_argument("Min/Max range values cannot "
+                                  "be null or empty");
+    }
+
+    if (length > 4) {
+      throw std::invalid_argument("FloatRange does not support greater "
+                                  "than 4 dimensions");
+    }
+  }
+
+  static void Encode(const float val, char* bytes, const uint32_t offset) {
+    lucene::core::util::numeric::NumericUtils::IntToSortableBytes(
+      lucene::core::util::numeric::NumericUtils::FloatToSortableInt(val),
+      bytes,
+      offset);
+  }
+
+  static void VerifyAndEncode(const float* min,
+                              const float* max,
+                              const uint32_t length,
+                              char* bytes) {
+    for (uint32_t d = 0, i = 0, j = length * sizeof(float)
+         ; d < length
+         ; ++d, i += sizeof(float), j += sizeof(float)) {
+      if (lucene::core::util::numeric::Double::IsNaN(min[d])) {
+        throw std::invalid_argument(std::string("Invalid min value (")
+                + std::to_string(lucene::core::util::numeric::FloatConsts::NaN)
+                + ") in FloatRange");
+      }
+      if (lucene::core::util::numeric::Double::IsNaN(max[d])) {
+        throw std::invalid_argument(std::string("Invalid max value (")
+                + std::to_string(lucene::core::util::numeric::FloatConsts::NaN)
+                + ") in FloatRange");
+      }
+      if (min[d] > max[d]) {
+        throw std::invalid_argument(std::string("Min value (")
+                                    + std::to_string(min[d])
+                                    + ") is greater than max value ("
+                                    + std::to_string(max[d])
+                                    + ")");
+      }
+      FloatRange::Encode(min[d], bytes, i);
+      FloatRange::Encode(max[d], bytes, j);
+    }
+  }
+  
+ public:
+  FloatRange(const std::string& name,
+             const float* min,
+             const float* max,
+             const uint32_t length)
+    : Field(name, FloatRange::GetType(length)) {
+    SetRangeValues(min, max, length);
+  }
+
+  void SetRangeValues(const float* min,
+                      const float* max,
+                      const uint32_t length) {
+    FloatRange::CheckArgs(min, max, length);
+    if (length * 2 != type.PointDimensionCount()) {
+      throw std::invalid_argument(std::string("Field (name=")
+                                + name + ") uses"
+                                + std::to_string(type.PointDimensionCount() / 2)
+                                + " dimensions; cannot change to (incoming) "
+                                + std::to_string(length)
+                                + " dimensions");
+    }
+
+    if (!std::get_if<lucene::core::util::BytesRef>(&fields_data)) {
+      fields_data = lucene::core::util::BytesRef(sizeof(float) * 2 * length); 
+    }
+
+    lucene::core::util::BytesRef& bytesref =
+    std::get<lucene::core::util::BytesRef>(fields_data);
+
+    FloatRange::VerifyAndEncode(min, max, length, bytesref.bytes.get());
+  }
+
+  // TODO(0ctopus13prime): Other Query stuffs are need to be implemented.
 };
 
 class IntPoint : public Field {
-  // TODO(0ctopus13prime): Implement it.
+ private:
+  static FieldType GetType(const uint32_t num_dims) {
+    return FieldTypeBuilder()
+           .SetDimensions(num_dims, sizeof(int32_t))
+           .Build();
+  }
+
+  static lucene::core::util::BytesRef Pack(const int32_t* points,
+                                           const uint32_t length) {
+    if (points == nullptr) {
+      throw std::invalid_argument("Point must not be null");
+    }
+    if (length == 0) {
+      throw std::invalid_argument("Point must not be 0 dimensions");
+    }
+
+    const uint32_t packed_size = length * sizeof(int32_t);
+    char packed[packed_size];
+
+    for (int32_t dim = 0 ; dim < length ; dim++) {
+      IntPoint::EncodeDimension(points[dim], packed, dim * sizeof(int32_t));
+    }
+
+    return lucene::core::util::BytesRef(packed, packed_size);
+  }
+
+ public:
+  static void EncodeDimension(const int32_t value,
+                              char* dest,
+                              const int32_t offset) {
+    lucene::core::util::numeric::NumericUtils::IntToSortableBytes(value,
+                                                                  dest,
+                                                                  offset);
+  }
+
+  static int32_t DecodeDimension(const char* value, const uint32_t offset) {
+    return
+    lucene::core::util::numeric::NumericUtils::SortableBytesToInt(value,
+                                                                  offset);
+  }
+
+ public:
+  IntPoint(const std::string& name, const int* points, const uint32_t length)
+    : Field(name, IntPoint::Pack(points, length), IntPoint::GetType(length)) {
+  }
+
+  void SetIntValue(const int32_t value) {
+    SetIntValues(&value, 1);
+  }
+
+  void SetIntValues(const int32_t* points, const uint32_t length) {
+    if (type.PointDimensionCount() != length) {
+      throw std::invalid_argument(std::string("This field (name=") + name
+                                  + ") uses "
+                                  + std::to_string(type.PointDimensionCount())
+                                  + " dimensions; cannot change to (incoming) "
+                                  + std::to_string(length) + " dimensions");
+    }
+
+    fields_data = IntPoint::Pack(points, length);
+  }
+
+  void SetBytesValue(const lucene::core::util::BytesRef&) {
+    throw
+    std::invalid_argument("Cannot change value type from int to BtyesRef");
+  }
+
+  std::optional<lucene::core::util::numeric::Number> NumericValue() noexcept {
+    lucene::core::util::BytesRef& bytesref =
+    std::get<lucene::core::util::BytesRef>(fields_data);
+    
+    return lucene::core::util::numeric::Number(
+    IntPoint::DecodeDimension(bytesref.bytes.get(), bytesref.offset));
+  }
 };
 
 class IntRange : public Field {
-  // TODO(0ctopus13prime): Implement it.
+ private:
+  static FieldType GetType(const int32_t dimensions) {
+    if (dimensions > 4) {
+      throw std::invalid_argument("IntRange does not support greater "
+                                  "than 4 dimensions");
+    }
+
+    return FieldTypeBuilder()
+           .SetDimensions(dimensions * 2, sizeof(int32_t))
+           .Build();
+  }
+
+  static void CheckArgs(const int32_t* min,
+                        const int32_t* max,
+                        const uint32_t length) {
+    if (min == nullptr
+        || max == nullptr
+        || length == 0) {
+      throw std::invalid_argument("Min/Max range values cannot "
+                                  "be null or empty");
+    }
+
+    if (length > 4) {
+      throw std::invalid_argument("IntRange does not support "
+                                  "greater than 4 dimensions");
+    }
+  }
+  
+  static void VerifyAndEncode(const int32_t* min,
+                              const int32_t* max,
+                              const uint32_t length,
+                              char* bytes) {
+    for (int32_t d = 0, i = 0, j = length * sizeof(int32_t)
+         ; d < length
+         ; ++d, i += sizeof(int32_t), j += sizeof(int32_t)) {
+      if (lucene::core::util::numeric::Double::IsNaN(min[d])) {
+        throw std::invalid_argument(std::string("Invalid min value (")
+                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + ") in IntRange");
+      }
+      if (lucene::core::util::numeric::Double::IsNaN(max[d])) {
+        throw std::invalid_argument(std::string("Invalid max value (")
+                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + ") in IntRange");
+      }
+      if (min[d] > max[d]) {
+        throw std::invalid_argument(std::string("Min value (")
+                                    + std::to_string(min[d])
+                                    + ") is greater than max value ("
+                                    + std::to_string(max[d])
+                                    + ")");
+      }
+
+      IntRange::Encode(min[d], bytes, i);
+      IntRange::Encode(max[d], bytes, j);
+    }
+  }
+
+  static void Encode(const int32_t val, char* bytes, const int32_t offset) {
+    lucene::core::util::numeric::NumericUtils::IntToSortableBytes(val,
+                                                                  bytes,
+                                                                  offset);
+  }
+
+ public:
+  IntRange(const std::string& name,
+           const int32_t* min,
+           const int32_t* max,
+           const uint32_t length)
+    : Field(name, IntRange::GetType(length)) {
+    SetRangeValues(min, max, length);
+  }
+
+  void SetRangeValues(const int32_t* min,
+                      const int32_t* max,
+                      const uint32_t length) {
+    IntRange::CheckArgs(min, max, length);
+
+    if (length * 2 != type.PointDimensionCount()) {
+      throw std::domain_error(std::string("Field (name=")
+                              + name + ") uses "
+                              + std::to_string(type.PointDimensionCount() / 2)
+                              + " dimension; cannot change to (incoming) "
+                              + std::to_string(length)
+                              + " dimensions");
+    }
+
+    if (!std::get_if<lucene::core::util::BytesRef>(&fields_data)) {
+      fields_data = lucene::core::util::BytesRef(sizeof(int32_t) * length);
+    }
+
+    lucene::core::util::BytesRef& bytesref =
+    std::get<lucene::core::util::BytesRef>(fields_data);
+
+    IntRange::VerifyAndEncode(min, max, length, bytesref.bytes.get());
+  }
+
+  // TODO(0ctopus13prime): Other Query stuffs are need to be implemented.
 };
 
 class LongPoint : public Field {
-  // TODO(0ctopus13prime): Implement it.
+ private: 
+  static FieldType GetType(const int32_t num_dims) {
+    return FieldTypeBuilder()
+           .SetDimensions(num_dims, sizeof(int64_t))
+           .Build();
+  }
+
+  static lucene::core::util::BytesRef
+  Pack(const int64_t* points, const uint32_t length) {
+    if (points == nullptr) {
+      throw std::invalid_argument("Point must not be null");
+    }
+
+    if (length == 0) {
+      throw std::invalid_argument("Point must not be 0 dimensions");
+    }
+
+    const uint32_t packed_size = length * sizeof(int64_t);
+    char packed[packed_size];
+
+    for (int32_t dim = 0 ; dim < length ; ++dim) {
+      LongPoint::EncodeDimension(points[dim], packed, dim * sizeof(int64_t));
+    }
+
+    return lucene::core::util::BytesRef(packed, packed_size);
+  }
+
+ public:
+  static void EncodeDimension(const int64_t value,
+                              char* dest,
+                              const int32_t offset) {
+    lucene::core::util::numeric::NumericUtils::LongToSortableBytes(value,
+                                                                   dest,
+                                                                   offset);
+  }
+
+  static int64_t DecodeDimension(char* value, const int32_t offset) {
+    lucene::core::util::numeric::NumericUtils::SortableBytesToLong(value,
+                                                                   offset);
+  }
+
+ public:
+  LongPoint(const std::string& name,
+            const int64_t* points,
+            const uint32_t length)
+    : Field(name, LongPoint::Pack(points, length), LongPoint::GetType(length)) {
+  }
+
+  void SetLongValue(const int64_t value) {
+    SetLongValues(&value, 1);
+  }
+
+  void SetLongValues(const int64_t* points, const int32_t length) {
+    if (type.PointDimensionCount() != length) {
+      throw std::invalid_argument(std::string("This field (name=")
+                                  + name + ") uses "
+                                  + std::to_string(type.PointDimensionCount())
+                                  + " dimensions; cannot change to (incoming) "
+                                  + std::to_string(length)
+                                  + " dimensions");
+    }
+
+    fields_data = LongPoint::Pack(points, length);
+  }
+
+  void SetBytesValue(const lucene::core::util::BytesRef&) {
+    throw std::invalid_argument("Cannot change value type from "
+                                "long to BytesRef");
+  }
+
+  std::optional<lucene::core::util::numeric::Number> NumericValue() noexcept {
+    lucene::core::util::BytesRef& bytesref =
+    std::get<lucene::core::util::BytesRef>(fields_data);
+
+    return lucene::core::util::numeric::Number(
+    LongPoint::DecodeDimension(bytesref.bytes.get(), bytesref.offset));
+  }
+
+  // TODO(0ctopus13prime): Other Query stuffs are need to be implemented.
 };
 
 class LongRange : public Field {
-  // TODO(0ctopus13prime): Implement it.
+ private:
+  static FieldType GetType(const int32_t dimensions) {
+    return FieldTypeBuilder()
+           .SetDimensions(dimensions * 2, sizeof(int64_t))
+           .Build();
+  }
+
+  static void CheckArgs(const int64_t* min,
+                        const int64_t* max,
+                        const int32_t length) {
+    
+    if (min == nullptr
+        || max == nullptr
+        || length == 0) {
+      throw std::invalid_argument("Min/Max range values cannot "
+                                  "be null or empty");
+    }
+
+    if (length > 4) {
+      throw std::invalid_argument("LongRange does not support greater than "
+                                  " 4 dimensions");
+    }
+  }
+
+  static void Encode(const int64_t val,
+                     char* bytes,
+                     const int32_t offset) {
+    lucene::core::util::numeric::NumericUtils::LongToSortableBytes(val,
+                                                                   bytes,
+                                                                   offset);
+  }
+
+  static void VerifyAndEncode(const int64_t* min,
+                              const int64_t* max,
+                              const int32_t length,
+                              char* bytes) {
+    for (int32_t d = 0, i = 0, j = length * sizeof(int64_t)
+         ; d < length
+         ; ++d, i += sizeof(int64_t), j += sizeof(int64_t)) {
+      if (lucene::core::util::numeric::Double::IsNaN(min[d])) {
+        throw std::invalid_argument(std::string("Invalid min value (")
+                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + ") in LongRange");
+      }
+      if (lucene::core::util::numeric::Double::IsNaN(max[d])) {
+        throw std::invalid_argument(std::string("Invalid max value (")
+                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + ") in LongRange");
+      }
+      if (min[d] > max[d]) {
+        throw std::invalid_argument(std::string("Min value (")
+                                    + std::to_string(min[d])
+                                    + ") is greater than max value ("
+                                    + std::to_string(max[d])
+                                    + ")");
+      }
+
+      LongRange::Encode(min[d], bytes, i);
+      LongRange::Encode(max[d], bytes, j);
+    }
+  }
+
+ public:
+  LongRange(const std::string name,
+            const int64_t* min,
+            const int64_t* max,
+            const int32_t length)
+    : Field(name, LongRange::GetType(length)) {
+    SetRangeValues(min, max, length);
+  }
+
+  void SetRangeValues(const int64_t* min,
+                      const int64_t* max,
+                      const int32_t length) {
+    LongRange::CheckArgs(min, max, length); 
+
+    if (length * 2 != type.PointDimensionCount()) {
+      throw std::invalid_argument(std::string("Field (name=")
+                                + name + ") uses "
+                                + std::to_string(type.PointDimensionCount() / 2)
+                                + " dimensions; cannot change to (incoming) "
+                                + std::to_string(length)
+                                + " dimensions");
+
+    }
+
+    if (!std::get_if<lucene::core::util::BytesRef>(&fields_data)) {
+      fields_data = lucene::core::util::BytesRef(sizeof(int64_t) * length);
+    }
+
+    lucene::core::util::BytesRef& bytesref =
+    std::get<lucene::core::util::BytesRef>(fields_data);
+    LongRange::VerifyAndEncode(min, max, length, bytesref.bytes.get());
+  }
+
+  // TODO(0ctopus13prime): Other Query stuffs are need to be implemented.
 };
 
 }  // namespace document
