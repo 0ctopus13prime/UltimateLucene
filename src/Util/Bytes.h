@@ -48,12 +48,14 @@ class BytesRef {
            const uint32_t length,
            const uint32_t capacity);
   BytesRef(const char* bytes, const uint32_t capacity);
-  BytesRef(const BytesRef& other);
+  BytesRef(const BytesRef& source);
+  BytesRef(BytesRef&& source);
   explicit BytesRef(const uint32_t capacity);
   explicit BytesRef(const std::string& text);
   ~BytesRef();
   void ShallowCopyTo(BytesRef& target);
   BytesRef& operator=(const BytesRef& other);
+  BytesRef& operator=(BytesRef&& other);
   bool operator==(const BytesRef& other) const;
   bool operator!=(const BytesRef& other) const;
   bool operator<(const BytesRef& other) const;

@@ -48,6 +48,18 @@ BytesRef::BytesRef(const BytesRef& source)
              source.capacity) {
 }
 
+BytesRef::BytesRef(BytesRef&& source)
+  : offset(source.offset),
+    length(source.length),
+    capacity(source.capacity) {
+  if (source.bytes != BytesRef::DEFAULT_BYTES) {
+    bytes = std::move(source.bytes); 
+  } else {
+    bytes.reset(new char[source.capacity]);
+  }
+}
+
+
 BytesRef::BytesRef(const char* new_bytes,
                    const uint32_t new_offset,
                    const uint32_t new_length)
@@ -152,6 +164,22 @@ BytesRef& BytesRef::operator=(const BytesRef& source) {
         arrayutil::CopyOfRange(source.bytes.get(), offset, offset + length);
       bytes.reset(new_byte_arr);
     }
+  }
+
+  return *this;
+}
+
+BytesRef& BytesRef::operator=(BytesRef&& source) {
+  if (this != &source) {
+    if (source.bytes != BytesRef::DEFAULT_BYTES) {
+      bytes = std::move(source.bytes); 
+    } else {
+      bytes.reset(new char[source.capacity]);
+    }
+
+    offset = source.offset;
+    length = source.length;
+    capacity = source.capacity;
   }
 
   return *this;

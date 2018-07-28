@@ -19,6 +19,7 @@
 #define SRC_UTIL_NUMERIC_H_
 
 #include <cmath>
+#include <limits>
 #include <stdexcept>
 #include <string>
 
@@ -27,11 +28,26 @@ namespace core {
 namespace util {
 namespace numeric {
 
+typedef union {
+  int16_t int16;
+  char bytes[2];
+} Int16AndBytes;
+
+typedef union {
+  int32_t int32;
+  char bytes[4];
+} Int32AndBytes;
+
+typedef union {
+  int64_t int64;
+  char bytes[8];
+} Int64AndBytes;
+
 class FloatConsts {
  public:
   static const float POSITIVE_INFINITY; // 1.0F / 0.0
   static const float NEGATIVE_INFINITY; // -1.0F / 0.0;
-  static const float NaN; // 0.0F / 0.0;
+  static const float NaN; // Quiet NaN
   static const float MAX_VALUE; // 3.4028235E38F;
   static const float MIN_VALUE; // 1.4E-45F;
   static const float MIN_NORMAL; // 1.17549435E-38F;
@@ -48,7 +64,7 @@ class FloatConsts {
 class Float {
  public:
   static bool IsNaN(const float v) noexcept {
-    return (v != v);
+    return std::isnan(v);
   }
 
   static int32_t FloatToIntBits(const float value) noexcept {
@@ -90,7 +106,7 @@ class DoubleConsts {
  public:
   static const double POSITIVE_INFINITY; // 1.0D / 0.0;
   static const double NEGATIVE_INFINITY; // -1.0D / 0.0;
-  static const double NaN; // 0.0D / 0.0;
+  static const double NaN; // Quiet NaN
   static const double MAX_VALUE; // 1.7976931348623157E308D;
   static const double MIN_VALUE; // 4.9E-324D;
   static const double MIN_NORMAL; // 2.2250738585072014E-308D;
@@ -108,15 +124,6 @@ class Double {
  public:
   static bool IsNaN(const double v) noexcept {
     return (v != v);
-  }
-
-  static bool IsInfinite(const double v) noexcept {
-    return (v == DoubleConsts::POSITIVE_INFINITY)
-           || (v == DoubleConsts::NEGATIVE_INFINITY);
-  }
-
-  static bool IsFinite(const double v) noexcept {
-    return std::abs(v) <= DoubleConsts::MAX_VALUE;
   }
 
   static int64_t DoubleToRawLongBits(const double value) noexcept {
@@ -272,24 +279,77 @@ class NumericUtils {
   }
 
   static int64_t SortableDoubleBits(const int64_t bits) noexcept {
-    return bits ^ ((bits >> 63) & 0x7FFFFFFFFFFFFFFF);
+    return bits ^ ((bits >> 63) & 0x7FFFFFFFFFFFFFFFL);
   }
 
   static int32_t SortableFloatBits(const int32_t bits) noexcept {
     return bits ^ ((bits >> 31) & 0x7FFFFFFF);
   }
 
-  static void Subtract(const int32_t bytes_per_dim,
-                       const int32_t dim,
-                       const char* a,
-                       const char* b,
-                       char* result) {
-    const int32_t start = dim * bytes_per_dim;
+  static void Substract4Bytes(const uint32_t dim_idx,
+                              const char* dimension1,
+                              const char* dimension2,
+                              char* result) {
+    const int32_t start = dim_idx * 4;
+    const int32_t end = start + 4;
+    int32_t num1, num2;
+    Int32AndBytes iab;
+
+    #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    iab.bytes[0] = dimension1[start + 3];
+    iab.bytes[1] = dimension1[start + 2];
+    iab.bytes[2] = dimension1[start + 1];
+    iab.bytes[3] = dimension1[start];
+    num1 = iab.int32;
+
+    iab.bytes[0] = dimension2[start + 3];
+    iab.bytes[1] = dimension2[start + 2];
+    iab.bytes[2] = dimension2[start + 1];
+    iab.bytes[3] = dimension2[start];
+    num2 = iab.int32;
+    #else
+    iab.bytes[0] = dimension1[start];
+    iab.bytes[1] = dimension1[start + 1];
+    iab.bytes[2] = dimension1[start + 2];
+    iab.bytes[3] = dimension1[start + 3];
+    num1 = iab.int32;
+
+    iab.bytes[0] = dimension2[start];
+    iab.bytes[1] = dimension2[start + 1];
+    iab.bytes[2] = dimension2[start + 2];
+    iab.bytes[3] = dimension2[start + 3];
+    num2 = iab.int32;
+    #endif
+
+    if (num1 < num2) {
+      throw std::invalid_argument("Substract error in NumericUtils. a < b");
+    }
+
+    iab.int32 = num1 - num2;
+    #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    result[0] = iab.bytes[3];
+    result[1] = iab.bytes[2];
+    result[2] = iab.bytes[1];
+    result[3] = iab.bytes[0];
+    #else
+    result[0] = iab.bytes[0];
+    result[1] = iab.bytes[1];
+    result[2] = iab.bytes[2];
+    result[3] = iab.bytes[3];
+    #endif
+  }
+
+  static void Substract(const uint32_t bytes_per_dim,
+                        const uint32_t dim_idx,
+                        const char* dimensions1,
+                        const char* dimensions2,
+                        char* result) {
+    const int32_t start = dim_idx * bytes_per_dim;
     const int32_t end = start + bytes_per_dim;
     int32_t borrow = 0;
 
     for (int32_t i = end - 1 ; i >= start ; --i) {
-      int32_t diff = (a[i] & 0xFF) - (b[i] & 0xFF) - borrow;
+      int32_t diff = (dimensions1[i] & 0xFF) - (dimensions2[i] & 0xFF) - borrow;
 
       if (diff < 0) {
         diff += 256;
@@ -298,7 +358,7 @@ class NumericUtils {
         borrow = 0;
       }
 
-      result[i - start] = (char) diff;
+      result[i - start] = static_cast<char>(diff);
     }
 
     if (borrow != 0) {
@@ -306,8 +366,8 @@ class NumericUtils {
     }
   }
 
-  static void Add(const int32_t bytes_per_dim,
-                  const int32_t dim,
+  static void Add(const uint32_t bytes_per_dim,
+                  const uint32_t dim,
                   const char* a,
                   const char* b,
                   char* result) {
@@ -315,7 +375,7 @@ class NumericUtils {
     const int32_t end = start + bytes_per_dim;
     int32_t carry = 0;
 
-    for (int32_t i = end - 1 ; i > start ; --i) {
+    for (int32_t i = end - 1 ; i >= start ; --i) {
       int32_t digit_sum = (a[i] & 0xFF) + (b[i] & 0xFF) + carry;
 
       if (digit_sum > 255) {
@@ -325,7 +385,7 @@ class NumericUtils {
         carry = 0;
       }
 
-      result[i - start] = (char) digit_sum;
+      result[i - start] = static_cast<char>(digit_sum);
     }
 
     if (carry != 0) {
@@ -338,68 +398,101 @@ class NumericUtils {
   static void IntToSortableBytes(const int32_t value,
                                  char* result,
                                  const int32_t offset) noexcept {
-    // TODO(0ctopus13prime): Can we make this simpler?
-    // Without considering an endian issue, this can be done easily
-    // just mapping char array into int64_t. Ex) *((int64_t*)(encoded))
-
     // Flip the sign bit, so negative ints sort before positive ints correctly 
     const int32_t fliped_value = value ^ 0x80000000;
-    result[offset] = (char) (fliped_value >> 24);
-    result[offset + 1] = (char) (fliped_value >> 16);
-    result[offset + 2] = (char) (fliped_value >> 8);
-    result[offset + 3] = (char) fliped_value;
+    Int32AndBytes iab;
+    iab.int32 = fliped_value;
+    char* dest = result + offset;
+
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    dest[0] = iab.bytes[3];
+    dest[1] = iab.bytes[2];
+    dest[2] = iab.bytes[1];
+    dest[3] = iab.bytes[0];
+#else
+    dest[0] = iab.bytes[0];
+    dest[1] = iab.bytes[1];
+    dest[2] = iab.bytes[2];
+    dest[3] = iab.bytes[3];
+#endif
   }
 
   static int32_t SortableBytesToInt(const char* encoded,
                                     const int32_t offset) noexcept {
-    // TODO(0ctopus13prime): Can we make this simpler?
-    // Without considering an endian issue, this can be done easily
-    // just mapping char array into int64_t. Ex) *((int64_t*)(encoded))
+    Int32AndBytes iab;
+    const char* source = encoded + offset;
 
-    const int32_t x = ((encoded[offset] & 0xFF) << 24) | 
-                      ((encoded[offset + 1] & 0xFF) << 16) |
-                      ((encoded[offset + 2] & 0xFF) <<  8) | 
-                      (encoded[offset + 3] & 0xFF);
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    iab.bytes[0] = source[3];
+    iab.bytes[1] = source[2];
+    iab.bytes[2] = source[1];
+    iab.bytes[3] = source[0];
+#else
+    iab.bytes[0] = source[0];
+    iab.bytes[1] = source[1];
+    iab.bytes[2] = source[2];
+    iab.bytes[3] = source[3];
+#endif
 
     // Re-flip the sign bit to restore the original value
-    return (x ^ 0x80000000);
+    return (iab.int32 ^ 0x80000000);
   }
 
   static void LongToSortableBytes(const int64_t value,
-                                  char* result,
-                                  const int32_t offset) noexcept {
-    // TODO(0ctopus13prime): Can we make this simpler?
-    // Without considering an endian issue, this can be done easily
-    // just mapping char array into int64_t. Ex) *((int64_t*)(encoded))
+                                  char result[],
+                                  const uint32_t offset) noexcept {
+    // Flip the sign bit, so negative ints sort before positive ints correctly 
+    Int64AndBytes iab;
+    iab.int64 = value ^ 0x8000000000000000L;
+    char* dest = result + offset;
 
-    // Flip the sign bit so negative longs sort before positive longs:
-    const int64_t fliped_value = value ^ 0x8000000000000000L;
-    result[offset] =   (char) (fliped_value >> 56);
-    result[offset + 1] = (char) (fliped_value >> 48);
-    result[offset + 2] = (char) (fliped_value >> 40);
-    result[offset + 3] = (char) (fliped_value >> 32);
-    result[offset + 4] = (char) (fliped_value >> 24);
-    result[offset + 5] = (char) (fliped_value >> 16);
-    result[offset + 6] = (char) (fliped_value >> 8);
-    result[offset + 7] = (char) fliped_value;
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    dest[0] = iab.bytes[7];
+    dest[1] = iab.bytes[6];
+    dest[2] = iab.bytes[5];
+    dest[3] = iab.bytes[4];
+    dest[4] = iab.bytes[3];
+    dest[5] = iab.bytes[2];
+    dest[6] = iab.bytes[1];
+    dest[7] = iab.bytes[0];
+#else
+    dest[0] = iab.bytes[0];
+    dest[1] = iab.bytes[1];
+    dest[2] = iab.bytes[2];
+    dest[3] = iab.bytes[3];
+    dest[4] = iab.bytes[4];
+    dest[5] = iab.bytes[5];
+    dest[6] = iab.bytes[6];
+    dest[7] = iab.bytes[7];
+#endif
   }
 
-  // public static long sortableBytesToLong(byte[] encoded, int offset) {
   static int64_t SortableBytesToLong(const char* encoded,
                                      const int32_t offset) noexcept {
-    // TODO(0ctopus13prime): Can we make this simpler?
-    // Without considering an endian issue, this can be done easily
-    // just mapping char array into int64_t. Ex) *((int64_t*)(encoded))
-    const int64_t v = ((encoded[offset] & 0xFFL) << 56)   |
-                      ((encoded[offset + 1] & 0xFFL) << 48) |
-                      ((encoded[offset + 2] & 0xFFL) << 40) |
-                      ((encoded[offset + 3] & 0xFFL) << 32) |
-                      ((encoded[offset + 4] & 0xFFL) << 24) |
-                      ((encoded[offset + 5] & 0xFFL) << 16) |
-                      ((encoded[offset + 6] & 0xFFL) << 8)  |
-                      (encoded[offset + 7] & 0xFFL);
-    // Flip the sign bit back
-    return (v ^ 0x8000000000000000L);
+    Int64AndBytes iab;
+    const char* source = encoded + offset;
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    iab.bytes[0] = source[7];
+    iab.bytes[1] = source[6];
+    iab.bytes[2] = source[5];
+    iab.bytes[3] = source[4];
+    iab.bytes[4] = source[3];
+    iab.bytes[5] = source[2];
+    iab.bytes[6] = source[1];
+    iab.bytes[7] = source[0];
+#else
+    iab.bytes[0] = source[0];
+    iab.bytes[1] = source[1];
+    iab.bytes[2] = source[2];
+    iab.bytes[3] = source[3];
+    iab.bytes[4] = source[4];
+    iab.bytes[5] = source[5];
+    iab.bytes[6] = source[6];
+    iab.bytes[7] = source[7];
+#endif
+
+    // Re-flip the sign bit to restore the original value
+    return (iab.int64 ^ 0x8000000000000000L);
   }
 
   // TODO(0ctopus13prime): Implement below functions
@@ -408,23 +501,48 @@ class NumericUtils {
   // public static BigInteger sortableBytesToBigInt(byte[] encoded, int offset,
   //                                                int length) {
 
-  static float NextUp(const float f) noexcept {
+  static float FloatNextUp(const float f) noexcept {
     if (Float::IsNaN(f) || f == FloatConsts::POSITIVE_INFINITY) {
       return f;
     } else {
       float tmp = f + 0.0F;
-      return Float::IntBitsToFloat(Float::FloatToRawIntBits(tmp) + (tmp >= 0.0F ? 1 : -1));
+      return Float::IntBitsToFloat(Float::FloatToRawIntBits(tmp)
+             + (tmp >= 0.0F ? 1 : -1));
     }
   }
 
-  static float NextDown(const float f) noexcept {
+  static float FloatNextDown(const float f) noexcept {
     if (Float::IsNaN(f) || f == FloatConsts::NEGATIVE_INFINITY) {
       return f;
     } else {
       if (f == 0.0F) {
         return -FloatConsts::MIN_VALUE;
       } else {
-        return Float::IntBitsToFloat(Float::FloatToRawIntBits(f) + (f >= 0.0F ? -1 : 1));
+        return Float::IntBitsToFloat(Float::FloatToRawIntBits(f)
+               + (f > 0.0F ? -1 : 1));
+      }
+    }
+  }
+
+  static double DoubleNextUp(const double d) noexcept {
+    if (Double::IsNaN(d) || d == DoubleConsts::POSITIVE_INFINITY) {
+      return d;
+    } else {
+      double tmp = d + 0.0D;
+      return Double::LongBitsToDouble(Double::DoubleToRawLongBits(tmp)
+             + (tmp >= 0.0F ? 1 : -1));
+    }
+  }
+
+  static float DoubleNextDown(const double d) noexcept {
+    if (Double::IsNaN(d) || d == DoubleConsts::NEGATIVE_INFINITY) {
+      return d;
+    } else {
+      if (d == 0.0D) {
+        return -DoubleConsts::MIN_VALUE;
+      } else {
+        return Double::LongBitsToDouble(Double::DoubleToRawLongBits(d)
+               + (d > 0.0D ? -1 : 1));
       }
     }
   }
