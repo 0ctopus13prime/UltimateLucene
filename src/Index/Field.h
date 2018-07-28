@@ -62,38 +62,6 @@ enum class IndexOptions {
   DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS
 };
 
-class IndexableFieldType {
- public:
-  virtual ~IndexableFieldType() { }
-  virtual bool Stored() const = 0;
-  virtual bool Tokenized() const = 0;
-  virtual bool StoreTermVectors() const = 0;
-  virtual bool StoreTermVectorOffsets() const = 0;
-  virtual bool StoreTermVectorPositions() const = 0;
-  virtual bool StoreTermVectorPayloads() const = 0;
-  virtual bool OmitNorms() const = 0;
-  virtual IndexOptions GetIndexOptions() const = 0;
-  virtual DocValuesType GetDocValuesType() const = 0;
-  virtual uint32_t PointDimensionCount() const = 0;
-  virtual uint32_t PointNumBytes() const = 0;
-};
-
-class IndexableField {
- public:
-  virtual ~IndexableField() { }
-  virtual const std::string& Name() = 0;
-  virtual const IndexableFieldType& GetFieldType() = 0;
-  virtual lucene::core::analysis::TokenStream*
-    GetTokenStream(lucene::core::analysis::Analyzer& analyzer,
-                lucene::core::analysis::TokenStream& reuse) = 0;
-  virtual std::optional<std::reference_wrapper<lucene::core::util::BytesRef>>
-    BinaryValue() = 0;
-  virtual std::optional<std::reference_wrapper<std::string>> StringValue() = 0;
-  virtual std::optional<std::reference_wrapper<lucene::core::analysis::Reader>>
-    ReaderValue() = 0;
-  virtual std::optional<lucene::core::util::numeric::Number> NumericValue() = 0;
-};
-
 }  // namespace index
 }  // namespace core
 }  // namespace lucene
