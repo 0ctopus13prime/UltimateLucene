@@ -44,7 +44,7 @@ using lucene::core::document::LongRange;
 
 TEST(FIELD__TESTS, BASIC__TEST) {
   {
-    StringReader* reader = new StringReader(); 
+    StringReader* reader = new StringReader();
 
     std::string value("field value");
     reader->SetValue(value);
@@ -101,7 +101,7 @@ TEST(FIELD__TESTS, BASIC__TEST) {
 
     auto opt = field.BinaryValue();
     if (opt) {
-      BytesRef& got_bytesref = *opt; 
+      BytesRef& got_bytesref = *opt;
       ASSERT_EQ(bytesref, got_bytesref);
     } else {
       FAIL();
@@ -117,7 +117,7 @@ TEST(FIELD__TESTS, BINARY__POINT__TEST) {
     {0x01, 0x12}
   };
 
-  BinaryPoint bp(name, &points[0][0], 3, 2); 
+  BinaryPoint bp(name, &points[0][0], 3, 2);
   auto opt = bp.BinaryValue();
   if (opt) {
     BytesRef& got = *opt;
@@ -178,7 +178,7 @@ TEST(FIELD__TESTS, FLOAT__POINT__TEST) {
   {
     float f = 123.456F;
     FloatPoint fp(name, &f, 1);
-    
+
     auto nv_opt = fp.NumericValue();
     if (nv_opt) {
       Number& number = *nv_opt;
@@ -191,9 +191,9 @@ TEST(FIELD__TESTS, FLOAT__POINT__TEST) {
   {
     float points[3] = { 12.3F, 45.123F, 101.12F };
     FloatPoint fp(name, points, 3);
-    auto opt = fp.BinaryValue(); 
+    auto opt = fp.BinaryValue();
     if (opt) {
-      BytesRef& bytes_ref = *opt; 
+      BytesRef& bytes_ref = *opt;
       ASSERT_EQ(3 * sizeof(float), bytes_ref.length);
 
       float got = FloatPoint::DecodeDimension(bytes_ref.bytes.get(),
@@ -222,7 +222,7 @@ TEST(FIELD__TESTS, FLOAT__RANGE__TEST) {
 TEST(FIELD__TESTS, INT__POINT__TEST) {
   std::string name("field_name");
   {
-    int32_t points[3] = { 12, 34, 5678910 }; 
+    int32_t points[3] = { 12, 34, 5678910 };
     IntPoint ip(name, points, 3);
     auto opt = ip.BinaryValue();
     if (opt) {
@@ -257,7 +257,7 @@ TEST(FIELD__TESTS, INT__RANGE__TEST) {
 
   {
     int32_t min[3] = {
-      13, 45, 66 
+      13, 45, 66
     };
 
     int32_t max[3] = {
@@ -275,7 +275,7 @@ TEST(FIELD__TESTS, INT__RANGE__TEST) {
 TEST(FIELD__TESTS, LONG__POINT__TEST) {
   std::string name("field_name");
   {
-    int64_t points[3] = { 12L, 34L, 5678910L }; 
+    int64_t points[3] = { 12L, 34L, 5678910L };
     LongPoint lp(name, points, 3);
     auto opt = lp.BinaryValue();
     if (opt) {

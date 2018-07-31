@@ -45,20 +45,20 @@ typedef union {
 
 class FloatConsts {
  public:
-  static const float POSITIVE_INFINITY; // 1.0F / 0.0
-  static const float NEGATIVE_INFINITY; // -1.0F / 0.0;
-  static const float NaN; // Quiet NaN
-  static const float MAX_VALUE; // 3.4028235E38F;
-  static const float MIN_VALUE; // 1.4E-45F;
-  static const float MIN_NORMAL; // 1.17549435E-38F;
-  static const int32_t SIGNIFICAND_WIDTH; // 24;
-  static const int32_t MAX_EXPONENT; // 127;
-  static const int32_t MIN_EXPONENT; // -126;
-  static const int32_t MIN_SUB_EXPONENT; // -149;
-  static const int32_t EXP_BIAS; // 127;
-  static const int32_t SIGN_BIT_MASK; // -2147483648;
-  static const int32_t EXP_BIT_MASK; // 2139095040;
-  static const int32_t SIGNIF_BIT_MASK; // 8388607;  
+  static const float POSITIVE_INFINITY;  // 1.0F / 0.0
+  static const float NEGATIVE_INFINITY;  // -1.0F / 0.0;
+  static const float NaN;  // Quiet NaN
+  static const float MAX_VALUE;  // 3.4028235E38F;
+  static const float MIN_VALUE;  // 1.4E-45F;
+  static const float MIN_NORMAL;  // 1.17549435E-38F;
+  static const int32_t SIGNIFICAND_WIDTH;  // 24;
+  static const int32_t MAX_EXPONENT;  // 127;
+  static const int32_t MIN_EXPONENT;  // -126;
+  static const int32_t MIN_SUB_EXPONENT;  // -149;
+  static const int32_t EXP_BIAS;  // 127;
+  static const int32_t SIGN_BIT_MASK;  // -2147483648;
+  static const int32_t EXP_BIT_MASK;  // 2139095040;
+  static const int32_t SIGNIF_BIT_MASK;  // 8388607;
 };
 
 class Float {
@@ -98,26 +98,26 @@ class Float {
     } u;
 
     u.i = (int64_t) value;
-    return u.f; 
+    return u.f;
   }
 };
 
 class DoubleConsts {
  public:
-  static const double POSITIVE_INFINITY; // 1.0D / 0.0;
-  static const double NEGATIVE_INFINITY; // -1.0D / 0.0;
-  static const double NaN; // Quiet NaN
-  static const double MAX_VALUE; // 1.7976931348623157E308D;
-  static const double MIN_VALUE; // 4.9E-324D;
-  static const double MIN_NORMAL; // 2.2250738585072014E-308D;
-  static const int32_t SIGNIFICAND_WIDTH; // 53;
-  static const int32_t MAX_EXPONENT; // 1023;
-  static const int32_t MIN_EXPONENT; // -1022;
-  static const int32_t MIN_SUB_EXPONENT; // -1074;
-  static const int32_t EXP_BIAS; // 1023;
-  static const int64_t SIGN_BIT_MASK; // -9223372036854775808L;
-  static const int64_t EXP_BIT_MASK; // 9218868437227405312L;
-  static const int64_t SIGNIF_BIT_MASK; // 4503599627370495L;
+  static const double POSITIVE_INFINITY;  // 1.0D / 0.0;
+  static const double NEGATIVE_INFINITY;  // -1.0D / 0.0;
+  static const double NaN;  // Quiet NaN
+  static const double MAX_VALUE;  // 1.7976931348623157E308D;
+  static const double MIN_VALUE;  // 4.9E-324D;
+  static const double MIN_NORMAL;  // 2.2250738585072014E-308D;
+  static const int32_t SIGNIFICAND_WIDTH;  // 53;
+  static const int32_t MAX_EXPONENT;  // 1023;
+  static const int32_t MIN_EXPONENT;  // -1022;
+  static const int32_t MIN_SUB_EXPONENT;  // -1074;
+  static const int32_t EXP_BIAS;  // 1023;
+  static const int64_t SIGN_BIT_MASK;  // -9223372036854775808L;
+  static const int64_t EXP_BIT_MASK;  // 9218868437227405312L;
+  static const int64_t SIGNIF_BIT_MASK;  // 4503599627370495L;
 };
 
 class Double {
@@ -155,7 +155,7 @@ class Double {
     if (((result & DoubleConsts::EXP_BIT_MASK) == DoubleConsts::EXP_BIT_MASK)
          && (result & DoubleConsts::SIGNIF_BIT_MASK) != 0L) {
       return 0x7ff8000000000000L;
-    } 
+    }
 
     return result;
   }
@@ -398,7 +398,7 @@ class NumericUtils {
   static void IntToSortableBytes(const int32_t value,
                                  char* result,
                                  const int32_t offset) noexcept {
-    // Flip the sign bit, so negative ints sort before positive ints correctly 
+    // Flip the sign bit, so negative ints sort before positive ints correctly
     const int32_t fliped_value = value ^ 0x80000000;
     Int32AndBytes iab;
     iab.int32 = fliped_value;
@@ -441,7 +441,7 @@ class NumericUtils {
   static void LongToSortableBytes(const int64_t value,
                                   char result[],
                                   const uint32_t offset) noexcept {
-    // Flip the sign bit, so negative ints sort before positive ints correctly 
+    // Flip the sign bit, so negative ints sort before positive ints correctly
     Int64AndBytes iab;
     iab.int64 = value ^ 0x8000000000000000L;
     char* dest = result + offset;
@@ -548,7 +548,7 @@ class NumericUtils {
   }
 };
 
-}  // namespace numeric 
+}  // namespace numeric
 }  // namespace util
 }  // namespace core
 }  // namespace lucene

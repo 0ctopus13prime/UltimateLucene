@@ -1,13 +1,28 @@
+/*
+ *
+ * Copyright (c) 2018-2019 Doo Yong Kim. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 #ifndef SRC_DOCUMENT_DOCUMENT_H_
 #define SRC_DOCUMENT_DOCUMENT_H_
 
-// TEST
-#include <iostream>
-
 #include <Document/Field.h>
-#include <algorithm>
 #include <optional>
+#include <algorithm>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace lucene {
@@ -20,7 +35,7 @@ class Document {
   std::vector<lucene::core::document::Field> fields;
 
  public:
-  Document(uint32_t capacity = 5)
+  explicit Document(uint32_t capacity = 5)
     : fields() {
     fields.reserve(capacity);
   }
@@ -45,7 +60,7 @@ class Document {
     auto it = std::remove_if(fields.begin(),
                              fields.end(),
                              [&name](lucene::core::document::Field& field){
-                               return field.Name() == name; 
+                               return field.Name() == name;
                              });
 
     if (it != fields.end()) {
@@ -58,7 +73,7 @@ class Document {
       std::remove_if(fields.begin(),
                      fields.end(),
                      [&name](lucene::core::document::Field& field){
-                       return field.Name() == name; 
+                       return field.Name() == name;
                      }),
       fields.end());
   }
@@ -155,4 +170,4 @@ class Document {
 }  // namespace core
 }  // namespace lucene
 
-#endif // SRC_DOCUMENT_DOCUMENT_H_
+#endif  // SRC_DOCUMENT_DOCUMENT_H_

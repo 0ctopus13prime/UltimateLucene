@@ -15,8 +15,8 @@
  *
  */
 
-#include <gtest/gtest.h>
 #include <Util/Etc.h>
+#include <gtest/gtest.h>
 #include <string>
 
 using lucene::core::util::etc::Version;

@@ -1,0 +1,144 @@
+\hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint}{}\section{lucene\+:\+:core\+:\+:document\+:\+:Float\+Point Class Reference}
+\label{classlucene_1_1core_1_1document_1_1FloatPoint}\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+
+
+{\ttfamily \#include $<$Field.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:document\+:\+:Float\+Point\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1document_1_1FloatPoint}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_a5ea967634ff73cdde9915e722bc823fc}{Float\+Point}} (const std\+::string \&\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a52f673f3b3abb14b180f5159f4726537}{name}}, const float points\mbox{[}$\,$\mbox{]}, const uint32\+\_\+t length)
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_af7445c4ea46294911dce52ae13d4b62a}{$\sim$\+Float\+Point}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_a4e1f81bce5f905e267a32c4882faf90e}{Set\+Float\+Value}} (const float value)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_a37fb83ede21d310e7bda0cbd072650b4}{Set\+Float\+Values}} (const float points\mbox{[}$\,$\mbox{]}, const uint32\+\_\+t length)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_a8862567e2ebfd0b8192eaec0967a943a}{Set\+Bytes\+Value}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} \&)
+\item 
+std\+::optional$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{lucene\+::core\+::util\+::numeric\+::\+Number}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_ac2f070785fcce64c8214bb851fb6087c}{Numeric\+Value}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static float \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_ab6b6b86250786703f7a46e7028cd6dfd}{Next\+Up}} (const float f) noexcept
+\item 
+static float \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_a0cac69cd699b0645a195b2ae58eaf5d0}{Next\+Down}} (const float f) noexcept
+\item 
+static void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_ab8494f2f0e931bec1fdf34dec7954db9}{Encode\+Dimension}} (const float value, char dest\mbox{[}$\,$\mbox{]}, const uint32\+\_\+t offset) noexcept
+\item 
+static float \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_adda5c047a340264e4d10e8a47fe513ba}{Decode\+Dimension}} (const char value\mbox{[}$\,$\mbox{]}, const uint32\+\_\+t offset) noexcept
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_ad3370170ead68941120b8f8c7af1aaa2}{Pack}} (const float $\ast$points, const uint32\+\_\+t length)
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType}{Field\+Type}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FloatPoint_a6f95b1c279cf34c497e0eaa2d7a19fdc}{Get\+Type}} (const uint32\+\_\+t num\+\_\+dims)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_a5ea967634ff73cdde9915e722bc823fc}\label{classlucene_1_1core_1_1document_1_1FloatPoint_a5ea967634ff73cdde9915e722bc823fc}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Float\+Point@{Float\+Point}}
+\index{Float\+Point@{Float\+Point}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Float\+Point()}{FloatPoint()}}
+{\footnotesize\ttfamily lucene\+::core\+::document\+::\+Float\+Point\+::\+Float\+Point (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const float}]{points\mbox{[}$\,$\mbox{]},  }\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_af7445c4ea46294911dce52ae13d4b62a}\label{classlucene_1_1core_1_1document_1_1FloatPoint_af7445c4ea46294911dce52ae13d4b62a}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!````~Float\+Point@{$\sim$\+Float\+Point}}
+\index{````~Float\+Point@{$\sim$\+Float\+Point}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{$\sim$\+Float\+Point()}{~FloatPoint()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::document\+::\+Float\+Point\+::$\sim$\+Float\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_adda5c047a340264e4d10e8a47fe513ba}\label{classlucene_1_1core_1_1document_1_1FloatPoint_adda5c047a340264e4d10e8a47fe513ba}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Decode\+Dimension@{Decode\+Dimension}}
+\index{Decode\+Dimension@{Decode\+Dimension}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Decode\+Dimension()}{DecodeDimension()}}
+{\footnotesize\ttfamily static float lucene\+::core\+::document\+::\+Float\+Point\+::\+Decode\+Dimension (\begin{DoxyParamCaption}\item[{const char}]{value\mbox{[}$\,$\mbox{]},  }\item[{const uint32\+\_\+t}]{offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_ab8494f2f0e931bec1fdf34dec7954db9}\label{classlucene_1_1core_1_1document_1_1FloatPoint_ab8494f2f0e931bec1fdf34dec7954db9}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Encode\+Dimension@{Encode\+Dimension}}
+\index{Encode\+Dimension@{Encode\+Dimension}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Encode\+Dimension()}{EncodeDimension()}}
+{\footnotesize\ttfamily static void lucene\+::core\+::document\+::\+Float\+Point\+::\+Encode\+Dimension (\begin{DoxyParamCaption}\item[{const float}]{value,  }\item[{char}]{dest\mbox{[}$\,$\mbox{]},  }\item[{const uint32\+\_\+t}]{offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_a6f95b1c279cf34c497e0eaa2d7a19fdc}\label{classlucene_1_1core_1_1document_1_1FloatPoint_a6f95b1c279cf34c497e0eaa2d7a19fdc}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Get\+Type@{Get\+Type}}
+\index{Get\+Type@{Get\+Type}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Get\+Type()}{GetType()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType}{Field\+Type}} lucene\+::core\+::document\+::\+Float\+Point\+::\+Get\+Type (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{num\+\_\+dims }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_a0cac69cd699b0645a195b2ae58eaf5d0}\label{classlucene_1_1core_1_1document_1_1FloatPoint_a0cac69cd699b0645a195b2ae58eaf5d0}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Next\+Down@{Next\+Down}}
+\index{Next\+Down@{Next\+Down}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Next\+Down()}{NextDown()}}
+{\footnotesize\ttfamily static float lucene\+::core\+::document\+::\+Float\+Point\+::\+Next\+Down (\begin{DoxyParamCaption}\item[{const float}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_ab6b6b86250786703f7a46e7028cd6dfd}\label{classlucene_1_1core_1_1document_1_1FloatPoint_ab6b6b86250786703f7a46e7028cd6dfd}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Next\+Up@{Next\+Up}}
+\index{Next\+Up@{Next\+Up}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Next\+Up()}{NextUp()}}
+{\footnotesize\ttfamily static float lucene\+::core\+::document\+::\+Float\+Point\+::\+Next\+Up (\begin{DoxyParamCaption}\item[{const float}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_ac2f070785fcce64c8214bb851fb6087c}\label{classlucene_1_1core_1_1document_1_1FloatPoint_ac2f070785fcce64c8214bb851fb6087c}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Numeric\+Value@{Numeric\+Value}}
+\index{Numeric\+Value@{Numeric\+Value}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Numeric\+Value()}{NumericValue()}}
+{\footnotesize\ttfamily std\+::optional$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{lucene\+::core\+::util\+::numeric\+::\+Number}}$>$ lucene\+::core\+::document\+::\+Float\+Point\+::\+Numeric\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a858814043215c98bacf6ecc823d078ea}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_ad3370170ead68941120b8f8c7af1aaa2}\label{classlucene_1_1core_1_1document_1_1FloatPoint_ad3370170ead68941120b8f8c7af1aaa2}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Pack@{Pack}}
+\index{Pack@{Pack}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Pack()}{Pack()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} lucene\+::core\+::document\+::\+Float\+Point\+::\+Pack (\begin{DoxyParamCaption}\item[{const float $\ast$}]{points,  }\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_a8862567e2ebfd0b8192eaec0967a943a}\label{classlucene_1_1core_1_1document_1_1FloatPoint_a8862567e2ebfd0b8192eaec0967a943a}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Set\+Bytes\+Value@{Set\+Bytes\+Value}}
+\index{Set\+Bytes\+Value@{Set\+Bytes\+Value}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Set\+Bytes\+Value()}{SetBytesValue()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Float\+Point\+::\+Set\+Bytes\+Value (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a41d077e63ce6fae8677b8df6b29821bd}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_a4e1f81bce5f905e267a32c4882faf90e}\label{classlucene_1_1core_1_1document_1_1FloatPoint_a4e1f81bce5f905e267a32c4882faf90e}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Set\+Float\+Value@{Set\+Float\+Value}}
+\index{Set\+Float\+Value@{Set\+Float\+Value}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Set\+Float\+Value()}{SetFloatValue()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Float\+Point\+::\+Set\+Float\+Value (\begin{DoxyParamCaption}\item[{const float}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_aa22291dffcf6a545fd6c24f23fbb8b50}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1FloatPoint_a37fb83ede21d310e7bda0cbd072650b4}\label{classlucene_1_1core_1_1document_1_1FloatPoint_a37fb83ede21d310e7bda0cbd072650b4}} 
+\index{lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}!Set\+Float\+Values@{Set\+Float\+Values}}
+\index{Set\+Float\+Values@{Set\+Float\+Values}!lucene\+::core\+::document\+::\+Float\+Point@{lucene\+::core\+::document\+::\+Float\+Point}}
+\subsubsection{\texorpdfstring{Set\+Float\+Values()}{SetFloatValues()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Float\+Point\+::\+Set\+Float\+Values (\begin{DoxyParamCaption}\item[{const float}]{points\mbox{[}$\,$\mbox{]},  }\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Document/\mbox{\hyperlink{Document_2Field_8h}{Field.\+h}}\end{DoxyCompactItemize}

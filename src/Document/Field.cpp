@@ -15,9 +15,6 @@
  *
  */
 
-// TEST
-#include <iostream>
-
 #include <Document/Field.h>
 
 using lucene::core::analysis::Reader;
@@ -50,14 +47,14 @@ TokenStream* Field::GetTokenStream(Analyzer& analyzer, TokenStream& reuse) {
 /**
  *  TextField
  */
-FieldType TextField::TYPE_NOT_STORED = [](){
+FieldType TextField::TYPE_NOT_STORED = []() {
   return FieldTypeBuilder()
           .SetIndexOptions(IndexOptions::DOCS_AND_FREQS_AND_POSITIONS)
           .SetTokenized(true)
           .Build();
 }();
 
-FieldType TextField::TYPE_STORED = [](){
+FieldType TextField::TYPE_STORED = []() {
   return FieldTypeBuilder()
           .SetIndexOptions(IndexOptions::DOCS_AND_FREQS_AND_POSITIONS)
           .SetTokenized(true)
@@ -68,7 +65,7 @@ FieldType TextField::TYPE_STORED = [](){
 /**
  *  StringField
  */
-FieldType StringField::TYPE_NOT_STORED = [](){
+FieldType StringField::TYPE_NOT_STORED = []() {
   return FieldTypeBuilder()
          .SetOmitNorms(true)
          .SetIndexOptions(IndexOptions::DOCS)
@@ -76,7 +73,7 @@ FieldType StringField::TYPE_NOT_STORED = [](){
          .Build();
 }();
 
-FieldType StringField::TYPE_STORED = [](){
+FieldType StringField::TYPE_STORED = []() {
   return FieldTypeBuilder()
          .SetOmitNorms(true)
          .SetIndexOptions(IndexOptions::DOCS)
@@ -89,7 +86,7 @@ FieldType StringField::TYPE_STORED = [](){
 /**
  *  StoredField 
  */
-FieldType StoredField::TYPE = [](){
+FieldType StoredField::TYPE = []() {
   return FieldTypeBuilder()
          .SetStored(true)
          .Build();
@@ -98,7 +95,7 @@ FieldType StoredField::TYPE = [](){
 /**
  *  NumericDocValuesField
  */
-FieldType NumericDocValuesField::TYPE = [](){
+FieldType NumericDocValuesField::TYPE = []() {
   return FieldTypeBuilder()
          .SetDocValuesType(DocValuesType::NUMERIC)
          .Build();
@@ -116,7 +113,7 @@ FieldType BinaryDocValuesField::TYPE = []() {
 /**
  *  SortedDocValuesField
  */
-FieldType SortedDocValuesField::TYPE = [](){
+FieldType SortedDocValuesField::TYPE = []() {
   return FieldTypeBuilder()
          .SetDocValuesType(DocValuesType::SORTED)
          .Build();
@@ -125,7 +122,7 @@ FieldType SortedDocValuesField::TYPE = [](){
 /**
  *  SortedNumericDocValuesField 
  */
-FieldType SortedNumericDocValuesField::TYPE = [](){
+FieldType SortedNumericDocValuesField::TYPE = []() {
   return FieldTypeBuilder()
          .SetDocValuesType(DocValuesType::SORTED_NUMERIC)
          .Build();
@@ -135,7 +132,7 @@ FieldType SortedNumericDocValuesField::TYPE = [](){
 /**
  *  SortedSetDocValuesField
  */
-FieldType SortedSetDocValuesField::TYPE = [](){
+FieldType SortedSetDocValuesField::TYPE = []() {
   return FieldTypeBuilder()
          .SetDocValuesType(DocValuesType::SORTED_SET)
          .Build();

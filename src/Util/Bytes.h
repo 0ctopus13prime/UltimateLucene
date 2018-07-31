@@ -27,7 +27,7 @@ namespace util {
 
 class BytesRef {
  private:
-  // TODO(0ctopus13prime): Can we remove this?. 
+  // TODO(0ctopus13prime): Can we remove this?.
   // Rather than owning bytes, just pointing to bytes outside?
   static std::shared_ptr<char> DEFAULT_BYTES;
 

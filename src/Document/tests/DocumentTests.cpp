@@ -48,7 +48,7 @@ TEST(DOCUMENT__TESTS, BASIC__TEST) {
 
   if (document.Get("abc")) {
     FAIL();
-  }  
+  }
 }
 
 TEST(DOCUMENT__TESTS, ADD__FIELD__TEST) {
@@ -229,7 +229,7 @@ TEST(DOCUMENT__TESTS, DOC__OPERATION__TEST) {
   int64_t long_range_max[3] = {12838L, 58348L, 112319239L};
   document.Add(LongRange(long_range_f, long_range_min, long_range_max, 3));
 
-  ASSERT_EQ(field_num, document.Size()); 
+  ASSERT_EQ(field_num, document.Size());
 
   Field* got_fields[field_num];
   ASSERT_EQ(2, document.GetFields(bin_doc_values_field_name, got_fields));
@@ -250,7 +250,7 @@ TEST(DOCUMENT__TESTS, DOC__OPERATION__TEST) {
   document.RemoveField(text_field_name);
   ASSERT_FALSE(document.GetField(text_field_name));
 
-  ASSERT_EQ(field_num - 1, document.Size()); 
+  ASSERT_EQ(field_num - 1, document.Size());
   document.RemoveFields(bin_doc_values_field_name);
   ASSERT_EQ(document.Size(), field_num - 3);
   ASSERT_FALSE(document.GetField(bin_doc_values_field_name));

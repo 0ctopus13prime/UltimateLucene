@@ -1,0 +1,70 @@
+\hypertarget{classlucene_1_1core_1_1document_1_1BinaryPoint}{}\section{lucene\+:\+:core\+:\+:document\+:\+:Binary\+Point Class Reference}
+\label{classlucene_1_1core_1_1document_1_1BinaryPoint}\index{lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}}
+
+
+{\ttfamily \#include $<$Field.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:document\+:\+:Binary\+Point\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1document_1_1BinaryPoint}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1BinaryPoint_acd524392b16aaeaa05120e87a79e487f}{Binary\+Point}} (const std\+::string \&\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a52f673f3b3abb14b180f5159f4726537}{name}}, const char $\ast$points, const uint32\+\_\+t points\+\_\+length, const uint32\+\_\+t bytes\+\_\+per\+\_\+dim)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1BinaryPoint_a8eea62d212ffd7385f3e6a6f0ca6c482}{Binary\+Point}} (const std\+::string \&\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a52f673f3b3abb14b180f5159f4726537}{name}}, const char $\ast$packed\+\_\+point, const uint32\+\_\+t bytes\+\_\+per\+\_\+dim, const \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType}{Field\+Type}} \&\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a7d5849d933ebde73422710069643ccff}{type}})
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1BinaryPoint_a5825353f88fb9f50e0e918dd87453b1b}{$\sim$\+Binary\+Point}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType}{Field\+Type}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1BinaryPoint_a257a399b76249bf887b61a524765fa72}{Get\+Type}} (const uint32\+\_\+t num\+\_\+dims, const uint32\+\_\+t bytes\+\_\+per\+\_\+dim) noexcept
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1BinaryPoint_a3dd125364391f40b4cc114c3a099542e}{Pack}} (const char $\ast$points, const uint32\+\_\+t points\+\_\+length, const uint32\+\_\+t bytes\+\_\+per\+\_\+dim)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1BinaryPoint_acd524392b16aaeaa05120e87a79e487f}\label{classlucene_1_1core_1_1document_1_1BinaryPoint_acd524392b16aaeaa05120e87a79e487f}} 
+\index{lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}!Binary\+Point@{Binary\+Point}}
+\index{Binary\+Point@{Binary\+Point}!lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}}
+\subsubsection{\texorpdfstring{Binary\+Point()}{BinaryPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily lucene\+::core\+::document\+::\+Binary\+Point\+::\+Binary\+Point (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const char $\ast$}]{points,  }\item[{const uint32\+\_\+t}]{points\+\_\+length,  }\item[{const uint32\+\_\+t}]{bytes\+\_\+per\+\_\+dim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1BinaryPoint_a8eea62d212ffd7385f3e6a6f0ca6c482}\label{classlucene_1_1core_1_1document_1_1BinaryPoint_a8eea62d212ffd7385f3e6a6f0ca6c482}} 
+\index{lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}!Binary\+Point@{Binary\+Point}}
+\index{Binary\+Point@{Binary\+Point}!lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}}
+\subsubsection{\texorpdfstring{Binary\+Point()}{BinaryPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily lucene\+::core\+::document\+::\+Binary\+Point\+::\+Binary\+Point (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const char $\ast$}]{packed\+\_\+point,  }\item[{const uint32\+\_\+t}]{bytes\+\_\+per\+\_\+dim,  }\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType}{Field\+Type}} \&}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1BinaryPoint_a5825353f88fb9f50e0e918dd87453b1b}\label{classlucene_1_1core_1_1document_1_1BinaryPoint_a5825353f88fb9f50e0e918dd87453b1b}} 
+\index{lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}!````~Binary\+Point@{$\sim$\+Binary\+Point}}
+\index{````~Binary\+Point@{$\sim$\+Binary\+Point}!lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}}
+\subsubsection{\texorpdfstring{$\sim$\+Binary\+Point()}{~BinaryPoint()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::document\+::\+Binary\+Point\+::$\sim$\+Binary\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1BinaryPoint_a257a399b76249bf887b61a524765fa72}\label{classlucene_1_1core_1_1document_1_1BinaryPoint_a257a399b76249bf887b61a524765fa72}} 
+\index{lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}!Get\+Type@{Get\+Type}}
+\index{Get\+Type@{Get\+Type}!lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}}
+\subsubsection{\texorpdfstring{Get\+Type()}{GetType()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType}{Field\+Type}} lucene\+::core\+::document\+::\+Binary\+Point\+::\+Get\+Type (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{num\+\_\+dims,  }\item[{const uint32\+\_\+t}]{bytes\+\_\+per\+\_\+dim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [private]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1BinaryPoint_a3dd125364391f40b4cc114c3a099542e}\label{classlucene_1_1core_1_1document_1_1BinaryPoint_a3dd125364391f40b4cc114c3a099542e}} 
+\index{lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}!Pack@{Pack}}
+\index{Pack@{Pack}!lucene\+::core\+::document\+::\+Binary\+Point@{lucene\+::core\+::document\+::\+Binary\+Point}}
+\subsubsection{\texorpdfstring{Pack()}{Pack()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} lucene\+::core\+::document\+::\+Binary\+Point\+::\+Pack (\begin{DoxyParamCaption}\item[{const char $\ast$}]{points,  }\item[{const uint32\+\_\+t}]{points\+\_\+length,  }\item[{const uint32\+\_\+t}]{bytes\+\_\+per\+\_\+dim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [private]}}
+
+Pack point values into a single byte array. For example, input \mbox{[} \mbox{[}0,1\mbox{]}, \mbox{[}1,2\mbox{]}, \mbox{[}2,3\mbox{]} \mbox{]} should be packed as \mbox{[}0, 1, 1, 2, 2, 3\mbox{]} But not like Java implementation we do not check if they have same number of bytes. Rather we expect given point values to have all same bytes\+\_\+per\+\_\+dim. So, in Java \mbox{[} \mbox{[}0,1\mbox{]}, \mbox{[}0, 1, 2\mbox{]} \mbox{]} this values are not acceptable, but in C++ implementation we just treat it as \mbox{[} \mbox{[}0, 1\mbox{]}, \mbox{[}0, 1\mbox{]} \mbox{]} 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Document/\mbox{\hyperlink{Document_2Field_8h}{Field.\+h}}\end{DoxyCompactItemize}

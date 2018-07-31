@@ -71,7 +71,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classlucene_1_1core_1_1document_1_1Field-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">lucene::core::document::Field Class Reference</div>  </div>
@@ -85,7 +85,23 @@ Inheritance diagram for lucene::core::document::Field:</div>
  <div class="center">
   <img src="classlucene_1_1core_1_1document_1_1Field.png" usemap="#lucene::core::document::Field_map" alt=""/>
   <map id="lucene::core::document::Field_map" name="lucene::core::document::Field_map">
-<area href="classlucene_1_1core_1_1index_1_1IndexableField.html" alt="lucene::core::index::IndexableField" shape="rect" coords="0,0,206,24"/>
+<area href="classlucene_1_1core_1_1document_1_1BinaryDocValuesField.html" alt="lucene::core::document::BinaryDocValuesField" shape="rect" coords="332,56,654,80"/>
+<area href="classlucene_1_1core_1_1document_1_1BinaryPoint.html" alt="lucene::core::document::BinaryPoint" shape="rect" coords="332,112,654,136"/>
+<area href="classlucene_1_1core_1_1document_1_1DoublePoint.html" alt="lucene::core::document::DoublePoint" shape="rect" coords="332,168,654,192"/>
+<area href="classlucene_1_1core_1_1document_1_1DoubleRange.html" alt="lucene::core::document::DoubleRange" shape="rect" coords="332,224,654,248"/>
+<area href="classlucene_1_1core_1_1document_1_1FloatPoint.html" alt="lucene::core::document::FloatPoint" shape="rect" coords="332,280,654,304"/>
+<area href="classlucene_1_1core_1_1document_1_1FloatRange.html" alt="lucene::core::document::FloatRange" shape="rect" coords="332,336,654,360"/>
+<area href="classlucene_1_1core_1_1document_1_1IntPoint.html" alt="lucene::core::document::IntPoint" shape="rect" coords="332,392,654,416"/>
+<area href="classlucene_1_1core_1_1document_1_1IntRange.html" alt="lucene::core::document::IntRange" shape="rect" coords="332,448,654,472"/>
+<area href="classlucene_1_1core_1_1document_1_1LongPoint.html" alt="lucene::core::document::LongPoint" shape="rect" coords="332,504,654,528"/>
+<area href="classlucene_1_1core_1_1document_1_1LongRange.html" alt="lucene::core::document::LongRange" shape="rect" coords="332,560,654,584"/>
+<area href="classlucene_1_1core_1_1document_1_1NumericDocValuesField.html" alt="lucene::core::document::NumericDocValuesField" shape="rect" coords="332,616,654,640"/>
+<area href="classlucene_1_1core_1_1document_1_1SortedDocValuesField.html" alt="lucene::core::document::SortedDocValuesField" shape="rect" coords="332,672,654,696"/>
+<area href="classlucene_1_1core_1_1document_1_1SortedNumericDocValuesField.html" alt="lucene::core::document::SortedNumericDocValuesField" shape="rect" coords="332,728,654,752"/>
+<area href="classlucene_1_1core_1_1document_1_1SortedSetDocValuesField.html" alt="lucene::core::document::SortedSetDocValuesField" shape="rect" coords="332,784,654,808"/>
+<area href="classlucene_1_1core_1_1document_1_1StoredField.html" alt="lucene::core::document::StoredField" shape="rect" coords="332,840,654,864"/>
+<area href="classlucene_1_1core_1_1document_1_1StringField.html" alt="lucene::core::document::StringField" shape="rect" coords="332,896,654,920"/>
+<area href="classlucene_1_1core_1_1document_1_1TextField.html" alt="lucene::core::document::TextField" shape="rect" coords="332,952,654,976"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -105,83 +121,93 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a73c99d30182a64aa3508ccd8d282b3df"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a73c99d30182a64aa3508ccd8d282b3df">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a>, <a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a> *reader, const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a>)</td></tr>
-<tr class="separator:a73c99d30182a64aa3508ccd8d282b3df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1824a5b7f755f7489374bd8591a95ea9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a1824a5b7f755f7489374bd8591a95ea9">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a>, <a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> *<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a9ae72843cbdd8524362f65ee9f2c7355">tokenstream</a>, const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a>)</td></tr>
-<tr class="separator:a1824a5b7f755f7489374bd8591a95ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fccd05c5f81e3a7878a6a935fc871ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a0fccd05c5f81e3a7878a6a935fc871ca">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a>, const char *value, uint32_t length, const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a>)</td></tr>
-<tr class="separator:a0fccd05c5f81e3a7878a6a935fc871ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae734a4c9a4393bca54098a9016bc6fda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ae734a4c9a4393bca54098a9016bc6fda">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a>, const char *value, const uint32_t offset, const uint32_t length, const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a>)</td></tr>
-<tr class="separator:ae734a4c9a4393bca54098a9016bc6fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81d67b7915b9acd40aa3f69393dd3aae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a81d67b7915b9acd40aa3f69393dd3aae">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a>, const <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;bytes, const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a>)</td></tr>
-<tr class="separator:a81d67b7915b9acd40aa3f69393dd3aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae79a86d35c2adadb3a4f37db5f2ad042"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ae79a86d35c2adadb3a4f37db5f2ad042">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a>, <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;&amp;bytes, const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a>)</td></tr>
-<tr class="separator:ae79a86d35c2adadb3a4f37db5f2ad042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a121d5f14b1ba85e7a3516ddc802b9cbc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a121d5f14b1ba85e7a3516ddc802b9cbc">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a>, const std::string &amp;value, const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a>)</td></tr>
-<tr class="separator:a121d5f14b1ba85e7a3516ddc802b9cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a363f19e2884d2adce1b4d694018f2795"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a363f19e2884d2adce1b4d694018f2795">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a>, std::string &amp;&amp;value, const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a>)</td></tr>
-<tr class="separator:a363f19e2884d2adce1b4d694018f2795"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45d6e6d09b8f8e46de62b40119d62c60"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a45d6e6d09b8f8e46de62b40119d62c60">~Field</a> ()</td></tr>
-<tr class="separator:a45d6e6d09b8f8e46de62b40119d62c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bb6efa252c30c12aceef0db6e216ef9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a2bb6efa252c30c12aceef0db6e216ef9">SetStringValue</a> (const std::string &amp;value)</td></tr>
-<tr class="separator:a2bb6efa252c30c12aceef0db6e216ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab2351ba0550add74c590be2c2bf9208"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aab2351ba0550add74c590be2c2bf9208">SetStringValue</a> (std::string &amp;&amp;value)</td></tr>
-<tr class="separator:aab2351ba0550add74c590be2c2bf9208"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390d9638f5aa3de19d94b9259afee2b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a390d9638f5aa3de19d94b9259afee2b2">SetReaderValue</a> (<a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a> *value)</td></tr>
-<tr class="separator:a390d9638f5aa3de19d94b9259afee2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b92c42bb91ef113806dbee6d4ee12d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a4b92c42bb91ef113806dbee6d4ee12d1">SetBytesValue</a> (const char *value, uint32_t length)</td></tr>
-<tr class="separator:a4b92c42bb91ef113806dbee6d4ee12d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96f2902e74079e79fe469487b1113b13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a96f2902e74079e79fe469487b1113b13">SetBytesValue</a> (const <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;value)</td></tr>
-<tr class="separator:a96f2902e74079e79fe469487b1113b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a43e20d30825a755b748f7888761b0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7a43e20d30825a755b748f7888761b0a">SetBytesValue</a> (<a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;&amp;value)</td></tr>
-<tr class="separator:a7a43e20d30825a755b748f7888761b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63dc549c5dcff4cfe1a1f03a1935136b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a63dc549c5dcff4cfe1a1f03a1935136b">SetShortValue</a> (const int16_t value)</td></tr>
-<tr class="separator:a63dc549c5dcff4cfe1a1f03a1935136b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a316ba10e33e335641ca493e56b14ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a9a316ba10e33e335641ca493e56b14ea">SetIntValue</a> (const int32_t value)</td></tr>
-<tr class="separator:a9a316ba10e33e335641ca493e56b14ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab04835cd19c035020d5baef05896d68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aab04835cd19c035020d5baef05896d68">SetLongValue</a> (const int64_t value)</td></tr>
-<tr class="separator:aab04835cd19c035020d5baef05896d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40a87a62fd8f67ea79a0e44bc64d88c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a40a87a62fd8f67ea79a0e44bc64d88c6">SetFloatValue</a> (const float value)</td></tr>
-<tr class="separator:a40a87a62fd8f67ea79a0e44bc64d88c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab433593d18b62f1ce0be976b50fdc62e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ab433593d18b62f1ce0be976b50fdc62e">SetDoubleValue</a> (const double value)</td></tr>
-<tr class="separator:ab433593d18b62f1ce0be976b50fdc62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33db504416c882960fa2207de75d3510"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a33db504416c882960fa2207de75d3510">SetTokenStream</a> (<a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> *new_tokenstream)</td></tr>
-<tr class="separator:a33db504416c882960fa2207de75d3510"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec97d60c8348878b7fbaed0be2e3c023"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aec97d60c8348878b7fbaed0be2e3c023">Name</a> () noexcept</td></tr>
-<tr class="separator:aec97d60c8348878b7fbaed0be2e3c023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9eaf712354f0a787e45d4f41b17aeae8"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::reference_wrapper&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a9eaf712354f0a787e45d4f41b17aeae8">StringValue</a> () noexcept</td></tr>
-<tr class="separator:a9eaf712354f0a787e45d4f41b17aeae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00a928f1bbae6e9d0e6fe1b3af302160"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::reference_wrapper&lt; <a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a00a928f1bbae6e9d0e6fe1b3af302160">ReaderValue</a> () noexcept</td></tr>
-<tr class="separator:a00a928f1bbae6e9d0e6fe1b3af302160"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af119306e6d6bf072d815f0f317dd287e"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classlucene_1_1core_1_1util_1_1etc_1_1Number.html">lucene::core::util::etc::Number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#af119306e6d6bf072d815f0f317dd287e">NumericValue</a> () noexcept</td></tr>
-<tr class="separator:af119306e6d6bf072d815f0f317dd287e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5415bfa7681238c59d6e0acb2da13bd4"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::reference_wrapper&lt; <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a5415bfa7681238c59d6e0acb2da13bd4">BinaryValue</a> () noexcept</td></tr>
-<tr class="separator:a5415bfa7681238c59d6e0acb2da13bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6ffe62bb06b157049af54cd2b674007"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ab6ffe62bb06b157049af54cd2b674007">FieldType</a> () noexcept</td></tr>
-<tr class="separator:ab6ffe62bb06b157049af54cd2b674007"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3d6b7ab7cb42820491c036872190317"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aa3d6b7ab7cb42820491c036872190317">GetTokenStream</a> (<a class="el" href="classlucene_1_1core_1_1analysis_1_1Analyzer.html">lucene::core::analysis::Analyzer</a> &amp;analyzer, <a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> &amp;reuse)</td></tr>
+<tr class="memitem:ac67baea5a3a4bc2a20bfbdb92a25a7d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ac67baea5a3a4bc2a20bfbdb92a25a7d3">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a>, <a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a> *reader, const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a>)</td></tr>
+<tr class="separator:ac67baea5a3a4bc2a20bfbdb92a25a7d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10e82fd9310fb348b5f99b80b002aa00"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a10e82fd9310fb348b5f99b80b002aa00">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a>, <a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> *<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a9ae72843cbdd8524362f65ee9f2c7355">tokenstream</a>, const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a>)</td></tr>
+<tr class="separator:a10e82fd9310fb348b5f99b80b002aa00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf0ec8bb3cc3cf458c78ed02f77afd3e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#adf0ec8bb3cc3cf458c78ed02f77afd3e">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a>, const char *value, const uint32_t length, const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a>)</td></tr>
+<tr class="separator:adf0ec8bb3cc3cf458c78ed02f77afd3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c949b1b51b439165de2a3476359a99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a40c949b1b51b439165de2a3476359a99">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a>, const char value[], const uint32_t offset, const uint32_t length, const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a>)</td></tr>
+<tr class="separator:a40c949b1b51b439165de2a3476359a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5b5549c89b6da80093ffa9ba4f218f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aa5b5549c89b6da80093ffa9ba4f218f8">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a>, const <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;bytes, const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a>)</td></tr>
+<tr class="separator:aa5b5549c89b6da80093ffa9ba4f218f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53623937bdf694c7d4e359842b9c7673"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a53623937bdf694c7d4e359842b9c7673">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a>, <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;&amp;bytes, const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a>)</td></tr>
+<tr class="separator:a53623937bdf694c7d4e359842b9c7673"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5870317c74d273ed0afd4715904a9e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#af5870317c74d273ed0afd4715904a9e5">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a>, const std::string &amp;value, const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a>)</td></tr>
+<tr class="separator:af5870317c74d273ed0afd4715904a9e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa472d50639e11ca10e5e06fe07fb87c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aaa472d50639e11ca10e5e06fe07fb87c">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a>, std::string &amp;&amp;value, const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a>)</td></tr>
+<tr class="separator:aaa472d50639e11ca10e5e06fe07fb87c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9759aeef777d122b3a14ea237b9996df"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a9759aeef777d122b3a14ea237b9996df">Field</a> (const <a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;)=delete</td></tr>
+<tr class="separator:a9759aeef777d122b3a14ea237b9996df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84c8c8edfd1576cdc1adcf6f3c38b57f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a84c8c8edfd1576cdc1adcf6f3c38b57f">Field</a> (<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;&amp;other)</td></tr>
+<tr class="separator:a84c8c8edfd1576cdc1adcf6f3c38b57f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a165fa3cc612d355b6f3ef5deb87d50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a9a165fa3cc612d355b6f3ef5deb87d50">operator=</a> (const <a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;)=delete</td></tr>
+<tr class="separator:a9a165fa3cc612d355b6f3ef5deb87d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2fbc0a1ae50f0e7452b90687aa0be78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ac2fbc0a1ae50f0e7452b90687aa0be78">operator=</a> (<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;&amp;other)</td></tr>
+<tr class="separator:ac2fbc0a1ae50f0e7452b90687aa0be78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafea12de720890e69c15dbd033331391"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aafea12de720890e69c15dbd033331391">~Field</a> ()</td></tr>
+<tr class="separator:aafea12de720890e69c15dbd033331391"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa649cff34208abbbe274c5112d60712d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aa649cff34208abbbe274c5112d60712d">SetStringValue</a> (const std::string &amp;value)</td></tr>
+<tr class="separator:aa649cff34208abbbe274c5112d60712d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2b792611d8666daf647adac0ed1a0ed"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#af2b792611d8666daf647adac0ed1a0ed">SetStringValue</a> (std::string &amp;&amp;value)</td></tr>
+<tr class="separator:af2b792611d8666daf647adac0ed1a0ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86a255eb3b09b70fe76af3b7d75364e5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a86a255eb3b09b70fe76af3b7d75364e5">SetReaderValue</a> (<a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a> *value)</td></tr>
+<tr class="separator:a86a255eb3b09b70fe76af3b7d75364e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9214d49b8e3c8692820ad4f3086e6dc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ab9214d49b8e3c8692820ad4f3086e6dc">SetBytesValue</a> (const char value[], const uint32_t length)</td></tr>
+<tr class="separator:ab9214d49b8e3c8692820ad4f3086e6dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41d077e63ce6fae8677b8df6b29821bd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a41d077e63ce6fae8677b8df6b29821bd">SetBytesValue</a> (const <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;value)</td></tr>
+<tr class="separator:a41d077e63ce6fae8677b8df6b29821bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af61fb82abf8a917ccd5c9f252dcfa447"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#af61fb82abf8a917ccd5c9f252dcfa447">SetBytesValue</a> (<a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;&amp;value)</td></tr>
+<tr class="separator:af61fb82abf8a917ccd5c9f252dcfa447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f513eaae4357667bcdbacb211fa3bff"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a1f513eaae4357667bcdbacb211fa3bff">SetShortValue</a> (const int16_t value)</td></tr>
+<tr class="separator:a1f513eaae4357667bcdbacb211fa3bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aee080f0bf507f8c6a5cfc64bd913a2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a6aee080f0bf507f8c6a5cfc64bd913a2">SetIntValue</a> (const int32_t value)</td></tr>
+<tr class="separator:a6aee080f0bf507f8c6a5cfc64bd913a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a949822599f392fb7fca20423902e535a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a949822599f392fb7fca20423902e535a">SetLongValue</a> (const int64_t value)</td></tr>
+<tr class="separator:a949822599f392fb7fca20423902e535a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa22291dffcf6a545fd6c24f23fbb8b50"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aa22291dffcf6a545fd6c24f23fbb8b50">SetFloatValue</a> (const float value)</td></tr>
+<tr class="separator:aa22291dffcf6a545fd6c24f23fbb8b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8db791d4d1ebf77288d8529214413810"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a8db791d4d1ebf77288d8529214413810">SetDoubleValue</a> (const double value)</td></tr>
+<tr class="separator:a8db791d4d1ebf77288d8529214413810"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfb4f4d5a2b2a8c9334186c93fd20c3b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#adfb4f4d5a2b2a8c9334186c93fd20c3b">SetTokenStream</a> (<a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> *new_tokenstream)</td></tr>
+<tr class="separator:adfb4f4d5a2b2a8c9334186c93fd20c3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b6d39e8c30c59bfe0556c38beeeb06e"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a9b6d39e8c30c59bfe0556c38beeeb06e">Name</a> () const noexcept</td></tr>
+<tr class="separator:a9b6d39e8c30c59bfe0556c38beeeb06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b300229888f74a4cd76c40346c04234"><td class="memItemLeft" align="right" valign="top">virtual std::optional&lt; std::reference_wrapper&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a6b300229888f74a4cd76c40346c04234">StringValue</a> ()</td></tr>
+<tr class="separator:a6b300229888f74a4cd76c40346c04234"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06a7e8bad6d98767adee5e0e42941f06"><td class="memItemLeft" align="right" valign="top">virtual std::optional&lt; std::reference_wrapper&lt; <a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a06a7e8bad6d98767adee5e0e42941f06">ReaderValue</a> ()</td></tr>
+<tr class="separator:a06a7e8bad6d98767adee5e0e42941f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a858814043215c98bacf6ecc823d078ea"><td class="memItemLeft" align="right" valign="top">virtual std::optional&lt; <a class="el" href="classlucene_1_1core_1_1util_1_1numeric_1_1Number.html">lucene::core::util::numeric::Number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a858814043215c98bacf6ecc823d078ea">NumericValue</a> ()</td></tr>
+<tr class="separator:a858814043215c98bacf6ecc823d078ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf4cc37537f8889dda2469c22481193b"><td class="memItemLeft" align="right" valign="top">virtual std::optional&lt; std::reference_wrapper&lt; <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#adf4cc37537f8889dda2469c22481193b">BinaryValue</a> ()</td></tr>
+<tr class="separator:adf4cc37537f8889dda2469c22481193b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06bffb93596bfbe170e795279d30ae4f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a06bffb93596bfbe170e795279d30ae4f">GetFieldType</a> () const noexcept</td></tr>
+<tr class="separator:a06bffb93596bfbe170e795279d30ae4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3d6b7ab7cb42820491c036872190317"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aa3d6b7ab7cb42820491c036872190317">GetTokenStream</a> (<a class="el" href="classlucene_1_1core_1_1analysis_1_1Analyzer.html">lucene::core::analysis::Analyzer</a> &amp;analyzer, <a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> &amp;reuse)</td></tr>
 <tr class="separator:aa3d6b7ab7cb42820491c036872190317"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classlucene_1_1core_1_1index_1_1IndexableField"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classlucene_1_1core_1_1index_1_1IndexableField')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableField.html">lucene::core::index::IndexableField</a></td></tr>
-<tr class="memitem:ab396dd630f47c4671bc47788ae19175b inherit pub_methods_classlucene_1_1core_1_1index_1_1IndexableField"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1index_1_1IndexableField.html#ab396dd630f47c4671bc47788ae19175b">~IndexableField</a> ()</td></tr>
-<tr class="separator:ab396dd630f47c4671bc47788ae19175b inherit pub_methods_classlucene_1_1core_1_1index_1_1IndexableField"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ab91735ae2fedab69f837e15ed892ae60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ab91735ae2fedab69f837e15ed892ae60">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a>, const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a>)</td></tr>
-<tr class="separator:ab91735ae2fedab69f837e15ed892ae60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a767b968d36093ab2243ae64499e8b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a84a767b968d36093ab2243ae64499e8b">Field</a> (const std::string &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a>, const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;<a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a>)</td></tr>
+<tr class="separator:a84a767b968d36093ab2243ae64499e8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ad627895c156c58f9bd409caf06edbdf4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#ad627895c156c58f9bd409caf06edbdf4">type</a></td></tr>
-<tr class="separator:ad627895c156c58f9bd409caf06edbdf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a550ee69f8cb7db2a00f3e9bda4964dfb"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a550ee69f8cb7db2a00f3e9bda4964dfb">name</a></td></tr>
-<tr class="separator:a550ee69f8cb7db2a00f3e9bda4964dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a745c27d038375a7fd986488a88b44443"><td class="memItemLeft" align="right" valign="top">std::variant&lt; <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a>, std::string, std::unique_ptr&lt; <a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a> &gt;, <a class="el" href="classlucene_1_1core_1_1util_1_1etc_1_1Number.html">lucene::core::util::etc::Number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a745c27d038375a7fd986488a88b44443">fields_data</a></td></tr>
-<tr class="separator:a745c27d038375a7fd986488a88b44443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a7d5849d933ebde73422710069643ccff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a7d5849d933ebde73422710069643ccff">type</a></td></tr>
+<tr class="separator:a7d5849d933ebde73422710069643ccff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52f673f3b3abb14b180f5159f4726537"><td class="memItemLeft" align="right" valign="top">const std::string *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a52f673f3b3abb14b180f5159f4726537">name</a></td></tr>
+<tr class="separator:a52f673f3b3abb14b180f5159f4726537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ae4ce107a1c3f4ea56f9ab812e94153"><td class="memItemLeft" align="right" valign="top">std::variant&lt; <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a>, std::string, std::unique_ptr&lt; <a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a> &gt;, <a class="el" href="classlucene_1_1core_1_1util_1_1numeric_1_1Number.html">lucene::core::util::numeric::Number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a2ae4ce107a1c3f4ea56f9ab812e94153">fields_data</a></td></tr>
+<tr class="separator:a2ae4ce107a1c3f4ea56f9ab812e94153"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ae72843cbdd8524362f65ee9f2c7355"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a9ae72843cbdd8524362f65ee9f2c7355">tokenstream</a></td></tr>
 <tr class="separator:a9ae72843cbdd8524362f65ee9f2c7355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p class=""><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> class is only movable, not assignable. Thus if you assign field to another, use move assignment</p><ol type="1">
+<li><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a>(std::move(original_field)</li>
+<li>field = std::move(original_field) </li>
+</ol>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a7d5d79f0c56d3548ab8d46d0e7dae35d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d5d79f0c56d3548ab8d46d0e7dae35d">&#9670;&nbsp;</a></span>Store</h2>
 
@@ -209,8 +235,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab91735ae2fedab69f837e15ed892ae60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab91735ae2fedab69f837e15ed892ae60">&#9670;&nbsp;</a></span>Field() <span class="overload">[1/9]</span></h2>
+<a id="a84a767b968d36093ab2243ae64499e8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84a767b968d36093ab2243ae64499e8b">&#9670;&nbsp;</a></span>Field() <span class="overload">[1/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -219,7 +245,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -227,7 +253,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -238,22 +264,24 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p class=""><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> </p>
 
 </div>
 </div>
-<a id="a73c99d30182a64aa3508ccd8d282b3df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73c99d30182a64aa3508ccd8d282b3df">&#9670;&nbsp;</a></span>Field() <span class="overload">[2/9]</span></h2>
+<a id="ac67baea5a3a4bc2a20bfbdb92a25a7d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac67baea5a3a4bc2a20bfbdb92a25a7d3">&#9670;&nbsp;</a></span>Field() <span class="overload">[2/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -267,7 +295,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -276,6 +304,11 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -288,14 +321,17 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1824a5b7f755f7489374bd8591a95ea9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1824a5b7f755f7489374bd8591a95ea9">&#9670;&nbsp;</a></span>Field() <span class="overload">[3/9]</span></h2>
+<a id="a10e82fd9310fb348b5f99b80b002aa00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10e82fd9310fb348b5f99b80b002aa00">&#9670;&nbsp;</a></span>Field() <span class="overload">[3/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -309,7 +345,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -318,6 +354,11 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -330,14 +371,17 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a0fccd05c5f81e3a7878a6a935fc871ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fccd05c5f81e3a7878a6a935fc871ca">&#9670;&nbsp;</a></span>Field() <span class="overload">[4/9]</span></h2>
+<a id="adf0ec8bb3cc3cf458c78ed02f77afd3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf0ec8bb3cc3cf458c78ed02f77afd3e">&#9670;&nbsp;</a></span>Field() <span class="overload">[4/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -351,13 +395,13 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">const uint32_t&#160;</td>
           <td class="paramname"><em>length</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -366,18 +410,26 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ae734a4c9a4393bca54098a9016bc6fda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae734a4c9a4393bca54098a9016bc6fda">&#9670;&nbsp;</a></span>Field() <span class="overload">[5/9]</span></h2>
+<a id="a40c949b1b51b439165de2a3476359a99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40c949b1b51b439165de2a3476359a99">&#9670;&nbsp;</a></span>Field() <span class="overload">[5/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -385,8 +437,8 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>value</em>[], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -403,7 +455,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -412,18 +464,26 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a81d67b7915b9acd40aa3f69393dd3aae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81d67b7915b9acd40aa3f69393dd3aae">&#9670;&nbsp;</a></span>Field() <span class="overload">[6/9]</span></h2>
+<a id="aa5b5549c89b6da80093ffa9ba4f218f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5b5549c89b6da80093ffa9ba4f218f8">&#9670;&nbsp;</a></span>Field() <span class="overload">[6/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -437,7 +497,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -446,18 +506,26 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ae79a86d35c2adadb3a4f37db5f2ad042"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae79a86d35c2adadb3a4f37db5f2ad042">&#9670;&nbsp;</a></span>Field() <span class="overload">[7/9]</span></h2>
+<a id="a53623937bdf694c7d4e359842b9c7673"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53623937bdf694c7d4e359842b9c7673">&#9670;&nbsp;</a></span>Field() <span class="overload">[7/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -471,7 +539,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -480,18 +548,26 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a121d5f14b1ba85e7a3516ddc802b9cbc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a121d5f14b1ba85e7a3516ddc802b9cbc">&#9670;&nbsp;</a></span>Field() <span class="overload">[8/9]</span></h2>
+<a id="af5870317c74d273ed0afd4715904a9e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5870317c74d273ed0afd4715904a9e5">&#9670;&nbsp;</a></span>Field() <span class="overload">[8/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -505,7 +581,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -514,18 +590,26 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a363f19e2884d2adce1b4d694018f2795"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a363f19e2884d2adce1b4d694018f2795">&#9670;&nbsp;</a></span>Field() <span class="overload">[9/9]</span></h2>
+<a id="aaa472d50639e11ca10e5e06fe07fb87c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa472d50639e11ca10e5e06fe07fb87c">&#9670;&nbsp;</a></span>Field() <span class="overload">[9/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -539,7 +623,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -548,12 +632,17 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a45d6e6d09b8f8e46de62b40119d62c60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45d6e6d09b8f8e46de62b40119d62c60">&#9670;&nbsp;</a></span>~Field()</h2>
+<a id="a9759aeef777d122b3a14ea237b9996df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9759aeef777d122b3a14ea237b9996df">&#9670;&nbsp;</a></span>Field() <span class="overload">[10/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -562,7 +651,59 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Field::~Field </td>
+          <td class="memname">lucene::core::document::Field::Field </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a84c8c8edfd1576cdc1adcf6f3c38b57f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84c8c8edfd1576cdc1adcf6f3c38b57f">&#9670;&nbsp;</a></span>Field() <span class="overload">[11/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">lucene::core::document::Field::Field </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aafea12de720890e69c15dbd033331391"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafea12de720890e69c15dbd033331391">&#9670;&nbsp;</a></span>~Field()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual lucene::core::document::Field::~Field </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -570,7 +711,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -578,8 +719,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5415bfa7681238c59d6e0acb2da13bd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5415bfa7681238c59d6e0acb2da13bd4">&#9670;&nbsp;</a></span>BinaryValue()</h2>
+<a id="adf4cc37537f8889dda2469c22481193b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf4cc37537f8889dda2469c22481193b">&#9670;&nbsp;</a></span>BinaryValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -588,7 +729,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;std::reference_wrapper&lt;<a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a>&gt; &gt; lucene::core::document::Field::BinaryValue </td>
+          <td class="memname">virtual std::optional&lt;std::reference_wrapper&lt;<a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a>&gt; &gt; lucene::core::document::Field::BinaryValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -596,17 +737,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableField.html#a77b0b5e4f1ae25eaaab3d9f13b9204cb">lucene::core::index::IndexableField</a>.</p>
-
 </div>
 </div>
-<a id="ab6ffe62bb06b157049af54cd2b674007"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6ffe62bb06b157049af54cd2b674007">&#9670;&nbsp;</a></span>FieldType()</h2>
+<a id="a06bffb93596bfbe170e795279d30ae4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06bffb93596bfbe170e795279d30ae4f">&#9670;&nbsp;</a></span>GetFieldType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -615,20 +754,18 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a>&amp; lucene::core::document::Field::FieldType </td>
+          <td class="memname">const <a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a>&amp; lucene::core::document::Field::GetFieldType </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Implements <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableField.html#a008a8b0a96618b1600ad2b44e9357451">lucene::core::index::IndexableField</a>.</p>
 
 </div>
 </div>
@@ -665,13 +802,12 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Implements <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableField.html#a9df5c2708bdb7936a7e070ee9866ee27">lucene::core::index::IndexableField</a>.</p>
+<p class=""><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> </p>
 
 </div>
 </div>
-<a id="aec97d60c8348878b7fbaed0be2e3c023"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec97d60c8348878b7fbaed0be2e3c023">&#9670;&nbsp;</a></span>Name()</h2>
+<a id="a9b6d39e8c30c59bfe0556c38beeeb06e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b6d39e8c30c59bfe0556c38beeeb06e">&#9670;&nbsp;</a></span>Name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -683,22 +819,20 @@ Private Attributes</h2></td></tr>
           <td class="memname">const std::string&amp; lucene::core::document::Field::Name </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableField.html#a3eddf99b22a00458195e80429fa5ca82">lucene::core::index::IndexableField</a>.</p>
-
 </div>
 </div>
-<a id="af119306e6d6bf072d815f0f317dd287e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af119306e6d6bf072d815f0f317dd287e">&#9670;&nbsp;</a></span>NumericValue()</h2>
+<a id="a858814043215c98bacf6ecc823d078ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a858814043215c98bacf6ecc823d078ea">&#9670;&nbsp;</a></span>NumericValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -707,7 +841,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;<a class="el" href="classlucene_1_1core_1_1util_1_1etc_1_1Number.html">lucene::core::util::etc::Number</a>&gt; lucene::core::document::Field::NumericValue </td>
+          <td class="memname">virtual std::optional&lt;<a class="el" href="classlucene_1_1core_1_1util_1_1numeric_1_1Number.html">lucene::core::util::numeric::Number</a>&gt; lucene::core::document::Field::NumericValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -715,17 +849,17 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableField.html#ad57489328069fd1e227a0b1489159b85">lucene::core::index::IndexableField</a>.</p>
+<p>Reimplemented in <a class="el" href="classlucene_1_1core_1_1document_1_1LongPoint.html#a24068a492dbb14946de8de3bde3bd87b">lucene::core::document::LongPoint</a>, <a class="el" href="classlucene_1_1core_1_1document_1_1IntPoint.html#a738e9e2cc41c77f835aac8f06da801ac">lucene::core::document::IntPoint</a>, <a class="el" href="classlucene_1_1core_1_1document_1_1FloatPoint.html#ac2f070785fcce64c8214bb851fb6087c">lucene::core::document::FloatPoint</a>, and <a class="el" href="classlucene_1_1core_1_1document_1_1DoublePoint.html#aff495d94ea271af89212706b21aa3196">lucene::core::document::DoublePoint</a>.</p>
 
 </div>
 </div>
-<a id="a00a928f1bbae6e9d0e6fe1b3af302160"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00a928f1bbae6e9d0e6fe1b3af302160">&#9670;&nbsp;</a></span>ReaderValue()</h2>
+<a id="a9a165fa3cc612d355b6f3ef5deb87d50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a165fa3cc612d355b6f3ef5deb87d50">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -734,7 +868,60 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;std::reference_wrapper&lt;<a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a>&gt; &gt; lucene::core::document::Field::ReaderValue </td>
+          <td class="memname"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a>&amp; lucene::core::document::Field::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac2fbc0a1ae50f0e7452b90687aa0be78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2fbc0a1ae50f0e7452b90687aa0be78">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a>&amp; lucene::core::document::Field::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlucene_1_1core_1_1document_1_1Field.html">Field</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p class="">Only for same field assignment is allowed. Must have same name, same type. This asignment does not check it's equivalence at the beginning. </p>
+
+</div>
+</div>
+<a id="a06a7e8bad6d98767adee5e0e42941f06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06a7e8bad6d98767adee5e0e42941f06">&#9670;&nbsp;</a></span>ReaderValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::optional&lt;std::reference_wrapper&lt;<a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a>&gt; &gt; lucene::core::document::Field::ReaderValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -742,17 +929,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableField.html#a5d1bcc66e1f03e2ce8c328302a735486">lucene::core::index::IndexableField</a>.</p>
-
 </div>
 </div>
-<a id="a4b92c42bb91ef113806dbee6d4ee12d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b92c42bb91ef113806dbee6d4ee12d1">&#9670;&nbsp;</a></span>SetBytesValue() <span class="overload">[1/3]</span></h2>
+<a id="ab9214d49b8e3c8692820ad4f3086e6dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9214d49b8e3c8692820ad4f3086e6dc">&#9670;&nbsp;</a></span>SetBytesValue() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -761,15 +946,15 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetBytesValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetBytesValue </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>value</em>[], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">const uint32_t&#160;</td>
           <td class="paramname"><em>length</em>&#160;</td>
         </tr>
         <tr>
@@ -780,15 +965,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a96f2902e74079e79fe469487b1113b13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96f2902e74079e79fe469487b1113b13">&#9670;&nbsp;</a></span>SetBytesValue() <span class="overload">[2/3]</span></h2>
+<a id="a41d077e63ce6fae8677b8df6b29821bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d077e63ce6fae8677b8df6b29821bd">&#9670;&nbsp;</a></span>SetBytesValue() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -797,7 +982,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetBytesValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetBytesValue </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -806,15 +991,17 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Reimplemented in <a class="el" href="classlucene_1_1core_1_1document_1_1LongPoint.html#a3ba17f0b827e583a9b568e368dd798ac">lucene::core::document::LongPoint</a>, <a class="el" href="classlucene_1_1core_1_1document_1_1IntPoint.html#a288c85e2568bf186de1dac119c91ae2f">lucene::core::document::IntPoint</a>, and <a class="el" href="classlucene_1_1core_1_1document_1_1FloatPoint.html#a8862567e2ebfd0b8192eaec0967a943a">lucene::core::document::FloatPoint</a>.</p>
+
 </div>
 </div>
-<a id="a7a43e20d30825a755b748f7888761b0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a43e20d30825a755b748f7888761b0a">&#9670;&nbsp;</a></span>SetBytesValue() <span class="overload">[3/3]</span></h2>
+<a id="af61fb82abf8a917ccd5c9f252dcfa447"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af61fb82abf8a917ccd5c9f252dcfa447">&#9670;&nbsp;</a></span>SetBytesValue() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -823,7 +1010,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetBytesValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetBytesValue </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -832,15 +1019,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ab433593d18b62f1ce0be976b50fdc62e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab433593d18b62f1ce0be976b50fdc62e">&#9670;&nbsp;</a></span>SetDoubleValue()</h2>
+<a id="a8db791d4d1ebf77288d8529214413810"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8db791d4d1ebf77288d8529214413810">&#9670;&nbsp;</a></span>SetDoubleValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -849,7 +1036,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetDoubleValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetDoubleValue </td>
           <td>(</td>
           <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -858,15 +1045,17 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Reimplemented in <a class="el" href="classlucene_1_1core_1_1document_1_1DoublePoint.html#a71a14c1578c356e006c422f2c8a267b8">lucene::core::document::DoublePoint</a>, and <a class="el" href="classlucene_1_1core_1_1document_1_1DoubleDocValuesField.html#a1fe376e9158ee03034fd48fe259926ea">lucene::core::document::DoubleDocValuesField</a>.</p>
+
 </div>
 </div>
-<a id="a40a87a62fd8f67ea79a0e44bc64d88c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40a87a62fd8f67ea79a0e44bc64d88c6">&#9670;&nbsp;</a></span>SetFloatValue()</h2>
+<a id="aa22291dffcf6a545fd6c24f23fbb8b50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa22291dffcf6a545fd6c24f23fbb8b50">&#9670;&nbsp;</a></span>SetFloatValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -875,7 +1064,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetFloatValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetFloatValue </td>
           <td>(</td>
           <td class="paramtype">const float&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -884,15 +1073,17 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Reimplemented in <a class="el" href="classlucene_1_1core_1_1document_1_1FloatPoint.html#a4e1f81bce5f905e267a32c4882faf90e">lucene::core::document::FloatPoint</a>, and <a class="el" href="classlucene_1_1core_1_1document_1_1FloatDocValuesField.html#a929d0812b571be2208f51d420b0dd9ed">lucene::core::document::FloatDocValuesField</a>.</p>
+
 </div>
 </div>
-<a id="a9a316ba10e33e335641ca493e56b14ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a316ba10e33e335641ca493e56b14ea">&#9670;&nbsp;</a></span>SetIntValue()</h2>
+<a id="a6aee080f0bf507f8c6a5cfc64bd913a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6aee080f0bf507f8c6a5cfc64bd913a2">&#9670;&nbsp;</a></span>SetIntValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -901,7 +1092,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetIntValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetIntValue </td>
           <td>(</td>
           <td class="paramtype">const int32_t&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -910,15 +1101,17 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Reimplemented in <a class="el" href="classlucene_1_1core_1_1document_1_1IntPoint.html#a49cd2286ec4ffa46d868eea812d85234">lucene::core::document::IntPoint</a>.</p>
+
 </div>
 </div>
-<a id="aab04835cd19c035020d5baef05896d68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab04835cd19c035020d5baef05896d68">&#9670;&nbsp;</a></span>SetLongValue()</h2>
+<a id="a949822599f392fb7fca20423902e535a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a949822599f392fb7fca20423902e535a">&#9670;&nbsp;</a></span>SetLongValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -927,7 +1120,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetLongValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetLongValue </td>
           <td>(</td>
           <td class="paramtype">const int64_t&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -936,15 +1129,17 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Reimplemented in <a class="el" href="classlucene_1_1core_1_1document_1_1LongPoint.html#a5bc668dfdf190b8bc0a52808a6580b40">lucene::core::document::LongPoint</a>, <a class="el" href="classlucene_1_1core_1_1document_1_1DoubleDocValuesField.html#ab51b275ef2d23c248e945f4747a6dd6e">lucene::core::document::DoubleDocValuesField</a>, and <a class="el" href="classlucene_1_1core_1_1document_1_1FloatDocValuesField.html#a27b6b009471cbaa1b0baf8facb97fa6d">lucene::core::document::FloatDocValuesField</a>.</p>
+
 </div>
 </div>
-<a id="a390d9638f5aa3de19d94b9259afee2b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a390d9638f5aa3de19d94b9259afee2b2">&#9670;&nbsp;</a></span>SetReaderValue()</h2>
+<a id="a86a255eb3b09b70fe76af3b7d75364e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86a255eb3b09b70fe76af3b7d75364e5">&#9670;&nbsp;</a></span>SetReaderValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -953,7 +1148,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetReaderValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetReaderValue </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a> *&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -962,15 +1157,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a63dc549c5dcff4cfe1a1f03a1935136b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63dc549c5dcff4cfe1a1f03a1935136b">&#9670;&nbsp;</a></span>SetShortValue()</h2>
+<a id="a1f513eaae4357667bcdbacb211fa3bff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f513eaae4357667bcdbacb211fa3bff">&#9670;&nbsp;</a></span>SetShortValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -979,7 +1174,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetShortValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetShortValue </td>
           <td>(</td>
           <td class="paramtype">const int16_t&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -988,15 +1183,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a2bb6efa252c30c12aceef0db6e216ef9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bb6efa252c30c12aceef0db6e216ef9">&#9670;&nbsp;</a></span>SetStringValue() <span class="overload">[1/2]</span></h2>
+<a id="aa649cff34208abbbe274c5112d60712d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa649cff34208abbbe274c5112d60712d">&#9670;&nbsp;</a></span>SetStringValue() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1005,7 +1200,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetStringValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetStringValue </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1014,15 +1209,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="aab2351ba0550add74c590be2c2bf9208"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab2351ba0550add74c590be2c2bf9208">&#9670;&nbsp;</a></span>SetStringValue() <span class="overload">[2/2]</span></h2>
+<a id="af2b792611d8666daf647adac0ed1a0ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2b792611d8666daf647adac0ed1a0ed">&#9670;&nbsp;</a></span>SetStringValue() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1031,7 +1226,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetStringValue </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetStringValue </td>
           <td>(</td>
           <td class="paramtype">std::string &amp;&amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1040,15 +1235,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a33db504416c882960fa2207de75d3510"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33db504416c882960fa2207de75d3510">&#9670;&nbsp;</a></span>SetTokenStream()</h2>
+<a id="adfb4f4d5a2b2a8c9334186c93fd20c3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfb4f4d5a2b2a8c9334186c93fd20c3b">&#9670;&nbsp;</a></span>SetTokenStream()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1057,7 +1252,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lucene::core::document::Field::SetTokenStream </td>
+          <td class="memname">virtual void lucene::core::document::Field::SetTokenStream </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html">lucene::core::analysis::TokenStream</a> *&#160;</td>
           <td class="paramname"><em>new_tokenstream</em></td><td>)</td>
@@ -1066,15 +1261,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a9eaf712354f0a787e45d4f41b17aeae8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9eaf712354f0a787e45d4f41b17aeae8">&#9670;&nbsp;</a></span>StringValue()</h2>
+<a id="a6b300229888f74a4cd76c40346c04234"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b300229888f74a4cd76c40346c04234">&#9670;&nbsp;</a></span>StringValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1083,7 +1278,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;std::reference_wrapper&lt;std::string&gt; &gt; lucene::core::document::Field::StringValue </td>
+          <td class="memname">virtual std::optional&lt;std::reference_wrapper&lt;std::string&gt; &gt; lucene::core::document::Field::StringValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1091,18 +1286,16 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Implements <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableField.html#ac06f4371ff3011ab247a07e219f43223">lucene::core::index::IndexableField</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a745c27d038375a7fd986488a88b44443"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a745c27d038375a7fd986488a88b44443">&#9670;&nbsp;</a></span>fields_data</h2>
+<a id="a2ae4ce107a1c3f4ea56f9ab812e94153"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ae4ce107a1c3f4ea56f9ab812e94153">&#9670;&nbsp;</a></span>fields_data</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1111,20 +1304,20 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::variant&lt;<a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a>, std::string, std::unique_ptr&lt;<a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a>&gt;, <a class="el" href="classlucene_1_1core_1_1util_1_1etc_1_1Number.html">lucene::core::util::etc::Number</a>&gt; lucene::core::document::Field::fields_data</td>
+          <td class="memname">std::variant&lt;<a class="el" href="classlucene_1_1core_1_1util_1_1BytesRef.html">lucene::core::util::BytesRef</a>, std::string, std::unique_ptr&lt;<a class="el" href="classlucene_1_1core_1_1analysis_1_1Reader.html">lucene::core::analysis::Reader</a>&gt;, <a class="el" href="classlucene_1_1core_1_1util_1_1numeric_1_1Number.html">lucene::core::util::numeric::Number</a>&gt; lucene::core::document::Field::fields_data</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a550ee69f8cb7db2a00f3e9bda4964dfb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a550ee69f8cb7db2a00f3e9bda4964dfb">&#9670;&nbsp;</a></span>name</h2>
+<a id="a52f673f3b3abb14b180f5159f4726537"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52f673f3b3abb14b180f5159f4726537">&#9670;&nbsp;</a></span>name</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1133,12 +1326,12 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::string&amp; lucene::core::document::Field::name</td>
+          <td class="memname">const std::string* lucene::core::document::Field::name</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1160,15 +1353,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ad627895c156c58f9bd409caf06edbdf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad627895c156c58f9bd409caf06edbdf4">&#9670;&nbsp;</a></span>type</h2>
+<a id="a7d5849d933ebde73422710069643ccff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d5849d933ebde73422710069643ccff">&#9670;&nbsp;</a></span>type</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1177,12 +1370,12 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classlucene_1_1core_1_1index_1_1IndexableFieldType.html">lucene::core::index::IndexableFieldType</a>&amp; lucene::core::document::Field::type</td>
+          <td class="memname"><a class="el" href="classlucene_1_1core_1_1document_1_1FieldType.html">FieldType</a> lucene::core::document::Field::type</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

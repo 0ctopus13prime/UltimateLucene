@@ -25,10 +25,10 @@
 #include <Util/ArrayUtil.h>
 #include <Util/Bytes.h>
 #include <Util/Numeric.h>
+#include <optional>
+#include <variant>
 #include <cstring>
 #include <initializer_list>
-#include <variant>
-#include <optional>
 #include <stdexcept>
 #include <memory>
 #include <string>
@@ -41,7 +41,7 @@ namespace document {
 class FieldTypeBuilder;
 
 class FieldType {
- friend class FieldTypeBuilder;
+  friend class FieldTypeBuilder;
 
  public:
   bool stored;
@@ -161,7 +161,7 @@ class FieldTypeBuilder {
   FieldTypeBuilder&
   SetDimensions(const uint32_t new_dimension_count,
                 const uint32_t new_dimension_num_bytes) noexcept {
-    dimension_count = new_dimension_count; 
+    dimension_count = new_dimension_count;
     dimension_num_bytes = new_dimension_num_bytes;
     return *this;
   }
@@ -247,7 +247,7 @@ class Field {
 
 
   Field(const std::string& name,
-        const char* value,
+        const char value[],
         const uint32_t offset,
         const uint32_t length,
         const FieldType& type)
@@ -344,7 +344,7 @@ class Field {
     throw std::runtime_error("Field data can not be assigned from Reader");
   }
 
-  virtual void SetBytesValue(const char* value, uint32_t length) {
+  virtual void SetBytesValue(const char value[], const uint32_t length) {
     SetBytesValue(lucene::core::util::BytesRef(value, 0, length));
   }
 
@@ -662,24 +662,24 @@ class StoredField : public Field {
  public:
   StoredField(const std::string& name,
               const lucene::core::util::BytesRef& bytes,
-              FieldType& type)
+              const FieldType& type)
     : Field(name, bytes, type) {
   }
 
   StoredField(const std::string& name,
               lucene::core::util::BytesRef&& bytes,
-              FieldType& type)
+              const FieldType& type)
     : Field(name, std::forward<lucene::core::util::BytesRef>(bytes), type) {
   }
 
   StoredField(const std::string& name,
-              char value[],
+              const char value[],
               const uint32_t length)
     : Field(name, value, length, TYPE) {
   }
 
   StoredField(const std::string& name,
-              char value[],
+              const char value[],
               const uint32_t offset,
               const uint32_t length)
     : Field(name, value, offset, length, TYPE) {
@@ -689,7 +689,7 @@ class StoredField : public Field {
               const lucene::core::util::BytesRef& bytes)
     : Field(name, bytes, TYPE) {
   }
- 
+
   StoredField(const std::string& name,
               lucene::core::util::BytesRef&& bytes)
     : Field(name, std::forward<lucene::core::util::BytesRef>(bytes), TYPE) {
@@ -742,7 +742,7 @@ class StoredField : public Field {
 
 class NumericDocValuesField : public Field {
  public:
-  static FieldType TYPE; 
+  static FieldType TYPE;
 
   NumericDocValuesField(const std::string& name, const int64_t value)
     : Field(name, TYPE) {
@@ -853,7 +853,7 @@ class SortedNumericDocValuesField : public Field {
     fields_data = lucene::core::util::numeric::Number(value);
   }
 
-  virtual ~SortedNumericDocValuesField() { } 
+  virtual ~SortedNumericDocValuesField() { }
 
   // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
   // static newSlowExactQuery TODO(0ctopus13prime): Implement it.
@@ -876,7 +876,7 @@ class SortedSetDocValuesField : public Field {
     fields_data = std::forward<lucene::core::util::BytesRef>(bytes);
   }
 
-  virtual ~SortedSetDocValuesField() { } 
+  virtual ~SortedSetDocValuesField() { }
 
   // static newSlowRangeQuery TODO(0ctopus13prime): Implement it.
   // static newSlowExactQuery TODO(0ctopus13prime): Implement it.
@@ -885,7 +885,7 @@ class SortedSetDocValuesField : public Field {
 class BinaryPoint : public Field {
  private:
   static FieldType GetType(const uint32_t num_dims,
-                           const uint32_t bytes_per_dim) {
+                           const uint32_t bytes_per_dim) noexcept {
     return FieldTypeBuilder()
            .SetDimensions(num_dims, bytes_per_dim)
            .Build();
@@ -908,11 +908,11 @@ class BinaryPoint : public Field {
     const uint32_t size = bytes_per_dim * points_length;
     char packed[size];
 
-    for (uint32_t dim_idx = 0 ; dim_idx < points_length ; dim_idx++) {
+    for (uint32_t dim_idx = 0 ; dim_idx < points_length ; ++dim_idx) {
       const uint32_t offset = dim_idx * bytes_per_dim;
       std::memcpy(packed + offset,
                   points + offset,
-                  bytes_per_dim); 
+                  bytes_per_dim);
     }
 
     return lucene::core::util::BytesRef(packed, 0, size);
@@ -936,14 +936,14 @@ class BinaryPoint : public Field {
     if (bytes_per_dim != type.dimension_count * type.dimension_num_bytes) {
       throw std::runtime_error("Packed point is length=" +
                                std::to_string(bytes_per_dim) +
-                               " but type.dimension_count=" + 
-                               std::to_string(type.dimension_count) + 
+                               " but type.dimension_count=" +
+                               std::to_string(type.dimension_count) +
                                " and type.dimension_num_bytes=" +
                                std::to_string(type.dimension_num_bytes));
     }
   }
 
-  virtual ~BinaryPoint() { } 
+  virtual ~BinaryPoint() { }
 
   // static Query newExactQuery TODO(0ctopus13prime): Implement it.
   // static Query newRangeQuery TODO(0ctopus13prime): Implement it.
@@ -966,7 +966,7 @@ class DoublePoint : public Field {
     char packed[packed_size];
 
     uint32_t offset = 0;
-    for(const double p : point) {
+    for (const double p : point) {
       DoublePoint::EncodeDimension(p, packed, offset);
       offset += sizeof(double);
     }
@@ -1026,7 +1026,7 @@ class DoublePoint : public Field {
 
   void SetBytesValue(const lucene::core::util::BytesRef bytes) {
     throw
-    std::invalid_argument("Cannot change value type from double to BytesRef"); 
+    std::invalid_argument("Cannot change value type from double to BytesRef");
   }
 
   std::optional<lucene::core::util::numeric::Number> NumericValue() {
@@ -1044,7 +1044,7 @@ class DoublePoint : public Field {
             DoublePoint::GetType(point.size())) {
   }
 
-  virtual ~DoublePoint() { } 
+  virtual ~DoublePoint() { }
 
   // TODO(0ctopus13prime): Implement Query stuffs
 };
@@ -1054,7 +1054,7 @@ class DoubleRange : public Field {
   static FieldType GetType(const uint32_t dimensions) {
     if (dimensions <= 4) {
       return FieldTypeBuilder()
-             .SetDimensions(dimensions * 2, sizeof(double)) 
+             .SetDimensions(dimensions * 2, sizeof(double))
              .Build();
     } else {
       throw std::invalid_argument("DoubleRange does not support greater"
@@ -1076,7 +1076,8 @@ class DoubleRange : public Field {
     }
   }
 
-  static void Encode(const double val, char bytes[], const uint32_t offset) {
+  static void
+  Encode(const double val, char bytes[], const uint32_t offset) noexcept {
     lucene::core::util::numeric::NumericUtils::LongToSortableBytes(
       lucene::core::util::numeric::NumericUtils::DoubleToSortableLong(val),
       bytes,
@@ -1117,8 +1118,9 @@ class DoubleRange : public Field {
   }
 
  public:
-  static double DecodeMin(const char bytes[], const uint32_t dimension) {
-    const uint32_t offset = dimension * sizeof(double); 
+  static double
+  DecodeMin(const char bytes[], const uint32_t dimension) noexcept {
+    const uint32_t offset = dimension * sizeof(double);
 
     return lucene::core::util::numeric::NumericUtils::SortableLongToDouble(
     lucene::core::util::numeric::NumericUtils::SortableBytesToLong(bytes,
@@ -1127,9 +1129,9 @@ class DoubleRange : public Field {
 
   static double DecodeMax(const char bytes[],
                           const uint32_t bytes_length,
-                          const uint32_t dimension) {
+                          const uint32_t dimension) noexcept {
     const uint32_t offset =
-    (bytes_length >> 1) + dimension * sizeof(double); 
+    (bytes_length >> 1) + dimension * sizeof(double);
 
     return lucene::core::util::numeric::NumericUtils::SortableLongToDouble(
     lucene::core::util::numeric::NumericUtils::SortableBytesToLong(bytes,
@@ -1154,7 +1156,7 @@ class DoubleRange : public Field {
                       const uint32_t length) {
     CheckArgs(min, max, length);
 
-    lucene::core::util::BytesRef& bytes_ref = 
+    lucene::core::util::BytesRef& bytes_ref =
       std::get<lucene::core::util::BytesRef>(fields_data);
 
     const uint32_t required_min_capacity = sizeof(double) * 2 * length;
@@ -1218,14 +1220,14 @@ class FloatPoint : public Field {
 
   static void EncodeDimension(const float value,
                               char dest[],
-                              const uint32_t offset) {
+                              const uint32_t offset) noexcept {
     lucene::core::util::numeric::NumericUtils::IntToSortableBytes(
       lucene::core::util::numeric::NumericUtils::FloatToSortableInt(value),
       dest, offset);
   }
 
   static float DecodeDimension(const char value[],
-                               const uint32_t offset) {
+                               const uint32_t offset) noexcept {
     return lucene::core::util::numeric::NumericUtils::SortableIntToFloat(
       lucene::core::util::numeric::NumericUtils::SortableBytesToInt(value,
                                                                     offset));
@@ -1269,7 +1271,7 @@ class FloatPoint : public Field {
   virtual ~FloatPoint() { }
 
   void SetFloatValue(const float value) {
-    SetFloatValues(&value, 1);    
+    SetFloatValues(&value, 1);
   }
 
   void SetFloatValues(const float points[],
@@ -1286,7 +1288,7 @@ class FloatPoint : public Field {
     fields_data = FloatPoint::Pack(points, length);
   }
 
-  void SetBytesValue(const lucene::core::util::BytesRef& value) {
+  void SetBytesValue(const lucene::core::util::BytesRef&) {
     throw std::invalid_argument("Cannot change value type "
                                 "from float to BytesRef");
   }
@@ -1352,10 +1354,10 @@ class FloatRange : public Field {
       offset);
   }
 
-  static void VerifyAndEncode(const float* min,
-                              const float* max,
+  static void VerifyAndEncode(const float min[],
+                              const float max[],
                               const uint32_t length,
-                              char* bytes) {
+                              char bytes[]) {
     for (uint32_t d = 0, i = 0, j = length * sizeof(float)
          ; d < length
          ; ++d, i += sizeof(float), j += sizeof(float)) {
@@ -1385,7 +1387,7 @@ class FloatRange : public Field {
       FloatRange::Encode(max[d], bytes, j);
     }
   }
-  
+
  public:
   FloatRange(const std::string& name,
              const float min[],
@@ -1405,7 +1407,7 @@ class FloatRange : public Field {
       lucene::core::util::BytesRef& bytes_ref =
       std::get<lucene::core::util::BytesRef>(fields_data);
 
-      uint32_t required_min_capacity = sizeof(float) * 2 * length;
+      const uint32_t required_min_capacity = sizeof(float) * 2 * length;
 
       if (bytes_ref.capacity >= required_min_capacity) {
         FloatRange::VerifyAndEncode(min, max, length, bytes_ref.bytes.get());
@@ -1450,7 +1452,7 @@ class FloatRange : public Field {
 
 class IntPoint : public Field {
  private:
-  static FieldType GetType(const uint32_t num_dims) {
+  static FieldType GetType(const uint32_t num_dims) noexcept {
     return FieldTypeBuilder()
            .SetDimensions(num_dims, sizeof(int32_t))
            .Build();
@@ -1466,7 +1468,7 @@ class IntPoint : public Field {
     const uint32_t packed_size = length * sizeof(int32_t);
     char packed[packed_size];
 
-    for (uint32_t dim = 0 ; dim < length ; dim++) {
+    for (uint32_t dim = 0 ; dim < length ; ++dim) {
       IntPoint::EncodeDimension(points[dim], packed, dim * sizeof(int32_t));
     }
 
@@ -1522,7 +1524,7 @@ class IntPoint : public Field {
   std::optional<lucene::core::util::numeric::Number> NumericValue() {
     lucene::core::util::BytesRef& bytesref =
     std::get<lucene::core::util::BytesRef>(fields_data);
-    
+
     return lucene::core::util::numeric::Number(
     IntPoint::DecodeDimension(bytesref.bytes.get(), bytesref.offset));
   }
@@ -1556,11 +1558,11 @@ class IntRange : public Field {
                                   "greater than 4 dimensions");
     }
   }
-  
+
   static void VerifyAndEncode(const int32_t min[],
                               const int32_t max[],
                               const uint32_t length,
-                              char* bytes) {
+                              char bytes[]) {
     for (uint32_t d = 0, i = 0, j = length * sizeof(int32_t)
          ; d < length
          ; ++d, i += sizeof(int32_t), j += sizeof(int32_t)) {
@@ -1585,7 +1587,7 @@ class IntRange : public Field {
 
     for (uint32_t d = 0, i = 0, j = length * sizeof(int32_t)
          ; d < length
-         ; ++d, i += sizeof(int32_t), j += sizeof(int32_t)) {
+         ; d++, i += sizeof(int32_t), j += sizeof(int32_t)) {
       IntRange::Encode(min[d], bytes, i);
       IntRange::Encode(max[d], bytes, j);
     }
@@ -1676,8 +1678,8 @@ class IntRange : public Field {
 };
 
 class LongPoint : public Field {
- private: 
-  static FieldType GetType(const uint32_t num_dims) {
+ private:
+  static FieldType GetType(const uint32_t num_dims) noexcept {
     return FieldTypeBuilder()
            .SetDimensions(num_dims, sizeof(int64_t))
            .Build();
@@ -1692,7 +1694,7 @@ class LongPoint : public Field {
     const uint32_t packed_size = length * sizeof(int64_t);
     char packed[packed_size];
 
-    for (int32_t dim = 0 ; dim < length ; ++dim) {
+    for (int32_t dim = 0 ; dim < length ; dim++) {
       LongPoint::EncodeDimension(points[dim], packed, dim * sizeof(int64_t));
     }
 
@@ -1767,7 +1769,6 @@ class LongRange : public Field {
   static void CheckArgs(const int64_t min[],
                         const int64_t max[],
                         const uint32_t length) {
-    
     if (min == nullptr
         || max == nullptr
         || length == 0) {
@@ -1807,7 +1808,7 @@ class LongRange : public Field {
   static void VerifyAndEncode(const int64_t min[],
                               const int64_t max[],
                               const uint32_t length,
-                              char* bytes) {
+                              char bytes[]) {
     for (uint32_t d = 0, i = 0, j = length * sizeof(int64_t)
          ; d < length
          ; ++d, i += sizeof(int64_t), j += sizeof(int64_t)) {
@@ -1852,7 +1853,7 @@ class LongRange : public Field {
   void SetRangeValues(const int64_t min[],
                       const int64_t max[],
                       const uint32_t length) {
-    LongRange::CheckArgs(min, max, length); 
+    LongRange::CheckArgs(min, max, length);
 
     if (length * 2  == type.dimension_count) {
       lucene::core::util::BytesRef& bytes_ref =
@@ -1860,7 +1861,7 @@ class LongRange : public Field {
 
       const uint32_t minimum_required = length * 2 * sizeof(int64_t);
       if (bytes_ref.capacity < minimum_required) {
-        bytes_ref = lucene::core::util::BytesRef(minimum_required); 
+        bytes_ref = lucene::core::util::BytesRef(minimum_required);
       }
 
       LongRange::VerifyAndEncode(min, max, length, bytes_ref.bytes.get());

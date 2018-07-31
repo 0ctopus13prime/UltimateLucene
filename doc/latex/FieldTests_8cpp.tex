@@ -2,13 +2,34 @@
 \label{FieldTests_8cpp}\index{Document/tests/\+Field\+Tests.\+cpp@{Document/tests/\+Field\+Tests.\+cpp}}
 {\ttfamily \#include $<$Analysis/\+Reader.\+h$>$}\newline
 {\ttfamily \#include $<$Document/\+Field.\+h$>$}\newline
+{\ttfamily \#include $<$Util/\+Bytes.\+h$>$}\newline
+{\ttfamily \#include $<$Util/\+Numeric.\+h$>$}\newline
 {\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$string$>$}\newline
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{FieldTests_8cpp_a172101c112fb11a12da8d824dd05cbe9}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, B\+A\+S\+I\+C\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{FieldTests_8cpp_a9b6a13760fd01cd770223d293b649b9f}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, B\+I\+N\+A\+R\+Y\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{FieldTests_8cpp_a13f8df41376bba8e4967e56b6e652182}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, D\+O\+U\+B\+L\+E\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{FieldTests_8cpp_a935f53bc39fc4478ce53a1b43dde00d0}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, D\+O\+U\+B\+L\+E\+\_\+\+\_\+\+R\+A\+N\+G\+E\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{FieldTests_8cpp_a14f91429dc76f28caaaf988f3c9a6f31}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, F\+L\+O\+A\+T\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{FieldTests_8cpp_a8843336fc059015f2e07ad2c646034ad}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, F\+L\+O\+A\+T\+\_\+\+\_\+\+R\+A\+N\+G\+E\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{FieldTests_8cpp_a38a1db7d9744a4abe737fd4eaa51b2e2}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, I\+N\+T\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{FieldTests_8cpp_a4d62fe9a5e91e32b1b398b481ca23b9b}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, I\+N\+T\+\_\+\+\_\+\+R\+A\+N\+G\+E\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{FieldTests_8cpp_a572702ee74b6f4fe7e4ec6ab81bd2dc4}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, L\+O\+N\+G\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST)
+\item 
+\mbox{\hyperlink{FieldTests_8cpp_ae13b865f3ef19b8f44a7cd1deb4b6902}{T\+E\+ST}} (F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS, L\+O\+N\+G\+\_\+\+\_\+\+R\+A\+N\+G\+E\+\_\+\+\_\+\+T\+E\+ST)
 \item 
 int \mbox{\hyperlink{FieldTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
 \end{DoxyCompactItemize}
@@ -24,6 +45,60 @@ int \mbox{\hyperlink{FieldTests_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (
 \mbox{\Hypertarget{FieldTests_8cpp_a172101c112fb11a12da8d824dd05cbe9}\label{FieldTests_8cpp_a172101c112fb11a12da8d824dd05cbe9}} 
 \index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
 \index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
-\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/10]}}
 {\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{B\+A\+S\+I\+C\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{FieldTests_8cpp_a9b6a13760fd01cd770223d293b649b9f}\label{FieldTests_8cpp_a9b6a13760fd01cd770223d293b649b9f}} 
+\index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/10]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{B\+I\+N\+A\+R\+Y\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{FieldTests_8cpp_a13f8df41376bba8e4967e56b6e652182}\label{FieldTests_8cpp_a13f8df41376bba8e4967e56b6e652182}} 
+\index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/10]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{D\+O\+U\+B\+L\+E\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{FieldTests_8cpp_a935f53bc39fc4478ce53a1b43dde00d0}\label{FieldTests_8cpp_a935f53bc39fc4478ce53a1b43dde00d0}} 
+\index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [4/10]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{D\+O\+U\+B\+L\+E\+\_\+\+\_\+\+R\+A\+N\+G\+E\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{FieldTests_8cpp_a14f91429dc76f28caaaf988f3c9a6f31}\label{FieldTests_8cpp_a14f91429dc76f28caaaf988f3c9a6f31}} 
+\index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [5/10]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{F\+L\+O\+A\+T\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{FieldTests_8cpp_a8843336fc059015f2e07ad2c646034ad}\label{FieldTests_8cpp_a8843336fc059015f2e07ad2c646034ad}} 
+\index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [6/10]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{F\+L\+O\+A\+T\+\_\+\+\_\+\+R\+A\+N\+G\+E\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{FieldTests_8cpp_a38a1db7d9744a4abe737fd4eaa51b2e2}\label{FieldTests_8cpp_a38a1db7d9744a4abe737fd4eaa51b2e2}} 
+\index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [7/10]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{I\+N\+T\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{FieldTests_8cpp_a4d62fe9a5e91e32b1b398b481ca23b9b}\label{FieldTests_8cpp_a4d62fe9a5e91e32b1b398b481ca23b9b}} 
+\index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [8/10]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{I\+N\+T\+\_\+\+\_\+\+R\+A\+N\+G\+E\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{FieldTests_8cpp_a572702ee74b6f4fe7e4ec6ab81bd2dc4}\label{FieldTests_8cpp_a572702ee74b6f4fe7e4ec6ab81bd2dc4}} 
+\index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [9/10]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{L\+O\+N\+G\+\_\+\+\_\+\+P\+O\+I\+N\+T\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{FieldTests_8cpp_ae13b865f3ef19b8f44a7cd1deb4b6902}\label{FieldTests_8cpp_ae13b865f3ef19b8f44a7cd1deb4b6902}} 
+\index{Field\+Tests.\+cpp@{Field\+Tests.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!Field\+Tests.\+cpp@{Field\+Tests.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [10/10]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{F\+I\+E\+L\+D\+\_\+\+\_\+\+T\+E\+S\+TS}]{,  }\item[{L\+O\+N\+G\+\_\+\+\_\+\+R\+A\+N\+G\+E\+\_\+\+\_\+\+T\+E\+ST}]{ }\end{DoxyParamCaption})}
 

@@ -15,9 +15,9 @@
  *
  */
 
-#include <iostream>
-#include <gtest/gtest.h>
 #include <Util/Numeric.h>
+#include <gtest/gtest.h>
+#include <iostream>
 
 using lucene::core::util::numeric::Float;
 using lucene::core::util::numeric::FloatConsts;
@@ -38,7 +38,7 @@ TEST(NUMERIC__TESTS, FLOAT__TESTS) {
 }
 
 TEST(NUMERIC__TESTS, DOUBLE__TESTS) {
-  double nan = 0.0 / 0.0; 
+  double nan = 0.0 / 0.0;
   ASSERT_TRUE(Double::IsNaN(nan));
   ASSERT_EQ(0x7ff8000000000000L, Double::DoubleToLongBits(nan));
 
@@ -205,7 +205,7 @@ TEST(NUMERIC_TESTS, NUMERIC___UTILS__TESTS3) {
       NumericUtils::Add(3, 0, dimension1, dimension2, result);
       FAIL();
     } catch(std::invalid_argument&) {
-   }
+    }
   }
 }
 
@@ -215,7 +215,7 @@ TEST(NUMERIC_TESTS, NUMERIC___UTILS__TESTS4) {
     float next_num = NumericUtils::FloatNextUp(num);
     ASSERT_GT(next_num, num);
   }
-  
+
   {
     float num = 1;
     float next_num = NumericUtils::FloatNextDown(num);

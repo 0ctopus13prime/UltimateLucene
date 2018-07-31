@@ -53,7 +53,7 @@ BytesRef::BytesRef(BytesRef&& source)
     length(source.length),
     capacity(source.capacity) {
   if (source.bytes != BytesRef::DEFAULT_BYTES) {
-    bytes = std::move(source.bytes); 
+    bytes = std::move(source.bytes);
   } else {
     bytes.reset(new char[source.capacity]);
   }
@@ -172,7 +172,7 @@ BytesRef& BytesRef::operator=(const BytesRef& source) {
 BytesRef& BytesRef::operator=(BytesRef&& source) {
   if (this != &source) {
     if (source.bytes != BytesRef::DEFAULT_BYTES) {
-      bytes = std::move(source.bytes); 
+      bytes = std::move(source.bytes);
     } else {
       bytes.reset(new char[source.capacity]);
     }
