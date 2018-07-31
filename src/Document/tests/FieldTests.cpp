@@ -111,15 +111,17 @@ TEST(FIELD__TESTS, BASIC__TEST) {
 
 TEST(FIELD__TESTS, BINARY__POINT__TEST) {
   std::string name("field_name");
-  const char point1[] = {0x01, 0x12};
-  const char point2[] = {0x23, 0x34};
-  const char points[] = {0x01, 0x12, 0x23, 0x34};
+  const char points[3][2] = {
+    {0x01, 0x12},
+    {0x23, 0x34},
+    {0x01, 0x12}
+  };
 
-  BinaryPoint bp(name, {point1, point2}, 2); 
+  BinaryPoint bp(name, &points[0][0], 3, 2); 
   auto opt = bp.BinaryValue();
   if (opt) {
     BytesRef& got = *opt;
-    BytesRef org(points, 4);
+    BytesRef org(&points[0][0], 2);
     ASSERT_EQ(org, got);
   } else {
     FAIL();

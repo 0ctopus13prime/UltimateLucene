@@ -1,6 +1,9 @@
 #ifndef SRC_DOCUMENT_DOCUMENT_H_
 #define SRC_DOCUMENT_DOCUMENT_H_
 
+// TEST
+#include <iostream>
+
 #include <Document/Field.h>
 #include <algorithm>
 #include <optional>
@@ -14,7 +17,7 @@ namespace document {
 // TODO(0ctopus13prime): Custom allocator?
 class Document {
  private:
-  std::vector<lucene::core::document::Field*> fields;
+  std::vector<lucene::core::document::Field> fields;
 
  public:
   Document(uint32_t capacity = 5)
@@ -22,50 +25,49 @@ class Document {
     fields.reserve(capacity);
   }
 
-  ~Document() {
-    std::for_each(fields.begin(),
-                  fields.end(),
-                  std::default_delete<lucene::core::document::Field>());
-  }
-
-  std::vector<lucene::core::document::Field*>::iterator
+  std::vector<lucene::core::document::Field>::iterator
   begin() noexcept {
     return fields.begin();
   }
 
-  std::vector<lucene::core::document::Field*>::iterator
+  std::vector<lucene::core::document::Field>::iterator
   end() noexcept {
     return fields.end();
   }
 
-  void Add(lucene::core::document::Field* field) {
-    fields.push_back(field);
+  void Add(lucene::core::document::Field&) = delete;
+
+  void Add(lucene::core::document::Field&& field) {
+    fields.push_back(std::forward<lucene::core::document::Field>(field));
   }
 
   void RemoveField(const std::string& name) {
-    fields.erase(
-      std::find_if(fields.begin(),
-                   fields.end(),
-                   [&name](lucene::core::document::Field* field){
-                     return field->Name() == name;
-                   }));
+    auto it = std::remove_if(fields.begin(),
+                             fields.end(),
+                             [&name](lucene::core::document::Field& field){
+                               return field.Name() == name; 
+                             });
+
+    if (it != fields.end()) {
+      fields.erase(it);
+    }
   }
 
   void RemoveFields(const std::string& name) {
     fields.erase(
       std::remove_if(fields.begin(),
                      fields.end(),
-                     [&name](lucene::core::document::Field* field){
-                       return field->Name() == name; 
+                     [&name](lucene::core::document::Field& field){
+                       return field.Name() == name; 
                      }),
-                     fields.end());
+      fields.end());
   }
 
   std::optional<std::reference_wrapper<lucene::core::util::BytesRef>>
   GetBinaryValue(const std::string& name) noexcept {
-    for (lucene::core::document::Field* field : fields) {
-      if (field->Name() == name && field->BinaryValue()) {
-        lucene::core::util::BytesRef& bytesref = *(field->BinaryValue());
+    for (lucene::core::document::Field& field : fields) {
+      if (field.Name() == name && field.BinaryValue()) {
+        lucene::core::util::BytesRef& bytesref = *(field.BinaryValue());
         return bytesref;
       }
     }
@@ -77,9 +79,9 @@ class Document {
   GetBinaryValues(const std::string& name,
                   lucene::core::util::BytesRef* dest[]) noexcept {
     uint32_t idx = 0;
-    for (lucene::core::document::Field* field : fields) {
-      if (field->Name() == name && field->BinaryValue()) {
-        lucene::core::util::BytesRef& bytesref = *(field->BinaryValue());
+    for (lucene::core::document::Field& field : fields) {
+      if (field.Name() == name && field.BinaryValue()) {
+        lucene::core::util::BytesRef& bytesref = *(field.BinaryValue());
         dest[idx++] = &bytesref;
       }
     }
@@ -89,9 +91,9 @@ class Document {
 
   std::optional<std::reference_wrapper<lucene::core::document::Field>>
   GetField(const std::string& name) {
-    for (lucene::core::document::Field* field : fields) {
-      if (field->Name() == name) {
-        return *field;
+    for (lucene::core::document::Field& field : fields) {
+      if (field.Name() == name) {
+        return field;
       }
     }
 
@@ -101,9 +103,9 @@ class Document {
   uint32_t GetFields(const std::string& name,
                      lucene::core::document::Field* dest[]) noexcept {
     uint32_t idx = 0;
-    for (lucene::core::document::Field* field : fields) {
-      if (field->Name() == name) {
-        dest[idx++] = field;
+    for (lucene::core::document::Field& f : fields) {
+      if (f.Name() == name) {
+        dest[idx++] = &f;
       }
     }
 
@@ -113,9 +115,9 @@ class Document {
   uint32_t GetValues(const std::string& name,
                      std::string* dest[]) noexcept {
     uint32_t idx = 0;
-    for (lucene::core::document::Field* field : fields) {
-      if (field->Name() == name && field->StringValue()) {
-        std::string& value = *(field->StringValue());
+    for (lucene::core::document::Field& field : fields) {
+      if (field.Name() == name && field.StringValue()) {
+        std::string& value = *(field.StringValue());
         dest[idx++] = &value;
       }
     }
@@ -125,9 +127,9 @@ class Document {
 
   std::optional<std::reference_wrapper<std::string>>
   Get(const std::string& name) noexcept {
-    for (lucene::core::document::Field* field : fields) {
-      if (field->Name() == name && field->StringValue()) {
-        std::string& value = *(field->StringValue());
+    for (lucene::core::document::Field& field : fields) {
+      if (field.Name() == name && field.StringValue()) {
+        std::string& value = *(field.StringValue());
         return value;
       }
     }
@@ -135,9 +137,8 @@ class Document {
     return {};
   }
 
-  const
-  std::vector<lucene::core::document::Field*>&
-  GetFields() const noexcept {
+  std::vector<lucene::core::document::Field>&
+  GetFields() noexcept {
     return fields;
   }
 

@@ -44,17 +44,17 @@ class FieldType {
  friend class FieldTypeBuilder;
 
  public:
-  const bool stored;
-  const bool tokenized;
-  const bool store_term_vectors;
-  const bool store_term_vector_offsets;
-  const bool store_term_vector_positions;
-  const bool store_term_vector_payloads;
-  const bool omit_norms;
-  const lucene::core::index::IndexOptions index_options;
-  const lucene::core::index::DocValuesType doc_values_type;
-  const uint32_t dimension_count;
-  const uint32_t dimension_num_bytes;
+  bool stored;
+  bool tokenized;
+  bool store_term_vectors;
+  bool store_term_vector_offsets;
+  bool store_term_vector_positions;
+  bool store_term_vector_payloads;
+  bool omit_norms;
+  lucene::core::index::IndexOptions index_options;
+  lucene::core::index::DocValuesType doc_values_type;
+  uint32_t dimension_count;
+  uint32_t dimension_num_bytes;
 
  private:
   FieldType(const bool stored,
@@ -181,10 +181,17 @@ class FieldTypeBuilder {
   }
 };
 
+/**
+ * Field class is only movable, not assignable.
+ * Thus if you assign field to another, use move assignment
+ * 1. Field(std::move(original_field)
+ * 2. field = std::move(original_field)
+ */
 class Field {
  protected:
-  const FieldType type;
-  const std::string& name;
+  FieldType type;
+  const std::string* name;
+  // TODO(0ctopus13prime): Can we just have each item instead of using variant?
   std::variant<lucene::core::util::BytesRef,
                std::string,
                std::unique_ptr<lucene::core::analysis::Reader>,
@@ -195,7 +202,7 @@ class Field {
   Field(const std::string& name,
         const FieldType& type)
     : type(type),
-      name(name),
+      name(&name),
       fields_data(),
       tokenstream() {
   }
@@ -211,7 +218,7 @@ class Field {
        lucene::core::analysis::Reader* reader,
        const FieldType& type)
     : type(type),
-      name(name),
+      name(&name),
       fields_data(std::unique_ptr<lucene::core::analysis::Reader>(reader)),
       tokenstream() {
   }
@@ -226,7 +233,7 @@ class Field {
         lucene::core::analysis::TokenStream* tokenstream,
         const FieldType& type)
     : type(type),
-      name(name),
+      name(&name),
       fields_data(),
       tokenstream(tokenstream) {
   }
@@ -251,7 +258,7 @@ class Field {
         const lucene::core::util::BytesRef& bytes,
         const FieldType& type)
     : type(type),
-      name(name),
+      name(&name),
       fields_data(bytes),
       tokenstream() {
   }
@@ -260,7 +267,7 @@ class Field {
         lucene::core::util::BytesRef&& bytes,
         const FieldType& type)
     : type(type),
-      name(name),
+      name(&name),
       fields_data(std::forward<lucene::core::util::BytesRef>(bytes)),
       tokenstream() {
   }
@@ -269,7 +276,7 @@ class Field {
         const std::string& value,
         const FieldType& type)
     : type(type),
-      name(name),
+      name(&name),
       fields_data(value),
       tokenstream() {
   }
@@ -278,9 +285,32 @@ class Field {
         std::string&& value,
         const FieldType& type)
     : type(type),
-      name(name),
+      name(&name),
       fields_data(std::forward<std::string>(value)),
       tokenstream() {
+  }
+
+  Field(const Field&) = delete;
+
+  Field(Field&& other)
+    : type(other.type),
+      name(other.name),
+      fields_data(std::move(other.fields_data)),
+      tokenstream(std::move(other.tokenstream)) {
+  }
+
+  Field& operator=(const Field&) = delete;
+
+  /**
+   * Only for same field assignment is allowed.
+   * Must have same name, same type.
+   * This asignment does not check it's equivalence at the beginning.
+   */
+  Field& operator=(Field&& other) {
+    type = other.type;
+    name = other.name;
+    tokenstream = std::move(other.tokenstream);
+    fields_data = std::move(other.fields_data);
   }
 
   virtual ~Field() { }
@@ -398,8 +428,8 @@ class Field {
     tokenstream.reset(new_tokenstream);
   }
 
-  const std::string& Name() noexcept {
-    return name;
+  const std::string& Name() const noexcept {
+    return *name;
   }
 
   virtual std::optional<std::reference_wrapper<std::string>>
@@ -632,13 +662,13 @@ class StoredField : public Field {
  public:
   StoredField(const std::string& name,
               const lucene::core::util::BytesRef& bytes,
-              const FieldType& type)
+              FieldType& type)
     : Field(name, bytes, type) {
   }
 
   StoredField(const std::string& name,
               lucene::core::util::BytesRef&& bytes,
-              const FieldType& type)
+              FieldType& type)
     : Field(name, std::forward<lucene::core::util::BytesRef>(bytes), type) {
   }
 
@@ -671,6 +701,12 @@ class StoredField : public Field {
   }
 
   StoredField(const std::string& name,
+              std::string&& value,
+              const FieldType& type)
+    : Field(name, std::forward<std::string>(value), type) {
+  }
+
+  StoredField(const std::string& name,
               std::string&& value)
     : Field(name, std::forward<std::string>(value), TYPE) {
   }
@@ -679,12 +715,6 @@ class StoredField : public Field {
               const std::string& value,
               const FieldType& type)
     : Field(name, value, type) {
-  }
-
-  StoredField(const std::string& name,
-              std::string&& value,
-              const FieldType& type)
-    : Field(name, std::forward<std::string>(value), type) {
   }
 
   StoredField(const std::string& name, const int32_t value)
@@ -872,14 +902,17 @@ class BinaryPoint : public Field {
    *  but in C++ implementation we just treat it as [ [0, 1], [0, 1] ]
    */
   static lucene::core::util::BytesRef
-  Pack(const uint32_t bytes_per_dim,
-       const std::initializer_list<const char*>& point) {
-    uint32_t size = bytes_per_dim * point.size();  
+  Pack(const char* points,
+       const uint32_t points_length,
+       const uint32_t bytes_per_dim) {
+    const uint32_t size = bytes_per_dim * points_length;
     char packed[size];
-    uint32_t idx = 0;
-    for (const char* p : point) {
-      std::memcpy(packed + idx, p, bytes_per_dim); 
-      idx += bytes_per_dim;
+
+    for (uint32_t dim_idx = 0 ; dim_idx < points_length ; dim_idx++) {
+      const uint32_t offset = dim_idx * bytes_per_dim;
+      std::memcpy(packed + offset,
+                  points + offset,
+                  bytes_per_dim); 
     }
 
     return lucene::core::util::BytesRef(packed, 0, size);
@@ -887,18 +920,19 @@ class BinaryPoint : public Field {
 
  public:
   BinaryPoint(const std::string& name,
-              const std::initializer_list<const char*>& point,
+              const char* points,
+              const uint32_t points_length,
               const uint32_t bytes_per_dim)
     : Field(name,
-            Pack(bytes_per_dim, point),
-            GetType(point.size(), bytes_per_dim)) {
+            Pack(points, points_length, bytes_per_dim),
+            GetType(points_length, bytes_per_dim)) {
   }
 
   BinaryPoint(const std::string& name,
-              const char* point,
+              const char* packed_point,
               const uint32_t bytes_per_dim,
               const FieldType& type)
-    : Field(name, point, bytes_per_dim, type) {
+    : Field(name, packed_point, bytes_per_dim, type) {
     if (bytes_per_dim != type.dimension_count * type.dimension_num_bytes) {
       throw std::runtime_error("Packed point is length=" +
                                std::to_string(bytes_per_dim) +
@@ -983,7 +1017,7 @@ class DoublePoint : public Field {
     if (type.dimension_count == point.size()) {
       fields_data = DoublePoint::Pack(point);
     } else {
-      throw std::invalid_argument(std::string("This field (name=") + name
+      throw std::invalid_argument(std::string("This field (name=") + *name
             + ") uses" + std::to_string(type.dimension_count)
             + " dimensions; cannot change to (incoming) "
             + std::to_string(point.size()) + " dimensions");
@@ -1242,7 +1276,7 @@ class FloatPoint : public Field {
                       const uint32_t length) {
     if (type.dimension_count != length) {
       throw std::domain_error(std::string("This field (name=")
-                              + name + ") uses "
+                              + *name + ") uses "
                               + std::to_string(type.dimension_count)
                               + " dimensions; cannot change to (incoming) "
                               + std::to_string(length)
@@ -1381,7 +1415,7 @@ class FloatRange : public Field {
       }
     } else {
       throw std::invalid_argument(std::string("Field (name=")
-                                + name + ") uses"
+                                + *name + ") uses"
                                 + std::to_string(type.dimension_count / 2)
                                 + " dimensions; cannot change to (incoming) "
                                 + std::to_string(length)
@@ -1470,7 +1504,7 @@ class IntPoint : public Field {
 
   void SetIntValues(const int32_t points[], const uint32_t length) {
     if (type.dimension_count != length) {
-      throw std::invalid_argument(std::string("This field (name=") + name
+      throw std::invalid_argument(std::string("This field (name=") + *name
                                   + ") uses "
                                   + std::to_string(type.dimension_count)
                                   + " dimensions; cannot change to (incoming) "
@@ -1599,7 +1633,7 @@ class IntRange : public Field {
 
     if (length * 2 != type.dimension_count) {
       throw std::domain_error(std::string("Field (name=")
-                              + name + ") uses "
+                              + *name + ") uses "
                               + std::to_string(type.dimension_count / 2)
                               + " dimension; cannot change to (incoming) "
                               + std::to_string(length)
@@ -1696,7 +1730,7 @@ class LongPoint : public Field {
   void SetLongValues(const int64_t points[], const uint32_t length) {
     if (type.dimension_count != length) {
       throw std::invalid_argument(std::string("This field (name=")
-                                  + name + ") uses "
+                                  + *name + ") uses "
                                   + std::to_string(type.dimension_count)
                                   + " dimensions; cannot change to (incoming) "
                                   + std::to_string(length)
@@ -1805,7 +1839,7 @@ class LongRange : public Field {
   }
 
  public:
-  LongRange(const std::string name,
+  LongRange(const std::string& name,
             const int64_t min[],
             const int64_t max[],
             const uint32_t length)
@@ -1832,7 +1866,7 @@ class LongRange : public Field {
       LongRange::VerifyAndEncode(min, max, length, bytes_ref.bytes.get());
     } else {
       throw std::invalid_argument(std::string("Field (name=")
-                                + name + ") uses "
+                                + *name + ") uses "
                                 + std::to_string(type.dimension_count / 2)
                                 + " dimensions; cannot change to (incoming) "
                                 + std::to_string(length)
