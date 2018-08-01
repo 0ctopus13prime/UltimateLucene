@@ -906,16 +906,7 @@ class BinaryPoint : public Field {
        const uint32_t points_length,
        const uint32_t bytes_per_dim) {
     const uint32_t size = bytes_per_dim * points_length;
-    char packed[size];
-
-    for (uint32_t dim_idx = 0 ; dim_idx < points_length ; ++dim_idx) {
-      const uint32_t offset = dim_idx * bytes_per_dim;
-      std::memcpy(packed + offset,
-                  points + offset,
-                  bytes_per_dim);
-    }
-
-    return lucene::core::util::BytesRef(packed, 0, size);
+    return lucene::core::util::BytesRef(points, 0, size);
   }
 
  public:

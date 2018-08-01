@@ -121,7 +121,7 @@ TEST(FIELD__TESTS, BINARY__POINT__TEST) {
   auto opt = bp.BinaryValue();
   if (opt) {
     BytesRef& got = *opt;
-    BytesRef org(&points[0][0], 2);
+    BytesRef org(&points[0][0], 6);
     ASSERT_EQ(org, got);
   } else {
     FAIL();
