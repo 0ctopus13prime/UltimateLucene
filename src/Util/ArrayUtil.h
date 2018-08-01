@@ -89,9 +89,9 @@ T* CopyOfRange(const T* original, const uint32_t from, const uint32_t to) {
 }
 
 template <typename INTEGER1, typename INTEGER2, typename INTEGER3>
-INTEGER1 CheckFromToIndex(INTEGER1 from_index,
-                          INTEGER2 to_index,
-                          INTEGER3 length) {
+INTEGER1 CheckFromToIndex(const INTEGER1 from_index,
+                          const INTEGER2 to_index,
+                          const INTEGER3 length) {
   // Checks if `from_index` belongs [0, to_indx] and `to_indx` <= length
   if (from_index < 0 || from_index > to_index || to_index > length) {
     throw std::invalid_argument(
@@ -104,9 +104,9 @@ INTEGER1 CheckFromToIndex(INTEGER1 from_index,
 }
 
 template <typename INTEGER1, typename INTEGER2, typename INTEGER3>
-INTEGER1 CheckFromIndexSize(INTEGER1 from_index,
-                            INTEGER2 size,
-                            INTEGER3 length) {
+INTEGER1 CheckFromIndexSize(const INTEGER1 from_index,
+                            const INTEGER2 size,
+                            const INTEGER3 length) {
   // Checks if `from_index` in [0, from_index + size]
   // and `from_index` + `size` < = `length`
   int64_t end = from_index + size;
@@ -121,7 +121,7 @@ INTEGER1 CheckFromIndexSize(INTEGER1 from_index,
 }
 
 template <typename INTEGER1, typename INTEGER2>
-INTEGER1 CheckIndex(INTEGER1 index, INTEGER2 length) {
+INTEGER1 CheckIndex(const INTEGER1 index, const INTEGER2 length) {
   // Checks if `index` belongs [0, length) range
   if (index < 0 || index >= length) {
     throw std::invalid_argument(

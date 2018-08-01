@@ -9,11 +9,15 @@
 \item 
 \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a5c352a399671a6ed5e04cd334149b662}{Bytes\+Ref}} ()
 \item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_aafacc8aec4dc0494f42d91876b64bb17}{Bytes\+Ref}} (const char $\ast$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a50b260da81b7f31687ac167ff52c9a1c}{bytes}}, const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a00b5e81a37602c7af1fde636cd44f12b}{offset}}, const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a198e62928759942ffc9d2c3ff877b4e4}{length}})
+\item 
 \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a3cb2618be430384290cd84c488f8b07d}{Bytes\+Ref}} (const char $\ast$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a50b260da81b7f31687ac167ff52c9a1c}{bytes}}, const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a00b5e81a37602c7af1fde636cd44f12b}{offset}}, const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a198e62928759942ffc9d2c3ff877b4e4}{length}}, const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a9e1775d26ac1dec137aa57fae87f654c}{capacity}})
 \item 
 \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_aad74198593bb0663f505c2751940b68b}{Bytes\+Ref}} (const char $\ast$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a50b260da81b7f31687ac167ff52c9a1c}{bytes}}, const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a9e1775d26ac1dec137aa57fae87f654c}{capacity}})
 \item 
-\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a88c7864495cbe868a1939a2e2a7953de}{Bytes\+Ref}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&other)
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_ab49453782bcf181a44128375bcada802}{Bytes\+Ref}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&source)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_aaf642591663f6bcb7315f017aa6fcd35}{Bytes\+Ref}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&\&source)
 \item 
 \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_add244078b49f9f132839a804f1312223}{Bytes\+Ref}} (const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a9e1775d26ac1dec137aa57fae87f654c}{capacity}})
 \item 
@@ -24,6 +28,8 @@
 void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a2f75314d896984075dfd351b4d8e3e49}{Shallow\+Copy\+To}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&target)
 \item 
 \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \& \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a83163bf442814183adc151dccf70bc73}{operator=}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&other)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \& \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_adf99f31bbffbdd8f91ef62b0e0c19337}{operator=}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&\&other)
 \item 
 bool \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef_a1f856405da2816cb3bf448507e296d97}{operator==}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&other) const
 \item 
@@ -68,37 +74,49 @@ static std\+::shared\+\_\+ptr$<$ char $>$ \mbox{\hyperlink{classlucene_1_1core_1
 \mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_a5c352a399671a6ed5e04cd334149b662}\label{classlucene_1_1core_1_1util_1_1BytesRef_a5c352a399671a6ed5e04cd334149b662}} 
 \index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!Bytes\+Ref@{Bytes\+Ref}}
 \index{Bytes\+Ref@{Bytes\+Ref}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
-\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [1/8]}}
 {\footnotesize\ttfamily Bytes\+Ref\+::\+Bytes\+Ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_aafacc8aec4dc0494f42d91876b64bb17}\label{classlucene_1_1core_1_1util_1_1BytesRef_aafacc8aec4dc0494f42d91876b64bb17}} 
+\index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!Bytes\+Ref@{Bytes\+Ref}}
+\index{Bytes\+Ref@{Bytes\+Ref}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
+\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [2/8]}}
+{\footnotesize\ttfamily Bytes\+Ref\+::\+Bytes\+Ref (\begin{DoxyParamCaption}\item[{const char $\ast$}]{bytes,  }\item[{const uint32\+\_\+t}]{offset,  }\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_a3cb2618be430384290cd84c488f8b07d}\label{classlucene_1_1core_1_1util_1_1BytesRef_a3cb2618be430384290cd84c488f8b07d}} 
 \index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!Bytes\+Ref@{Bytes\+Ref}}
 \index{Bytes\+Ref@{Bytes\+Ref}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
-\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [3/8]}}
 {\footnotesize\ttfamily Bytes\+Ref\+::\+Bytes\+Ref (\begin{DoxyParamCaption}\item[{const char $\ast$}]{bytes,  }\item[{const uint32\+\_\+t}]{offset,  }\item[{const uint32\+\_\+t}]{length,  }\item[{const uint32\+\_\+t}]{capacity }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_aad74198593bb0663f505c2751940b68b}\label{classlucene_1_1core_1_1util_1_1BytesRef_aad74198593bb0663f505c2751940b68b}} 
 \index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!Bytes\+Ref@{Bytes\+Ref}}
 \index{Bytes\+Ref@{Bytes\+Ref}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
-\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [4/8]}}
 {\footnotesize\ttfamily Bytes\+Ref\+::\+Bytes\+Ref (\begin{DoxyParamCaption}\item[{const char $\ast$}]{bytes,  }\item[{const uint32\+\_\+t}]{capacity }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_a88c7864495cbe868a1939a2e2a7953de}\label{classlucene_1_1core_1_1util_1_1BytesRef_a88c7864495cbe868a1939a2e2a7953de}} 
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_ab49453782bcf181a44128375bcada802}\label{classlucene_1_1core_1_1util_1_1BytesRef_ab49453782bcf181a44128375bcada802}} 
 \index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!Bytes\+Ref@{Bytes\+Ref}}
 \index{Bytes\+Ref@{Bytes\+Ref}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
-\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
-{\footnotesize\ttfamily Bytes\+Ref\+::\+Bytes\+Ref (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&}]{other }\end{DoxyParamCaption})}
+\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [5/8]}}
+{\footnotesize\ttfamily Bytes\+Ref\+::\+Bytes\+Ref (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&}]{source }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_aaf642591663f6bcb7315f017aa6fcd35}\label{classlucene_1_1core_1_1util_1_1BytesRef_aaf642591663f6bcb7315f017aa6fcd35}} 
+\index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!Bytes\+Ref@{Bytes\+Ref}}
+\index{Bytes\+Ref@{Bytes\+Ref}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
+\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [6/8]}}
+{\footnotesize\ttfamily Bytes\+Ref\+::\+Bytes\+Ref (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&\&}]{source }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_add244078b49f9f132839a804f1312223}\label{classlucene_1_1core_1_1util_1_1BytesRef_add244078b49f9f132839a804f1312223}} 
 \index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!Bytes\+Ref@{Bytes\+Ref}}
 \index{Bytes\+Ref@{Bytes\+Ref}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
-\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [7/8]}}
 {\footnotesize\ttfamily Bytes\+Ref\+::\+Bytes\+Ref (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{capacity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_a27fd90759a52d4ea1fe88e5af2f7bb92}\label{classlucene_1_1core_1_1util_1_1BytesRef_a27fd90759a52d4ea1fe88e5af2f7bb92}} 
 \index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!Bytes\+Ref@{Bytes\+Ref}}
 \index{Bytes\+Ref@{Bytes\+Ref}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
-\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+\subsubsection{\texorpdfstring{Bytes\+Ref()}{BytesRef()}\hspace{0.1cm}{\footnotesize\ttfamily [8/8]}}
 {\footnotesize\ttfamily Bytes\+Ref\+::\+Bytes\+Ref (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{text }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_a7c9d7930ac1511839e4cd2f551e8a78a}\label{classlucene_1_1core_1_1util_1_1BytesRef_a7c9d7930ac1511839e4cd2f551e8a78a}} 
@@ -143,8 +161,14 @@ static std\+::shared\+\_\+ptr$<$ char $>$ \mbox{\hyperlink{classlucene_1_1core_1
 \mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_a83163bf442814183adc151dccf70bc73}\label{classlucene_1_1core_1_1util_1_1BytesRef_a83163bf442814183adc151dccf70bc73}} 
 \index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!operator=@{operator=}}
 \index{operator=@{operator=}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
-\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \& Bytes\+Ref\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&}]{other }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_adf99f31bbffbdd8f91ef62b0e0c19337}\label{classlucene_1_1core_1_1util_1_1BytesRef_adf99f31bbffbdd8f91ef62b0e0c19337}} 
+\index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!operator=@{operator=}}
+\index{operator=@{operator=}!lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \& Bytes\+Ref\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{Bytes\+Ref}} \&\&}]{other }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1BytesRef_a1f856405da2816cb3bf448507e296d97}\label{classlucene_1_1core_1_1util_1_1BytesRef_a1f856405da2816cb3bf448507e296d97}} 
 \index{lucene\+::core\+::util\+::\+Bytes\+Ref@{lucene\+::core\+::util\+::\+Bytes\+Ref}!operator==@{operator==}}

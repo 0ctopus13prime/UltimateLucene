@@ -27,6 +27,8 @@ namespace util {
 
 class BytesRef {
  private:
+  // TODO(0ctopus13prime): Can we remove this?.
+  // Rather than owning bytes, just pointing to bytes outside?
   static std::shared_ptr<char> DEFAULT_BYTES;
 
  private:
@@ -42,15 +44,20 @@ class BytesRef {
   BytesRef();
   BytesRef(const char* bytes,
            const uint32_t offset,
+           const uint32_t length);
+  BytesRef(const char* bytes,
+           const uint32_t offset,
            const uint32_t length,
            const uint32_t capacity);
   BytesRef(const char* bytes, const uint32_t capacity);
-  BytesRef(const BytesRef& other);
+  BytesRef(const BytesRef& source);
+  BytesRef(BytesRef&& source);
   explicit BytesRef(const uint32_t capacity);
   explicit BytesRef(const std::string& text);
   ~BytesRef();
   void ShallowCopyTo(BytesRef& target);
   BytesRef& operator=(const BytesRef& other);
+  BytesRef& operator=(BytesRef&& other);
   bool operator==(const BytesRef& other) const;
   bool operator!=(const BytesRef& other) const;
   bool operator<(const BytesRef& other) const;

@@ -67,6 +67,7 @@ $(function() {
 <h3><a id="index_g"></a>- g -</h3><ul>
 <li>Get()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap.html#a48f8b551ec74f77bfbf6e53649d7ce74">lucene::core::analysis::characterutil::CharMap&lt; VALUE &gt;</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1Document.html#aaa33b6b731feba963643568e9df77dfc">lucene::core::document::Document</a>
 , <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRefBuilder.html#aa2ba757baac66b6dd039452f7384608e">lucene::core::util::BytesRefBuilder</a>
 , <a class="el" href="classlucene_1_1core_1_1util_1_1CloseableThreadLocal.html#a3d4ba44072bfd8fb6e87ccc214349ace">lucene::core::util::CloseableThreadLocal&lt; CLASS, TYPE &gt;</a>
 , <a class="el" href="classlucene_1_1core_1_1util_1_1CloseableThreadLocalReference.html#a3cb386298ca2b0b974705f591b313891">lucene::core::util::CloseableThreadLocalReference&lt; CLASS, TYPE &gt;</a>
@@ -74,6 +75,12 @@ $(function() {
 <li>GetAttributeFactory()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1Analyzer.html#af0c3e02aef0e7a391b0abdbca218951b">lucene::core::analysis::Analyzer</a>
 , <a class="el" href="classlucene_1_1core_1_1util_1_1AttributeSource.html#ab361967a0235e8d9f1afab451d5d2e99">lucene::core::util::AttributeSource</a>
+</li>
+<li>GetBinaryValue()
+: <a class="el" href="classlucene_1_1core_1_1document_1_1Document.html#a3ec2c17e86ca5895821fb03f155c9d50">lucene::core::document::Document</a>
+</li>
+<li>GetBinaryValues()
+: <a class="el" href="classlucene_1_1core_1_1document_1_1Document.html#aa701ba52228c5faefba171031137a903">lucene::core::document::Document</a>
 </li>
 <li>GetBugfix()
 : <a class="el" href="classlucene_1_1core_1_1util_1_1etc_1_1Version.html#af88de35853e26b854b57374f3d1d9293">lucene::core::util::etc::Version</a>
@@ -85,6 +92,15 @@ $(function() {
 </li>
 <li>GetCurrentState()
 : <a class="el" href="classlucene_1_1core_1_1util_1_1AttributeSource.html#a7a8f566041a7140d8ff8d6bea8e45b0f">lucene::core::util::AttributeSource</a>
+</li>
+<li>GetField()
+: <a class="el" href="classlucene_1_1core_1_1document_1_1Document.html#a30942eeb99fd914220503b9f68d9bd6a">lucene::core::document::Document</a>
+</li>
+<li>GetFields()
+: <a class="el" href="classlucene_1_1core_1_1document_1_1Document.html#a8fcbb281ebfb1a4a075e189d099d3617">lucene::core::document::Document</a>
+</li>
+<li>GetFieldType()
+: <a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#a06bffb93596bfbe170e795279d30ae4f">lucene::core::document::Field</a>
 </li>
 <li>GetFlags()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1FlagsAttribute.html#af5e017643df32ab110aca8337c01006d">lucene::core::analysis::tokenattributes::FlagsAttribute</a>
@@ -99,9 +115,21 @@ $(function() {
 <li>GetMajor()
 : <a class="el" href="classlucene_1_1core_1_1util_1_1etc_1_1Version.html#a60203ec5d575778dd789338fdc184892">lucene::core::util::etc::Version</a>
 </li>
+<li>GetMax()
+: <a class="el" href="classlucene_1_1core_1_1document_1_1DoubleRange.html#a5a68667b9d3d2687100e9b96bd729084">lucene::core::document::DoubleRange</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1FloatRange.html#a99ad9287e0363b51af717ca02664a6c6">lucene::core::document::FloatRange</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1IntRange.html#a317cfd53b44a625e56836cf508c18257">lucene::core::document::IntRange</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1LongRange.html#a2daa2b07e3b18836fc45e6210890aaf9">lucene::core::document::LongRange</a>
+</li>
 <li>GetMaxTokenLength()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer.html#a383601d5fa0bcd3883f794c887512517">lucene::core::analysis::standard::StandardAnalyzer</a>
 , <a class="el" href="classlucene_1_1core_1_1analysis_1_1standard_1_1StandardTokenizer.html#a8c4763c6470ab3724cd8f05191be48a2">lucene::core::analysis::standard::StandardTokenizer</a>
+</li>
+<li>GetMin()
+: <a class="el" href="classlucene_1_1core_1_1document_1_1DoubleRange.html#a3ca5167af09ebd334f78362c2eac2c0f">lucene::core::document::DoubleRange</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1FloatRange.html#ab39e75504d05629914310e93f8c468d4">lucene::core::document::FloatRange</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1IntRange.html#a84ffeccb57aa7c9d7f9786e9e89ad8c8">lucene::core::document::IntRange</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1LongRange.html#afaeef89fe3e5d4b30f16ba38d8479f4d">lucene::core::document::LongRange</a>
 </li>
 <li>GetMinor()
 : <a class="el" href="classlucene_1_1core_1_1util_1_1etc_1_1Version.html#a6577fae444618b7cbc5307628c9d540d">lucene::core::util::etc::Version</a>
@@ -172,12 +200,27 @@ $(function() {
 <li>GetTokenStream()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1Analyzer.html#a010cdb318b51c27c46b8cbf5a1cfe20e">lucene::core::analysis::Analyzer</a>
 , <a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStreamComponents.html#ad3e5e31569074e0b2ee7cbcfec21bfda">lucene::core::analysis::TokenStreamComponents</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1Field.html#aa3d6b7ab7cb42820491c036872190317">lucene::core::document::Field</a>
+</li>
+<li>GetType()
+: <a class="el" href="classlucene_1_1core_1_1document_1_1BinaryPoint.html#a257a399b76249bf887b61a524765fa72">lucene::core::document::BinaryPoint</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1DoublePoint.html#ae6d734636e6e1c80f0ffd28443e62c08">lucene::core::document::DoublePoint</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1DoubleRange.html#a358b2b706f12ead3d2ca826d2faf7cf4">lucene::core::document::DoubleRange</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1FloatPoint.html#a6f95b1c279cf34c497e0eaa2d7a19fdc">lucene::core::document::FloatPoint</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1FloatRange.html#ac04a6921c3fe17a684863f0b539c0cc9">lucene::core::document::FloatRange</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1IntPoint.html#aea4e98fc61985c22e12bf248d1c4a1bc">lucene::core::document::IntPoint</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1IntRange.html#a14e25efbf2dc2e230dbce3a546338bc2">lucene::core::document::IntRange</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1LongPoint.html#a5c411f51ac0f3dbce1df139d3a4c1973">lucene::core::document::LongPoint</a>
+, <a class="el" href="classlucene_1_1core_1_1document_1_1LongRange.html#a57ee0b920b7c4103d4ac63511762deb9">lucene::core::document::LongRange</a>
+</li>
+<li>GetValues()
+: <a class="el" href="classlucene_1_1core_1_1document_1_1Document.html#a03e64a0e27656bbb43009af1de585191">lucene::core::document::Document</a>
 </li>
 <li>GetVersion()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1Analyzer.html#a1679f175b96b88508c148f6d8872623d">lucene::core::analysis::Analyzer</a>
 </li>
 <li>GetWordSet()
-: <a class="el" href="classlucene_1_1core_1_1analysis_1_1WordlistLoader.html#a24b538126a425f139dcec46732bf247c">lucene::core::analysis::WordlistLoader</a>
+: <a class="el" href="classlucene_1_1core_1_1analysis_1_1WordlistLoader.html#a93e88980df89ba7a5574a5dbeabfd502">lucene::core::analysis::WordlistLoader</a>
 </li>
 <li>GlobalReuseStrategy()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1GlobalReuseStrategy.html#ac91815e66d775fd48aad17fb5a78d266">lucene::core::analysis::GlobalReuseStrategy</a>

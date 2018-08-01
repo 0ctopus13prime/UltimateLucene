@@ -1,0 +1,162 @@
+\hypertarget{classlucene_1_1core_1_1document_1_1Document}{}\section{lucene\+:\+:core\+:\+:document\+:\+:Document Class Reference}
+\label{classlucene_1_1core_1_1document_1_1Document}\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+
+
+{\ttfamily \#include $<$Document.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_acd273693f28b42b99480204b5177dccc}{Document}} (uint32\+\_\+t capacity=5)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} $>$\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a9e2fe1fe52a48c074942095ef62266cc}{begin}} () noexcept
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} $>$\+::iterator \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_ad0a1cb1cadecb670e770ee744a48a619}{end}} () noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a0a2a27b34f85668dffba51957c13b02f}{Add}} (\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} \&)=delete
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a2cc46edf9624c9329c2dec16a4647983}{Add}} (\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} \&\&field)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a20e7e07a35682bb94c77b6e1dc0f0a8a}{Remove\+Field}} (const std\+::string \&name)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a151221f80667ee317ca8db358e4052e2}{Remove\+Fields}} (const std\+::string \&name)
+\item 
+std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} $>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a3ec2c17e86ca5895821fb03f155c9d50}{Get\+Binary\+Value}} (const std\+::string \&name) noexcept
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_aa701ba52228c5faefba171031137a903}{Get\+Binary\+Values}} (const std\+::string \&name, \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} $\ast$dest\mbox{[}$\,$\mbox{]}) noexcept
+\item 
+std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} $>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a30942eeb99fd914220503b9f68d9bd6a}{Get\+Field}} (const std\+::string \&name)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a8fcbb281ebfb1a4a075e189d099d3617}{Get\+Fields}} (const std\+::string \&name, \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} $\ast$dest\mbox{[}$\,$\mbox{]}) noexcept
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a03e64a0e27656bbb43009af1de585191}{Get\+Values}} (const std\+::string \&name, std\+::string $\ast$dest\mbox{[}$\,$\mbox{]}) noexcept
+\item 
+std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ std\+::string $>$ $>$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_aaa33b6b731feba963643568e9df77dfc}{Get}} (const std\+::string \&name) noexcept
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} $>$ \& \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a1300520e8ac371b602712cfd279284b4}{Get\+Fields}} () noexcept
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_ad1556e7f0c71a2f347850d6d40392b0c}{Size}} () const noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_a38df29c417f085cf8fe3741a4fef898f}{Clear}} () noexcept
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Document_af9530ebe88523c7b14063d7efeccf987}{fields}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_acd273693f28b42b99480204b5177dccc}\label{classlucene_1_1core_1_1document_1_1Document_acd273693f28b42b99480204b5177dccc}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Document@{Document}}
+\index{Document@{Document}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Document()}{Document()}}
+{\footnotesize\ttfamily lucene\+::core\+::document\+::\+Document\+::\+Document (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{capacity = {\ttfamily 5} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a0a2a27b34f85668dffba51957c13b02f}\label{classlucene_1_1core_1_1document_1_1Document_a0a2a27b34f85668dffba51957c13b02f}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Add@{Add}}
+\index{Add@{Add}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Add()}{Add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Document\+::\+Add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a2cc46edf9624c9329c2dec16a4647983}\label{classlucene_1_1core_1_1document_1_1Document_a2cc46edf9624c9329c2dec16a4647983}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Add@{Add}}
+\index{Add@{Add}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Add()}{Add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Document\+::\+Add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} \&\&}]{field }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a9e2fe1fe52a48c074942095ef62266cc}\label{classlucene_1_1core_1_1document_1_1Document_a9e2fe1fe52a48c074942095ef62266cc}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!begin@{begin}}
+\index{begin@{begin}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}}$>$\+::iterator lucene\+::core\+::document\+::\+Document\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a38df29c417f085cf8fe3741a4fef898f}\label{classlucene_1_1core_1_1document_1_1Document_a38df29c417f085cf8fe3741a4fef898f}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Clear@{Clear}}
+\index{Clear@{Clear}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Clear()}{Clear()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Document\+::\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_ad0a1cb1cadecb670e770ee744a48a619}\label{classlucene_1_1core_1_1document_1_1Document_ad0a1cb1cadecb670e770ee744a48a619}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!end@{end}}
+\index{end@{end}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}}$>$\+::iterator lucene\+::core\+::document\+::\+Document\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_aaa33b6b731feba963643568e9df77dfc}\label{classlucene_1_1core_1_1document_1_1Document_aaa33b6b731feba963643568e9df77dfc}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Get@{Get}}
+\index{Get@{Get}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Get()}{Get()}}
+{\footnotesize\ttfamily std\+::optional$<$std\+::reference\+\_\+wrapper$<$std\+::string$>$ $>$ lucene\+::core\+::document\+::\+Document\+::\+Get (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a3ec2c17e86ca5895821fb03f155c9d50}\label{classlucene_1_1core_1_1document_1_1Document_a3ec2c17e86ca5895821fb03f155c9d50}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Get\+Binary\+Value@{Get\+Binary\+Value}}
+\index{Get\+Binary\+Value@{Get\+Binary\+Value}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Get\+Binary\+Value()}{GetBinaryValue()}}
+{\footnotesize\ttfamily std\+::optional$<$std\+::reference\+\_\+wrapper$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}}$>$ $>$ lucene\+::core\+::document\+::\+Document\+::\+Get\+Binary\+Value (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_aa701ba52228c5faefba171031137a903}\label{classlucene_1_1core_1_1document_1_1Document_aa701ba52228c5faefba171031137a903}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Get\+Binary\+Values@{Get\+Binary\+Values}}
+\index{Get\+Binary\+Values@{Get\+Binary\+Values}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Get\+Binary\+Values()}{GetBinaryValues()}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::document\+::\+Document\+::\+Get\+Binary\+Values (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} $\ast$}]{dest\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a30942eeb99fd914220503b9f68d9bd6a}\label{classlucene_1_1core_1_1document_1_1Document_a30942eeb99fd914220503b9f68d9bd6a}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Get\+Field@{Get\+Field}}
+\index{Get\+Field@{Get\+Field}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Get\+Field()}{GetField()}}
+{\footnotesize\ttfamily std\+::optional$<$std\+::reference\+\_\+wrapper$<$\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}}$>$ $>$ lucene\+::core\+::document\+::\+Document\+::\+Get\+Field (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a8fcbb281ebfb1a4a075e189d099d3617}\label{classlucene_1_1core_1_1document_1_1Document_a8fcbb281ebfb1a4a075e189d099d3617}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Get\+Fields@{Get\+Fields}}
+\index{Get\+Fields@{Get\+Fields}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Get\+Fields()}{GetFields()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::document\+::\+Document\+::\+Get\+Fields (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}} $\ast$}]{dest\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a1300520e8ac371b602712cfd279284b4}\label{classlucene_1_1core_1_1document_1_1Document_a1300520e8ac371b602712cfd279284b4}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Get\+Fields@{Get\+Fields}}
+\index{Get\+Fields@{Get\+Fields}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Get\+Fields()}{GetFields()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}}$>$\& lucene\+::core\+::document\+::\+Document\+::\+Get\+Fields (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a03e64a0e27656bbb43009af1de585191}\label{classlucene_1_1core_1_1document_1_1Document_a03e64a0e27656bbb43009af1de585191}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Get\+Values@{Get\+Values}}
+\index{Get\+Values@{Get\+Values}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Get\+Values()}{GetValues()}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::document\+::\+Document\+::\+Get\+Values (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{std\+::string $\ast$}]{dest\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a20e7e07a35682bb94c77b6e1dc0f0a8a}\label{classlucene_1_1core_1_1document_1_1Document_a20e7e07a35682bb94c77b6e1dc0f0a8a}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Remove\+Field@{Remove\+Field}}
+\index{Remove\+Field@{Remove\+Field}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Remove\+Field()}{RemoveField()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Document\+::\+Remove\+Field (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_a151221f80667ee317ca8db358e4052e2}\label{classlucene_1_1core_1_1document_1_1Document_a151221f80667ee317ca8db358e4052e2}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Remove\+Fields@{Remove\+Fields}}
+\index{Remove\+Fields@{Remove\+Fields}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Remove\+Fields()}{RemoveFields()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Document\+::\+Remove\+Fields (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_ad1556e7f0c71a2f347850d6d40392b0c}\label{classlucene_1_1core_1_1document_1_1Document_ad1556e7f0c71a2f347850d6d40392b0c}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!Size@{Size}}
+\index{Size@{Size}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{Size()}{Size()}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::document\+::\+Document\+::\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1Document_af9530ebe88523c7b14063d7efeccf987}\label{classlucene_1_1core_1_1document_1_1Document_af9530ebe88523c7b14063d7efeccf987}} 
+\index{lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}!fields@{fields}}
+\index{fields@{fields}!lucene\+::core\+::document\+::\+Document@{lucene\+::core\+::document\+::\+Document}}
+\subsubsection{\texorpdfstring{fields}{fields}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field}{lucene\+::core\+::document\+::\+Field}}$>$ lucene\+::core\+::document\+::\+Document\+::fields\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Document/\mbox{\hyperlink{Document_8h}{Document.\+h}}\end{DoxyCompactItemize}

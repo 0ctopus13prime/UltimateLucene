@@ -1,0 +1,137 @@
+\hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{}\section{lucene\+:\+:core\+:\+:util\+:\+:numeric\+:\+:Number Class Reference}
+\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number}\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+
+
+{\ttfamily \#include $<$Numeric.\+h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+union \mbox{\hyperlink{unionlucene_1_1core_1_1util_1_1numeric_1_1Number_1_1NumberRepresentation}{Number\+Representation}}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a6f7d606df5780fb44022a297469cf301}{Number}} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a882d32da42457953ff689a78b6cfc06c}{Number}} (T value)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a20fd702a77592e0f37f83203882663ff}{Number}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{Number}} \&other)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{Number}} \& \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a9267cd182581260141c7bb35e431d083}{operator=}} (T value) noexcept
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{Number}} \& \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a263e7f66bce840ef32738bff48db4a71}{operator=}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{Number}} \&other) noexcept
+\item 
+int8\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a0d359a6cf3b7f7f61f669f84411708a8}{Byte\+Value}} () const noexcept
+\item 
+int16\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a752109e10e001b12fb520334401bfa76}{Short\+Value}} () const noexcept
+\item 
+int32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_afeb2bcbe0798e196578cff1f5946f45b}{Int\+Value}} () const noexcept
+\item 
+int64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_ad37926a2bf4e84279ab97f584b1807d7}{Long\+Value}} () const noexcept
+\item 
+float \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a757b8a62184cf1d85ee774fffdc380de}{Float\+Value}} () const noexcept
+\item 
+double \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_aa1ad1e93dddf1c59440ea49f39b510f1}{Double\+Value}} () const noexcept
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+union \mbox{\hyperlink{unionlucene_1_1core_1_1util_1_1numeric_1_1Number_1_1NumberRepresentation}{lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Number\+Representation}} \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a080da7ae6d9000a9c4433db59d668b10}{rprs}}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a8223ba3ccd6def36de11d69588d40157}{is\+\_\+integral}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a6f7d606df5780fb44022a297469cf301}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a6f7d606df5780fb44022a297469cf301}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!Number@{Number}}
+\index{Number@{Number}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{Number()}{Number()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Number (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a882d32da42457953ff689a78b6cfc06c}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a882d32da42457953ff689a78b6cfc06c}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!Number@{Number}}
+\index{Number@{Number}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{Number()}{Number()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Number (\begin{DoxyParamCaption}\item[{T}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a20fd702a77592e0f37f83203882663ff}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a20fd702a77592e0f37f83203882663ff}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!Number@{Number}}
+\index{Number@{Number}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{Number()}{Number()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Number (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{Number}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a0d359a6cf3b7f7f61f669f84411708a8}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a0d359a6cf3b7f7f61f669f84411708a8}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!Byte\+Value@{Byte\+Value}}
+\index{Byte\+Value@{Byte\+Value}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{Byte\+Value()}{ByteValue()}}
+{\footnotesize\ttfamily int8\+\_\+t lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Byte\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_aa1ad1e93dddf1c59440ea49f39b510f1}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_aa1ad1e93dddf1c59440ea49f39b510f1}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!Double\+Value@{Double\+Value}}
+\index{Double\+Value@{Double\+Value}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{Double\+Value()}{DoubleValue()}}
+{\footnotesize\ttfamily double lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Double\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a757b8a62184cf1d85ee774fffdc380de}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a757b8a62184cf1d85ee774fffdc380de}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!Float\+Value@{Float\+Value}}
+\index{Float\+Value@{Float\+Value}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{Float\+Value()}{FloatValue()}}
+{\footnotesize\ttfamily float lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Float\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_afeb2bcbe0798e196578cff1f5946f45b}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_afeb2bcbe0798e196578cff1f5946f45b}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!Int\+Value@{Int\+Value}}
+\index{Int\+Value@{Int\+Value}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{Int\+Value()}{IntValue()}}
+{\footnotesize\ttfamily int32\+\_\+t lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Int\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_ad37926a2bf4e84279ab97f584b1807d7}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_ad37926a2bf4e84279ab97f584b1807d7}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!Long\+Value@{Long\+Value}}
+\index{Long\+Value@{Long\+Value}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{Long\+Value()}{LongValue()}}
+{\footnotesize\ttfamily int64\+\_\+t lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Long\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a9267cd182581260141c7bb35e431d083}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a9267cd182581260141c7bb35e431d083}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!operator=@{operator=}}
+\index{operator=@{operator=}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{Number}}\& lucene\+::core\+::util\+::numeric\+::\+Number\+::operator= (\begin{DoxyParamCaption}\item[{T}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a263e7f66bce840ef32738bff48db4a71}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a263e7f66bce840ef32738bff48db4a71}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!operator=@{operator=}}
+\index{operator=@{operator=}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{Number}}\& lucene\+::core\+::util\+::numeric\+::\+Number\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{Number}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a752109e10e001b12fb520334401bfa76}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a752109e10e001b12fb520334401bfa76}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!Short\+Value@{Short\+Value}}
+\index{Short\+Value@{Short\+Value}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{Short\+Value()}{ShortValue()}}
+{\footnotesize\ttfamily int16\+\_\+t lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Short\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a8223ba3ccd6def36de11d69588d40157}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a8223ba3ccd6def36de11d69588d40157}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!is\+\_\+integral@{is\+\_\+integral}}
+\index{is\+\_\+integral@{is\+\_\+integral}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{is\+\_\+integral}{is\_integral}}
+{\footnotesize\ttfamily bool lucene\+::core\+::util\+::numeric\+::\+Number\+::is\+\_\+integral\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a080da7ae6d9000a9c4433db59d668b10}\label{classlucene_1_1core_1_1util_1_1numeric_1_1Number_a080da7ae6d9000a9c4433db59d668b10}} 
+\index{lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}!rprs@{rprs}}
+\index{rprs@{rprs}!lucene\+::core\+::util\+::numeric\+::\+Number@{lucene\+::core\+::util\+::numeric\+::\+Number}}
+\subsubsection{\texorpdfstring{rprs}{rprs}}
+{\footnotesize\ttfamily union \mbox{\hyperlink{unionlucene_1_1core_1_1util_1_1numeric_1_1Number_1_1NumberRepresentation}{lucene\+::core\+::util\+::numeric\+::\+Number\+::\+Number\+Representation}}  lucene\+::core\+::util\+::numeric\+::\+Number\+::rprs\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Util/\mbox{\hyperlink{Numeric_8h}{Numeric.\+h}}\end{DoxyCompactItemize}

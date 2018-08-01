@@ -15,3 +15,6 @@ target_link_libraries(ConcurrencyTests DoochiCore gtest pthread)
 
 add_executable(EtcTests EtcTests.cpp)
 target_link_libraries(EtcTests DoochiCore gtest pthread)
+
+add_executable(NumericTests NumericTests.cpp)
+target_link_libraries(NumericTests DoochiCore gtest pthread)

@@ -1,0 +1,125 @@
+\hypertarget{classlucene_1_1core_1_1document_1_1LongPoint}{}\section{lucene\+:\+:core\+:\+:document\+:\+:Long\+Point Class Reference}
+\label{classlucene_1_1core_1_1document_1_1LongPoint}\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+
+
+{\ttfamily \#include $<$Field.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:document\+:\+:Long\+Point\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1document_1_1LongPoint}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_afafac70472560f4063bc11afe18be5c7}{Long\+Point}} (const std\+::string \&\mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a52f673f3b3abb14b180f5159f4726537}{name}}, const int64\+\_\+t points\mbox{[}$\,$\mbox{]}, const uint32\+\_\+t length)
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_ab2c1cbcab4d27060d84d7439b80b2dd7}{$\sim$\+Long\+Point}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_a5bc668dfdf190b8bc0a52808a6580b40}{Set\+Long\+Value}} (const int64\+\_\+t value)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_a8561762cd09cae0222620709406e3ba2}{Set\+Long\+Values}} (const int64\+\_\+t points\mbox{[}$\,$\mbox{]}, const uint32\+\_\+t length)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_a3ba17f0b827e583a9b568e368dd798ac}{Set\+Bytes\+Value}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} \&)
+\item 
+std\+::optional$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{lucene\+::core\+::util\+::numeric\+::\+Number}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_a24068a492dbb14946de8de3bde3bd87b}{Numeric\+Value}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_a80f6cff17fd7eb5d8664650dda0174b0}{Encode\+Dimension}} (const int64\+\_\+t value, char dest\mbox{[}$\,$\mbox{]}, const uint32\+\_\+t offset) noexcept
+\item 
+static int64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_ac98e9a6a591c5ed127d1330e2f5d5114}{Decode\+Dimension}} (const char value\mbox{[}$\,$\mbox{]}, const uint32\+\_\+t offset) noexcept
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType}{Field\+Type}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_a5c411f51ac0f3dbce1df139d3a4c1973}{Get\+Type}} (const uint32\+\_\+t num\+\_\+dims) noexcept
+\item 
+static \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1LongPoint_ae106b6585f35417b63c6f1f3aaeb1b93}{Pack}} (const int64\+\_\+t points\mbox{[}$\,$\mbox{]}, const uint32\+\_\+t length)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_afafac70472560f4063bc11afe18be5c7}\label{classlucene_1_1core_1_1document_1_1LongPoint_afafac70472560f4063bc11afe18be5c7}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!Long\+Point@{Long\+Point}}
+\index{Long\+Point@{Long\+Point}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{Long\+Point()}{LongPoint()}}
+{\footnotesize\ttfamily lucene\+::core\+::document\+::\+Long\+Point\+::\+Long\+Point (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const int64\+\_\+t}]{points\mbox{[}$\,$\mbox{]},  }\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_ab2c1cbcab4d27060d84d7439b80b2dd7}\label{classlucene_1_1core_1_1document_1_1LongPoint_ab2c1cbcab4d27060d84d7439b80b2dd7}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!````~Long\+Point@{$\sim$\+Long\+Point}}
+\index{````~Long\+Point@{$\sim$\+Long\+Point}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{$\sim$\+Long\+Point()}{~LongPoint()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::document\+::\+Long\+Point\+::$\sim$\+Long\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_ac98e9a6a591c5ed127d1330e2f5d5114}\label{classlucene_1_1core_1_1document_1_1LongPoint_ac98e9a6a591c5ed127d1330e2f5d5114}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!Decode\+Dimension@{Decode\+Dimension}}
+\index{Decode\+Dimension@{Decode\+Dimension}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{Decode\+Dimension()}{DecodeDimension()}}
+{\footnotesize\ttfamily static int64\+\_\+t lucene\+::core\+::document\+::\+Long\+Point\+::\+Decode\+Dimension (\begin{DoxyParamCaption}\item[{const char}]{value\mbox{[}$\,$\mbox{]},  }\item[{const uint32\+\_\+t}]{offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_a80f6cff17fd7eb5d8664650dda0174b0}\label{classlucene_1_1core_1_1document_1_1LongPoint_a80f6cff17fd7eb5d8664650dda0174b0}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!Encode\+Dimension@{Encode\+Dimension}}
+\index{Encode\+Dimension@{Encode\+Dimension}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{Encode\+Dimension()}{EncodeDimension()}}
+{\footnotesize\ttfamily static void lucene\+::core\+::document\+::\+Long\+Point\+::\+Encode\+Dimension (\begin{DoxyParamCaption}\item[{const int64\+\_\+t}]{value,  }\item[{char}]{dest\mbox{[}$\,$\mbox{]},  }\item[{const uint32\+\_\+t}]{offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_a5c411f51ac0f3dbce1df139d3a4c1973}\label{classlucene_1_1core_1_1document_1_1LongPoint_a5c411f51ac0f3dbce1df139d3a4c1973}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!Get\+Type@{Get\+Type}}
+\index{Get\+Type@{Get\+Type}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{Get\+Type()}{GetType()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1FieldType}{Field\+Type}} lucene\+::core\+::document\+::\+Long\+Point\+::\+Get\+Type (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{num\+\_\+dims }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [private]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_a24068a492dbb14946de8de3bde3bd87b}\label{classlucene_1_1core_1_1document_1_1LongPoint_a24068a492dbb14946de8de3bde3bd87b}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!Numeric\+Value@{Numeric\+Value}}
+\index{Numeric\+Value@{Numeric\+Value}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{Numeric\+Value()}{NumericValue()}}
+{\footnotesize\ttfamily std\+::optional$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1numeric_1_1Number}{lucene\+::core\+::util\+::numeric\+::\+Number}}$>$ lucene\+::core\+::document\+::\+Long\+Point\+::\+Numeric\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a858814043215c98bacf6ecc823d078ea}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_ae106b6585f35417b63c6f1f3aaeb1b93}\label{classlucene_1_1core_1_1document_1_1LongPoint_ae106b6585f35417b63c6f1f3aaeb1b93}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!Pack@{Pack}}
+\index{Pack@{Pack}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{Pack()}{Pack()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} lucene\+::core\+::document\+::\+Long\+Point\+::\+Pack (\begin{DoxyParamCaption}\item[{const int64\+\_\+t}]{points\mbox{[}$\,$\mbox{]},  }\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_a3ba17f0b827e583a9b568e368dd798ac}\label{classlucene_1_1core_1_1document_1_1LongPoint_a3ba17f0b827e583a9b568e368dd798ac}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!Set\+Bytes\+Value@{Set\+Bytes\+Value}}
+\index{Set\+Bytes\+Value@{Set\+Bytes\+Value}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{Set\+Bytes\+Value()}{SetBytesValue()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Long\+Point\+::\+Set\+Bytes\+Value (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1BytesRef}{lucene\+::core\+::util\+::\+Bytes\+Ref}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a41d077e63ce6fae8677b8df6b29821bd}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_a5bc668dfdf190b8bc0a52808a6580b40}\label{classlucene_1_1core_1_1document_1_1LongPoint_a5bc668dfdf190b8bc0a52808a6580b40}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!Set\+Long\+Value@{Set\+Long\+Value}}
+\index{Set\+Long\+Value@{Set\+Long\+Value}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{Set\+Long\+Value()}{SetLongValue()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Long\+Point\+::\+Set\+Long\+Value (\begin{DoxyParamCaption}\item[{const int64\+\_\+t}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1document_1_1Field_a949822599f392fb7fca20423902e535a}{lucene\+::core\+::document\+::\+Field}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1document_1_1LongPoint_a8561762cd09cae0222620709406e3ba2}\label{classlucene_1_1core_1_1document_1_1LongPoint_a8561762cd09cae0222620709406e3ba2}} 
+\index{lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}!Set\+Long\+Values@{Set\+Long\+Values}}
+\index{Set\+Long\+Values@{Set\+Long\+Values}!lucene\+::core\+::document\+::\+Long\+Point@{lucene\+::core\+::document\+::\+Long\+Point}}
+\subsubsection{\texorpdfstring{Set\+Long\+Values()}{SetLongValues()}}
+{\footnotesize\ttfamily void lucene\+::core\+::document\+::\+Long\+Point\+::\+Set\+Long\+Values (\begin{DoxyParamCaption}\item[{const int64\+\_\+t}]{points\mbox{[}$\,$\mbox{]},  }\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Document/\mbox{\hyperlink{Document_2Field_8h}{Field.\+h}}\end{DoxyCompactItemize}

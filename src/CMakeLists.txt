@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.11.0)
 project(DoochiCore)
 
-set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_STANDARD 17)
+# set (CMAKE_CXX_FLAGS "-Wall -Wextra")
 
 #######################
 ## MACRO START
@@ -24,7 +25,11 @@ include_directories(${PROJECT_SOURCE_DIR}/../include)
 
 add_headers_and_sources(DoochiCore Analysis)
 add_headers_and_sources(DoochiCore Util)
+add_headers_and_sources(DoochiCore Document)
+add_headers_and_sources(DoochiCore Index)
 add_library(DoochiCore SHARED ${DoochiCore_headers} ${DoochiCore_sources})
 
 add_subdirectory(Analysis)
 add_subdirectory(Util)
+add_subdirectory(Document)
+add_subdirectory(Index)

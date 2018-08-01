@@ -3,6 +3,7 @@ var searchData=
   ['termfrequencyattribute',['TermFrequencyAttribute',['../classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttribute.html',1,'lucene::core::analysis::tokenattributes']]],
   ['termfrequencyattributeimpl',['TermFrequencyAttributeImpl',['../classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermFrequencyAttributeImpl.html',1,'lucene::core::analysis::tokenattributes']]],
   ['termtobytesrefattribute',['TermToBytesRefAttribute',['../classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TermToBytesRefAttribute.html',1,'lucene::core::analysis::tokenattributes']]],
+  ['textfield',['TextField',['../classlucene_1_1core_1_1document_1_1TextField.html',1,'lucene::core::document']]],
   ['threadlocalitemwrapper',['ThreadLocalItemWrapper',['../classlucene_1_1core_1_1util_1_1ThreadLocalItemWrapper.html',1,'lucene::core::util']]],
   ['threadlocalvariabledestructedalreadyexception',['ThreadLocalVariableDestructedAlreadyException',['../classlucene_1_1core_1_1util_1_1ThreadLocalVariableDestructedAlreadyException.html',1,'lucene::core::util']]],
   ['tokenfilter',['TokenFilter',['../classlucene_1_1core_1_1analysis_1_1TokenFilter.html',1,'lucene::core::analysis']]],
