@@ -79,11 +79,14 @@ class Version {
 
 class Checksum {
  public:
+  Checksum() { }
   virtual ~Checksum() { }
-  virtual void Update(const char b);
-  virtual void Update(char bytes[], const int32_t off, const int32_t len);
-  virtual int64_t GetValue();
-  virtual void Reset();
+  virtual void Update(const char b) = 0;
+  virtual void Update(const char bytes[],
+                      const uint32_t off,
+                      const uint32_t len) = 0;
+  virtual int64_t GetValue() = 0;
+  virtual void Reset() = 0;
 };
 
 class Crc32: public Checksum {
@@ -91,7 +94,10 @@ class Crc32: public Checksum {
   int32_t crc;
 
  public:
-  Crc32() { }
+  Crc32()
+    : Checksum(),
+      crc(0) {
+  }
 
   ~Crc32() { }
 
@@ -100,14 +106,16 @@ class Crc32: public Checksum {
   }
 
   void Update(const char bytes[], const uint32_t off, const uint32_t len) {
-    crc = crc32(crc, reinterpret_cast<const unsigned char*>(bytes + off), len);
+    crc = _l_crc32(crc,
+                  reinterpret_cast<const unsigned char*>(bytes + off),
+                  len);
   }
 
-  int64_t GetValue() noexcept {
+  int64_t GetValue() {
     return (static_cast<int64_t>(crc)) & 0xFFFFFFFFL;
   }
 
-  void Reset() noexcept {
+  void Reset() {
     crc = 0;
   }
 };
