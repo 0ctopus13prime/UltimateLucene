@@ -17,8 +17,10 @@
 #ifndef SRC_UTIL_CONTEXT_H_
 #define SRC_UTIL_CONTEXT_H_
 
+#include <Util/Etc.h>
 #include <cassert>
 #include <cstdint>
+#include <memory>
 
 namespace lucene {
 namespace core {
@@ -128,6 +130,71 @@ class IOContext {
       merge_info(ctxt.merge_info),
       flush_info(ctxt.flush_info),
       read_once(read_once) {
+  }
+};
+
+class BufferedChecksum: public Checksum {
+ public:
+  const uint32_t DEFAULT_BUFFERSIZE = 256; 
+
+ private:
+  std::unique_ptr<Checksum> in; 
+  std::unique_ptr<char[]> buffer;
+  uint32_t buffer_size;
+  uint32_t upto;
+
+ private:
+  void Flush() {
+    if (upto > 0) {
+      in->Update(buffer.get(), 0, upto);
+    }
+  }
+
+ public:
+  BufferedChecksum(std::unique_ptr<Checksum>&& in)
+    : in(std::forward<std::unique_ptr<Checksum>>(in)),
+      buffer(std::make_unique<char[]>(BufferedChecksum::DEFAULT_BUFFERSIZE)),
+      buffer_size(BufferedChecksum::DEFAULT_BUFFERSIZE),
+      upto(0) {
+  }
+
+  BufferedChecksum(std::unique_ptr<Checksum>&& in, const uint32_t buffer_size)
+    : in(std::forward<std::unique_ptr<Checksum>>(in)),
+      buffer(std::make_unique<char[]>(buffer_size)),
+      buffer_size(buffer_size),
+      upto(0) {
+  }
+
+  void Update(const char b) {
+    if (upto == buffer_size) {
+      Flush();
+    }
+
+    buffer[upto++] = b;
+  }
+
+  void Update(char bytes[], const uint32_t off, const uint32_t len) {
+    if (len >= buffer_size) {
+      Flush();
+      in->Update(bytes, off, len);
+    } else {
+      if (upto + len > buffer_size) {
+        Flush();
+      }
+
+      std::memcpy(buffer.get() + upto, bytes + off, len);
+      upto += len;
+    }
+  }
+
+  int64_t GetValue() {
+    Flush();
+    return in->GetValue();
+  }
+
+  void Reset() {
+    upto = 0;
+    in->Reset();
   }
 };
 

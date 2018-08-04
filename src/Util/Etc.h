@@ -18,6 +18,7 @@
 #ifndef SRC_UTIL_ETC_H_
 #define SRC_UTIL_ETC_H_
 
+#include <
 #include <string>
 
 namespace lucene {
@@ -75,6 +76,19 @@ class Version {
   static Version FromBits(const uint8_t major,
                           const uint8_t minor,
                           const uint8_t bugfix);
+};
+
+class Checksum {
+ public:
+  virtual ~Checksum() { }
+  virtual Update(const char b);
+  virtual Update(char bytes[], const int32_t off, const int32_t len);
+  virtual int64_t GetValue();
+  virtual void Reset();
+};
+
+class Crc32: public Checksum {
+
 };
 
 }  // namespace etc
