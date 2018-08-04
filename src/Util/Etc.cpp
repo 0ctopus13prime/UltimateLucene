@@ -31,7 +31,7 @@
 #undef major
 #undef minor
 
-using lucene::core::util::etc::Version;
+using lucene::core::util::Version;
 
 /**
  *  Version

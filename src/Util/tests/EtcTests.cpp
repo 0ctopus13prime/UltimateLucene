@@ -19,7 +19,7 @@
 #include <gtest/gtest.h>
 #include <string>
 
-using lucene::core::util::etc::Version;
+using lucene::core::util::Version;
 
 TEST(ETC__TESTS, VERSION__TESTS) {
   {

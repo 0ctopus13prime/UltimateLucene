@@ -18,13 +18,12 @@
 #ifndef SRC_UTIL_ETC_H_
 #define SRC_UTIL_ETC_H_
 
-#include <
+#include <Util/ZlibCrc32.h>
 #include <string>
 
 namespace lucene {
 namespace core {
 namespace util {
-namespace etc {
 
 class Version {
  public:
@@ -81,17 +80,38 @@ class Version {
 class Checksum {
  public:
   virtual ~Checksum() { }
-  virtual Update(const char b);
-  virtual Update(char bytes[], const int32_t off, const int32_t len);
+  virtual void Update(const char b);
+  virtual void Update(char bytes[], const int32_t off, const int32_t len);
   virtual int64_t GetValue();
   virtual void Reset();
 };
 
 class Crc32: public Checksum {
+ private:
+  int32_t crc;
 
+ public:
+  Crc32() { }
+
+  ~Crc32() { }
+
+  void Update(const char b) {
+    Update(&b, 0, 1);
+  }
+
+  void Update(const char bytes[], const uint32_t off, const uint32_t len) {
+    crc = crc32(crc, reinterpret_cast<const unsigned char*>(bytes + off), len);
+  }
+
+  int64_t GetValue() noexcept {
+    return (static_cast<int64_t>(crc)) & 0xFFFFFFFFL;
+  }
+
+  void Reset() noexcept {
+    crc = 0;
+  }
 };
 
-}  // namespace etc
 }  // namespace util
 }  // namespace core
 }  // namespace lucene

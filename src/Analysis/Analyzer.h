@@ -93,7 +93,7 @@ class Analyzer {
  private:
   bool closed;
   std::unique_ptr<ReuseStrategy> reuse_strategy;
-  lucene::core::util::etc::Version version;
+  lucene::core::util::Version version;
 
  protected:
   virtual TokenStreamComponents*
@@ -125,11 +125,11 @@ class Analyzer {
     return 1;
   }
   ReuseStrategy& GetReuseStrategy();
-  void SetVersion(lucene::core::util::etc::Version& v) {
+  void SetVersion(lucene::core::util::Version& v) {
     version = v;
   }
 
-  const lucene::core::util::etc::Version& GetVersion() const {
+  const lucene::core::util::Version& GetVersion() const {
     return version;
   }
 

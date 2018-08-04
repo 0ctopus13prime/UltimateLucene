@@ -20,6 +20,7 @@
 #include <Util/Etc.h>
 #include <cassert>
 #include <cstdint>
+#include <cstring>
 #include <memory>
 
 namespace lucene {
@@ -133,12 +134,12 @@ class IOContext {
   }
 };
 
-class BufferedChecksum: public Checksum {
+class BufferedChecksum: public lucene::core::util::Checksum {
  public:
   const uint32_t DEFAULT_BUFFERSIZE = 256; 
 
  private:
-  std::unique_ptr<Checksum> in; 
+  std::unique_ptr<lucene::core::util::Checksum> in; 
   std::unique_ptr<char[]> buffer;
   uint32_t buffer_size;
   uint32_t upto;
@@ -151,15 +152,16 @@ class BufferedChecksum: public Checksum {
   }
 
  public:
-  BufferedChecksum(std::unique_ptr<Checksum>&& in)
-    : in(std::forward<std::unique_ptr<Checksum>>(in)),
+  BufferedChecksum(std::unique_ptr<lucene::core::util::Checksum>&& in)
+    : in(std::forward<std::unique_ptr<lucene::core::util::Checksum>>(in)),
       buffer(std::make_unique<char[]>(BufferedChecksum::DEFAULT_BUFFERSIZE)),
       buffer_size(BufferedChecksum::DEFAULT_BUFFERSIZE),
       upto(0) {
   }
 
-  BufferedChecksum(std::unique_ptr<Checksum>&& in, const uint32_t buffer_size)
-    : in(std::forward<std::unique_ptr<Checksum>>(in)),
+  BufferedChecksum(std::unique_ptr<lucene::core::util::Checksum>&& in,
+                   const uint32_t buffer_size)
+    : in(std::forward<std::unique_ptr<lucene::core::util::Checksum>>(in)),
       buffer(std::make_unique<char[]>(buffer_size)),
       buffer_size(buffer_size),
       upto(0) {

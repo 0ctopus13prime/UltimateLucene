@@ -38,7 +38,7 @@ using lucene::core::analysis::tokenattributes::TermToBytesRefAttribute;
 using lucene::core::util::AttributeFactory;
 using lucene::core::util::BytesRef;
 using lucene::core::util::EmptyThreadLocalException;
-using lucene::core::util::etc::Version;
+using lucene::core::util::Version;
 
 /**
  *  TokenStreamComponents
