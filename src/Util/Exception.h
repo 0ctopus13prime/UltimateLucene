@@ -25,6 +25,10 @@ namespace util {
 
 class InvalidStateException: std::runtime_error {
  public:
+  InvalidStateException()
+    : std::runtime_error("InvalidStateException") {
+  }
+
   explicit InvalidStateException(const std::string& err_msg)
     : std::runtime_error(err_msg) {
   }
@@ -36,11 +40,60 @@ class InvalidStateException: std::runtime_error {
 
 class UnsupportedOperationException: std::runtime_error {
  public:
+  UnsupportedOperationException()
+    : std::runtime_error("UnsupportedOperationException") {
+  }
+
   explicit UnsupportedOperationException(const std::string& err_msg)
     : std::runtime_error(err_msg) {
   }
 
   explicit UnsupportedOperationException(const char* err_msg)
+    : std::runtime_error(err_msg) {
+  }
+};
+
+class IOException: std::runtime_error {
+ public:
+  IOException()
+    : std::runtime_error("IOException") {
+  }
+
+  explicit IOException(const std::string& err_msg)
+    : std::runtime_error(err_msg) {
+  }
+
+  explicit IOException(const char* err_msg)
+    : std::runtime_error(err_msg) {
+  }
+};
+
+class IllegalArgumentException: std::runtime_error {
+ public:
+  IllegalArgumentException()
+    : std::runtime_error("IllegalArgumentException") {
+  }
+
+  explicit IllegalArgumentException(const std::string& err_msg)
+    : std::runtime_error(err_msg) {
+  }
+
+  explicit IllegalArgumentException(const char* err_msg)
+    : std::runtime_error(err_msg) {
+  }
+};
+
+class EOFException: std::runtime_error {
+ public:
+  EOFException()
+    : std::runtime_error("EOFException") {
+  }
+
+  explicit EOFException(const std::string& err_msg)
+    : std::runtime_error(err_msg) {
+  }
+
+  explicit EOFException(const char* err_msg)
     : std::runtime_error(err_msg) {
   }
 };

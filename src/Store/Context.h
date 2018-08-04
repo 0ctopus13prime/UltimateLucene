@@ -153,7 +153,8 @@ class BufferedChecksum: public lucene::core::util::Checksum {
 
  public:
   BufferedChecksum(std::unique_ptr<lucene::core::util::Checksum>&& in)
-    : in(std::forward<std::unique_ptr<lucene::core::util::Checksum>>(in)),
+    : lucene::core::util::Checksum(),
+      in(std::forward<std::unique_ptr<lucene::core::util::Checksum>>(in)),
       buffer(std::make_unique<char[]>(BufferedChecksum::DEFAULT_BUFFERSIZE)),
       buffer_size(BufferedChecksum::DEFAULT_BUFFERSIZE),
       upto(0) {
@@ -161,7 +162,8 @@ class BufferedChecksum: public lucene::core::util::Checksum {
 
   BufferedChecksum(std::unique_ptr<lucene::core::util::Checksum>&& in,
                    const uint32_t buffer_size)
-    : in(std::forward<std::unique_ptr<lucene::core::util::Checksum>>(in)),
+    : lucene::core::util::Checksum(),
+      in(std::forward<std::unique_ptr<lucene::core::util::Checksum>>(in)),
       buffer(std::make_unique<char[]>(buffer_size)),
       buffer_size(buffer_size),
       upto(0) {
@@ -175,7 +177,7 @@ class BufferedChecksum: public lucene::core::util::Checksum {
     buffer[upto++] = b;
   }
 
-  void Update(char bytes[], const uint32_t off, const uint32_t len) {
+  void Update(const char bytes[], const uint32_t off, const uint32_t len) {
     if (len >= buffer_size) {
       Flush();
       in->Update(bytes, off, len);

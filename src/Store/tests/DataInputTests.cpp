@@ -14,17 +14,23 @@
  * limitations under the License.
  *
  */
-#ifndef SRC_STORE_EXCEPTION_H_
-#define SRC_STORE_EXCEPTION_H_
 
-#include <stdexcept>
+#include <assert.h>
+#include <gtest/gtest.h>
+#include <Store/DataInput.h>
+#include <iostream>
+#include <string>
 
-namespace lucene {
-namespace core {
-namespace store {
+using lucene::core::store::ByteArrayReferenceDataInput;
 
-}  // store
-}  // core
-}  // lucene
+TEST(DATA__INPUT__TESTS, ByteArrayReferenceDataInput) {
+  char buf[] = {0x1, 0x2, 0x3, 0x4};
+  ByteArrayReferenceDataInput bar_input(buf, 4);
 
-#endif  // SRC_STORE_EXCEPTION_H_
+  std::cout << "xxxxxxxxxx " << std::endl;
+}
+
+int main(int argc, char* argv[]) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

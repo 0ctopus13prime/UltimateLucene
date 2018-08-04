@@ -22,7 +22,7 @@
 
 using lucene::core::util::BytesRef;
 
-TEST(BYTESREF__TESTSs, BASIC__TEST) {
+TEST(BYTESREF__TESTS, BASIC__TEST) {
   // Basic test
   std::string name = "doochi";
   BytesRef bytes_ref(name);

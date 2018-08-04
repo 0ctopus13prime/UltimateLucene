@@ -20,12 +20,16 @@
 
 #include <Util/Bits.h>
 #include <Util/Bytes.h>
+#include <Util/Etc.h>
 #include <Util/Exception.h>
 #include <Util/Numeric.h>
+#include <Store/Context.h>
 #include <Store/Exception.h>
 #include <cstring>
-#include <stdexcept>
+#include <algorithm>
 #include <map>
+#include <memory>
+#include <stdexcept>
 #include <set>
 #include <string>
 
@@ -37,112 +41,30 @@ class RandomAccessInput {
  public:
   virtual ~RandomAccessInput() { }
 
-  virtual char ReadByte(const uint64_t pos);
+  virtual char ReadByte(const uint64_t pos) = 0;
 
-  virtual int16_t ReadInt16(const uint64_t pos);
+  virtual int16_t ReadInt16(const uint64_t pos) = 0;
 
-  virtual int32_t ReadInt32(const uint64_t pos);
+  virtual int32_t ReadInt32(const uint64_t pos) = 0;
 
-  virtual int64_t ReadInt64(const uint64_t pos);
+  virtual int64_t ReadInt64(const uint64_t pos) = 0;
 };
 
 class DataInput {
  private:
-  static const uint32_t SKIP_BUFFER_SIZE = 1024;
+  static const uint32_t SKIP_BUFFER_SIZE;
 
  private:
-  char* skip_buffer;
+  std::unique_ptr<char[]> skip_buffer;
 
  private:
   void AllocateSkipBufferIf() {
-    if (skip_buffer == nullptr) {
-      skip_buffer = new char[SKIP_BUFFER_SIZE];
+    if (!skip_buffer) {
+      skip_buffer = std::make_unique<char[]>(DataInput::SKIP_BUFFER_SIZE);
     }
   }
 
- public:
-  DataInput()
-    : skip_buffer(nullptr) {
-  }
-  
-  virtual ~DataInput() {
-    if (skip_buffer != nullptr) {
-      delete[] skip_buffer;
-    }
-  }
-
-  virtual char ReadByte();
-
-  virtual void ReadBytes(const char bytes[],
-                         const uint32_t offset,
-                         const uint32_t len);
-
-  void ReadBytes(const char bytes[],
-                 const uint32_t offset,
-                 const uint32_t len,
-                 const bool use_buffer) {
-    ReadBytes(bytes, offset, len);
-  }
-
-  int16_t ReadInt16() {
-    lucene::core::util::numeric::Int16AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
-    iab.bytes[1] = ReadByte();
-    iab.bytes[0] = ReadByte();
-#else
-    iab.bytes[0] = ReadByte();
-    iab.bytes[1] = ReadByte();
-#endif
-
-    return iab.int16;
-  }
-
-  int32_t ReadInt32() {
-    lucene::core::util::numeric::Int32AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
-    iab.bytes[3] = ReadByte();
-    iab.bytes[2] = ReadByte();
-    iab.bytes[1] = ReadByte();
-    iab.bytes[0] = ReadByte();
-#else
-    iab.bytes[0] = ReadByte();
-    iab.bytes[1] = ReadByte();
-    iab.bytes[2] = ReadByte();
-    iab.bytes[3] = ReadByte();
-#endif
-
-    return iab.int32;
-  }
-
-  int32_t ReadVInt32() {
-    char b = ReadByte();
-    if (b >= 0) return b;
-    int32_t i = b & 0x7F;
-    b = ReadByte();
-    i |= (b & 0x7F) << 7;
-    if (b >= 0) return i;
-    b = ReadByte();
-    i |= (b & 0x7F) << 14;
-    if (b >= 0) return i;
-    b = ReadByte();
-    i |= (b & 0x7F) << 21;
-    if (b >= 0) return i;
-    b = ReadByte();
-    i |= (b & 0x0F) << 28;
-    if ((b & 0xF0) == 0) return i;
-    throw new IOException("Invalid vInt detected (too many bits)");
-  }
-
-  int32_t ReadZInt32() {
-    return lucene::core::util::BitUtil::ZigZagDecode(ReadVInt32());
-  }
-
-  int32_t ReadInt64() {
-    return (
-      (static_cast<int64_t>(ReadInt32()) << 32) | (ReadInt() & 0xFFFFFFFFL));
-  }
-
-  int64_t ReadVInt64(const bool allow_negative = false) {
+  int64_t ReadVInt64(const bool allow_negative) {
     char b = ReadByte();
     if (b >= 0) return b;
     long i = b & 0x7FL;
@@ -171,61 +93,138 @@ class DataInput {
     i |= (b & 0x7FL) << 56;
     if (b >= 0) return i;
 
-    if (allowNegative) {
+    if (allow_negative) {
       b = ReadByte();
       i |= (b & 0x7FL) << 63;
       if (b == 0 || b == 1) return i;
-      throw std::domain_error("Invalid vLong detected (more than 64 bits)");
+      throw lucene::core::util::IOException(
+            "Invalid vLong detected (more than 64 bits)");
     } else {
-      throw
-      std::domain_error("Invalid vLong detected (negative values disallowed)");
+      throw lucene::core::util::IOException(
+            "Invalid vLong detected (negative values disallowed)");
     }  
   }
 
-  int64_t ReadZInt64() {
+ public:
+  DataInput()
+    : skip_buffer() {
+  }
+  
+  virtual ~DataInput() { }
+
+  virtual char ReadByte() = 0;
+
+  virtual void ReadBytes(char bytes[],
+                         const uint32_t offset,
+                         const uint32_t len) = 0;
+
+  void ReadBytes(char bytes[],
+                 const uint32_t offset,
+                 const uint32_t len,
+                 const bool use_buffer) {
+    ReadBytes(bytes, offset, len);
+  }
+
+  virtual int16_t ReadInt16() {
+    lucene::core::util::numeric::Int16AndBytes iab;
+#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+    iab.bytes[1] = ReadByte();
+    iab.bytes[0] = ReadByte();
+#else
+    iab.bytes[0] = ReadByte();
+    iab.bytes[1] = ReadByte();
+#endif
+
+    return iab.int16;
+  }
+
+  virtual int32_t ReadInt32() {
+    lucene::core::util::numeric::Int32AndBytes iab;
+#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+    iab.bytes[3] = ReadByte();
+    iab.bytes[2] = ReadByte();
+    iab.bytes[1] = ReadByte();
+    iab.bytes[0] = ReadByte();
+#else
+    iab.bytes[0] = ReadByte();
+    iab.bytes[1] = ReadByte();
+    iab.bytes[2] = ReadByte();
+    iab.bytes[3] = ReadByte();
+#endif
+
+    return iab.int32;
+  }
+
+  virtual int32_t ReadVInt32() {
+    char b = ReadByte();
+    if (b >= 0) return b;
+    int32_t i = b & 0x7F;
+    b = ReadByte();
+    i |= (b & 0x7F) << 7;
+    if (b >= 0) return i;
+    b = ReadByte();
+    i |= (b & 0x7F) << 14;
+    if (b >= 0) return i;
+    b = ReadByte();
+    i |= (b & 0x7F) << 21;
+    if (b >= 0) return i;
+    b = ReadByte();
+    i |= (b & 0x0F) << 28;
+    if ((b & 0xF0) == 0) return i;
+    throw lucene::core::util::IOException(
+          "Invalid vInt detected (too many bits)");
+  }
+
+  virtual int32_t ReadZInt32() {
+    return lucene::core::util::BitUtil::ZigZagDecode(ReadVInt32());
+  }
+
+  virtual int64_t ReadInt64() {
+    return (
+      (static_cast<int64_t>(ReadInt32()) << 32) | (ReadInt32() & 0xFFFFFFFFL));
+  }
+
+  virtual int64_t ReadVInt64() {
+    return ReadVInt64(false);
+  }
+
+  virtual int64_t ReadZInt64() {
     return lucene::core::util::BitUtil::ZigZagDecode(ReadVInt64(true));
   }
 
-  std::string ReadString() {
+  virtual std::string ReadString() {
     const int32_t length = ReadVInt32(); 
-    char bytes[length];
+    char bytes[length];  // TODO(0ctopus13prime): alloca? built in alloca?
     ReadBytes(bytes, 0, length);
 
     return std::string(bytes, 0, length/*, UTF_8 */);
   }
 
-  std::map<std::string, std::string> ReadMapOfStrings() {
+  virtual std::map<std::string, std::string> ReadMapOfStrings() {
     // TODO(0ctopus13prime): Implement it
     return {};    
   }
 
-  std::set<std::string> ReadSetOfStrings() {
+  virtual std::set<std::string> ReadSetOfStrings() {
     // TODO(0ctopus13prime): Implement it
     return {};    
   }
 
-  void SkipBytes(const int64_t num_bytes) {
+  virtual void SkipBytes(const int64_t num_bytes) {
     if (num_bytes < 0) {
-      throw
+      throw lucene::core::util::IllegalArgumentException(
+            std::string("`num_bytes` must e >= 0, got ") +
+            std::to_string(num_bytes));
     }
 
     AllocateSkipBufferIf();
-    for (uint64_t skipped = 0 ; skipped < num_bytes ;) {
+    for (int64_t skipped = 0 ; skipped < num_bytes ; /* Nothing */) {
       const uint32_t delta = num_bytes - skipped;
-      const uint32_t step = (SKIP_BUFFER_SIZE < delta
-                            ? SKIP_BUFFER_SIZE : delta);
-      ReadBytes(skip_buffer, 0, step, false);
+      const uint32_t step = std::min(SKIP_BUFFER_SIZE, delta);
+      ReadBytes(skip_buffer.get(), 0, step, false);
       skipped += step;
     }
   }
-};
-
-class RandomAccessInput {
- public:
-  virtual char ReadByte(const uint64_t pos);
-  virtual int16_t ReadInt16(const uint64_t pos);
-  virtual int32_t ReadInt32(const uint64_t pos);
-  virtual int64_t ReadInt64(const uint64_t pos);
 };
 
 class IndexInput: public DataInput {
@@ -234,42 +233,62 @@ class IndexInput: public DataInput {
 
  protected:
   IndexInput(const std::string& resource_description)
-    : resource_description(resource_description) {
+    : DataInput(),
+      resource_description(resource_description) {
+  }
+
+  IndexInput(std::string&& resource_description)
+    : DataInput(),
+      resource_description(std::forward<std::string>(resource_description)) {
   }
 
  private:
   class DefaultRandomAccessInputImpl: public RandomAccessInput {
    private:
-    IndexInput* base;
+    std::unique_ptr<IndexInput> slice;
 
    public:
-    DefaultRandomAccessInputImpl(IndexInput* base)
-      : base(base) {
+    DefaultRandomAccessInputImpl(std::unique_ptr<IndexInput>&& slice)
+      : slice(std::forward<std::unique_ptr<IndexInput>>(slice)) {
     }
 
-    ~DefaultRandomAccessInputImpl() {
-      if (base != nullptr) {
-        delete base;
-      }
+    ~DefaultRandomAccessInputImpl() { }
+
+    char ReadByte(const uint64_t pos) {
+      slice->Seek(pos); 
+      return slice->ReadByte();
+    }
+
+    int16_t ReadInt16(const uint64_t pos) {
+      slice->Seek(pos);
+      return slice->ReadInt16();
+    }
+
+    int32_t ReadInt32(const uint64_t pos) {
+      slice->Seek(pos);
+      return slice->ReadInt32();
+    }
+    
+    int64_t ReadInt64(const uint64_t pos) {
+      slice->Seek(pos);
+      return slice->ReadInt64();
     }
   };
 
  public:
-  IndexInput(const IndexInput& other);
+  virtual ~IndexInput() { }
 
-  IndexInput(IndexInput&& other);
+  virtual void Close() = 0;
 
-  virtual void Close();
+  virtual uint64_t GetFilePointer() = 0;
 
-  virtual uint64_t GetFilePointer();
+  virtual void Seek(const uint64_t pos) = 0;
 
-  virtual void Seek(const uint64_t pos);
-
-  virtual uint64_t Length();
+  virtual uint64_t Length() = 0;
 
   virtual IndexInput* Slice(const std::string& slice_description,
                             const uint64_t offset,
-                            const uint64_t length); 
+                            const uint64_t length) = 0; 
 
   RandomAccessInput* RandomAccessSlice(const uint64_t offset,
                                        const uint64_t length) {
@@ -278,24 +297,35 @@ class IndexInput: public DataInput {
     if (RandomAccessInput* ra_input = dynamic_cast<RandomAccessInput*>(slice)) {
       return ra_input;
     } else {
-      return new DefaultRandomAccessInputImpl(slice);
+      return
+      new DefaultRandomAccessInputImpl(std::unique_ptr<IndexInput>(slice));
     }
   }
 };
 
 class ChecksumIndexInput: public IndexInput {
- publiic:
+ public:
   ChecksumIndexInput(const std::string& resource_description)
     : IndexInput(resource_description) {
   }
 
-  virtual int64_t GetCheksum();
+  ChecksumIndexInput(std::string&& resource_description)
+    : IndexInput(std::forward<std::string>(resource_description)) {
+  }
+
+  virtual int64_t GetCheksum() = 0;
 
   void Seek(const uint64_t pos) {
     const uint64_t cur_fp = GetFilePointer();
     const int64_t skip = pos - cur_fp;
+
     if (skip < 0) {
-      throw std::domain_error(""); // TODO(0ctopus13prime): Fill it
+      throw lucene::core::util::IllegalArgumentException(
+            std::string("ChecksumIndexInput cannot seek backwards (pos = ") + 
+            std::to_string(pos) +
+            " GetFilePointer() = " +
+            std::to_string(cur_fp) + 
+            ")");
     }
 
     SkipBytes(skip);
@@ -305,12 +335,15 @@ class ChecksumIndexInput: public IndexInput {
 class BufferedChecksumIndexInput: public ChecksumIndexInput {
  private:
   std::unique_ptr<IndexInput> main;
-  std::unique_ptr<Checksum> digest
+  std::unique_ptr<lucene::core::util::Checksum> digest;
 
  public:
   BufferedChecksumIndexInput(std::unique_ptr<IndexInput>&& main)
-    : main(std::forward<std::unique_ptr<IndexInput>>(main)),
-      digest(std::make_unique<BufferedChecksum>(std::make_unique<Crc32>())){
+    : ChecksumIndexInput(std::string("xxx")),  // TODO(0ctopus13prime): Fix this
+      main(std::forward<std::unique_ptr<IndexInput>>(main)),
+      digest(std::make_unique<BufferedChecksum>(
+               std::unique_ptr<lucene::core::util::Checksum>(
+                 new lucene::core::util::Crc32()))) {
   }
 
   char ReadByte() {
@@ -332,18 +365,14 @@ class BufferedChecksumIndexInput: public ChecksumIndexInput {
     main->Close();
   }
 
-  int64_t GetFilePointer() {
+  uint64_t GetFilePointer() {
     return main->GetFilePointer();
   }
 
-  int64_t Length() {
+  uint64_t Length() {
     return main->Length();
   }
   
-  IndexInput* Clone() {
-    throw lucene::core::util::UnsupportedOperationException(); 
-  }
-
   IndexInput* Slice(const std::string& slice_desc,
                     const uint32_t offset,
                     const uint32_t length) {
@@ -351,94 +380,48 @@ class BufferedChecksumIndexInput: public ChecksumIndexInput {
   }
 };
 
-class BufferedIndexInput: public IndexInput {
+class BufferedIndexInput: public IndexInput, RandomAccessInput {
  public:
   static const uint32_t BUFFER_SIZE = 1024; 
   static const uint32_t MIN_BUFFER_SIZE = 8;
   static const uint32_t MERGE_BUFFER_SIZE = 4096;
 
  protected:
-  char* buffer;
+  std::unique_ptr<char[]> buffer;
 
  private:
-  class SlicedIndexInput: public BufferedIndexInput {
-   private:
-    IndexInput* base;
-    uint64_t file_offset;
-    uint64_t length;
-
-   public:
-    SlicedIndexInput(const std::string& slice_desc,
-                     IdexInput* base,
-                     const uint64_t offset,
-                     const uint64_t length)
-      : BufferedIndexInput(slice_desc, BufferedIndexInput::BUFFER_SIZE),
-        base(base),
-        file_offset(offset),
-        length(length) {
-    }
-
-    void ReadInternal(char bytes[],
-                      const uint32_t offset,
-                      const uint32_t len) {
-      const uint64_t start = GetFilePointer();
-      if (start + len > length) {
-        throw EOFException(""); 
-      }
-
-      base->Seek(file_offset + start);
-      base->ReadBytes(bytes, offset, len, false);
-    }
-
-    void SeekInternal(const uint64_t) const noexcept { }
-
-    void Close() {
-      base->Close();
-    }
-
-    uint64_t Length() const noexcept {
-      return length;
-    }
-  };
-
+  class SlicedIndexInput;
   uint32_t buffer_size;
   uint64_t buffer_start;
   uint32_t buffer_length;
   uint32_t buffer_position;
 
  protected:
-  void SafeBufferDeallocate() {
-    if (buffer != nullptr) {
-      delete[] buffer;
-    }
-  }
-
   void NewBuffer(char new_buffer[]) {
-    SafeBufferDeallocate(); 
-    buffer = new_buffer;
+    buffer.reset(new_buffer);
   }
 
-  virtual void SeekInternal(const uint64_t pos);
+  virtual void SeekInternal(const uint64_t pos) = 0;
 
   virtual void ReadInternal(char byte[],
                             const uint32_t offset,
-                            const uint32_t length);
+                            const uint32_t length) = 0;
 
  private:
   void Refill() {
     const uint64_t start = buffer_start + buffer_position;
     uint64_t end = start + buffer_size;
-    end = (end > Length() ? Length() : end); 
+    end = std::min(end, Length());
     if (end <= start) {
-      throw EOFException();
+      throw lucene::core::util::EOFException();
     }
-    uint32_t new_length = static_cast<uint32_t>(end - start);
+    const uint32_t new_length = static_cast<uint32_t>(end - start);
 
-    if (buffer == nullptr) {
+    if (!buffer) {
       NewBuffer(new char[buffer_size]);
       SeekInternal(buffer_start);
     }
-    ReadInternal(buffer, 0, new_length);
+    ReadInternal(buffer.get(), 0, new_length);
     buffer_length = new_length;
     buffer_start = start; 
     buffer_position = 0;
@@ -446,15 +429,18 @@ class BufferedIndexInput: public IndexInput {
 
  public:
   static uint32_t BufferSize(const IOContext& context) {
-    
+    switch (context.context) {
+      case IOContext::Context::MERGE:
+        return BufferedIndexInput::MERGE_BUFFER_SIZE;
+      default:
+        return BufferedIndexInput::BUFFER_SIZE;
+    }
   }
 
   BufferedIndexInput* Wrap(const std::string& slice_desc,
-                           const IndexInput* other,
+                           IndexInput* other,
                            const uint64_t offset,
-                           const uint64_t length) {
-    return new SlicedIndexInput(slice_desc, other, offset, length); 
-  }
+                           const uint64_t length);
 
  public:
   BufferedIndexInput(const std::string& resource_desc)
@@ -469,16 +455,15 @@ class BufferedIndexInput: public IndexInput {
   BufferedIndexInput(const std::string& resource_desc,
                      const uint32_t buffer_size)
     : IndexInput(resource_desc),
-      buffer(nullptr),
+      RandomAccessInput(),
+      buffer(),
       buffer_size(buffer_size),
       buffer_start(0),
       buffer_length(0),
       buffer_position(0) {
   }
 
-  ~BufferedIndexInput() {
-    SafeBufferDeallocate(); 
-  }
+  virtual ~BufferedIndexInput() { }
 
   char ReadByte() {
     if (buffer_position >= buffer_length) {
@@ -489,37 +474,46 @@ class BufferedIndexInput: public IndexInput {
   }
 
   void ReadBytes(char bytes[],
-                 uint32_t offset,
-                 uint32_t len,
-                 bool use_buffer = true) {
+                 const uint32_t offset,
+                 const uint32_t len) {
+    ReadBytes(bytes, offset, len, true);
+  }
+
+  void ReadBytes(char bytes[],
+                 const uint32_t offset,
+                 const uint32_t len,
+                 const bool use_buffer) {
     const uint32_t available = buffer_length - buffer_position;
     if (len <= available) {
-      std::memcpy(bytes + offset, buffer + buffer_position, len);
+      std::memcpy(bytes + offset, buffer.get() + buffer_position, len);
       buffer_position += len;
     } else {
+      uint32_t offset_cp = offset;
+      uint32_t len_cp = len;
+
       if (available > 0) {
-        std::memcpy(bytes + offset, buffer + buffer_position, available); 
-        offset += available;
-        len -= available;
+        std::memcpy(bytes + offset, buffer.get() + buffer_position, available); 
+        offset_cp += available;
+        len_cp -= available;
         buffer_position += available;
       }
 
-      if (use_buffer && len < buffer_size) {
+      if (use_buffer && len_cp < buffer_size) {
         Refill();   
-        if (buffer_length < len) {
-          std::memcpy(bytes + offset, buffer, buffer_length);
-          throw EOFException();
+        if (buffer_length < len_cp) {
+          std::memcpy(bytes + offset, buffer.get(), buffer_length);
+          throw lucene::core::util::EOFException();
         } else {
-          std::memcpy(bytse + offset, buffer, len);
-          buffer_position = len;
+          std::memcpy(bytes + offset, buffer.get(), len_cp);
+          buffer_position = len_cp;
         }
       } else {
-        uint64_t after = buffer_start + buffer_position + len; 
+        const uint64_t after = buffer_start + buffer_position + len_cp; 
         if (after > Length()) {
-          throw EOFException();
+          throw lucene::core::util::EOFException();
         }
 
-        ReadInternal(bytes, offset, len);
+        ReadInternal(bytes, offset, len_cp);
         buffer_start = after;
         buffer_position = 0;
         buffer_length = 0;
@@ -546,7 +540,7 @@ class BufferedIndexInput: public IndexInput {
   }
 
   int32_t ReadInt32() {
-    if (4 <= (buffer_length - buffer_position) {
+    if (4 <= (buffer_length - buffer_position)) {
       lucene::core::util::numeric::Int32AndBytes iab;
 
 #if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
@@ -568,7 +562,7 @@ class BufferedIndexInput: public IndexInput {
   }
 
   int64_t ReadInt64() {
-    if (8 <= (buffer_length - buffer_position) {
+    if (8 <= (buffer_length - buffer_position)) {
       lucene::core::util::numeric::Int64AndBytes iab;
 
 #if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
@@ -597,7 +591,7 @@ class BufferedIndexInput: public IndexInput {
     }
   }
   
-  int32_t ReadVInt() {
+  int32_t ReadVInt32() {
     if (5 <= (buffer_length - buffer_position)) {
       char b = buffer[buffer_position++];
       if (b >= 0) return b;
@@ -614,13 +608,14 @@ class BufferedIndexInput: public IndexInput {
       b = buffer[buffer_position++];
       i |= (b & 0x0F) << 28;
       if ((b & 0xF0) == 0) return i;
-      throw std::domain_error("Invalid vInt detected (too many bits)");
+      throw lucene::core::util::IOException(
+            "Invalid vInt detected (too many bits)");
     } else {
-      return IndexInput::ReadVInt();
+      return IndexInput::ReadVInt32();
     }
   }
 
-  int64_t ReadVLong() {
+  int64_t ReadVInt64() {
     if (9 <= buffer_length-buffer_position) {
       char b = buffer[buffer_position++];
       if (b >= 0) return b;
@@ -649,10 +644,10 @@ class BufferedIndexInput: public IndexInput {
       b = buffer[buffer_position++];
       i |= (b & 0x7FL) << 56;
       if (b >= 0) return i;
-      throw
-      std::domain_error("Invalid vLong detected (negative values disallowed)");
+      throw lucene::core::util::IOException(
+            "Invalid vLong detected (negative values disallowed)");
     } else {
-      return super.readVLong();
+      return IndexInput::ReadVInt64();
     }  
   }
 
@@ -671,9 +666,9 @@ class BufferedIndexInput: public IndexInput {
     return buffer[static_cast<int32_t>(index)];
   }
 
-  int16_t ReadShort(const uint64_t pos) {
+  int16_t ReadInt16(const uint64_t pos) {
     lucene::core::util::numeric::Int16AndBytes iab;
-    int64_t tmp_index = pos - buffer_start;
+    const int64_t tmp_index = pos - buffer_start;
     int32_t idx = static_cast<int32_t>(tmp_index);
 
     if (tmp_index < 0 || tmp_index >= buffer_length - 1) {
@@ -696,7 +691,7 @@ class BufferedIndexInput: public IndexInput {
     return iab.int16;
   }
 
-  int32_t ReadInt(const int64_t pos) {
+  int32_t ReadInt32(const uint64_t pos) {
     lucene::core::util::numeric::Int32AndBytes iab;
     int64_t tmp_index = pos - buffer_start;
     int32_t idx = static_cast<int32_t>(tmp_index);
@@ -725,7 +720,7 @@ class BufferedIndexInput: public IndexInput {
     return iab.int32;
   }
 
-  int64_t ReadLong(const int64_t pos) {
+  int64_t ReadInt64(const uint64_t pos) {
     lucene::core::util::numeric::Int64AndBytes iab;
     int64_t tmp_index = pos - buffer_start;
     int32_t idx = static_cast<int32_t>(tmp_index);
@@ -762,7 +757,7 @@ class BufferedIndexInput: public IndexInput {
     return iab.int64;
   }
 
-  uint64_t GetFilePointer() const noexcept {
+  uint64_t GetFilePointer() {
     return buffer_start + buffer_position; 
   }
 
@@ -780,20 +775,20 @@ class BufferedIndexInput: public IndexInput {
   IndexInput* Slice(const std::string& slice_desc,
                     const uint64_t offset,
                     const uint64_t length) {
-    return Wrap(slice_desc, this, offset, length);
+    return BufferedIndexInput::Wrap(slice_desc, this, offset, length);
   }
 
   void SetBufferSize(const uint32_t new_size) {
     if (new_size != buffer_size) {
       CheckBufferSize(new_size);
       buffer_size = new_size;
-      if (buffer != nullptr) {
+      if (!buffer) {
         // TODO(0ctopus13prime): Reallocate in C?
         char* new_buffer = new char[new_size]; 
         const uint32_t left_in_buffer = buffer_length - buffer_position;
         const uint32_t num_to_copy = (left_in_buffer > new_size ?
                                       new_size : left_in_buffer);
-        std::memcpy(new_buffer, buffer + buffer_position, num_to_copy); 
+        std::memcpy(new_buffer, buffer.get() + buffer_position, num_to_copy); 
         buffer_start += buffer_position;
         buffer_position = 0;
         buffer_length = num_to_copy;
@@ -808,21 +803,62 @@ class BufferedIndexInput: public IndexInput {
 
   void CheckBufferSize(const uint32_t buffer_size) {
     if (buffer_size < BufferedIndexInput::MIN_BUFFER_SIZE) {
-      throw std::invalid_argument(
-                          std::string("Buffer size must be at "
-                                      "least MIN_BUFFER_SIZE = ") +
-                          std::to_string(BufferedIndexInput::MIN_BUFFER_SIZE)); 
+      throw lucene::core::util::IllegalArgumentException(
+            std::string("Buffer size must be at "
+            "least MIN_BUFFER_SIZE = ") +
+            std::to_string(BufferedIndexInput::MIN_BUFFER_SIZE)); 
     }
   }
 };
 
+class BufferedIndexInput::SlicedIndexInput: public BufferedIndexInput {
+ private:
+  IndexInput* base;
+  uint64_t file_offset;
+  uint64_t length;
+
+ protected:
+  void SeekInternal(const uint64_t) { }
+
+ public:
+  SlicedIndexInput(const std::string& slice_desc,
+                   IndexInput* base,
+                   const uint64_t offset,
+                   const uint64_t length)
+    : BufferedIndexInput(slice_desc, BufferedIndexInput::BUFFER_SIZE),
+      base(base),
+      file_offset(offset),
+      length(length) {
+  }
+
+  void ReadInternal(char bytes[],
+                    const uint32_t offset,
+                    const uint32_t len) {
+    const uint64_t start = GetFilePointer();
+    if (start + len > length) {
+      throw lucene::core::util::EOFException("Read past eof");
+    }
+
+    base->Seek(file_offset + start);
+    base->ReadBytes(bytes, offset, len, false);
+  }
+
+  void Close() {
+    base->Close();
+  }
+
+  uint64_t Length() {
+    return length;
+  }
+};
+
 // TODO(0ctopus13prime): Is it just a byte array wrapper?
-// Assuming it is just a wrapper
-class ByteArrayReferenceDataInput {
+// Assuming it is just an array reference
+class ByteArrayReferenceDataInput : public DataInput {
  private:
   char* bytes;
   uint32_t pos; 
-  uint32_t llimit;
+  uint32_t limit;
 
  public:
   ByteArrayReferenceDataInput(char bytes[], const uint32_t bytes_length) {
@@ -831,7 +867,7 @@ class ByteArrayReferenceDataInput {
 
   ByteArrayReferenceDataInput(char bytes[],
                               const uint32_t offset,
-                              const int32_t len) {
+                              const uint32_t len) {
     Reset(bytes, offset, len);
   }
 
@@ -842,9 +878,9 @@ class ByteArrayReferenceDataInput {
   void Reset(char new_bytes[],
              const uint32_t offset,
              const uint32_t len) noexcept {
-    bytse = new_bytes;
+    bytes = new_bytes;
     pos = offset;
-    limit = offste + len;
+    limit = offset + len;
   }
 
   void Rewind() noexcept {
@@ -859,7 +895,7 @@ class ByteArrayReferenceDataInput {
     pos = new_pos;
   }
 
-  uint32_t Length() const noexcept {
+  uint64_t Length() const noexcept {
     return limit;
   }
 
@@ -867,11 +903,11 @@ class ByteArrayReferenceDataInput {
     return (pos == limit);
   }
 
-  void SkipBytes(const uint64_t count) noexcept {
+  void SkipBytes(const uint64_t count) {
     pos += count;
   }
 
-  int16_t ReadInt16() noexcept {
+  int16_t ReadInt16() {
     lucene::core::util::numeric::Int16AndBytes iab;
 #if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
     iab.bytes[1] = bytes[pos++];
@@ -884,7 +920,7 @@ class ByteArrayReferenceDataInput {
     return iab.int16;
   }
 
-  int32_t ReadInt32() noexcept {
+  int32_t ReadInt32() {
     lucene::core::util::numeric::Int32AndBytes iab;
 #if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
     iab.bytes[3] = bytes[pos++];
@@ -901,7 +937,7 @@ class ByteArrayReferenceDataInput {
     return iab.int32;
   }
 
-  int64_t ReadInt64() noexcept {
+  int64_t ReadInt64() {
     lucene::core::util::numeric::Int64AndBytes iab;
 #if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
     iab.bytes[7] = bytes[pos++];
@@ -979,13 +1015,13 @@ class ByteArrayReferenceDataInput {
           "Invalid vLong detected (negative values disallowed)");
   }
 
-  char ReadByte() noexcept {
+  char ReadByte() {
     return bytes[pos++];
   }
 
-  void ReadBytes(char bytes[],
+  void ReadBytes(char b[],
                  const uint32_t offset,
-                 const uint32_t len) noexcept {
+                 const uint32_t len) {
     std::memcpy(b + offset, bytes + pos, len);
     pos += len;
   }
@@ -1007,15 +1043,15 @@ class BytesArrayReferenceIndexInput : public IndexInput {
       limit(bytes_len) {
   }
 
-  int64_t GetFilePointer() const noexcept {
+  uint64_t GetFilePointer() const {
     return pos;
   }
 
-  void Seek(const int64_t new_pos) noexcept {
+  void Seek(const int64_t new_pos) {
     pos = static_cast<int32_t>(new_pos); 
   }
 
-  void Reset(char new_byte[],
+  void Reset(char new_bytes[],
              const uint32_t offset,
              const uint32_t len) noexcept {
     bytes = new_bytes; 
@@ -1023,7 +1059,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
     limit = offset + len;
   }
 
-  int64_t Length() const noexcept {
+  uint64_t Length() {
     return limit;
   }
 
@@ -1035,7 +1071,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
     pos += count;
   }
 
-  int16_t ReadInt16() noexcept {
+  int16_t ReadInt16() {
     lucene::core::util::numeric::Int16AndBytes iab;
 #if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
     iab.bytes[1] = bytes[pos++]; 
@@ -1048,7 +1084,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
     return iab.int16;
   }
 
-  int32_t ReadInt32() noexcept {
+  int32_t ReadInt32() {
     lucene::core::util::numeric::Int32AndBytes iab;
 #if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
     iab.bytes[3] = bytes[pos++]; 
@@ -1065,7 +1101,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
     return iab.int32;
   }
 
-  int64_t ReadInt64() noexcept {
+  int64_t ReadInt64() {
     lucene::core::util::numeric::Int64AndBytes iab;
 #if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
     iab.bytes[7] = bytes[pos++]; 
@@ -1138,22 +1174,22 @@ class BytesArrayReferenceIndexInput : public IndexInput {
     b = bytes[pos++];
     i |= (b & 0x7FL) << 56;
     if (b >= 0) return i;
-    throw new RuntimeException(
+    throw new lucene::core::util::InvalidStateException(
               "Invalid vLong detected (negative values disallowed)");
   }
 
-  char ReadByte() noexcept {
+  char ReadByte() {
     return bytes[pos++];
   }
 
-  void ReadBytes(char bytes[],
-                 const uint32_t offest,
-                 const uint32_t len) noexcept {
+  void ReadBytes(char b[],
+                 const uint32_t offset,
+                 const uint32_t len) {
     std::memcpy(b + offset, bytes + pos, len);
     pos += len;
   }
 
-  void Close() const noexcept { }
+  void Close() { }
 
   IndexInput* Slice(const std::string& slice_desc,
                     const uint64_t offset,
@@ -1161,6 +1197,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
     throw lucene::core::util::UnsupportedOperationException();
   }
 };
+
 
 class ByteBufferIndexInput: public IndexInput {
 // TODO(0ctopus13prime): Implement it.
@@ -1174,10 +1211,11 @@ class InputStreamDataInput: public DataInput {
 // TODO(0ctopus13prime): Implement it.
 };
 
+
 }  // namespace store
 }  // namespace core
 }  // namespace lucene
 
-
-
 // TODO(0ctopus13prime): Clone in DataInput
+
+#endif  // SRC_STORE_DATAINPUT_H_
