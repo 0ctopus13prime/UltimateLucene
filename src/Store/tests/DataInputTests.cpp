@@ -22,12 +22,56 @@
 #include <string>
 
 using lucene::core::store::ByteArrayReferenceDataInput;
+using lucene::core::store::BytesArrayReferenceIndexInput;
 
 TEST(DATA__INPUT__TESTS, ByteArrayReferenceDataInput) {
-  char buf[] = {0x1, 0x2, 0x3, 0x4};
-  ByteArrayReferenceDataInput bar_input(buf, 4);
+    char buf[] = {0x1, 0x2, 0x3, 0x4};
+    ByteArrayReferenceDataInput bar_input(buf, 4);
 
-  std::cout << "xxxxxxxxxx " << std::endl;
+  {
+    // Read bytes and rewind
+    ASSERT_EQ(0x1, bar_input.ReadByte());
+    ASSERT_FALSE(bar_input.Eof());
+
+    ASSERT_EQ(0x2, bar_input.ReadByte());
+    ASSERT_FALSE(bar_input.Eof());
+
+    ASSERT_EQ(0x3, bar_input.ReadByte());
+    ASSERT_FALSE(bar_input.Eof());
+
+    ASSERT_EQ(0x4, bar_input.ReadByte());
+    ASSERT_TRUE(bar_input.Eof());
+
+    bar_input.Rewind();
+    ASSERT_EQ(0x1, bar_input.ReadByte());
+    ASSERT_FALSE(bar_input.Eof());
+
+    ASSERT_EQ(0x2, bar_input.ReadByte());
+    ASSERT_FALSE(bar_input.Eof());
+
+    ASSERT_EQ(0x3, bar_input.ReadByte());
+    ASSERT_FALSE(bar_input.Eof());
+
+    ASSERT_EQ(0x4, bar_input.ReadByte());
+    ASSERT_TRUE(bar_input.Eof());
+  }
+
+  {
+    bar_input.Rewind();
+    char read_buf[4];
+    bar_input.ReadBytes(read_buf, 0, 4);
+    ASSERT_TRUE(bar_input.Eof());
+    for (int i = 0 ; i < 4 ; ++i) {
+      ASSERT_EQ(buf[i], read_buf[i]);
+    }
+  }
+}
+
+TEST(DATA__INPUT__TESTS, BytesArrayReferenceIndexInput) {
+  std::string name("BytesArrayReferenceIndexInput");
+  char buf[] = {0x1, 0x2, 0x3, 0x4, 0x5};
+  uint32_t buf_len = 5;
+  BytesArrayReferenceIndexInput bar_ii(name, buf, buf_len);
 }
 
 int main(int argc, char* argv[]) {

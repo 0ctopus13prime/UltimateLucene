@@ -900,7 +900,7 @@ class ByteArrayReferenceDataInput : public DataInput {
   }
 
   bool Eof() const noexcept {
-    return (pos == limit);
+    return (pos >= limit);
   }
 
   void SkipBytes(const uint64_t count) {
@@ -1034,7 +1034,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
   uint32_t limit;
 
  public:
-  BytesArrayReferenceIndexInput(const std::string desc,
+  BytesArrayReferenceIndexInput(const std::string& desc,
                                 char bytes[],
                                 const uint32_t bytes_len)
     : IndexInput(desc),
@@ -1043,11 +1043,11 @@ class BytesArrayReferenceIndexInput : public IndexInput {
       limit(bytes_len) {
   }
 
-  uint64_t GetFilePointer() const {
+  uint64_t GetFilePointer() {
     return pos;
   }
 
-  void Seek(const int64_t new_pos) {
+  void Seek(const uint64_t new_pos) {
     pos = static_cast<int32_t>(new_pos); 
   }
 
