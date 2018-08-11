@@ -14,31 +14,17 @@
  * limitations under the License.
  *
  */
-#ifndef SRC_STORE_EXCEPTION_H_
-#define SRC_STORE_EXCEPTION_H_
-#include <stdexcept>
 
-namespace lucene {
-namespace core {
-namespace store {
+#include <gtest/gtest.h>
+#include <Store/Directory.h>
 
-class AlreadyClosedException: std::runtime_error {
- public:
-  AlreadyClosedException()
-    : std::runtime_error("AlreadyClosedException") {
-  }
+using lucene::core::store::MMapDirectory;
 
-  explicit AlreadyClosedException(const std::string& err_msg)
-    : std::runtime_error(err_msg) {
-  }
+TEST(DIRECTORY__TESTS, MMAP__DIRECTORY) {
+  MMapDirectory dir("/tmp/mmap-test");
+}
 
-  explicit AlreadyClosedException(const char* err_msg)
-    : std::runtime_error(err_msg) {
-  } 
-};
-
-}  // store
-}  // core
-}  // lucene
-
-#endif  // SRC_STORE_EXCEPTION_H_
+int main(int argc, char* argv[]) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

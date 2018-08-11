@@ -24,7 +24,6 @@
 #include <Util/Exception.h>
 #include <Util/Numeric.h>
 #include <Store/Context.h>
-#include <Store/Exception.h>
 #include <cstring>
 #include <algorithm>
 #include <map>
@@ -106,11 +105,9 @@ class DataInput {
   }
 
  public:
-  DataInput()
-    : skip_buffer() {
-  }
+  DataInput() = default;
   
-  virtual ~DataInput() { }
+  virtual ~DataInput() = default;
 
   virtual char ReadByte() = 0;
 
@@ -229,7 +226,7 @@ class DataInput {
 
 class IndexInput: public DataInput {
  private:
-  std::string resource_description;
+  const std::string resource_description;
 
  protected:
   IndexInput(const std::string& resource_description)
@@ -276,7 +273,9 @@ class IndexInput: public DataInput {
   };
 
  public:
-  virtual ~IndexInput() { }
+  IndexInput() = default;
+
+  virtual ~IndexInput() = default;
 
   virtual void Close() = 0;
 
@@ -286,25 +285,29 @@ class IndexInput: public DataInput {
 
   virtual uint64_t Length() = 0;
 
-  virtual IndexInput* Slice(const std::string& slice_description,
-                            const uint64_t offset,
-                            const uint64_t length) = 0; 
+  virtual std::unique_ptr<IndexInput>
+  Slice(const std::string& slice_description,
+        const uint64_t offset,
+        const uint64_t length) = 0; 
 
-  RandomAccessInput* RandomAccessSlice(const uint64_t offset,
-                                       const uint64_t length) {
-    IndexInput* slice = Slice("randomaccess", offset, length); 
+  std::unique_ptr<RandomAccessInput>
+  RandomAccessSlice(const uint64_t offset,
+                    const uint64_t length) {
+    std::unique_ptr<IndexInput> slice = Slice("randomaccess", offset, length); 
 
-    if (RandomAccessInput* ra_input = dynamic_cast<RandomAccessInput*>(slice)) {
-      return ra_input;
+    if (RandomAccessInput* ra_input =
+        dynamic_cast<RandomAccessInput*>(slice.get())) {
+      slice.release();
+      return std::unique_ptr<RandomAccessInput>(ra_input);
     } else {
-      return
-      new DefaultRandomAccessInputImpl(std::unique_ptr<IndexInput>(slice));
+      return std::unique_ptr<RandomAccessInput>(
+      new DefaultRandomAccessInputImpl(std::move(slice)));
     }
   }
 };
 
 class ChecksumIndexInput: public IndexInput {
- public:
+ protected:
   ChecksumIndexInput(const std::string& resource_description)
     : IndexInput(resource_description) {
   }
@@ -313,7 +316,8 @@ class ChecksumIndexInput: public IndexInput {
     : IndexInput(std::forward<std::string>(resource_description)) {
   }
 
-  virtual int64_t GetCheksum() = 0;
+ public:
+  virtual int64_t GetChecksum() = 0;
 
   void Seek(const uint64_t pos) {
     const uint64_t cur_fp = GetFilePointer();
@@ -339,7 +343,7 @@ class BufferedChecksumIndexInput: public ChecksumIndexInput {
 
  public:
   BufferedChecksumIndexInput(std::unique_ptr<IndexInput>&& main)
-    : ChecksumIndexInput(std::string("xxx")),  // TODO(0ctopus13prime): Fix this
+    : ChecksumIndexInput(std::string("xx")),  // TODO(0ctopus13prime): Fix this
       main(std::forward<std::unique_ptr<IndexInput>>(main)),
       digest(std::make_unique<BufferedChecksum>(
                std::unique_ptr<lucene::core::util::Checksum>(
@@ -349,7 +353,7 @@ class BufferedChecksumIndexInput: public ChecksumIndexInput {
   char ReadByte() {
     const char b = main->ReadByte();
     digest->Update(b);
-    return b;;
+    return b;
   }
 
   void ReadBytes(char bytes[], const uint32_t offset, const uint32_t len) {
@@ -373,9 +377,10 @@ class BufferedChecksumIndexInput: public ChecksumIndexInput {
     return main->Length();
   }
   
-  IndexInput* Slice(const std::string& slice_desc,
-                    const uint32_t offset,
-                    const uint32_t length) {
+  std::unique_ptr<IndexInput>
+  Slice(const std::string& slice_desc,
+        const uint64_t offset,
+        const uint64_t length) {
     throw lucene::core::util::UnsupportedOperationException(); 
   }
 };
@@ -437,10 +442,11 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
     }
   }
 
-  BufferedIndexInput* Wrap(const std::string& slice_desc,
-                           IndexInput* other,
-                           const uint64_t offset,
-                           const uint64_t length);
+  static std::unique_ptr<BufferedIndexInput>
+  Wrap(const std::string& slice_desc,
+       IndexInput* other,
+       const uint64_t offset,
+       const uint64_t length);
 
  public:
   BufferedIndexInput(const std::string& resource_desc)
@@ -463,7 +469,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
       buffer_position(0) {
   }
 
-  virtual ~BufferedIndexInput() { }
+  virtual ~BufferedIndexInput() = default;
 
   char ReadByte() {
     if (buffer_position >= buffer_length) {
@@ -772,10 +778,11 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
     }
   }
 
-  IndexInput* Slice(const std::string& slice_desc,
-                    const uint64_t offset,
-                    const uint64_t length) {
-    return BufferedIndexInput::Wrap(slice_desc, this, offset, length);
+  std::unique_ptr<IndexInput>
+  Slice(const std::string& slice_desc,
+        const uint64_t offset,
+        const uint64_t length) {
+    return std::move(BufferedIndexInput::Wrap(slice_desc, this, offset, length));
   }
 
   void SetBufferSize(const uint32_t new_size) {
@@ -1191,9 +1198,10 @@ class BytesArrayReferenceIndexInput : public IndexInput {
 
   void Close() { }
 
-  IndexInput* Slice(const std::string& slice_desc,
-                    const uint64_t offset,
-                    const uint64_t length) {
+  std::unique_ptr<IndexInput>
+  Slice(const std::string& slice_desc,
+        const uint64_t offset,
+        const uint64_t length) {
     throw lucene::core::util::UnsupportedOperationException();
   }
 };

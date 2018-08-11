@@ -18,61 +18,252 @@
 #ifndef SRC_STORE_DIRECTORY_H_
 #define SRC_STORE_DIRECTORY_H_
 
-#include <Util/IO.h>
-#include <Store/DataInput.h>
+#include <Util/File.h>
 #include <Store/DataOutput.h>
+#include <Store/DataInput.h>
 #include <Store/Lock.h>
+#include <Store/Exception.h>
+#include <atomic>
 #include <string>
+#include <set>
 #include <vector>
 
 namespace lucene {
 namespace core {
 namespace store {
 
-class Directory {
+class Directory;
+
+class IOUtils {
+ private:
+  IOUtils() = default;
+  ~IOUtils() = default;
+
  public:
-  Directory() { }
-  virtual ~Directory() { }
+  static void
+  DeleteFilesIgnoringExceptions(Directory& dir,
+                                const std::vector<std::string>& files);
+};
 
-  virtual std::vector<std::string> ListAll(); 
+class Directory {
+ protected:
+  virtual void EnsureOpen() { }
 
-  virtual void DeleteFile(const std::string& name);
+ public:
+  Directory() = default;
 
-  virtual uint64_t FileLength(const std::string& name); 
+  virtual ~Directory() = default;
 
-  virtual IndexOutput CreateOutput(const std::string& name, const IOContext context);
+  virtual std::vector<std::string> ListAll() = 0;
 
-  virtual IndexOutput CreateTempOutput(const std::string& prefix,
-                                       const std::string& suffix,
-                                       const IOContext& context);
+  virtual void DeleteFile(const std::string& name) = 0;
 
-  virtual void Sync(std::vector<std::string>& names);
+  virtual uint64_t FileLength(const std::string& name) = 0; 
 
-  virtual void Rename(const std::string& source, const std::string& dest);
+  virtual std::unique_ptr<IndexOutput>
+  CreateOutput(const std::string& name, const IOContext& context) = 0;
 
-  virtual void SyncMetaData();
+  virtual std::unique_ptr<IndexOutput>
+  CreateTempOutput(const std::string& prefix,
+                   const std::string& suffix,
+                   const IOContext& context) = 0;
 
-  virtual IndexInput OpenInput(const std::string& name,
-                               const IOContext& context);
+  virtual void Sync(const std::vector<std::string>& names) = 0;
 
-  virtual ChecksumIndexInput OpenChecksumInput(const std::string& name,
-                                               const IOContext& context);
+  virtual void Rename(const std::string& source, const std::string& dest) = 0;
 
-  virtual Lock ObtainLock(const std::string& name);
+  virtual void SyncMetaData() = 0;
 
-  virtual void Close();
+  virtual std::unique_ptr<IndexInput>
+  OpenInput(const std::string& name, const IOContext& context) = 0;
+
+  std::unique_ptr<ChecksumIndexInput>
+  OpenChecksumInput(const std::string& name, const IOContext& context) {
+    return std::make_unique<BufferedChecksumIndexInput>(
+           std::move(OpenInput(name, context)));
+  }
+
+  virtual std::unique_ptr<Lock> ObtainLock(const std::string& name) = 0;
+
+  virtual void Close() = 0;
 
   void CopyFrom(Directory& from,
                 const std::string& src,
                 const std::string& dest,
                 const IOContext& context) {
     try {
-      IndexInput is = from.OpenInput(src, context);
-      IndexOutput os = CreateOutput(dest, context);
-      os.CopyBytes(is, is.Length());
+      std::unique_ptr<IndexInput> is = from.OpenInput(src, context);
+      std::unique_ptr<IndexOutput> os = CreateOutput(dest, context);
+      os->CopyBytes(*is, is->Length());
     } catch(...) {
-      lucene::core::util::IOUtils::DeleteFilesIgnoringExceptions(*this, dest);
+      IOUtils::DeleteFilesIgnoringExceptions(*this, {});
     }
+  }
+};
+
+class BaseDirectory: Directory {
+ protected:
+  volatile bool is_open;
+  std::unique_ptr<LockFactory> lock_factory;
+
+ protected:
+  BaseDirectory(std::unique_ptr<LockFactory>&& lock_factory)
+    : Directory(),
+      is_open(true),
+      lock_factory(std::forward<std::unique_ptr<LockFactory>>(lock_factory)) {
+  }
+  
+  void EnsureOpen() {
+    if (!is_open) {
+      throw AlreadyClosedException("This Directory is closed");      
+    }
+  }
+
+ public:
+  ~BaseDirectory() = default;
+
+  std::unique_ptr<Lock> ObtainLock(const std::string& name) {
+    return lock_factory->ObtainLock(*this, name);
+  }
+};
+
+class FSDirectory: BaseDirectory {
+ protected:
+  std::string directory;
+ 
+ private:
+  // TODO(0ctopus13prime): It's not thread safe. Make it thread safe
+  std::set<std::string> pending_deletes; 
+  std::atomic<std::uint32_t> ops_since_last_delete;
+  std::atomic<std::uint32_t> next_temp_file_counter;
+
+ private:
+  void MaybeDeletePendingFiles() {
+
+  }
+
+  void PrivateDeleterFile(const std::string& name, bool is_pending_delete) {
+
+  }
+
+ protected:
+  FSDirectory(const std::string path,
+              std::unique_ptr<LockFactory>&& lock_factory)
+    : BaseDirectory(std::forward<std::unique_ptr<LockFactory>>(lock_factory)),
+      directory(),
+      pending_deletes(),
+      ops_since_last_delete(),
+      next_temp_file_counter() {
+    if (!lucene::core::util::FileUtil::IsDirectory(path)) {
+      lucene::core::util::FileUtil::CreateDirectory(path); 
+    }
+
+    directory = lucene::core::util::FileUtil::ToRealPath(path);
+  }
+
+  void EnsureCanRead(const std::string& name) {
+    
+  }
+
+ public:
+  static std::vector<std::string>
+  ListAllWithSkipNames(const std::string& dir,
+                       const std::set<std::string>& skip_names) {
+    return {};
+  }
+
+  void Fsync(const std::string& name) {
+
+  }
+
+ public:
+  std::vector<std::string> ListAll() {
+    return {};
+  }
+ 
+  uint64_t FileLength(const std::string& name) {
+    return 0;
+  }
+
+  std::unique_ptr<IndexOutput>
+  CreateOutput(const std::string& name, const IOContext& context) {
+    return std::unique_ptr<IndexOutput>(); 
+  }
+
+  std::unique_ptr<IndexOutput> CreateTempOutput(const std::string& prefix,
+                                                const std::string& suffix,
+                                                const IOContext& context) {
+    return std::unique_ptr<IndexOutput>(); 
+  }
+
+  void Sync(const std::vector<std::string>& names) {
+    
+  }
+
+  void Rename(const std::string& source, const std::string& dest) {
+
+  }
+
+  void SyncMetaData() {
+
+  }
+
+  // TODO(0ctopus13prime): Not synchronized. Make it thread safe
+  void Close() {
+
+  }
+
+  const std::string& GetDirectory() {
+    EnsureOpen();
+    return directory;
+  }
+
+  void DeleteFile(const std::string& name) {
+    
+  }
+
+  bool CheckPendingDeletions() {
+
+  }
+
+  // TODO(0ctopus13prime): Not synchronized. Make it thread safe
+  void DeletePendingFiles() {
+
+  }
+};
+
+class MMapDirectory: public FSDirectory {
+ public:
+  static const uint32_t CHUNK_SIZE_POWER = 30;
+  static const uint32_t DEFAULT_MAX_CHUNK_SIZE = (1 << CHUNK_SIZE_POWER);
+
+ private:
+  bool preload;
+
+ public:
+  MMapDirectory(const std::string& path)
+    : MMapDirectory(path,
+      std::forward<std::unique_ptr<LockFactory>>(
+      FSLockFactory::MakeDefault())) {
+  }
+
+  MMapDirectory(const std::string& path,
+                std::unique_ptr<LockFactory>&& lock_factory)
+    : FSDirectory(path,
+                  std::forward<std::unique_ptr<LockFactory>>(lock_factory)) {
+  }
+
+  void SetPreLoad(const bool new_preload) noexcept {
+    preload = new_preload; 
+  }
+
+  bool IsPreLoad() const noexcept {
+    return preload;
+  }
+
+  std::unique_ptr<IndexInput> OpenInput(const std::string& name,
+                                        const IOContext& context) {
+    return std::unique_ptr<IndexInput>();
   }
 };
 

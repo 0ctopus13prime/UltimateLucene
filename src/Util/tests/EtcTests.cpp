@@ -102,6 +102,28 @@ TEST(ETC__TESTS, CRC32__TESTS) {
   EXPECT_EQ(0, crc32.GetValue());
 }
 
+TEST(ETC__TESTS, CRC32__TESTS1) {
+  Crc32 crc32;
+
+  char b = 0;
+  for (int i = 0 ; i < 100000 ; ++i) {
+    crc32.Update(b++);
+  }
+
+  // Crc32 value got from Jdk8
+  EXPECT_EQ(2865713097, crc32.GetValue());
+
+  crc32.Reset();
+  char buf[100000];
+  b = 0;
+  for (int i = 0 ; i < 100000 ; ++i) {
+    buf[i] = b++;
+  }
+
+  crc32.Update(buf, 0, 100000);
+  EXPECT_EQ(2865713097, crc32.GetValue());
+}
+
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

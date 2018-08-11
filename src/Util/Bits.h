@@ -142,7 +142,7 @@ class BitUtil {
     return ((b & MAGIC[6]) >> 1) | ((b & MAGIC[0]) << 1 );
   }
 
-  static int32_t ZigZagEncoding(const int32_t i) {
+  static int32_t ZigZagEncode(const int32_t i) {
     return ((i >> 31) ^ (i << 1));
   }
 

@@ -70,6 +70,12 @@ std::pair<T*, uint32_t> Grow(const T* array,
   return std::pair<T*, uint32_t>(nullptr, 0);
 }
 
+template <typename T>
+std::pair<T*, uint32_t> Grow(const T* array,
+                             const uint32_t length) {
+  return Grow(array, length, length + 1);
+}
+
 /**
  * @param original Source array
  * @param from Start index in original. Inclusive.

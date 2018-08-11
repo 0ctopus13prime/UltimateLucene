@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  */
-#ifndef SRC_STORE_EXCEPTION_H_
-#define SRC_STORE_EXCEPTION_H_
+#ifndef SRC_UTIL_EXCEPTION_H_
+#define SRC_UTIL_EXCEPTION_H_
 
 #include <stdexcept>
 
@@ -102,4 +102,4 @@ class EOFException: std::runtime_error {
 }  // core
 }  // lucene
 
-#endif  // SRC_STORE_EXCEPTION_H_
+#endif  // SRC_UTIL_EXCEPTION_H_

@@ -18,15 +18,54 @@
 #ifndef SRC_STORE_LOCK_H_
 #define SRC_STORE_LOCK_H_
 
+#include <Store/Directory.h>
+#include <memory>
+#include <string>
+
 namespace lucene {
 namespace core {
 namespace store {
 
+class Directory;
+class FSDirectory;
+
 class Lock {
  public:
-  virtual void Close();
-  virtual void EnsureValid();
+  Lock() = default;
+  virtual ~Lock() = default;
+  virtual void Close() = 0;
+  virtual void EnsureValid() = 0;
 };
+
+class LockFactory {
+ public:
+  LockFactory() = default;
+  virtual ~LockFactory() = default;
+  virtual std::unique_ptr<Lock>
+  ObtainLock(Directory& dir, const std::string& lock_name) = 0;
+};
+
+class FSLockFactory: public LockFactory {
+ public:
+  static std::unique_ptr<FSLockFactory> MakeDefault() {
+    return std::unique_ptr<FSLockFactory>();
+  }
+
+ protected:
+  virtual std::unique_ptr<Lock>
+  ObtainFSLock(FSDirectory& dir, const std::string& lock_name) = 0;
+
+ public:
+  FSLockFactory() = default;
+
+  ~FSLockFactory() = default;
+
+  std::unique_ptr<Lock>
+  ObtainLock(Directory& directory, const std::string& lock_name) {
+    return std::unique_ptr<Lock>();
+  }
+};
+
 
 }  // store
 }  // core

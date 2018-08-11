@@ -14,31 +14,34 @@
  * limitations under the License.
  *
  */
-#ifndef SRC_STORE_EXCEPTION_H_
-#define SRC_STORE_EXCEPTION_H_
-#include <stdexcept>
+
+#ifndef SRC_UTIL_FILE_H_
+#define SRC_UTIL_FILE_H_
+
+#include <string>
 
 namespace lucene {
 namespace core {
-namespace store {
+namespace util {
 
-class AlreadyClosedException: std::runtime_error {
+class FileUtil {
  public:
-  AlreadyClosedException()
-    : std::runtime_error("AlreadyClosedException") {
+  static bool IsDirectory(const std::string& path) {
+    // TODO(0ctopus13prime): Implement it
+    return true;
   }
 
-  explicit AlreadyClosedException(const std::string& err_msg)
-    : std::runtime_error(err_msg) {
+  static void CreateDirectory(const std::string& path) {
+
   }
 
-  explicit AlreadyClosedException(const char* err_msg)
-    : std::runtime_error(err_msg) {
-  } 
+  static std::string ToRealPath(const std::string& path) {
+    return "";
+  }
 };
 
-}  // store
+}  // util
 }  // core
 }  // lucene
 
-#endif  // SRC_STORE_EXCEPTION_H_
+#endif  // SRC_UTIL_FILE_H_
