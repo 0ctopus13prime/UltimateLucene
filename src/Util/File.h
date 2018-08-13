@@ -18,6 +18,10 @@
 #ifndef SRC_UTIL_FILE_H_
 #define SRC_UTIL_FILE_H_
 
+#include <limits.h>
+#include <sys/file.h>
+#include <sys/stat.h>
+#include <sys/time.h>
 #include <string>
 
 namespace lucene {
@@ -32,11 +36,12 @@ class FileUtil {
   }
 
   static void CreateDirectory(const std::string& path) {
-
+    
   }
 
   static std::string ToRealPath(const std::string& path) {
-    return "";
+    char path_buf[PATH_MAX + 1];
+    return std::string(realpath(path.c_str(), path_buf));
   }
 };
 

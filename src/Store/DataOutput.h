@@ -317,6 +317,7 @@ class FileIndexOutput: public IndexOutput {
   lucene::core::util::Crc32 crc;    
   uint64_t bytes_written;
   bool flushed_on_close;
+  // TODO(0ctopus13prime): Use static buffer instead of dynamic allocated?
   std::unique_ptr<char[]> buffer;
   std::string path;
   std::ofstream out;

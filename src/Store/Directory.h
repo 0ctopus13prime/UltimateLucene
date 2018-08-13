@@ -18,10 +18,8 @@
 #ifndef SRC_STORE_DIRECTORY_H_
 #define SRC_STORE_DIRECTORY_H_
 
-#include <Util/File.h>
 #include <Store/DataOutput.h>
 #include <Store/DataInput.h>
-#include <Store/Lock.h>
 #include <Store/Exception.h>
 #include <atomic>
 #include <string>
@@ -33,6 +31,27 @@ namespace core {
 namespace store {
 
 class Directory;
+
+class Lock {
+ public:
+  Lock() = default;
+
+  virtual ~Lock() = default;
+
+  virtual void Close() = 0;
+
+  virtual void EnsureValid() = 0;
+};
+
+class LockFactory {
+ public:
+  LockFactory() = default;
+
+  virtual ~LockFactory() = default;
+
+  virtual std::unique_ptr<Lock>
+  ObtainLock(Directory& dir, const std::string& lock_name) = 0;
+};
 
 class IOUtils {
  private:
@@ -78,10 +97,7 @@ class Directory {
   OpenInput(const std::string& name, const IOContext& context) = 0;
 
   std::unique_ptr<ChecksumIndexInput>
-  OpenChecksumInput(const std::string& name, const IOContext& context) {
-    return std::make_unique<BufferedChecksumIndexInput>(
-           std::move(OpenInput(name, context)));
-  }
+  OpenChecksumInput(const std::string& name, const IOContext& context);
 
   virtual std::unique_ptr<Lock> ObtainLock(const std::string& name) = 0;
 
@@ -90,44 +106,26 @@ class Directory {
   void CopyFrom(Directory& from,
                 const std::string& src,
                 const std::string& dest,
-                const IOContext& context) {
-    try {
-      std::unique_ptr<IndexInput> is = from.OpenInput(src, context);
-      std::unique_ptr<IndexOutput> os = CreateOutput(dest, context);
-      os->CopyBytes(*is, is->Length());
-    } catch(...) {
-      IOUtils::DeleteFilesIgnoringExceptions(*this, {});
-    }
-  }
+                const IOContext& context);
 };
 
-class BaseDirectory: Directory {
+class BaseDirectory: public Directory {
  protected:
   volatile bool is_open;
-  std::unique_ptr<LockFactory> lock_factory;
+  std::shared_ptr<LockFactory> lock_factory;
 
  protected:
-  BaseDirectory(std::unique_ptr<LockFactory>&& lock_factory)
-    : Directory(),
-      is_open(true),
-      lock_factory(std::forward<std::unique_ptr<LockFactory>>(lock_factory)) {
-  }
-  
-  void EnsureOpen() {
-    if (!is_open) {
-      throw AlreadyClosedException("This Directory is closed");      
-    }
-  }
+  BaseDirectory(const std::shared_ptr<LockFactory>& lock_factory);
+
+  void EnsureOpen();
 
  public:
   ~BaseDirectory() = default;
 
-  std::unique_ptr<Lock> ObtainLock(const std::string& name) {
-    return lock_factory->ObtainLock(*this, name);
-  }
+  std::unique_ptr<Lock> ObtainLock(const std::string& name);
 };
 
-class FSDirectory: BaseDirectory {
+class FSDirectory: public BaseDirectory {
  protected:
   std::string directory;
  
@@ -139,96 +137,87 @@ class FSDirectory: BaseDirectory {
 
  private:
   void MaybeDeletePendingFiles() {
-
+    // TODO(0ctopus13prime): Fix this
   }
 
   void PrivateDeleterFile(const std::string& name, bool is_pending_delete) {
-
+    // TODO(0ctopus13prime): Fix this
   }
 
  protected:
   FSDirectory(const std::string path,
-              std::unique_ptr<LockFactory>&& lock_factory)
-    : BaseDirectory(std::forward<std::unique_ptr<LockFactory>>(lock_factory)),
-      directory(),
-      pending_deletes(),
-      ops_since_last_delete(),
-      next_temp_file_counter() {
-    if (!lucene::core::util::FileUtil::IsDirectory(path)) {
-      lucene::core::util::FileUtil::CreateDirectory(path); 
-    }
-
-    directory = lucene::core::util::FileUtil::ToRealPath(path);
-  }
+              const std::shared_ptr<LockFactory>& lock_factory);
 
   void EnsureCanRead(const std::string& name) {
-    
+    // TODO(0ctopus13prime): Fix this
   }
 
  public:
   static std::vector<std::string>
   ListAllWithSkipNames(const std::string& dir,
                        const std::set<std::string>& skip_names) {
+    // TODO(0ctopus13prime): Fix this
     return {};
   }
 
   void Fsync(const std::string& name) {
-
+    // TODO(0ctopus13prime): Fix this
   }
 
  public:
   std::vector<std::string> ListAll() {
+    // TODO(0ctopus13prime): Fix this
     return {};
   }
  
   uint64_t FileLength(const std::string& name) {
+    // TODO(0ctopus13prime): Fix this
     return 0;
   }
 
   std::unique_ptr<IndexOutput>
   CreateOutput(const std::string& name, const IOContext& context) {
+    // TODO(0ctopus13prime): Fix this
     return std::unique_ptr<IndexOutput>(); 
   }
 
   std::unique_ptr<IndexOutput> CreateTempOutput(const std::string& prefix,
                                                 const std::string& suffix,
                                                 const IOContext& context) {
+    // TODO(0ctopus13prime): Fix this
     return std::unique_ptr<IndexOutput>(); 
   }
 
   void Sync(const std::vector<std::string>& names) {
-    
+    // TODO(0ctopus13prime): Fix this
   }
 
   void Rename(const std::string& source, const std::string& dest) {
-
+    // TODO(0ctopus13prime): Fix this
   }
 
   void SyncMetaData() {
-
+    // TODO(0ctopus13prime): Fix this
   }
 
-  // TODO(0ctopus13prime): Not synchronized. Make it thread safe
   void Close() {
-
+    // TODO(0ctopus13prime): Not synchronized. Make it thread safe
+    // TODO(0ctopus13prime): Fix this
   }
 
-  const std::string& GetDirectory() {
-    EnsureOpen();
-    return directory;
-  }
+  const std::string& GetDirectory();
 
   void DeleteFile(const std::string& name) {
-    
+    // TODO(0ctopus13prime): Fix this
   }
 
   bool CheckPendingDeletions() {
-
+    // TODO(0ctopus13prime): Fix this
   }
 
   // TODO(0ctopus13prime): Not synchronized. Make it thread safe
   void DeletePendingFiles() {
-
+    // TODO(0ctopus13prime): Fix this
   }
 };
 
@@ -241,20 +230,13 @@ class MMapDirectory: public FSDirectory {
   bool preload;
 
  public:
-  MMapDirectory(const std::string& path)
-    : MMapDirectory(path,
-      std::forward<std::unique_ptr<LockFactory>>(
-      FSLockFactory::MakeDefault())) {
-  }
+  MMapDirectory(const std::string& path);
 
   MMapDirectory(const std::string& path,
-                std::unique_ptr<LockFactory>&& lock_factory)
-    : FSDirectory(path,
-                  std::forward<std::unique_ptr<LockFactory>>(lock_factory)) {
-  }
+                const std::shared_ptr<LockFactory>& lock_factory);
 
   void SetPreLoad(const bool new_preload) noexcept {
-    preload = new_preload; 
+    preload = new_preload;
   }
 
   bool IsPreLoad() const noexcept {
@@ -262,9 +244,7 @@ class MMapDirectory: public FSDirectory {
   }
 
   std::unique_ptr<IndexInput> OpenInput(const std::string& name,
-                                        const IOContext& context) {
-    return std::unique_ptr<IndexInput>();
-  }
+                                        const IOContext& context);
 };
 
 }  // store

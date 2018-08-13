@@ -23,7 +23,7 @@ namespace lucene {
 namespace core {
 namespace util {
 
-class InvalidStateException: std::runtime_error {
+class InvalidStateException: public std::runtime_error {
  public:
   InvalidStateException()
     : std::runtime_error("InvalidStateException") {
@@ -38,7 +38,7 @@ class InvalidStateException: std::runtime_error {
   }
 };
 
-class UnsupportedOperationException: std::runtime_error {
+class UnsupportedOperationException: public std::runtime_error {
  public:
   UnsupportedOperationException()
     : std::runtime_error("UnsupportedOperationException") {
@@ -53,7 +53,7 @@ class UnsupportedOperationException: std::runtime_error {
   }
 };
 
-class IOException: std::runtime_error {
+class IOException: public std::runtime_error {
  public:
   IOException()
     : std::runtime_error("IOException") {
@@ -68,7 +68,7 @@ class IOException: std::runtime_error {
   }
 };
 
-class IllegalArgumentException: std::runtime_error {
+class IllegalArgumentException: public std::runtime_error {
  public:
   IllegalArgumentException()
     : std::runtime_error("IllegalArgumentException") {
@@ -83,7 +83,7 @@ class IllegalArgumentException: std::runtime_error {
   }
 };
 
-class EOFException: std::runtime_error {
+class EOFException: public std::runtime_error {
  public:
   EOFException()
     : std::runtime_error("EOFException") {

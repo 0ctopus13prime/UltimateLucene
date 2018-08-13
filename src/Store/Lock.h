@@ -19,36 +19,21 @@
 #define SRC_STORE_LOCK_H_
 
 #include <Store/Directory.h>
+#include <atomic>
 #include <memory>
+#include <mutex>
+#include <set>
 #include <string>
 
 namespace lucene {
 namespace core {
 namespace store {
 
-class Directory;
-class FSDirectory;
-
-class Lock {
- public:
-  Lock() = default;
-  virtual ~Lock() = default;
-  virtual void Close() = 0;
-  virtual void EnsureValid() = 0;
-};
-
-class LockFactory {
- public:
-  LockFactory() = default;
-  virtual ~LockFactory() = default;
-  virtual std::unique_ptr<Lock>
-  ObtainLock(Directory& dir, const std::string& lock_name) = 0;
-};
-
 class FSLockFactory: public LockFactory {
  public:
-  static std::unique_ptr<FSLockFactory> MakeDefault() {
-    return std::unique_ptr<FSLockFactory>();
+  static std::shared_ptr<FSLockFactory> GetDefault() {
+    // TODO(0ctopus13prime): Fix this
+    return std::shared_ptr<FSLockFactory>();
   }
 
  protected:
@@ -60,12 +45,56 @@ class FSLockFactory: public LockFactory {
 
   ~FSLockFactory() = default;
 
-  std::unique_ptr<Lock>
-  ObtainLock(Directory& directory, const std::string& lock_name) {
-    return std::unique_ptr<Lock>();
-  }
+  std::unique_ptr<Lock> ObtainLock(Directory& directory,
+                                   const std::string& lock_name);
 };
 
+class NativeFSLockFactory: public FSLockFactory {
+ private:
+  static void ClearLockHeld(const std::string& path) {
+    // TODO(0ctopus13prime): Fix this
+  }
+
+ private:
+  class NativeFSLock: public Lock {
+   private:
+    const int fd; 
+    const std::string abs_lock_file;
+    const time_t ctime;
+    std::atomic_bool closed;
+    std::mutex close_mutex;
+
+   public:
+    NativeFSLock(const int fd,
+                 const std::string& abs_lock_file,
+                 const time_t ctime);
+
+    ~NativeFSLock();
+
+    void EnsureValid() {
+      // TODO(0ctopus13prime): Fix this
+    }
+
+    void Close();
+  };
+
+ public:
+  static const std::shared_ptr<NativeFSLockFactory> INSTANCE;
+
+ private:
+  // TODO(0ctopus13prime): Make this thread safe
+  static const std::set<std::string> LOCK_HELD;
+
+ private:
+  NativeFSLockFactory() = default;
+
+ protected:
+  std::unique_ptr<Lock> ObtainFSLock(FSDirectory& dir,
+                                     const std::string& lock_name);
+
+ public:
+  ~NativeFSLockFactory() = default;
+};
 
 }  // store
 }  // core

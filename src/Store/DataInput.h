@@ -1207,7 +1207,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
 };
 
 
-class ByteBufferIndexInput: public IndexInput {
+class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
 // TODO(0ctopus13prime): Implement it.
 // This implementation closed related to
 // the way of implementation of mmap directory.
