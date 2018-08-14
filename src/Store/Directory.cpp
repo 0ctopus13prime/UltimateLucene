@@ -129,5 +129,9 @@ std::unique_ptr<IndexInput> MMapDirectory::OpenInput(const std::string& name,
   }
 
   close(fd);
-  return std::unique_ptr<IndexInput>();
+
+  std::string resource_desc("MMapIndexInput(path=\"");
+  resource_desc += abs_path;
+  resource_desc += '\"';
+  return std::make_unique<ByteBufferIndexInput>(resource_desc, addr, sb.st_size);
 }

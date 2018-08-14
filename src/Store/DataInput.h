@@ -24,6 +24,8 @@
 #include <Util/Exception.h>
 #include <Util/Numeric.h>
 #include <Store/Context.h>
+#include <Store/Exception.h>
+#include <sys/mman.h>
 #include <cstring>
 #include <algorithm>
 #include <map>
@@ -31,6 +33,7 @@
 #include <stdexcept>
 #include <set>
 #include <string>
+#include <thread>
 
 namespace lucene {
 namespace core {
@@ -225,18 +228,23 @@ class DataInput {
 };
 
 class IndexInput: public DataInput {
- private:
-  const std::string resource_description;
+ protected:
+  const std::string resource_desc;
 
  protected:
-  IndexInput(const std::string& resource_description)
+  IndexInput(const std::string& resource_desc)
     : DataInput(),
-      resource_description(resource_description) {
+      resource_desc(resource_desc) {
   }
 
-  IndexInput(std::string&& resource_description)
+  IndexInput(std::string&& resource_desc)
     : DataInput(),
-      resource_description(std::forward<std::string>(resource_description)) {
+      resource_desc(std::forward<std::string>(resource_desc)) {
+  }
+
+  IndexInput(const IndexInput& other)
+    : DataInput(),
+      resource_desc(other.resource_desc) {
   }
 
  private:
@@ -308,12 +316,12 @@ class IndexInput: public DataInput {
 
 class ChecksumIndexInput: public IndexInput {
  protected:
-  ChecksumIndexInput(const std::string& resource_description)
-    : IndexInput(resource_description) {
+  ChecksumIndexInput(const std::string& resource_desc)
+    : IndexInput(resource_desc) {
   }
 
-  ChecksumIndexInput(std::string&& resource_description)
-    : IndexInput(std::forward<std::string>(resource_description)) {
+  ChecksumIndexInput(std::string&& resource_desc)
+    : IndexInput(std::forward<std::string>(resource_desc)) {
   }
 
  public:
@@ -1208,11 +1216,162 @@ class BytesArrayReferenceIndexInput : public IndexInput {
 
 
 class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
-// TODO(0ctopus13prime): Implement it.
-// This implementation closed related to
-// the way of implementation of mmap directory.
-// This class going to be continue to develop
-// after a clear definition of mmap directory implementation.
+ protected:
+  const uint64_t length;
+  uint64_t idx;
+  const char* base;
+  bool* isClosed;
+  bool isClone;
+
+ private:
+  void EnsureValid() const {
+    if (*isClosed) {
+      throw AlreadyClosedException();
+    }
+  }
+
+ public:
+  ByteBufferIndexInput(const std::string& resource_desc,
+                       const char* base,
+                       const uint64_t length,
+                       const bool isClone = false)
+    : IndexInput(resource_desc),
+      length(length),
+      idx(0),
+      base(base),
+      isClosed(!isClone ? new bool(false) : nullptr),
+      isClone(isClone) {
+  }
+
+  ByteBufferIndexInput(const ByteBufferIndexInput& other)
+    : IndexInput(other),
+      length(other.length),
+      idx(0),
+      base(other.base),
+      isClosed(other.isClosed),
+      isClone(true) {
+  }
+
+  ~ByteBufferIndexInput() {
+    try {
+      Close();
+    } catch(...) {
+      // Ignore
+    }
+
+    if (!isClone) {
+      delete isClosed;
+    }
+  }
+
+  char ReadByte() {
+    return base[idx++];
+  }
+
+  void ReadBytes(char b[], const uint32_t offset, const uint32_t len) {
+    std::memcpy(b + offset, base + idx, len);      
+    idx += len;
+  }
+
+  uint64_t GetFilePointer() {
+    return idx;
+  }
+
+  void Seek(const uint64_t pos) {
+    idx = pos;
+  }
+
+  char ReadByte(const uint64_t pos) {
+    return base[pos];
+  }
+
+  int16_t ReadInt16(const uint64_t pos) {
+    lucene::core::util::numeric::Int16AndBytes iab;
+#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+    iab.bytes[1] = base[pos];
+    iab.bytes[0] = base[pos + 1];
+#else
+    iab.bytes[0] = base[pos];
+    iab.bytes[1] = base[pos + 1];
+#endif
+   
+    return iab.int16;
+  }
+
+  int32_t ReadInt32(const uint64_t pos) {
+    lucene::core::util::numeric::Int32AndBytes iab;
+#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+    iab.bytes[3] = base[pos];
+    iab.bytes[2] = base[pos + 1];
+    iab.bytes[1] = base[pos + 2];
+    iab.bytes[0] = base[pos + 3];
+#else
+    iab.bytes[0] = base[pos];
+    iab.bytes[1] = base[pos + 1];
+    iab.bytes[2] = base[pos + 2];
+    iab.bytes[3] = base[pos + 3];
+#endif
+   
+    return iab.int32;
+  }
+
+  int64_t ReadInt64(const uint64_t pos) {
+    lucene::core::util::numeric::Int64AndBytes iab;
+#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+    iab.bytes[7] = base[pos];
+    iab.bytes[6] = base[pos + 1];
+    iab.bytes[5] = base[pos + 2];
+    iab.bytes[4] = base[pos + 3];
+    iab.bytes[3] = base[pos + 4];
+    iab.bytes[2] = base[pos + 5];
+    iab.bytes[1] = base[pos + 6];
+    iab.bytes[0] = base[pos + 7];
+#else
+    iab.bytes[0] = base[pos];
+    iab.bytes[1] = base[pos + 1];
+    iab.bytes[2] = base[pos + 2];
+    iab.bytes[3] = base[pos + 3];
+    iab.bytes[4] = base[pos + 4];
+    iab.bytes[5] = base[pos + 5];
+    iab.bytes[6] = base[pos + 6];
+    iab.bytes[7] = base[pos + 7];
+#endif
+   
+    return iab.int64;
+  }
+
+  uint64_t Length() {
+    return length;
+  }
+
+  std::unique_ptr<IndexInput>
+  Slice(const std::string& slice_description,
+        const uint64_t offset,
+        const uint64_t length) {
+    return std::make_unique<ByteBufferIndexInput>(resource_desc,
+                                                  base + offset,
+                                                  length,
+                                                  true);
+  }
+
+  void Close() {
+    if (!isClone && *isClosed == false) {
+      const int result = munmap(const_cast<char*>(base), length);
+      *isClosed = true;
+      // What happens if clear cache feature is not supported?
+      // Imagine this scenario. When destruct this instance
+      // isClosed variable was setted to false and be released by delete.
+      // And there are still remaining read threads out there try to read data
+      // Then could they be possible to meet segment fault?
+      __builtin___clear_cache(reinterpret_cast<char*>(&isClosed),
+                              reinterpret_cast<char*>(&isClosed) + 1);
+      std::this_thread::yield();
+      if (result != 0) {
+        throw lucene::core::util::IOException(std::string("Failed to close ") +
+                                              resource_desc); 
+      }
+    }
+  }
 };
 
 class InputStreamDataInput: public DataInput {

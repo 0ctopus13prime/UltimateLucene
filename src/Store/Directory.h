@@ -18,6 +18,7 @@
 #ifndef SRC_STORE_DIRECTORY_H_
 #define SRC_STORE_DIRECTORY_H_
 
+#include <Store/Context.h>
 #include <Store/DataOutput.h>
 #include <Store/DataInput.h>
 #include <Store/Exception.h>
@@ -222,10 +223,6 @@ class FSDirectory: public BaseDirectory {
 };
 
 class MMapDirectory: public FSDirectory {
- public:
-  static const uint32_t CHUNK_SIZE_POWER = 30;
-  static const uint32_t DEFAULT_MAX_CHUNK_SIZE = (1 << CHUNK_SIZE_POWER);
-
  private:
   bool preload;
 

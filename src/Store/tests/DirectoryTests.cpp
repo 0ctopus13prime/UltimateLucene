@@ -17,11 +17,25 @@
 
 #include <gtest/gtest.h>
 #include <Store/Directory.h>
+#include <iostream>
+#include <memory>
 
 using lucene::core::store::MMapDirectory;
+using lucene::core::store::IndexInput;
+using lucene::core::store::IOContext;
 
 TEST(DIRECTORY__TESTS, MMAP__DIRECTORY) {
-  MMapDirectory dir("/tmp/mmap-test");
+  MMapDirectory dir("/root/Doochi-Core/src/Store");
+
+  IOContext io_ctx;
+  std::unique_ptr<IndexInput> ptr = dir.OpenInput("DataInput.h", io_ctx);
+
+  std::cout << "Length -> " << ptr->Length() << std::endl;
+  for (uint64_t i = 0 ; i < ptr->Length() ; ++i) {
+    std::cout << ptr->ReadByte();
+  }
+
+  std::cout << "End of printing" << std::endl;
 }
 
 int main(int argc, char* argv[]) {
