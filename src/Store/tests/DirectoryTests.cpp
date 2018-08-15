@@ -22,20 +22,29 @@
 
 using lucene::core::store::MMapDirectory;
 using lucene::core::store::IndexInput;
+using lucene::core::store::IndexOutput;
 using lucene::core::store::IOContext;
 
 TEST(DIRECTORY__TESTS, MMAP__DIRECTORY) {
-  MMapDirectory dir("/root/Doochi-Core/src/Store");
+  {
+    MMapDirectory dir("/root/Doochi-Core/src/Store");
 
-  IOContext io_ctx;
-  std::unique_ptr<IndexInput> ptr = dir.OpenInput("DataInput.h", io_ctx);
+    IOContext io_ctx;
+    std::unique_ptr<IndexInput> in_ptr = dir.OpenInput("DataInput.h", io_ctx);
 
-  std::cout << "Length -> " << ptr->Length() << std::endl;
-  for (uint64_t i = 0 ; i < ptr->Length() ; ++i) {
-    std::cout << ptr->ReadByte();
+    std::cout << "Length -> " << in_ptr->Length() << std::endl;
+    for (uint64_t i = 0 ; i < in_ptr->Length() ; ++i) {
+      std::cout << in_ptr->ReadByte();
+    }
   }
 
-  std::cout << "End of printing" << std::endl;
+  {
+    MMapDirectory dir("/tmp");
+    IOContext io_ctx;
+    std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput("mmap_out", io_ctx);
+    std::unique_ptr<IndexOutput> tmp_out_ptr =
+    dir.CreateTempOutput("pre", "suffix", io_ctx);
+  }
 }
 
 int main(int argc, char* argv[]) {

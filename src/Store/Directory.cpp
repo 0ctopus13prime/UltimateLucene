@@ -1,5 +1,6 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
+#include <Index/File.h>
 #include <Util/Exception.h>
 #include <Util/File.h>
 #include <Store/DataInput.h>
@@ -8,6 +9,7 @@
 #include <Store/Lock.h>
 #include <algorithm>
 
+using lucene::core::index::IndexFileNames;
 using lucene::core::store::AlreadyClosedException;
 using lucene::core::store::IndexInput;
 using lucene::core::store::ChecksumIndexInput;
@@ -169,16 +171,41 @@ uint64_t FSDirectory::FileLength(const std::string& name) {
 
 std::unique_ptr<IndexOutput>
 FSDirectory::CreateOutput(const std::string& name, const IOContext& context) {
-  // TODO(0ctopus13prime): Fix this
-  return std::unique_ptr<IndexOutput>();
+  EnsureOpen();
+  pending_deletes.erase(name);
+  return std::make_unique<FileIndexOutput>(
+         std::string("FileIndexOutput(path=\"") + directory + '/' + name,
+         name,
+         directory + '/' + name);
 }
 
 std::unique_ptr<IndexOutput> 
 FSDirectory::CreateTempOutput(const std::string& prefix,
                               const std::string& suffix,
                               const IOContext& context) {
-  // TODO(0ctopus13prime): Fix this
-  return std::unique_ptr<IndexOutput>();
+  EnsureOpen();
+  MaybeDeletePendingFiles();
+  std::string path = directory + '/';
+  const uint32_t path_prefix_len = path.length();
+  std::string name;
+
+  do {
+    path.resize(path_prefix_len);
+    name = IndexFileNames::SegmentFileName(
+           prefix,
+           suffix + '_' + std::to_string(next_temp_file_counter++),
+           "tmp");
+    if (pending_deletes.find(name) != pending_deletes.end()) {
+      continue;
+    }
+
+    path += name;    
+  } while(FileUtil::Exists(path));
+
+  return std::make_unique<FileIndexOutput>(
+         std::string("FileIndexOutput(path=\"") + path,
+         name,
+         path);
 }
 
 void FSDirectory::Sync(const std::vector<std::string>& names) {

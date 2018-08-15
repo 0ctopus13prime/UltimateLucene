@@ -37,6 +37,10 @@ namespace util {
 
 class FileUtil {
  public:
+  static bool Exists(const std::string& path) {
+    return (access(path.c_str(), F_OK) == 0);
+  }
+
   static bool IsDirectory(const std::string& path) {
     struct stat statbuf;
     stat(path.c_str(), &statbuf);

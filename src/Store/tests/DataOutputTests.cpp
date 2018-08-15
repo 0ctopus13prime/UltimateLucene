@@ -24,8 +24,7 @@ using lucene::core::store::FileIndexOutput;
 TEST(DATA__OUTPUT__TESTS, FILE__INDEX__OUT) {
   FileIndexOutput fio("A file index output",
                       "For testing",
-                      "/tmp/kdy",
-                      2048);
+                      "/tmp/kdy");
 
   const uint32_t buf_size = 100000;
   char buf[buf_size];

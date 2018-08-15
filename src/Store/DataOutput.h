@@ -313,30 +313,30 @@ class GrowableByteArrayDataOutput: public DataOutput {
 };
 
 class FileIndexOutput: public IndexOutput {
+ public:
+  static const uint32_t BUF_SIZE = 8192;
+
  private:
   lucene::core::util::Crc32 crc;    
   uint64_t bytes_written;
-  bool flushed_on_close;
-  // TODO(0ctopus13prime): Use static buffer instead of dynamic allocated?
-  std::unique_ptr<char[]> buffer;
   std::string path;
   std::ofstream out;
+  bool flushed_on_close;
+  char buffer[BUF_SIZE];
 
  public:
   FileIndexOutput(const std::string& resource_desc,
                   const std::string& name,
-                  const std::string& path,
-                  const uint32_t buffer_size)
+                  const std::string& path)
     : IndexOutput(resource_desc, name),
       crc(),
       bytes_written(0L),
-      flushed_on_close(false),
-      buffer(std::make_unique<char[]>(buffer_size)),
       path(path),
       out(path.c_str(), std::ios::binary
                         | std::ios::out
-                        | std::ios::trunc) {
-    out.rdbuf()->pubsetbuf(buffer.get(), buffer_size);
+                        | std::ios::trunc),
+      flushed_on_close(false) {
+    out.rdbuf()->pubsetbuf(buffer, BUF_SIZE);
   }
 
   ~FileIndexOutput() = default;
