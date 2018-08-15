@@ -265,17 +265,20 @@ std::unique_ptr<IndexInput> MMapDirectory::OpenInput(const std::string& name,
   if (fstat(fd, &sb) == -1 ) {
     throw IOException("Failed to open " + abs_path);
   }
-  const char* addr = static_cast<const char*>(mmap(NULL,
-                                                   sb.st_size,
-                                                   PROT_READ,
-                                                   MAP_PRIVATE,
-                                                   fd,
-                                                   0));
+  char* addr = static_cast<char*>(mmap(NULL,
+                                       sb.st_size,
+                                       PROT_READ,
+                                       MAP_PRIVATE,
+                                       fd,
+                                       0));
   if (addr == MAP_FAILED) {
     throw IOException("Failed to map " + abs_path);
   }
 
   close(fd);
+  if (preload) {
+    madvise(static_cast<void*>(addr), sb.st_size, MADV_WILLNEED);
+  }
 
   std::string resource_desc("MMapIndexInput(path=\"");
   resource_desc += abs_path;
