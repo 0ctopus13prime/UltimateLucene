@@ -1252,6 +1252,17 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
       isClone(true) {
   }
 
+  ByteBufferIndexInput(ByteBufferIndexInput&& other)
+    : IndexInput(other),
+      length(other.length),
+      idx(other.idx),
+      base(other.base),
+      isClosed(other.isClosed),
+      isClone(other.isClone) {
+    // Prevent double memory deallocation
+    other.isClone = true;
+  }
+
   ~ByteBufferIndexInput() {
     try {
       Close();

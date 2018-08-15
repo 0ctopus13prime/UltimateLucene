@@ -58,9 +58,9 @@ class NativeFSLockFactory: public FSLockFactory {
  private:
   class NativeFSLock: public Lock {
    private:
-    const int fd; 
-    const std::string abs_lock_file;
-    const time_t ctime;
+    int fd; 
+    std::string abs_lock_file;
+    time_t ctime;
     std::atomic_bool closed;
     std::mutex close_mutex;
 
@@ -68,6 +68,14 @@ class NativeFSLockFactory: public FSLockFactory {
     NativeFSLock(const int fd,
                  const std::string& abs_lock_file,
                  const time_t ctime);
+
+    NativeFSLock(const NativeFSLock& other) = delete;
+
+    NativeFSLock(NativeFSLock&& other) = delete;
+
+    NativeFSLock& operator=(const NativeFSLock& other) = delete;
+
+    NativeFSLock& operator=(NativeFSLock&& other) = delete;
 
     ~NativeFSLock();
 
@@ -91,9 +99,6 @@ class NativeFSLockFactory: public FSLockFactory {
  protected:
   std::unique_ptr<Lock> ObtainFSLock(FSDirectory& dir,
                                      const std::string& lock_name);
-
- public:
-  ~NativeFSLockFactory() = default;
 };
 
 }  // store

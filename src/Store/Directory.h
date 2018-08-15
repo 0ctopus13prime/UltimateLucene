@@ -22,6 +22,8 @@
 #include <Store/DataOutput.h>
 #include <Store/DataInput.h>
 #include <Store/Exception.h>
+#include <Util/File.h>
+#include <Util/Exception.h>
 #include <atomic>
 #include <string>
 #include <set>
@@ -97,12 +99,12 @@ class Directory {
   virtual std::unique_ptr<IndexInput>
   OpenInput(const std::string& name, const IOContext& context) = 0;
 
-  std::unique_ptr<ChecksumIndexInput>
-  OpenChecksumInput(const std::string& name, const IOContext& context);
-
   virtual std::unique_ptr<Lock> ObtainLock(const std::string& name) = 0;
 
   virtual void Close() = 0;
+
+  std::unique_ptr<ChecksumIndexInput>
+  OpenChecksumInput(const std::string& name, const IOContext& context);
 
   void CopyFrom(Directory& from,
                 const std::string& src,
@@ -116,13 +118,11 @@ class BaseDirectory: public Directory {
   std::shared_ptr<LockFactory> lock_factory;
 
  protected:
-  BaseDirectory(const std::shared_ptr<LockFactory>& lock_factory);
+  explicit BaseDirectory(const std::shared_ptr<LockFactory>& lock_factory);
 
   void EnsureOpen();
 
  public:
-  ~BaseDirectory() = default;
-
   std::unique_ptr<Lock> ObtainLock(const std::string& name);
 };
 
@@ -137,97 +137,60 @@ class FSDirectory: public BaseDirectory {
   std::atomic<std::uint32_t> next_temp_file_counter;
 
  private:
-  void MaybeDeletePendingFiles() {
-    // TODO(0ctopus13prime): Fix this
-  }
+  void MaybeDeletePendingFiles();
 
-  void PrivateDeleterFile(const std::string& name, bool is_pending_delete) {
-    // TODO(0ctopus13prime): Fix this
-  }
+  void PrivateDeleteFile(const std::string& name,
+                         const bool is_pending_delete);
 
  protected:
   FSDirectory(const std::string path,
               const std::shared_ptr<LockFactory>& lock_factory);
 
-  void EnsureCanRead(const std::string& name) {
-    // TODO(0ctopus13prime): Fix this
-  }
+  void EnsureCanRead(const std::string& name);
 
  public:
   static std::vector<std::string>
   ListAllWithSkipNames(const std::string& dir,
-                       const std::set<std::string>& skip_names) {
-    // TODO(0ctopus13prime): Fix this
-    return {};
-  }
-
-  void Fsync(const std::string& name) {
-    // TODO(0ctopus13prime): Fix this
-  }
+                       const std::set<std::string>& skip_names);
 
  public:
-  std::vector<std::string> ListAll() {
-    // TODO(0ctopus13prime): Fix this
-    return {};
-  }
- 
-  uint64_t FileLength(const std::string& name) {
-    // TODO(0ctopus13prime): Fix this
-    return 0;
-  }
+  void Fsync(const std::string& name);
+
+  std::vector<std::string> ListAll();
+
+  uint64_t FileLength(const std::string& name);
 
   std::unique_ptr<IndexOutput>
-  CreateOutput(const std::string& name, const IOContext& context) {
-    // TODO(0ctopus13prime): Fix this
-    return std::unique_ptr<IndexOutput>(); 
-  }
+  CreateOutput(const std::string& name, const IOContext& context);
 
   std::unique_ptr<IndexOutput> CreateTempOutput(const std::string& prefix,
                                                 const std::string& suffix,
-                                                const IOContext& context) {
-    // TODO(0ctopus13prime): Fix this
-    return std::unique_ptr<IndexOutput>(); 
-  }
+                                                const IOContext& context);
 
-  void Sync(const std::vector<std::string>& names) {
-    // TODO(0ctopus13prime): Fix this
-  }
+  void Sync(const std::vector<std::string>& names);
 
-  void Rename(const std::string& source, const std::string& dest) {
-    // TODO(0ctopus13prime): Fix this
-  }
+  void Rename(const std::string& source, const std::string& dest);
 
-  void SyncMetaData() {
-    // TODO(0ctopus13prime): Fix this
-  }
+  void SyncMetaData();
 
-  void Close() {
-    // TODO(0ctopus13prime): Not synchronized. Make it thread safe
-    // TODO(0ctopus13prime): Fix this
-  }
+  void Close();
 
   const std::string& GetDirectory();
 
-  void DeleteFile(const std::string& name) {
-    // TODO(0ctopus13prime): Fix this
-  }
+  void DeleteFile(const std::string& name);
 
-  bool CheckPendingDeletions() {
-    // TODO(0ctopus13prime): Fix this
-  }
+  bool CheckPendingDeletions();
 
-  // TODO(0ctopus13prime): Not synchronized. Make it thread safe
-  void DeletePendingFiles() {
-    // TODO(0ctopus13prime): Fix this
-  }
+  void DeletePendingFiles();
 };
 
 class MMapDirectory: public FSDirectory {
  private:
+  // TODO(0ctopus13prime): fadvise? madvise/
   bool preload;
 
  public:
-  MMapDirectory(const std::string& path);
+  explicit MMapDirectory(const std::string& path);
 
   MMapDirectory(const std::string& path,
                 const std::shared_ptr<LockFactory>& lock_factory);

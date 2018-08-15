@@ -77,10 +77,6 @@ NativeFSLockFactory::ObtainFSLock(FSDirectory& dir,
 /**
  *  NativeFSLock
  */
-NativeFSLockFactory::NativeFSLock::~NativeFSLock() {
-  Close();  
-}
-
 NativeFSLockFactory::NativeFSLock::NativeFSLock(const int fd,
                                           const std::string& abs_lock_file,
                                           const time_t ctime)
@@ -88,6 +84,11 @@ NativeFSLockFactory::NativeFSLock::NativeFSLock(const int fd,
     abs_lock_file(abs_lock_file),
     ctime(ctime),
     closed(false) {
+}
+
+
+NativeFSLockFactory::NativeFSLock::~NativeFSLock() {
+  Close();
 }
 
 void NativeFSLockFactory::NativeFSLock::Close() {

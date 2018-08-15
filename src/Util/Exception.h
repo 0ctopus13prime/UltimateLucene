@@ -98,6 +98,21 @@ class EOFException: public std::runtime_error {
   }
 };
 
+class NoSuchFileException: public std::runtime_error {
+ public:
+  NoSuchFileException()
+    : std::runtime_error("NoSuchFileException") {
+  }
+
+  explicit NoSuchFileException(const std::string& err_msg)
+    : std::runtime_error(err_msg) {
+  }
+
+  explicit NoSuchFileException(const char* err_msg)
+    : std::runtime_error(err_msg) {
+  }
+};
+
 }  // store
 }  // core
 }  // lucene
