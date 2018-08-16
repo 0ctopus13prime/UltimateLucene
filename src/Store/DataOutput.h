@@ -52,8 +52,8 @@ class DataOutput {
   }
 
   void WriteSignedVInt64(int64_t i) {
-    while (i > 127L) {
-      WriteByte(static_cast<char>((i && 127) | 128L));
+    while ((i & ~0x7FL) != 0L) {
+      WriteByte(static_cast<char>((i & 0x7FL) | 0x80L));
       i >>= 7;
     }
 
@@ -120,8 +120,33 @@ class DataOutput {
   }
 
   void WriteInt64(const int64_t i) {
-    WriteVInt32(static_cast<int32_t>(i >> 32));
-    WriteVInt32(static_cast<int32_t>(i));
+    lucene::core::util::numeric::Int32AndBytes iab; 
+    iab.int32 = i >> 32;
+
+#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+    WriteByte(iab.bytes[3]);
+    WriteByte(iab.bytes[2]);
+    WriteByte(iab.bytes[1]);
+    WriteByte(iab.bytes[0]);
+#else
+    WriteByte(iab.bytes[0]);
+    WriteByte(iab.bytes[1]);
+    WriteByte(iab.bytes[2]);
+    WriteByte(iab.bytes[3]);
+#endif
+
+    iab.int32 = i;
+#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+    WriteByte(iab.bytes[3]);
+    WriteByte(iab.bytes[2]);
+    WriteByte(iab.bytes[1]);
+    WriteByte(iab.bytes[0]);
+#else
+    WriteByte(iab.bytes[0]);
+    WriteByte(iab.bytes[1]);
+    WriteByte(iab.bytes[2]);
+    WriteByte(iab.bytes[3]);
+#endif
   }
 
   void WriteVInt64(const int64_t i) {

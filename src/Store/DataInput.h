@@ -180,8 +180,8 @@ class DataInput {
   }
 
   virtual int64_t ReadInt64() {
-    return (
-      (static_cast<int64_t>(ReadInt32()) << 32) | (ReadInt32() & 0xFFFFFFFFL));
+    return ((static_cast<int64_t>(ReadInt32()) << 32) |
+            (ReadInt32() & 0xFFFFFFFFL));
   }
 
   virtual int64_t ReadVInt64() {
