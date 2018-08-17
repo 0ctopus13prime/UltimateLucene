@@ -22,6 +22,7 @@
 
 using lucene::core::store::MMapDirectory;
 using lucene::core::store::IndexInput;
+using lucene::core::store::RandomAccessInput;
 using lucene::core::store::IndexOutput;
 using lucene::core::store::IOContext;
 
@@ -29,8 +30,6 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__BYTE__IO) {
   const size_t file_size = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
-  const std::string prefix("lucene_prefix");
-  const std::string suffix("lucene_suffix");
 
   // Write first
   {
@@ -59,12 +58,45 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__BYTE__IO) {
   }
 }
 
+
+TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__RANDOM__BYTE__IO) {
+  const size_t file_size = 11376;
+  const std::string base("/tmp");
+  const std::string name("mmap_out_test");
+
+  // Write first
+  {
+    MMapDirectory dir(base);
+    IOContext io_ctx;
+    std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput(name, io_ctx);
+
+    for (size_t i = 0 ; i < file_size ; ++i) {
+      out_ptr->WriteByte(static_cast<char>(i));
+    }
+
+    out_ptr->Close();
+  }
+
+  // Read afterward
+  {
+    MMapDirectory dir(base);
+
+    IOContext io_ctx;
+    std::unique_ptr<IndexInput> in_ptr = dir.OpenInput(name, io_ctx);
+    RandomAccessInput* rin_ptr = dynamic_cast<RandomAccessInput*>(in_ptr.get());
+    ASSERT_NE(rin_ptr, nullptr);
+    ASSERT_EQ(file_size, in_ptr->Length());
+
+    for (size_t i = 0 ; i < file_size ; ++i) {
+      ASSERT_EQ(static_cast<char>(i), rin_ptr->ReadByte(i));
+    }
+  }
+}
+
 TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__INT16__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
-  const std::string prefix("lucene_prefix");
-  const std::string suffix("lucene_suffix");
 
   // Write first
   {
@@ -92,12 +124,44 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__INT16__IO) {
   }
 }
 
+TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__RANDOM__INT16__IO) {
+  const size_t elem_num = 11376;
+  const std::string base("/tmp");
+  const std::string name("mmap_out_test");
+
+  // Write first
+  {
+    MMapDirectory dir(base);
+    IOContext io_ctx;
+    std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput(name, io_ctx);
+
+    for (size_t i = 0 ; i < elem_num ; ++i) {
+      out_ptr->WriteInt16(static_cast<int16_t>(i));
+    }
+
+    out_ptr->Close();
+  }
+
+  // Read afterward
+  {
+    MMapDirectory dir(base);
+    IOContext io_ctx;
+    std::unique_ptr<IndexInput> in_ptr = dir.OpenInput(name, io_ctx);
+    RandomAccessInput* rin_ptr = dynamic_cast<RandomAccessInput*>(in_ptr.get());
+    ASSERT_NE(rin_ptr, nullptr);
+    ASSERT_EQ(elem_num * sizeof(int16_t), in_ptr->Length());
+
+    for (size_t i = 0 ; i < elem_num ; ++i) {
+      ASSERT_EQ(static_cast<int16_t>(i),
+                rin_ptr->ReadInt16(i * sizeof(int16_t)));
+    }
+  }
+}
+
 TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__INT32__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
-  const std::string prefix("lucene_prefix");
-  const std::string suffix("lucene_suffix");
 
   // Write first
   {
@@ -125,12 +189,44 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__INT32__IO) {
   }
 }
 
+TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__RANDOM__INT32__IO) {
+  const size_t elem_num = 11376;
+  const std::string base("/tmp");
+  const std::string name("mmap_out_test");
+
+  // Write first
+  {
+    MMapDirectory dir(base);
+    IOContext io_ctx;
+    std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput(name, io_ctx);
+
+    for (size_t i = 0 ; i < elem_num ; ++i) {
+      out_ptr->WriteInt32(static_cast<int32_t>(i));
+    }
+
+    out_ptr->Close();
+  }
+
+  // Read afterward
+  {
+    MMapDirectory dir(base);
+    IOContext io_ctx;
+    std::unique_ptr<IndexInput> in_ptr = dir.OpenInput(name, io_ctx);
+    RandomAccessInput* rin_ptr = dynamic_cast<RandomAccessInput*>(in_ptr.get());
+    ASSERT_NE(rin_ptr, nullptr);
+    ASSERT_EQ(elem_num * sizeof(int32_t), in_ptr->Length());
+
+    for (size_t i = 0 ; i < elem_num ; ++i) {
+      ASSERT_EQ(static_cast<int32_t>(i),
+                rin_ptr->ReadInt32(i * sizeof(int32_t)));
+    }
+  }
+}
+
 TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__INT64__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
-  const std::string prefix("lucene_prefix");
-  const std::string suffix("lucene_suffix");
 
   // Write first
   {
@@ -154,6 +250,40 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__INT64__IO) {
     ASSERT_EQ(elem_num * sizeof(int64_t), in_ptr->Length());
     for (size_t i = 0 ; i < elem_num ; ++i) {
       ASSERT_EQ(static_cast<int64_t>(i), in_ptr->ReadInt64());
+    }
+  }
+}
+
+TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__RANDOM__INT64__IO) {
+  const size_t elem_num = 11376;
+  const std::string base("/tmp");
+  const std::string name("mmap_out_test");
+
+  // Write first
+  {
+    MMapDirectory dir(base);
+    IOContext io_ctx;
+    std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput(name, io_ctx);
+
+    for (size_t i = 0 ; i < elem_num ; ++i) {
+      out_ptr->WriteInt64(static_cast<int64_t>(i));
+    }
+
+    out_ptr->Close();
+  }
+
+  // Read afterward
+  {
+    MMapDirectory dir(base);
+    IOContext io_ctx;
+    std::unique_ptr<IndexInput> in_ptr = dir.OpenInput(name, io_ctx);
+    RandomAccessInput* rin_ptr = dynamic_cast<RandomAccessInput*>(in_ptr.get());
+    ASSERT_NE(rin_ptr, nullptr);
+
+    ASSERT_EQ(elem_num * sizeof(int64_t), in_ptr->Length());
+    for (size_t i = 0 ; i < elem_num ; ++i) {
+      ASSERT_EQ(static_cast<int64_t>(i),
+                rin_ptr->ReadInt64(i * sizeof(int64_t)));
     }
   }
 }

@@ -1327,28 +1327,8 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
   }
 
   int64_t ReadInt64(const uint64_t pos) {
-    lucene::core::util::numeric::Int64AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
-    iab.bytes[7] = base[pos];
-    iab.bytes[6] = base[pos + 1];
-    iab.bytes[5] = base[pos + 2];
-    iab.bytes[4] = base[pos + 3];
-    iab.bytes[3] = base[pos + 4];
-    iab.bytes[2] = base[pos + 5];
-    iab.bytes[1] = base[pos + 6];
-    iab.bytes[0] = base[pos + 7];
-#else
-    iab.bytes[0] = base[pos];
-    iab.bytes[1] = base[pos + 1];
-    iab.bytes[2] = base[pos + 2];
-    iab.bytes[3] = base[pos + 3];
-    iab.bytes[4] = base[pos + 4];
-    iab.bytes[5] = base[pos + 5];
-    iab.bytes[6] = base[pos + 6];
-    iab.bytes[7] = base[pos + 7];
-#endif
-   
-    return iab.int64;
+    return (static_cast<int64_t>(ReadInt32(pos)) << 32 |
+            ReadInt32(pos + 4) & 0xFFFFFFFFL);
   }
 
   uint64_t Length() {
