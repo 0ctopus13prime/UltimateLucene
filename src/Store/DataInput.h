@@ -127,7 +127,7 @@ class DataInput {
 
   virtual int16_t ReadInt16() {
     lucene::core::util::numeric::Int16AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[1] = ReadByte();
     iab.bytes[0] = ReadByte();
 #else
@@ -140,7 +140,7 @@ class DataInput {
 
   virtual int32_t ReadInt32() {
     lucene::core::util::numeric::Int32AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[3] = ReadByte();
     iab.bytes[2] = ReadByte();
     iab.bytes[1] = ReadByte();
@@ -539,7 +539,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
     if (2 <= (buffer_length - buffer_position)) {
       lucene::core::util::numeric::Int16AndBytes iab;
 
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
       iab.bytes[1] = buffer[buffer_position++];
       iab.bytes[0] = buffer[buffer_position++];
 #else
@@ -557,7 +557,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
     if (4 <= (buffer_length - buffer_position)) {
       lucene::core::util::numeric::Int32AndBytes iab;
 
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
       iab.bytes[3] = buffer[buffer_position++];
       iab.bytes[2] = buffer[buffer_position++];
       iab.bytes[1] = buffer[buffer_position++];
@@ -579,7 +579,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
     if (8 <= (buffer_length - buffer_position)) {
       lucene::core::util::numeric::Int64AndBytes iab;
 
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
       iab.bytes[7] = buffer[buffer_position++];
       iab.bytes[6] = buffer[buffer_position++];
       iab.bytes[5] = buffer[buffer_position++];
@@ -694,7 +694,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
       idx = 0;
     }
 
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[1] = buffer[idx++];
     iab.bytes[0] = buffer[idx++];
 #else
@@ -924,7 +924,7 @@ class ByteArrayReferenceDataInput : public DataInput {
 
   int16_t ReadInt16() {
     lucene::core::util::numeric::Int16AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[1] = bytes[pos++];
     iab.bytes[0] = bytes[pos++];
 #else
@@ -937,7 +937,7 @@ class ByteArrayReferenceDataInput : public DataInput {
 
   int32_t ReadInt32() {
     lucene::core::util::numeric::Int32AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[3] = bytes[pos++];
     iab.bytes[2] = bytes[pos++];
     iab.bytes[1] = bytes[pos++];
@@ -954,7 +954,7 @@ class ByteArrayReferenceDataInput : public DataInput {
 
   int64_t ReadInt64() {
     lucene::core::util::numeric::Int64AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[7] = bytes[pos++];
     iab.bytes[6] = bytes[pos++];
     iab.bytes[5] = bytes[pos++];
@@ -1088,7 +1088,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
 
   int16_t ReadInt16() {
     lucene::core::util::numeric::Int16AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[1] = bytes[pos++]; 
     iab.bytes[0] = bytes[pos++];
 #else
@@ -1101,7 +1101,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
 
   int32_t ReadInt32() {
     lucene::core::util::numeric::Int32AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[3] = bytes[pos++]; 
     iab.bytes[2] = bytes[pos++];
     iab.bytes[1] = bytes[pos++]; 
@@ -1118,7 +1118,7 @@ class BytesArrayReferenceIndexInput : public IndexInput {
 
   int64_t ReadInt64() {
     lucene::core::util::numeric::Int64AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[7] = bytes[pos++]; 
     iab.bytes[6] = bytes[pos++];
     iab.bytes[5] = bytes[pos++]; 
@@ -1298,7 +1298,7 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
 
   int16_t ReadInt16(const uint64_t pos) {
     lucene::core::util::numeric::Int16AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[1] = base[pos];
     iab.bytes[0] = base[pos + 1];
 #else
@@ -1311,7 +1311,7 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
 
   int32_t ReadInt32(const uint64_t pos) {
     lucene::core::util::numeric::Int32AndBytes iab;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[3] = base[pos];
     iab.bytes[2] = base[pos + 1];
     iab.bytes[1] = base[pos + 2];

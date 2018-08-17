@@ -18,6 +18,9 @@
 #ifndef SRC_STORE_DATA_H_
 #define SRC_STORE_DATA_H_
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <Store/DataInput.h>
 #include <Util/ArrayUtil.h>
 #include <Util/Bits.h>
@@ -78,32 +81,15 @@ class DataOutput {
   }
 
   void WriteInt32(const int32_t i) {
-    lucene::core::util::numeric::Int32AndBytes iab; 
-    iab.int32 = i;
-
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
-    WriteByte(iab.bytes[3]);
-    WriteByte(iab.bytes[2]);
-    WriteByte(iab.bytes[1]);
-    WriteByte(iab.bytes[0]);
-#else
-    WriteByte(iab.bytes[0]);
-    WriteByte(iab.bytes[1]);
-    WriteByte(iab.bytes[2]);
-    WriteByte(iab.bytes[3]);
-#endif
+    WriteByte(static_cast<char>(i >> 24));
+    WriteByte(static_cast<char>(i >> 16));
+    WriteByte(static_cast<char>(i >> 8));
+    WriteByte(static_cast<char>(i));
   }
 
   void WriteInt16(const int16_t i) {
-    lucene::core::util::numeric::Int16AndBytes iab; 
-    iab.int16 = i;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
-    WriteByte(iab.bytes[1]);
-    WriteByte(iab.bytes[0]);
-#else
-    WriteByte(iab.bytes[0]);
-    WriteByte(iab.bytes[1]);
-#endif
+    WriteByte(static_cast<char>(i >> 8));
+    WriteByte(static_cast<char>(i));
   }
 
   void WriteVInt32(int32_t i) {
@@ -120,33 +106,8 @@ class DataOutput {
   }
 
   void WriteInt64(const int64_t i) {
-    lucene::core::util::numeric::Int32AndBytes iab; 
-    iab.int32 = i >> 32;
-
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
-    WriteByte(iab.bytes[3]);
-    WriteByte(iab.bytes[2]);
-    WriteByte(iab.bytes[1]);
-    WriteByte(iab.bytes[0]);
-#else
-    WriteByte(iab.bytes[0]);
-    WriteByte(iab.bytes[1]);
-    WriteByte(iab.bytes[2]);
-    WriteByte(iab.bytes[3]);
-#endif
-
-    iab.int32 = i;
-#if __BYTE_ORDER__ == __ORDER__LITTLE_ENDIAN_
-    WriteByte(iab.bytes[3]);
-    WriteByte(iab.bytes[2]);
-    WriteByte(iab.bytes[1]);
-    WriteByte(iab.bytes[0]);
-#else
-    WriteByte(iab.bytes[0]);
-    WriteByte(iab.bytes[1]);
-    WriteByte(iab.bytes[2]);
-    WriteByte(iab.bytes[3]);
-#endif
+    WriteInt32(static_cast<int32_t>(i >> 32));
+    WriteInt32(static_cast<int32_t>(i));
   }
 
   void WriteVInt64(const int64_t i) {
@@ -345,7 +306,8 @@ class FileIndexOutput: public IndexOutput {
   lucene::core::util::Crc32 crc;    
   uint64_t bytes_written;
   std::string path;
-  std::ofstream out;
+  int fd;
+  uint32_t buf_idx;
   bool flushed_on_close;
   char buffer[BUF_SIZE];
 
@@ -357,34 +319,52 @@ class FileIndexOutput: public IndexOutput {
       crc(),
       bytes_written(0L),
       path(path),
-      out(path.c_str(), std::ios::binary
-                        | std::ios::out
-                        | std::ios::trunc),
+      fd(open(path.c_str(),
+              O_CREAT | O_WRONLY,
+              S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)),
+      buf_idx(0),
       flushed_on_close(false) {
-    out.rdbuf()->pubsetbuf(buffer, BUF_SIZE);
+    if (fd < 0) {
+      throw lucene::core::util::IOException(std::strerror(errno));
+    }
   }
 
-  ~FileIndexOutput() = default;
+  ~FileIndexOutput() {
+    try {
+      Close();
+    } catch(...) {
+      // Ignore
+    }
+  }
 
   void WriteByte(const char b) {
-    out.put(b);
     crc.Update(b);
+    buffer[buf_idx++] = b;
     bytes_written++;
+
+    if (buf_idx >= BUF_SIZE) {
+      write(fd, buffer, BUF_SIZE); 
+      buf_idx = 0;
+    }
   }
 
   void WriteBytes(const char bytes[],
                   const uint32_t offset,
                   const uint32_t length) {
-    out.write(bytes + offset, length);
-    crc.Update(bytes, offset, length);
-    bytes_written += length;
+    for (int i = offset ; i < offset + length ; ++i) {
+      WriteByte(bytes[i]);
+    }
   }
 
   void Close() {
-    out.close();
-    if (!out.good()) {
-      throw lucene::core::util::IOException(std::string("Failed to close ")
-                                            + path);
+    if (!flushed_on_close) {
+      flushed_on_close = true;
+      if (buf_idx > 0) write(fd, buffer, buf_idx);
+
+      const int result = close(fd);
+      if (result < 0) {
+        throw lucene::core::util::IOException(std::strerror(errno));
+      }
     }
   }
 
@@ -393,7 +373,9 @@ class FileIndexOutput: public IndexOutput {
   }
 
   uint64_t GetChecksum() {
-    out.flush();
+    write(fd, buffer, buf_idx);
+    fsync(fd);
+    buf_idx = 0;
     return crc.GetValue();
   }
 };

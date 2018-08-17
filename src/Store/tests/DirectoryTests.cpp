@@ -504,6 +504,72 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__ETC) {
   }
 }
 
+/*
+// This is for generating binary to compare with Java version.
+TEST(DIRECTORY__TESTS, JAVA__CMP__ETC) {
+  const size_t elem_num = 100000000;
+  const std::string base("/tmp");
+  const std::string name("mmap_out_test");
+  std::string str("content-");
+  const uint32_t str_len = str.length();
+
+  MMapDirectory dir(base);
+  IOContext io_ctx;
+  std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput(name, io_ctx);
+
+  for (size_t i = 0 ; i < elem_num ; ++i) {
+    out_ptr->WriteByte(static_cast<char>(i));
+    out_ptr->WriteInt32(static_cast<int32_t>(i));
+    out_ptr->WriteInt64(static_cast<int64_t>(i));
+    out_ptr->WriteVInt32(static_cast<int32_t>(i));
+    out_ptr->WriteVInt64(static_cast<int64_t>(i));
+    out_ptr->WriteInt16(static_cast<int16_t>(i));
+    out_ptr->WriteZInt64(static_cast<int64_t>(i));
+    str.resize(str_len);
+    str += std::to_string(i);
+    out_ptr->WriteString(str);
+  }
+
+  out_ptr->Close();
+
+  // Java Version
+  // Linux compare two binaries command : cmp
+
+  // import org.apache.lucene.store.IOContext;
+  // import org.apache.lucene.store.IndexOutput;
+  // import org.apache.lucene.store.MMapDirectory;
+  // import java.io.File;
+  // import java.io.IOException;
+  // import java.nio.file.Paths;
+  //
+  // public class TempMain {
+  //   public static void main(String[] args) throws IOException {
+  //     new File("/tmp/mmap_test_out").delete();
+
+  //     long s = System.currentTimeMillis();
+  //     MMapDirectory mMapDirectory = new MMapDirectory(Paths.get("/tmp"));
+  //     IOContext ioContext = new IOContext();
+  //     IndexOutput out =
+  //     mMapDirectory.createOutput("mmap_test_out", ioContext);
+  //     int N = 100_000_000;
+
+  //     for (int i = 0 ; i < N; ++i) {
+  //       out.writeByte((byte) i);
+  //       out.writeInt(i);
+  //       out.writeLong(i);
+  //       out.writeVInt(i);
+  //       out.writeVLong(i);
+  //       out.writeShort((short) i);
+  //       out.writeZLong(i);
+  //       out.writeString("content-" + i);
+  //     }
+
+  //     out.close();
+  //   }
+  // }
+}
+*/
+
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

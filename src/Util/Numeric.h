@@ -295,7 +295,7 @@ class NumericUtils {
     int32_t num1, num2;
     Int32AndBytes iab;
 
-    #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     iab.bytes[0] = dimension1[start + 3];
     iab.bytes[1] = dimension1[start + 2];
     iab.bytes[2] = dimension1[start + 1];
@@ -307,7 +307,7 @@ class NumericUtils {
     iab.bytes[2] = dimension2[start + 1];
     iab.bytes[3] = dimension2[start];
     num2 = iab.int32;
-    #else
+#else
     iab.bytes[0] = dimension1[start];
     iab.bytes[1] = dimension1[start + 1];
     iab.bytes[2] = dimension1[start + 2];
@@ -319,24 +319,24 @@ class NumericUtils {
     iab.bytes[2] = dimension2[start + 2];
     iab.bytes[3] = dimension2[start + 3];
     num2 = iab.int32;
-    #endif
+#endif
 
     if (num1 < num2) {
       throw std::invalid_argument("Substract error in NumericUtils. a < b");
     }
 
     iab.int32 = num1 - num2;
-    #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
     result[0] = iab.bytes[3];
     result[1] = iab.bytes[2];
     result[2] = iab.bytes[1];
     result[3] = iab.bytes[0];
-    #else
+#else
     result[0] = iab.bytes[0];
     result[1] = iab.bytes[1];
     result[2] = iab.bytes[2];
     result[3] = iab.bytes[3];
-    #endif
+#endif
   }
 
   static void Substract(const uint32_t bytes_per_dim,
