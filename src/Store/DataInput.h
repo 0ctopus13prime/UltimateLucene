@@ -197,7 +197,7 @@ class DataInput {
     char bytes[length];  // TODO(0ctopus13prime): alloca? built in alloca?
     ReadBytes(bytes, 0, length);
 
-    return std::string(bytes, 0, length/*, UTF_8 */);
+    return std::string(bytes, length/*, UTF_8 */);
   }
 
   virtual std::map<std::string, std::string> ReadMapOfStrings() {
@@ -351,11 +351,10 @@ class BufferedChecksumIndexInput: public ChecksumIndexInput {
 
  public:
   BufferedChecksumIndexInput(std::unique_ptr<IndexInput>&& main)
-    : ChecksumIndexInput(std::string("xx")),  // TODO(0ctopus13prime): Fix this
+    : ChecksumIndexInput(std::string("BufferedChecksumIndexInput")),
       main(std::forward<std::unique_ptr<IndexInput>>(main)),
       digest(std::make_unique<BufferedChecksum>(
-               std::unique_ptr<lucene::core::util::Checksum>(
-                 new lucene::core::util::Crc32()))) {
+               std::make_unique<lucene::core::util::Crc32>())) {
   }
 
   char ReadByte() {
@@ -476,8 +475,6 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
       buffer_length(0),
       buffer_position(0) {
   }
-
-  virtual ~BufferedIndexInput() = default;
 
   char ReadByte() {
     if (buffer_position >= buffer_length) {
@@ -867,8 +864,6 @@ class BufferedIndexInput::SlicedIndexInput: public BufferedIndexInput {
   }
 };
 
-// TODO(0ctopus13prime): Is it just a byte array wrapper?
-// Assuming it is just an array reference
 class ByteArrayReferenceDataInput : public DataInput {
  private:
   char* bytes;
@@ -1349,11 +1344,11 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
     if (!isClone && *isClosed == false) {
       const int result = munmap(const_cast<char*>(base), length);
       *isClosed = true;
-      // What happens if clear cache feature is not supported?
+      // What happens if clear-cache-feature is not supported?
       // Imagine this scenario. When destruct this instance
       // isClosed variable was setted to false and be released by delete.
       // And there are still remaining read threads out there try to read data
-      // Then could they be possible to meet segment fault?
+      // Then is it possible for them to meet segment fault?
       __builtin___clear_cache(reinterpret_cast<char*>(&isClosed),
                               reinterpret_cast<char*>(&isClosed) + 1);
       std::this_thread::yield();

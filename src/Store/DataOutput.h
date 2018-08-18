@@ -18,11 +18,6 @@
 #ifndef SRC_STORE_DATA_H_
 #define SRC_STORE_DATA_H_
 
-
-// test
-#include <iostream>
-
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -131,10 +126,8 @@ class DataOutput {
   }
 
   void WriteString(const std::string& s) {
-    // TODO(0ctopus13prime): Redundant double copy?
-    lucene::core::util::BytesRef utf8_result(s); 
-    WriteVInt32(utf8_result.length);
-    WriteBytes(utf8_result.bytes.get(), utf8_result.offset, utf8_result.length);
+    WriteVInt32(s.length());
+    WriteBytes(s.c_str(), 0, s.length());
   }
 
   void CopyBytes(DataInput& input, const uint64_t num_bytes) {
@@ -246,18 +239,16 @@ class GrowableByteArrayDataOutput: public DataOutput {
   std::unique_ptr<char[]> bytes;
   uint32_t bytes_len;
   uint32_t length;
-  std::unique_ptr<char[]> scratch_bytes;
 
  public:
   GrowableByteArrayDataOutput(const uint32_t cp)
     : bytes(std::make_unique<char[]>(cp)),
       bytes_len(cp),
-      length(0),
-      scratch_bytes() {
+      length(0) {
   }
 
   void WriteByte(const char b) {
-    if (length > bytes_len) {
+    if (length >= bytes_len) {
       std::pair<char*, uint32_t> result =
         lucene::core::util::arrayutil::Grow(bytes.get(), bytes_len);
       if (result.first != nullptr) {
@@ -273,7 +264,7 @@ class GrowableByteArrayDataOutput: public DataOutput {
                   const uint32_t offset,
                   const uint32_t in_length) {
     const uint32_t new_length = length + in_length;
-    if (new_length > bytes_len) {
+    if (new_length >=  bytes_len) {
       std::pair<char*, uint32_t> result =
         lucene::core::util::arrayutil::Grow(bytes.get(), new_length);
       if (result.first != nullptr) {
@@ -287,7 +278,8 @@ class GrowableByteArrayDataOutput: public DataOutput {
   }
 
   void WriteString(const std::string& str) {
-    // TODO(0ctopus13prime): Implement it.
+    WriteVInt32(str.length());
+    WriteBytes(str.c_str(), 0, str.length());   
   }
 
   char* GetBytes() const noexcept {
@@ -364,9 +356,10 @@ class FileIndexOutput: public IndexOutput {
                   const uint32_t offset,
                   const uint32_t length) {
     bytes_written += length;
+    crc.Update(bytes, offset, length);
 
     if (length > BUF_SIZE) {
-      flush();  
+      flush();
       write(fd, bytes + offset, length);
       return;
     }
@@ -375,7 +368,7 @@ class FileIndexOutput: public IndexOutput {
       flush();
     }
 
-    std::memcpy(buffer + buf_idx, bytes + offset, length); 
+    std::memcpy(buffer + buf_idx, bytes + offset, length);
     buf_idx += length;
   }
 
@@ -396,9 +389,12 @@ class FileIndexOutput: public IndexOutput {
   }
 
   uint64_t GetChecksum() {
-    write(fd, buffer, buf_idx);
-    fsync(fd);
-    buf_idx = 0;
+    if (!flushed_on_close) {
+      write(fd, buffer, buf_idx);
+      fsync(fd);
+      buf_idx = 0;
+    }
+
     return crc.GetValue();
   }
 };

@@ -148,6 +148,7 @@ class BufferedChecksum: public lucene::core::util::Checksum {
   void Flush() {
     if (upto > 0) {
       in->Update(buffer.get(), 0, upto);
+      upto = 0;
     }
   }
 

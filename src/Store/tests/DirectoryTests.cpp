@@ -29,7 +29,6 @@ using lucene::core::store::IndexOutput;
 using lucene::core::store::IOContext;
 using lucene::core::util::FileUtil;
 
-/*
 TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__BYTE__IO) {
   const size_t file_size = 11376;
   const std::string base("/tmp");
@@ -550,8 +549,8 @@ TEST(DIRECTORY__TESTS, WRITE__BYTES) {
     ASSERT_EQ(buf_len, in_ptr->Length());
   }
 }
-*/
 
+/*
 // This is for generating binary to compare with Java version.
 TEST(DIRECTORY__TESTS, JAVA__CMP__ETC) {
   const size_t elem_num = 100000000;
@@ -616,6 +615,7 @@ TEST(DIRECTORY__TESTS, JAVA__CMP__ETC) {
   //   }
   // }
 }
+*/
 
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
