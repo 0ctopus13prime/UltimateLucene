@@ -551,6 +551,49 @@ TEST(DIRECTORY__TESTS, WRITE__BYTES) {
 }
 
 /*
+// Be cautious! This takes more than one minute.
+TEST(DIRECTORY__TESTS, BULK__IO__VALIDATION) {
+  const size_t elem_num = 100000000;
+  const std::string base("/tmp");
+  const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
+  std::string str("content-");
+  const uint32_t str_len = str.length();
+
+  MMapDirectory dir(base);
+  IOContext io_ctx;
+  std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput(name, io_ctx);
+
+  for (size_t i = 0 ; i < elem_num ; ++i) {
+    out_ptr->WriteByte(static_cast<char>(i));
+    out_ptr->WriteInt32(static_cast<int32_t>(i));
+    out_ptr->WriteInt64(static_cast<int64_t>(i));
+    out_ptr->WriteVInt32(static_cast<int32_t>(i));
+    out_ptr->WriteVInt64(static_cast<int64_t>(i));
+    out_ptr->WriteInt16(static_cast<int16_t>(i));
+    out_ptr->WriteZInt64(static_cast<int64_t>(i));
+    str.resize(str_len);
+    str += std::to_string(i);
+    out_ptr->WriteString(str);
+  }
+
+  out_ptr->Close();
+
+  std::unique_ptr<IndexInput> in_ptr = dir.OpenInput(name, io_ctx);
+  for (size_t i = 0 ; i < elem_num ; ++i) {
+    ASSERT_EQ(static_cast<char>(i), in_ptr->ReadByte());
+    ASSERT_EQ(static_cast<int32_t>(i), in_ptr->ReadInt32());
+    ASSERT_EQ(static_cast<int64_t>(i), in_ptr->ReadInt64());
+    ASSERT_EQ(static_cast<int32_t>(i), in_ptr->ReadVInt32());
+    ASSERT_EQ(static_cast<int64_t>(i), in_ptr->ReadVInt64());
+    ASSERT_EQ(static_cast<int16_t>(i), in_ptr->ReadInt16());
+    ASSERT_EQ(static_cast<int64_t>(i), in_ptr->ReadZInt64());
+    str.resize(str_len);
+    str += std::to_string(i);
+    ASSERT_EQ(str, in_ptr->ReadString());
+  }
+}
+
 // This is for generating binary to compare with Java version.
 TEST(DIRECTORY__TESTS, JAVA__CMP__ETC) {
   const size_t elem_num = 100000000;
