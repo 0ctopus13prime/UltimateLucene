@@ -17,19 +17,24 @@
 
 #include <gtest/gtest.h>
 #include <Store/Directory.h>
+#include <Util/File.h>
 #include <iostream>
 #include <memory>
 
 using lucene::core::store::MMapDirectory;
 using lucene::core::store::IndexInput;
 using lucene::core::store::RandomAccessInput;
+using lucene::core::store::FileIndexOutput;
 using lucene::core::store::IndexOutput;
 using lucene::core::store::IOContext;
+using lucene::core::util::FileUtil;
 
+/*
 TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__BYTE__IO) {
   const size_t file_size = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
 
   // Write first
   {
@@ -58,11 +63,11 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__BYTE__IO) {
   }
 }
 
-
 TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__RANDOM__BYTE__IO) {
   const size_t file_size = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
 
   // Write first
   {
@@ -97,6 +102,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__INT16__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
 
   // Write first
   {
@@ -128,6 +134,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__RANDOM__INT16__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
 
   // Write first
   {
@@ -162,6 +169,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__INT32__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
 
   // Write first
   {
@@ -193,6 +201,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__RANDOM__INT32__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
 
   // Write first
   {
@@ -227,6 +236,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__INT64__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
 
   // Write first
   {
@@ -258,6 +268,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__RANDOM__INT64__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
 
   // Write first
   {
@@ -292,6 +303,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__VINT32__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
   const std::string prefix("lucene_prefix");
   const std::string suffix("lucene_suffix");
 
@@ -324,6 +336,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__ZINT32__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
   const std::string prefix("lucene_prefix");
   const std::string suffix("lucene_suffix");
 
@@ -356,6 +369,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__VINT64__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
   const std::string prefix("lucene_prefix");
   const std::string suffix("lucene_suffix");
 
@@ -388,6 +402,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__ZINT64__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
   const std::string prefix("lucene_prefix");
   const std::string suffix("lucene_suffix");
 
@@ -420,6 +435,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__STRING__IO) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
   const std::string prefix("lucene_prefix");
   const std::string suffix("lucene_suffix");
   std::string str("content-");
@@ -458,7 +474,9 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__ETC) {
   const size_t elem_num = 11376;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
   std::string dup_name(name + "_dup");
+  FileUtil::Delete(base + '/' + dup_name);
   const std::string prefix("lucene_prefix");
   const std::string suffix("lucene_suffix");
   std::string str("content-");
@@ -504,12 +522,42 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__ETC) {
   }
 }
 
-/*
+TEST(DIRECTORY__TESTS, WRITE__BYTES) {
+  const std::string base("/tmp");
+  const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
+  const uint32_t buf_len = FileIndexOutput::BUF_SIZE + 101;
+  char buffer[buf_len];
+
+  for (int i = 0 ; i < buf_len ; ++i) {
+    buffer[i] = static_cast<char>(i);
+  }
+
+  // Write first
+  {
+    MMapDirectory dir(base);
+    IOContext io_ctx;
+    std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput(name, io_ctx);
+    out_ptr->WriteBytes(buffer, buf_len);
+    out_ptr->Close();
+  }
+
+  // Read afterward and write what I have read again
+  {
+    MMapDirectory dir(base);
+    IOContext io_ctx;
+    std::unique_ptr<IndexInput> in_ptr = dir.OpenInput(name, io_ctx);
+    ASSERT_EQ(buf_len, in_ptr->Length());
+  }
+}
+*/
+
 // This is for generating binary to compare with Java version.
 TEST(DIRECTORY__TESTS, JAVA__CMP__ETC) {
   const size_t elem_num = 100000000;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");
+  FileUtil::Delete(base + '/' + name);
   std::string str("content-");
   const uint32_t str_len = str.length();
 
@@ -534,7 +582,7 @@ TEST(DIRECTORY__TESTS, JAVA__CMP__ETC) {
 
   // Java Version
   // Linux compare two binaries command : cmp
-
+  //
   // import org.apache.lucene.store.IOContext;
   // import org.apache.lucene.store.IndexOutput;
   // import org.apache.lucene.store.MMapDirectory;
@@ -545,14 +593,14 @@ TEST(DIRECTORY__TESTS, JAVA__CMP__ETC) {
   // public class TempMain {
   //   public static void main(String[] args) throws IOException {
   //     new File("/tmp/mmap_test_out").delete();
-
+  //
   //     long s = System.currentTimeMillis();
   //     MMapDirectory mMapDirectory = new MMapDirectory(Paths.get("/tmp"));
   //     IOContext ioContext = new IOContext();
   //     IndexOutput out =
   //     mMapDirectory.createOutput("mmap_test_out", ioContext);
   //     int N = 100_000_000;
-
+  //
   //     for (int i = 0 ; i < N; ++i) {
   //       out.writeByte((byte) i);
   //       out.writeInt(i);
@@ -563,12 +611,11 @@ TEST(DIRECTORY__TESTS, JAVA__CMP__ETC) {
   //       out.writeZLong(i);
   //       out.writeString("content-" + i);
   //     }
-
+  //
   //     out.close();
   //   }
   // }
 }
-*/
 
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);

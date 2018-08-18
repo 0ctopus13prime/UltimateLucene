@@ -18,6 +18,11 @@
 #ifndef SRC_STORE_DATA_H_
 #define SRC_STORE_DATA_H_
 
+
+// test
+#include <iostream>
+
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -221,13 +226,13 @@ class ByteArrayReferenceDataOutput: public DataOutput {
     return pos;
   }
 
-  void WriteByte(const char b) noexcept {
+  void WriteByte(const char b) {
     bytes[pos++] = b;
   }
 
   void WriteBytes(char bytes[],
                   const uint32_t offset,
-                  const uint32_t length) noexcept {
+                  const uint32_t length) {
     std::memcpy(bytes + pos, bytes + offset, length); 
     pos += length;
   }
@@ -311,6 +316,14 @@ class FileIndexOutput: public IndexOutput {
   bool flushed_on_close;
   char buffer[BUF_SIZE];
 
+ private:
+  void flush() {
+    if (buf_idx > 0) {
+      write(fd, buffer, buf_idx); 
+      buf_idx = 0;
+    }
+  }
+
  public:
   FileIndexOutput(const std::string& resource_desc,
                   const std::string& name,
@@ -320,7 +333,7 @@ class FileIndexOutput: public IndexOutput {
       bytes_written(0L),
       path(path),
       fd(open(path.c_str(),
-              O_CREAT | O_WRONLY,
+              O_CREAT | O_WRONLY | O_EXCL,
               S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)),
       buf_idx(0),
       flushed_on_close(false) {
@@ -343,23 +356,33 @@ class FileIndexOutput: public IndexOutput {
     bytes_written++;
 
     if (buf_idx >= BUF_SIZE) {
-      write(fd, buffer, BUF_SIZE); 
-      buf_idx = 0;
+      flush();
     }
   }
 
   void WriteBytes(const char bytes[],
                   const uint32_t offset,
                   const uint32_t length) {
-    for (int i = offset ; i < offset + length ; ++i) {
-      WriteByte(bytes[i]);
+    bytes_written += length;
+
+    if (length > BUF_SIZE) {
+      flush();  
+      write(fd, bytes + offset, length);
+      return;
     }
+
+    if (length + buf_idx > BUF_SIZE) {
+      flush();
+    }
+
+    std::memcpy(buffer + buf_idx, bytes + offset, length); 
+    buf_idx += length;
   }
 
   void Close() {
     if (!flushed_on_close) {
       flushed_on_close = true;
-      if (buf_idx > 0) write(fd, buffer, buf_idx);
+      flush();
 
       const int result = close(fd);
       if (result < 0) {

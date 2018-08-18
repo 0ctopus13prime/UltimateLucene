@@ -111,10 +111,7 @@ class FileUtil {
     const int result = remove(path.c_str());
 
     if (result != 0) {
-      if (errno == ENOENT) {
-        throw lucene::core::util::NoSuchFileException(path +
-                                                      " does not exists");
-      } else {
+      if (errno != ENOENT) {
         throw lucene::core::util::IOException(std::string(strerror(errno)));
       }
     }
