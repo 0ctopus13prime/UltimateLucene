@@ -93,13 +93,13 @@ class FileUtil {
       ptr += strcspn(ptr, "/");
       done = (*ptr == '\0');
       *ptr = '\0';
-      
-      if (stat(ptr, &statbuf)) {
-        if (errno != ENOENT) {
-          FileUtil::CreateDirectory(std::string(ptr)); 
+
+      if (stat(path_buf, &statbuf) == -1) {
+        if (errno == ENOENT) {
+          FileUtil::CreateDirectory(std::string(path_buf));
         }
       } else if (!S_ISDIR(statbuf.st_mode)) {
-        throw lucene::core::util::IOException(std::string(ptr) +
+        throw lucene::core::util::IOException(std::string(path_buf) +
                                               " is not a directory");
       }
 

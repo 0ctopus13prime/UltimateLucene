@@ -18,3 +18,6 @@ target_link_libraries(EtcTests DoochiCore gtest pthread)
 
 add_executable(NumericTests NumericTests.cpp)
 target_link_libraries(NumericTests DoochiCore gtest pthread)
+
+add_executable(FileUtilTests FileUtilTests.cpp)
+target_link_libraries(FileUtilTests DoochiCore gtest pthread)

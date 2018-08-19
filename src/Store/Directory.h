@@ -186,7 +186,6 @@ class FSDirectory: public BaseDirectory {
 
 class MMapDirectory: public FSDirectory {
  private:
-  // TODO(0ctopus13prime): fadvise? madvise/
   bool preload;
 
  public:
