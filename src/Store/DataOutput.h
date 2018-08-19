@@ -81,15 +81,35 @@ class DataOutput {
   }
 
   void WriteInt32(const int32_t i) {
-    WriteByte(static_cast<char>(i >> 24));
-    WriteByte(static_cast<char>(i >> 16));
-    WriteByte(static_cast<char>(i >> 8));
-    WriteByte(static_cast<char>(i));
+    lucene::core::util::numeric::Int32AndBytes iab;
+    iab.int32 = i;
+
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    char buf[4] = {
+      iab.bytes[3],
+      iab.bytes[2],
+      iab.bytes[1],
+      iab.bytes[0]
+    };
+    WriteBytes(buf, 0, 4);
+#else
+    WriteBytes(iab.bytes, 0, 4);
+#endif
   }
 
   void WriteInt16(const int16_t i) {
-    WriteByte(static_cast<char>(i >> 8));
-    WriteByte(static_cast<char>(i));
+    lucene::core::util::numeric::Int16AndBytes iab;
+    iab.int16 = i;
+
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    char buf[2] = {
+      iab.bytes[1],
+      iab.bytes[0]
+    };
+    WriteBytes(buf, 0, 2);
+#else
+    WriteBytes(iab.bytes, 0, 2);
+#endif
   }
 
   void WriteVInt32(int32_t i) {
@@ -106,8 +126,25 @@ class DataOutput {
   }
 
   void WriteInt64(const int64_t i) {
-    WriteInt32(static_cast<int32_t>(i >> 32));
-    WriteInt32(static_cast<int32_t>(i));
+    lucene::core::util::numeric::Int64AndBytes iab;
+    iab.int64 = i;
+
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    char buf[8] = {
+      iab.bytes[7],
+      iab.bytes[6],
+      iab.bytes[5],
+      iab.bytes[4],
+      iab.bytes[3],
+      iab.bytes[2],
+      iab.bytes[1],
+      iab.bytes[0]
+    };
+
+    WriteBytes(buf, 0, 8);
+#else
+    WriteBytes(iab.bytes, 0, 8);
+#endif
   }
 
   void WriteVInt64(const int64_t i) {
