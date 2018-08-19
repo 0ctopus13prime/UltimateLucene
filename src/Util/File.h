@@ -75,7 +75,7 @@ class FileUtil {
   static void CreateDirectory(const std::string& path) {
     const int result =
     mkdir(path.c_str(), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);  
-    if (result != 0) {
+    if (result == -1) {
       throw lucene::core::util::IOException(std::string(strerror(errno)));
     }
   }
@@ -110,7 +110,7 @@ class FileUtil {
   static void Delete(const std::string& path) {
     const int result = remove(path.c_str());
 
-    if (result != 0) {
+    if (result == -1) {
       if (errno != ENOENT) {
         throw lucene::core::util::IOException(std::string(strerror(errno)));
       }
@@ -124,24 +124,24 @@ class FileUtil {
 
   static void Fsync(const std::string& path) {
     const int fd = open(path.c_str(), O_WRONLY | O_CREAT | O_APPEND);
-    if (fd != 0) {
+    if (fd == -1) {
         throw lucene::core::util::IOException(std::string(strerror(errno)));
     }
 
     const int result = fsync(fd);
-    if (result != 0) {
+    if (result == -1) {
         throw lucene::core::util::IOException(std::string(strerror(errno)));
     }
 
     const int close_result = close(fd);
-    if (close_result != 0) {
+    if (close_result == -1) {
         throw lucene::core::util::IOException(std::string(strerror(errno)));
     }
   }
 
   static uint64_t Size(const std::string& path) {
     const int fd = open(path.c_str(), O_RDONLY);
-    if (fd != 0) {
+    if (fd == -1) {
         throw lucene::core::util::IOException(std::string(strerror(errno)));
     }
     struct stat statbuf;
@@ -149,7 +149,7 @@ class FileUtil {
 
     const uint64_t size = statbuf.st_size;
     const int close_result = close(fd);
-    if (close_result != 0) {
+    if (close_result == -1) {
         throw lucene::core::util::IOException(std::string(strerror(errno)));
     }
 
@@ -160,7 +160,7 @@ class FileUtil {
     const int result =
     rename(source.c_str(), dest.c_str());
 
-    if (result != 0) {
+    if (result == -1) {
       throw lucene::core::util::IOException(std::string(strerror(errno)));
     }
   }

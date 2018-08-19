@@ -550,9 +550,60 @@ TEST(DIRECTORY__TESTS, WRITE__BYTES) {
   }
 }
 
+TEST(DIRECTORY__TESTS, DIRECTORY__ETC) {
+  // Prepare
+  const std::string base("/tmp");
+  const std::string name("mmap_out_test");
+  const std::string dest(name + "_dest");
+  FileUtil::Delete(base + '/' + name);
+
+  // Directory check
+  MMapDirectory dir(base);
+  ASSERT_EQ(base, dir.GetDirectory());
+  IOContext io_ctx;
+  std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput(name, io_ctx);
+  const int n = 10000;
+
+  // Make 10000 length bytes
+  for (int i = 0 ; i < n ; ++i) {
+    out_ptr->WriteByte(static_cast<char>(i));
+  }
+
+  // Sync
+  dir.Sync({out_ptr->GetName()});
+
+  out_ptr->Close();
+  ASSERT_EQ(n, dir.FileLength(name));
+
+  // Duplicate out file
+  dir.CopyFrom(dir, name, dest, io_ctx);
+  std::unique_ptr<IndexInput> in_ptr = dir.OpenInput(dest, io_ctx);
+  ASSERT_EQ(n, in_ptr->Length());
+
+  // Check to see if identical
+  for (int i = 0 ; i < n ; ++i) {
+    ASSERT_EQ(static_cast<char>(i), in_ptr->ReadByte());
+  }
+  in_ptr->Close();
+
+  // Delete check
+  dir.Rename(dest, dest + dest);
+  ASSERT_FALSE(FileUtil::Exists(base + '/' + dest));
+  ASSERT_TRUE(FileUtil::Exists(base + '/' + dest + dest));
+  dir.DeleteFile(dest + dest);
+
+  // Temp output
+  std::unique_ptr<IndexOutput> tmp_out_ptr =
+  dir.CreateTempOutput("prefix", "suffix", io_ctx);
+  tmp_out_ptr->Close();
+  ASSERT_TRUE(FileUtil::Exists(base + '/' + tmp_out_ptr->GetName()));
+  dir.DeleteFile(tmp_out_ptr->GetName());
+}
+
 /*
 // Be cautious! This takes more than one minute.
 TEST(DIRECTORY__TESTS, BULK__IO__VALIDATION) {
+  std::cout << "This test takes more than one minute..." << std::endl;
   const size_t elem_num = 100000000;
   const std::string base("/tmp");
   const std::string name("mmap_out_test");

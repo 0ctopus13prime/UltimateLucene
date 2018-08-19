@@ -49,10 +49,14 @@ void Directory::CopyFrom(Directory& from,
                          const std::string& src,
                          const std::string& dest,
                          const IOContext& context) {
+  // If we copy from another file to another file
+  // then we can use native approach like `sendfile`?
+  // It is much more faster and efficient
+
   try {
     std::unique_ptr<IndexInput> is(from.OpenInput(src, context));
     std::unique_ptr<IndexOutput> os(CreateOutput(dest, context));
-    os->CopyBytes(*is, is->Length());
+    os->CopyBytes(*(is.get()), is->Length());
   } catch(...) {
     IOUtils::DeleteFilesIgnoringExceptions(*this, {});
   }
@@ -211,7 +215,7 @@ FSDirectory::CreateTempOutput(const std::string& prefix,
 void FSDirectory::Sync(const std::vector<std::string>& names) {
   EnsureOpen();
   for (const std::string& name : names) {
-    Fsync(name);
+    Fsync(directory + '/' + name);
   }
 
   MaybeDeletePendingFiles();
