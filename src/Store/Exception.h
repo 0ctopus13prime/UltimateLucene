@@ -16,7 +16,9 @@
  */
 #ifndef SRC_STORE_EXCEPTION_H_
 #define SRC_STORE_EXCEPTION_H_
+
 #include <stdexcept>
+#include <string>
 
 namespace lucene {
 namespace core {
@@ -34,11 +36,11 @@ class AlreadyClosedException: std::runtime_error {
 
   explicit AlreadyClosedException(const char* err_msg)
     : std::runtime_error(err_msg) {
-  } 
+  }
 };
 
-}  // store
-}  // core
-}  // lucene
+}  // namespace store
+}  // namespace core
+}  // namespace lucene
 
 #endif  // SRC_STORE_EXCEPTION_H_

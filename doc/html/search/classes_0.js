@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['alreadyclosedexception',['AlreadyClosedException',['../classlucene_1_1core_1_1store_1_1AlreadyClosedException.html',1,'lucene::core::store']]],
   ['analyzer',['Analyzer',['../classlucene_1_1core_1_1analysis_1_1Analyzer.html',1,'lucene::core::analysis']]],
   ['attribute',['Attribute',['../classlucene_1_1core_1_1util_1_1Attribute.html',1,'lucene::core::util']]],
   ['attributefactory',['AttributeFactory',['../classlucene_1_1core_1_1util_1_1AttributeFactory.html',1,'lucene::core::util']]],

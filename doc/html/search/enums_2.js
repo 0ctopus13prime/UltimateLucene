@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['store',['Store',['../classlucene_1_1core_1_1document_1_1Field.html#a7d5d79f0c56d3548ab8d46d0e7dae35d',1,'lucene::core::document::Field']]]
+  ['indexoptions',['IndexOptions',['../namespacelucene_1_1core_1_1index.html#a0d5e1f98471a76de106056cf3b5a7897',1,'lucene::core::index']]]
 ];

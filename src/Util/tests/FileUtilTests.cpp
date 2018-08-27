@@ -16,6 +16,7 @@
  */
 
 #include <stdlib.h>
+#include <libgen.h>
 #include <limits.h>
 #include <Util/Exception.h>
 #include <Util/File.h>
@@ -23,8 +24,6 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include <string>
-#include <libgen.h>
 
 using lucene::core::util::FileUtil;
 using lucene::core::util::IOException;
@@ -39,7 +38,7 @@ TEST(FILE__UTIL__TESTS, EXSTS) {
       << strerror(errno) << std::endl;
       FAIL();
     } else {
-      ASSERT_TRUE(FileUtil::Exists(temp_dir));  
+      ASSERT_TRUE(FileUtil::Exists(temp_dir));
       ASSERT_TRUE(FileUtil::IsDirectory(temp_dir));
     }
 
@@ -56,7 +55,7 @@ TEST(FILE__UTIL__TESTS, EXSTS) {
       << strerror(errno) << std::endl;
       FAIL();
     } else {
-      ASSERT_TRUE(FileUtil::Exists(buffer));  
+      ASSERT_TRUE(FileUtil::Exists(buffer));
     }
 
     close(fd);
@@ -79,7 +78,7 @@ TEST(FILE__UTIL__TESTS, LIST__FILES) {
   strcat(file_tmpl, "/lucene_core_util_flieutil_tempfile.XXXXXX");
 
   char tmp_file_name_buf[PATH_MAX];
-  strcpy(tmp_file_name_buf, file_tmpl); 
+  strcpy(tmp_file_name_buf, file_tmpl);
 
   // Create a temp file1
   int fd = mkstemp(tmp_file_name_buf);
@@ -92,7 +91,7 @@ TEST(FILE__UTIL__TESTS, LIST__FILES) {
   file_names.push_back(std::string(tmp_file_name_buf));
 
   // Create a temp file2
-  strcpy(tmp_file_name_buf, file_tmpl); 
+  strcpy(tmp_file_name_buf, file_tmpl);
 
   fd = mkstemp(tmp_file_name_buf);
   if (fd == -1) {
@@ -113,7 +112,7 @@ TEST(FILE__UTIL__TESTS, LIST__FILES) {
     if (std::find(got_files.begin(), got_files.end(), base_name) ==
         got_files.end()) {
       std::cerr << base_name << " was not found" << std::endl;
-      FAIL(); 
+      FAIL();
     }
   }
 
@@ -134,7 +133,7 @@ TEST(FILE__UTIL__TESTS, CREATE__DIRECTORY) {
   }
 
   try {
-    FileUtil::CreateDirectory(temp_dir); 
+    FileUtil::CreateDirectory(temp_dir);
     FAIL();
   } catch(IOException&) {
     // Ignore
@@ -164,7 +163,7 @@ TEST(FILE__UTIL__TESTS, CREATE__DIRECTORIES) {
 }
 
 TEST(FILE__UTIL__TESTS, MOVE) {
-  char file_path_buf[PATH_MAX];    
+  char file_path_buf[PATH_MAX];
   strcpy(file_path_buf, "/tmp/lucene_core_util_flieutil_tempdir.XXXXXX");
   int fd = mkstemp(file_path_buf);
   if (fd == -1) {
@@ -175,8 +174,8 @@ TEST(FILE__UTIL__TESTS, MOVE) {
 
   close(fd);
   const char* file_name = basename(file_path_buf);
-  
-  char file_path_dest_buf[PATH_MAX];    
+
+  char file_path_dest_buf[PATH_MAX];
   strcpy(file_path_dest_buf, file_path_buf);
   strcat(file_path_dest_buf, file_name);
 

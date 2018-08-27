@@ -58,7 +58,7 @@ class NativeFSLockFactory: public FSLockFactory {
  private:
   class NativeFSLock: public Lock {
    private:
-    int fd; 
+    int fd;
     std::string abs_lock_file;
     time_t ctime;
     std::atomic_bool closed;
@@ -101,8 +101,8 @@ class NativeFSLockFactory: public FSLockFactory {
                                      const std::string& lock_name);
 };
 
-}  // store
-}  // core
-}  // lucene
+}  // namespace store
+}  // namespace core
+}  // namespace lucene
 
 #endif  // SRC_STORE_LOCK_H_

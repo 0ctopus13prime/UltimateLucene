@@ -1,0 +1,103 @@
+\hypertarget{classlucene_1_1core_1_1store_1_1IndexOutput}{}\section{lucene\+:\+:core\+:\+:store\+:\+:Index\+Output Class Reference}
+\label{classlucene_1_1core_1_1store_1_1IndexOutput}\index{lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}}
+
+
+{\ttfamily \#include $<$Data\+Output.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:store\+:\+:Index\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlucene_1_1core_1_1store_1_1IndexOutput}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput_a6317af8a5c9359eb687fd182ac3a6ea4}{Close}} ()=0
+\item 
+virtual uint64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput_a79bc74422633022d9ed6d088ad6d4ea2}{Get\+File\+Pointer}} ()=0
+\item 
+virtual uint64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput_aed96af5e2bc906a72b428aa132e5b2a5}{Get\+Checksum}} ()=0
+\item 
+\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \& \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput_a1daa1732a04f8a0fb4c3b37127df3fcf}{Get\+Name}} () \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} noexcept
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput_a2e11e162d0922f41b7943663eaaf6a3e}{Index\+Output}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput_a0e2f8c314606011f681c74811be781aa}{resource\+\_\+description}}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput_ab897c3a1151b60666f513e2cb13189d7}{name}})
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput_a0e2f8c314606011f681c74811be781aa}{resource\+\_\+description}}
+\item 
+\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput_ab897c3a1151b60666f513e2cb13189d7}{name}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1IndexOutput_a2e11e162d0922f41b7943663eaaf6a3e}\label{classlucene_1_1core_1_1store_1_1IndexOutput_a2e11e162d0922f41b7943663eaaf6a3e}} 
+\index{lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}!Index\+Output@{Index\+Output}}
+\index{Index\+Output@{Index\+Output}!lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}}
+\subsubsection{\texorpdfstring{Index\+Output()}{IndexOutput()}}
+{\footnotesize\ttfamily lucene\+::core\+::store\+::\+Index\+Output\+::\+Index\+Output (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{resource\+\_\+description,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1IndexOutput_a6317af8a5c9359eb687fd182ac3a6ea4}\label{classlucene_1_1core_1_1store_1_1IndexOutput_a6317af8a5c9359eb687fd182ac3a6ea4}} 
+\index{lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}!Close@{Close}}
+\index{Close@{Close}!lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}}
+\subsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::store\+::\+Index\+Output\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FileIndexOutput_ae07d09f8fa61109e46f069a138f8560b}{lucene\+::core\+::store\+::\+File\+Index\+Output}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1IndexOutput_aed96af5e2bc906a72b428aa132e5b2a5}\label{classlucene_1_1core_1_1store_1_1IndexOutput_aed96af5e2bc906a72b428aa132e5b2a5}} 
+\index{lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}!Get\+Checksum@{Get\+Checksum}}
+\index{Get\+Checksum@{Get\+Checksum}!lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}}
+\subsubsection{\texorpdfstring{Get\+Checksum()}{GetChecksum()}}
+{\footnotesize\ttfamily virtual uint64\+\_\+t lucene\+::core\+::store\+::\+Index\+Output\+::\+Get\+Checksum (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FileIndexOutput_a4821aaf7a274e515eac0a3877de046fb}{lucene\+::core\+::store\+::\+File\+Index\+Output}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1IndexOutput_a79bc74422633022d9ed6d088ad6d4ea2}\label{classlucene_1_1core_1_1store_1_1IndexOutput_a79bc74422633022d9ed6d088ad6d4ea2}} 
+\index{lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}!Get\+File\+Pointer@{Get\+File\+Pointer}}
+\index{Get\+File\+Pointer@{Get\+File\+Pointer}!lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}}
+\subsubsection{\texorpdfstring{Get\+File\+Pointer()}{GetFilePointer()}}
+{\footnotesize\ttfamily virtual uint64\+\_\+t lucene\+::core\+::store\+::\+Index\+Output\+::\+Get\+File\+Pointer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FileIndexOutput_a90285cfaf578ecc82e20f1717b76b320}{lucene\+::core\+::store\+::\+File\+Index\+Output}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1IndexOutput_a1daa1732a04f8a0fb4c3b37127df3fcf}\label{classlucene_1_1core_1_1store_1_1IndexOutput_a1daa1732a04f8a0fb4c3b37127df3fcf}} 
+\index{lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}!Get\+Name@{Get\+Name}}
+\index{Get\+Name@{Get\+Name}!lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}}
+\subsubsection{\texorpdfstring{Get\+Name()}{GetName()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string\& lucene\+::core\+::store\+::\+Index\+Output\+::\+Get\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1IndexOutput_ab897c3a1151b60666f513e2cb13189d7}\label{classlucene_1_1core_1_1store_1_1IndexOutput_ab897c3a1151b60666f513e2cb13189d7}} 
+\index{lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}!name@{name}}
+\index{name@{name}!lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}}
+\subsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string lucene\+::core\+::store\+::\+Index\+Output\+::name\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1IndexOutput_a0e2f8c314606011f681c74811be781aa}\label{classlucene_1_1core_1_1store_1_1IndexOutput_a0e2f8c314606011f681c74811be781aa}} 
+\index{lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}!resource\+\_\+description@{resource\+\_\+description}}
+\index{resource\+\_\+description@{resource\+\_\+description}!lucene\+::core\+::store\+::\+Index\+Output@{lucene\+::core\+::store\+::\+Index\+Output}}
+\subsubsection{\texorpdfstring{resource\+\_\+description}{resource\_description}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string lucene\+::core\+::store\+::\+Index\+Output\+::resource\+\_\+description\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Store/\mbox{\hyperlink{DataOutput_8h}{Data\+Output.\+h}}\end{DoxyCompactItemize}

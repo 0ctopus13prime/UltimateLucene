@@ -48,7 +48,7 @@ class FileUtil {
   }
 
   static std::vector<std::string> ListFiles(const std::string& path) {
-    const int fd = open(path.c_str(), O_DIRECTORY); 
+    const int fd = open(path.c_str(), O_DIRECTORY);
     if (fd == -1) {
       throw lucene::core::util::IOException(strerror(errno));
     }
@@ -74,7 +74,7 @@ class FileUtil {
 
   static void CreateDirectory(const std::string& path) {
     const int result =
-    mkdir(path.c_str(), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);  
+    mkdir(path.c_str(), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
     if (result == -1) {
       throw lucene::core::util::IOException(std::string(strerror(errno)));
     }
@@ -89,7 +89,7 @@ class FileUtil {
     bool done = false;
 
     while (!done) {
-      ptr += strspn(ptr, "/");  
+      ptr += strspn(ptr, "/");
       ptr += strcspn(ptr, "/");
       done = (*ptr == '\0');
       *ptr = '\0';
@@ -166,8 +166,8 @@ class FileUtil {
   }
 };
 
-}  // util
-}  // core
-}  // lucene
+}  // namespace util
+}  // namespace core
+}  // namespace lucene
 
 #endif  // SRC_UTIL_FILE_H_

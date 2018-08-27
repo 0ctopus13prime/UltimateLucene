@@ -17,9 +17,9 @@ Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:Analyzer\+:\+:Reuse\
 \item 
 virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy_ad113005e836ba6846d1fa2b6a1ae5924}{$\sim$\+Reuse\+Strategy}} ()
 \item 
-virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy_ab180767950f392037e8ddf78c2f11f95}{Get\+Reusable\+Components}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&analyzer, const std\+::string \&field\+\_\+name)=0
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy_ab180767950f392037e8ddf78c2f11f95}{Get\+Reusable\+Components}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&analyzer, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&field\+\_\+name)=0
 \item 
-virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy_a78a1328d5564e78e2168169b73094b23}{Set\+Reusable\+Components}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&analyzer, const std\+::string \&field\+\_\+name, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$components)=0
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1ReuseStrategy_a78a1328d5564e78e2168169b73094b23}{Set\+Reusable\+Components}} (\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&analyzer, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&field\+\_\+name, \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$components)=0
 \end{DoxyCompactItemize}
 
 
@@ -43,7 +43,7 @@ virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer_1_1Reu
 \index{lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy}!Get\+Reusable\+Components@{Get\+Reusable\+Components}}
 \index{Get\+Reusable\+Components@{Get\+Reusable\+Components}!lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy}}
 \subsubsection{\texorpdfstring{Get\+Reusable\+Components()}{GetReusableComponents()}}
-{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}}$\ast$ lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy\+::\+Get\+Reusable\+Components (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&}]{analyzer,  }\item[{const std\+::string \&}]{field\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}}$\ast$ lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy\+::\+Get\+Reusable\+Components (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&}]{analyzer,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{field\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
@@ -53,7 +53,7 @@ Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1PerFieldReuse
 \index{lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy}!Set\+Reusable\+Components@{Set\+Reusable\+Components}}
 \index{Set\+Reusable\+Components@{Set\+Reusable\+Components}!lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy@{lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy}}
 \subsubsection{\texorpdfstring{Set\+Reusable\+Components()}{SetReusableComponents()}}
-{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy\+::\+Set\+Reusable\+Components (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&}]{analyzer,  }\item[{const std\+::string \&}]{field\+\_\+name,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$}]{components }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Analyzer\+::\+Reuse\+Strategy\+::\+Set\+Reusable\+Components (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Analyzer}{Analyzer}} \&}]{analyzer,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{field\+\_\+name,  }\item[{\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1TokenStreamComponents}{Token\+Stream\+Components}} $\ast$}]{components }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 

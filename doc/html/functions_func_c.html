@@ -98,6 +98,18 @@ $(function() {
 , <a class="el" href="classlucene_1_1core_1_1document_1_1IntRange.html#a5b20608bad7100f0a7254a4fdad3898e">lucene::core::document::IntRange</a>
 , <a class="el" href="classlucene_1_1core_1_1document_1_1LongRange.html#aa40ee6dae88377490b2ee570d9ff84bf">lucene::core::document::LongRange</a>
 </li>
+<li>CheckBufferSize()
+: <a class="el" href="classlucene_1_1core_1_1store_1_1BufferedIndexInput.html#a0c6faca9fc90d28704034519b5e8e896">lucene::core::store::BufferedIndexInput</a>
+</li>
+<li>CheckPendingDeletions()
+: <a class="el" href="classlucene_1_1core_1_1store_1_1FSDirectory.html#a82323816746e66f25406ce12a533b6b2">lucene::core::store::FSDirectory</a>
+</li>
+<li>Checksum()
+: <a class="el" href="classlucene_1_1core_1_1util_1_1Checksum.html#a2f830ed8572c07dba88d99d41c61e1db">lucene::core::util::Checksum</a>
+</li>
+<li>ChecksumIndexInput()
+: <a class="el" href="classlucene_1_1core_1_1store_1_1ChecksumIndexInput.html#a297c42b7078dbd5d6c85e2e812e1d550">lucene::core::store::ChecksumIndexInput</a>
+</li>
 <li>CheckThreadLocalDestructed()
 : <a class="el" href="classlucene_1_1core_1_1util_1_1CloseableThreadLocal.html#a489ab727ebcf95af41ec59265b5804d8">lucene::core::util::CloseableThreadLocal&lt; CLASS, TYPE &gt;</a>
 </li>
@@ -123,6 +135,9 @@ $(function() {
 </li>
 <li>ClearAttributes()
 : <a class="el" href="classlucene_1_1core_1_1util_1_1AttributeSource.html#a7c2b117da3dac9f29017a5bb5562d6de">lucene::core::util::AttributeSource</a>
+</li>
+<li>ClearLockHeld()
+: <a class="el" href="classlucene_1_1core_1_1store_1_1NativeFSLockFactory.html#a466c2e84bbed2f80402e13a400ecad32">lucene::core::store::NativeFSLockFactory</a>
 </li>
 <li>ClearState()
 : <a class="el" href="classlucene_1_1core_1_1util_1_1AttributeSource_1_1StateHolder.html#a8c24d6cc62226e191f2eea91f330a849">lucene::core::util::AttributeSource::StateHolder</a>
@@ -153,6 +168,17 @@ $(function() {
 , <a class="el" href="classlucene_1_1core_1_1analysis_1_1TokenStream.html#ad7963391ddbb2c75610e3738ba5155c8">lucene::core::analysis::TokenStream</a>
 , <a class="el" href="classlucene_1_1core_1_1document_1_1Field_1_1BinaryTokenStream.html#a40c73dd8eae9ab36e7e8f9e859a037ae">lucene::core::document::Field::BinaryTokenStream</a>
 , <a class="el" href="classlucene_1_1core_1_1document_1_1Field_1_1StringTokenStream.html#a1852abe05943aaf330ef776fc783f472">lucene::core::document::Field::StringTokenStream</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput.html#afdc432b747889c61d2452c532e18f2ed">lucene::core::store::BufferedChecksumIndexInput</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1BufferedIndexInput_1_1SlicedIndexInput.html#abb75cb398fdd503e67eeca9c057cc604">lucene::core::store::BufferedIndexInput::SlicedIndexInput</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1ByteBufferIndexInput.html#af02f6df059efa32b8d60cec43723d488">lucene::core::store::ByteBufferIndexInput</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1BytesArrayReferenceIndexInput.html#a99a7277bb3fd32f5d184f31c1fa05c5f">lucene::core::store::BytesArrayReferenceIndexInput</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1Directory.html#aa803c099bd4963d2ed83dbe10152d909">lucene::core::store::Directory</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1FileIndexOutput.html#ae07d09f8fa61109e46f069a138f8560b">lucene::core::store::FileIndexOutput</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1FSDirectory.html#a5d0ea9b7fb90cbf6647276089a95b1a8">lucene::core::store::FSDirectory</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1IndexInput.html#a0e33e5c784c5bed48b63b469f5ee6ed6">lucene::core::store::IndexInput</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1IndexOutput.html#a6317af8a5c9359eb687fd182ac3a6ea4">lucene::core::store::IndexOutput</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1Lock.html#aef17d7b0b71ded63a0418fb09e524ec9">lucene::core::store::Lock</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1NativeFSLockFactory_1_1NativeFSLock.html#abf6743e414d802ed2f715a5c7884c0a9">lucene::core::store::NativeFSLockFactory::NativeFSLock</a>
 , <a class="el" href="classlucene_1_1core_1_1util_1_1CloseableThreadLocal.html#a3f2edc7d9c2a0ce9cf16632527553ee4">lucene::core::util::CloseableThreadLocal&lt; CLASS, TYPE &gt;</a>
 </li>
 <li>CloseableThreadLocal()
@@ -165,17 +191,21 @@ $(function() {
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharSet.html#a6ffa312595246916fd97a235271bf9ce">lucene::core::analysis::characterutil::CharSet</a>
 </li>
 <li>ContainsKey()
-: <a class="el" href="classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap.html#a81b1167446c7c8988a523446436a313c">lucene::core::analysis::characterutil::CharMap&lt; VALUE &gt;</a>
+: <a class="el" href="classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharMap.html#a3ddc016640b2f1328eb4ccb68d11cc62">lucene::core::analysis::characterutil::CharMap&lt; VALUE &gt;</a>
 </li>
 <li>CopyBuffer()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute.html#ae03cbeb05b5b1e7c50f407e0025d41da">lucene::core::analysis::tokenattributes::CharTermAttribute</a>
 , <a class="el" href="classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl.html#aacb3a44d6999a381dc9217616ba91317">lucene::core::analysis::tokenattributes::CharTermAttributeImpl</a>
 </li>
 <li>CopyBytes()
-: <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRefBuilder.html#ad03ce9a53e3dbd380fc9b34dcfa3de51">lucene::core::util::BytesRefBuilder</a>
+: <a class="el" href="classlucene_1_1core_1_1store_1_1DataOutput.html#a7073c24bf5335a0910543bcc903b0bda">lucene::core::store::DataOutput</a>
+, <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRefBuilder.html#a3fccb29fdf28aad9a850b17228f2b71a">lucene::core::util::BytesRefBuilder</a>
 </li>
 <li>CopyChars()
-: <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRefBuilder.html#aecfe5fb3b1ce86ec5c6358b3e1d06e4c">lucene::core::util::BytesRefBuilder</a>
+: <a class="el" href="classlucene_1_1core_1_1util_1_1BytesRefBuilder.html#a93e4b7444976f335d0b78c59cfb1c369">lucene::core::util::BytesRefBuilder</a>
+</li>
+<li>CopyFrom()
+: <a class="el" href="classlucene_1_1core_1_1store_1_1Directory.html#a1b531f282e9f4d200bdd6e663701ff9c">lucene::core::store::Directory</a>
 </li>
 <li>Correct()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter.html#ad1be13a08cf750862795cb9b29ed4e09">lucene::core::analysis::characterutil::CharFilter</a>
@@ -183,6 +213,9 @@ $(function() {
 <li>CorrectOffset()
 : <a class="el" href="classlucene_1_1core_1_1analysis_1_1characterutil_1_1CharFilter.html#a6e4becb7161f99dec056ef207fda3f23">lucene::core::analysis::characterutil::CharFilter</a>
 , <a class="el" href="classlucene_1_1core_1_1analysis_1_1Tokenizer.html#a4c10a2cdbd688233cddb87151a8bf168">lucene::core::analysis::Tokenizer</a>
+</li>
+<li>Crc32()
+: <a class="el" href="classlucene_1_1core_1_1util_1_1Crc32.html#a54339ec81ec5ca5cd367eb8154dbe2c5">lucene::core::util::Crc32</a>
 </li>
 <li>CreateAttributeInstance()
 : <a class="el" href="classlucene_1_1core_1_1util_1_1AttributeFactory.html#a88ccb9965ed78099379eaf9b1256abf3">lucene::core::util::AttributeFactory</a>
@@ -193,6 +226,20 @@ $(function() {
 : <a class="el" href="classDummyAnalyzer.html#aeeb24aa6449d4bf7c4adc6a5c63a5c0e">DummyAnalyzer</a>
 , <a class="el" href="classlucene_1_1core_1_1analysis_1_1Analyzer.html#a9b7dc3c598057fbf4e9b5f48066cb54a">lucene::core::analysis::Analyzer</a>
 , <a class="el" href="classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer.html#a0d569e3e48f2060a4698481ec1b49d12">lucene::core::analysis::standard::StandardAnalyzer</a>
+</li>
+<li>CreateDirectories()
+: <a class="el" href="classlucene_1_1core_1_1util_1_1FileUtil.html#ab626b04521245beb0d5f031bcca6536d">lucene::core::util::FileUtil</a>
+</li>
+<li>CreateDirectory()
+: <a class="el" href="classlucene_1_1core_1_1util_1_1FileUtil.html#a93414b851dfb9d3e0cdabade88caca63">lucene::core::util::FileUtil</a>
+</li>
+<li>CreateOutput()
+: <a class="el" href="classlucene_1_1core_1_1store_1_1Directory.html#aae10f6510f3bfb7e561fc438d4419e4a">lucene::core::store::Directory</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1FSDirectory.html#a4d1e13c1fd5b956a2e063b954915bd2c">lucene::core::store::FSDirectory</a>
+</li>
+<li>CreateTempOutput()
+: <a class="el" href="classlucene_1_1core_1_1store_1_1Directory.html#a1854df49ef06b705ae603f9430584106">lucene::core::store::Directory</a>
+, <a class="el" href="classlucene_1_1core_1_1store_1_1FSDirectory.html#a488eb837cbe2d5a46363e57c314def3a">lucene::core::store::FSDirectory</a>
 </li>
 </ul>
 </div><!-- contents -->

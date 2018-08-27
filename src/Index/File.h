@@ -31,7 +31,7 @@ class IndexFileNames {
   static const std::string OLD_SEGMENTS_GEN;
 
  private:
-  IndexFileNames() = default; 
+  IndexFileNames() = default;
 
  public:
   static std::string FileNameFromGeneration(const std::string& base,
@@ -58,8 +58,8 @@ class IndexFileNames {
   static std::string GetExtension(const std::string& filename);
 };
 
-}  // index
-}  // core
-}  // lucene
+}  // namespace index
+}  // namespace core
+}  // namespace lucene
 
 #endif  // SRC_INDEX_FILE_H_

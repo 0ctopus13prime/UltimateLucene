@@ -1,0 +1,206 @@
+\hypertarget{classlucene_1_1core_1_1store_1_1DataOutput}{}\section{lucene\+:\+:core\+:\+:store\+:\+:Data\+Output Class Reference}
+\label{classlucene_1_1core_1_1store_1_1DataOutput}\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+
+
+{\ttfamily \#include $<$Data\+Output.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:store\+:\+:Data\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.354839cm]{classlucene_1_1core_1_1store_1_1DataOutput}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a0cc6c620951d12812df4f994309ba982}{Data\+Output}} ()
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a0b311a60a5a05bc511cd913a702f0390}{$\sim$\+Data\+Output}} ()
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a22e242cc11ebfc3e7937eacb07106626}{Write\+Byte}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char b)=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_ab2d4f729a14d87afd84ec558e11883d2}{Write\+Bytes}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char bytes\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t offset, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t length)=0
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_aee542a6d69d756f6ddaa4f1ea1db7fa4}{Write\+Bytes}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char bytes\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t bytes\+\_\+length)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a526e43529a56b9265797be87c5ecb150}{Write\+Int32}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int32\+\_\+t i)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_ae1d2397af457949107f4f14a4cad969c}{Write\+Int16}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int16\+\_\+t i)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a5131f8ff1a41b0e11435515de2512483}{Write\+V\+Int32}} (int32\+\_\+t i)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_ac3a56b74f30cd1f61c7cd40d17830700}{Write\+Z\+Int32}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int32\+\_\+t i)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_aa778fe689b0bd6d642b09fe5874df95e}{Write\+Int64}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int64\+\_\+t i)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a48e7669f558350c3071bbb4b44c2d0a3}{Write\+V\+Int64}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int64\+\_\+t i)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_aad0abddbe300bdf599bf7464538891c1}{Write\+Z\+Int64}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int64\+\_\+t i)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_abc55059fde4499b458c64f346e689be5}{Write\+String}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&s)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a7073c24bf5335a0910543bcc903b0bda}{Copy\+Bytes}} (\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataInput}{Data\+Input}} \&input, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint64\+\_\+t num\+\_\+bytes)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a82a073239273ecf9a2a88d6d7156330b}{Write\+Map\+Of\+Strings}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::map$<$ std\+::string, std\+::string $>$ \&map)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_af22effd34a9fa2b51d166c8ccc03ea03}{Write\+Set\+Of\+Strings}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::set$<$ std\+::string $>$ \&set)
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a10cb01ee76cad9e6250ef39571fd5bbc}{Allocate\+Copy\+Buffer\+If}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_abf3dcbf20c57bc8a52ec45f08ef65264}{Write\+Signed\+V\+Int64}} (int64\+\_\+t i)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ char\mbox{[}$\,$\mbox{]}$>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a3ef5ff1e43ff4a8e4a2afe35ec13ca4c}{copy\+\_\+buffer}}
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a1886d5be4f9ef158f0e8041a06717aab}{C\+O\+P\+Y\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}} = 16384
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a0cc6c620951d12812df4f994309ba982}\label{classlucene_1_1core_1_1store_1_1DataOutput_a0cc6c620951d12812df4f994309ba982}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Data\+Output@{Data\+Output}}
+\index{Data\+Output@{Data\+Output}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Data\+Output()}{DataOutput()}}
+{\footnotesize\ttfamily lucene\+::core\+::store\+::\+Data\+Output\+::\+Data\+Output (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a0b311a60a5a05bc511cd913a702f0390}\label{classlucene_1_1core_1_1store_1_1DataOutput_a0b311a60a5a05bc511cd913a702f0390}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!````~Data\+Output@{$\sim$\+Data\+Output}}
+\index{````~Data\+Output@{$\sim$\+Data\+Output}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{$\sim$\+Data\+Output()}{~DataOutput()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::store\+::\+Data\+Output\+::$\sim$\+Data\+Output (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a10cb01ee76cad9e6250ef39571fd5bbc}\label{classlucene_1_1core_1_1store_1_1DataOutput_a10cb01ee76cad9e6250ef39571fd5bbc}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Allocate\+Copy\+Buffer\+If@{Allocate\+Copy\+Buffer\+If}}
+\index{Allocate\+Copy\+Buffer\+If@{Allocate\+Copy\+Buffer\+If}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Allocate\+Copy\+Buffer\+If()}{AllocateCopyBufferIf()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Allocate\+Copy\+Buffer\+If (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a7073c24bf5335a0910543bcc903b0bda}\label{classlucene_1_1core_1_1store_1_1DataOutput_a7073c24bf5335a0910543bcc903b0bda}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Copy\+Bytes@{Copy\+Bytes}}
+\index{Copy\+Bytes@{Copy\+Bytes}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Copy\+Bytes()}{CopyBytes()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Copy\+Bytes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataInput}{Data\+Input}} \&}]{input,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint64\+\_\+t}]{num\+\_\+bytes }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a22e242cc11ebfc3e7937eacb07106626}\label{classlucene_1_1core_1_1store_1_1DataOutput_a22e242cc11ebfc3e7937eacb07106626}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Byte@{Write\+Byte}}
+\index{Write\+Byte@{Write\+Byte}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Byte()}{WriteByte()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Byte (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FileIndexOutput_a7fc2cf6d26931a835104c772b59ffde8}{lucene\+::core\+::store\+::\+File\+Index\+Output}}, \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1GrowableByteArrayDataOutput_acc15bef7c843270e142e935348fa5583}{lucene\+::core\+::store\+::\+Growable\+Byte\+Array\+Data\+Output}}, and \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a8fe0203aa432ae75b9fb280414476b80}{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_ab2d4f729a14d87afd84ec558e11883d2}\label{classlucene_1_1core_1_1store_1_1DataOutput_ab2d4f729a14d87afd84ec558e11883d2}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Bytes@{Write\+Bytes}}
+\index{Write\+Bytes@{Write\+Bytes}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Bytes()}{WriteBytes()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Bytes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char}]{bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{offset,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FileIndexOutput_a7f627b777857d45398afc0b740f036ff}{lucene\+::core\+::store\+::\+File\+Index\+Output}}, \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1GrowableByteArrayDataOutput_ade5509d15287b0b7a70a50b8ebad79d1}{lucene\+::core\+::store\+::\+Growable\+Byte\+Array\+Data\+Output}}, and \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a56eb71d664e7f32fd874acdf0c899e0c}{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_aee542a6d69d756f6ddaa4f1ea1db7fa4}\label{classlucene_1_1core_1_1store_1_1DataOutput_aee542a6d69d756f6ddaa4f1ea1db7fa4}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Bytes@{Write\+Bytes}}
+\index{Write\+Bytes@{Write\+Bytes}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Bytes()}{WriteBytes()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Bytes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char}]{bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{bytes\+\_\+length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_ae1d2397af457949107f4f14a4cad969c}\label{classlucene_1_1core_1_1store_1_1DataOutput_ae1d2397af457949107f4f14a4cad969c}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Int16@{Write\+Int16}}
+\index{Write\+Int16@{Write\+Int16}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Int16()}{WriteInt16()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Int16 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int16\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a526e43529a56b9265797be87c5ecb150}\label{classlucene_1_1core_1_1store_1_1DataOutput_a526e43529a56b9265797be87c5ecb150}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Int32@{Write\+Int32}}
+\index{Write\+Int32@{Write\+Int32}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Int32()}{WriteInt32()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Int32 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int32\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_aa778fe689b0bd6d642b09fe5874df95e}\label{classlucene_1_1core_1_1store_1_1DataOutput_aa778fe689b0bd6d642b09fe5874df95e}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Int64@{Write\+Int64}}
+\index{Write\+Int64@{Write\+Int64}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Int64()}{WriteInt64()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Int64 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int64\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a82a073239273ecf9a2a88d6d7156330b}\label{classlucene_1_1core_1_1store_1_1DataOutput_a82a073239273ecf9a2a88d6d7156330b}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Map\+Of\+Strings@{Write\+Map\+Of\+Strings}}
+\index{Write\+Map\+Of\+Strings@{Write\+Map\+Of\+Strings}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Map\+Of\+Strings()}{WriteMapOfStrings()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Map\+Of\+Strings (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::map$<$ std\+::string, std\+::string $>$ \&}]{map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_af22effd34a9fa2b51d166c8ccc03ea03}\label{classlucene_1_1core_1_1store_1_1DataOutput_af22effd34a9fa2b51d166c8ccc03ea03}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Set\+Of\+Strings@{Write\+Set\+Of\+Strings}}
+\index{Write\+Set\+Of\+Strings@{Write\+Set\+Of\+Strings}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Set\+Of\+Strings()}{WriteSetOfStrings()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Set\+Of\+Strings (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::set$<$ std\+::string $>$ \&}]{set }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_abf3dcbf20c57bc8a52ec45f08ef65264}\label{classlucene_1_1core_1_1store_1_1DataOutput_abf3dcbf20c57bc8a52ec45f08ef65264}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Signed\+V\+Int64@{Write\+Signed\+V\+Int64}}
+\index{Write\+Signed\+V\+Int64@{Write\+Signed\+V\+Int64}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Signed\+V\+Int64()}{WriteSignedVInt64()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Signed\+V\+Int64 (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_abc55059fde4499b458c64f346e689be5}\label{classlucene_1_1core_1_1store_1_1DataOutput_abc55059fde4499b458c64f346e689be5}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+String@{Write\+String}}
+\index{Write\+String@{Write\+String}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+String()}{WriteString()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+String (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a5131f8ff1a41b0e11435515de2512483}\label{classlucene_1_1core_1_1store_1_1DataOutput_a5131f8ff1a41b0e11435515de2512483}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+V\+Int32@{Write\+V\+Int32}}
+\index{Write\+V\+Int32@{Write\+V\+Int32}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+V\+Int32()}{WriteVInt32()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+V\+Int32 (\begin{DoxyParamCaption}\item[{int32\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a48e7669f558350c3071bbb4b44c2d0a3}\label{classlucene_1_1core_1_1store_1_1DataOutput_a48e7669f558350c3071bbb4b44c2d0a3}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+V\+Int64@{Write\+V\+Int64}}
+\index{Write\+V\+Int64@{Write\+V\+Int64}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+V\+Int64()}{WriteVInt64()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+V\+Int64 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int64\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_ac3a56b74f30cd1f61c7cd40d17830700}\label{classlucene_1_1core_1_1store_1_1DataOutput_ac3a56b74f30cd1f61c7cd40d17830700}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Z\+Int32@{Write\+Z\+Int32}}
+\index{Write\+Z\+Int32@{Write\+Z\+Int32}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Z\+Int32()}{WriteZInt32()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Z\+Int32 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int32\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_aad0abddbe300bdf599bf7464538891c1}\label{classlucene_1_1core_1_1store_1_1DataOutput_aad0abddbe300bdf599bf7464538891c1}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!Write\+Z\+Int64@{Write\+Z\+Int64}}
+\index{Write\+Z\+Int64@{Write\+Z\+Int64}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Z\+Int64()}{WriteZInt64()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Data\+Output\+::\+Write\+Z\+Int64 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} int64\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a3ef5ff1e43ff4a8e4a2afe35ec13ca4c}\label{classlucene_1_1core_1_1store_1_1DataOutput_a3ef5ff1e43ff4a8e4a2afe35ec13ca4c}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!copy\+\_\+buffer@{copy\+\_\+buffer}}
+\index{copy\+\_\+buffer@{copy\+\_\+buffer}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{copy\+\_\+buffer}{copy\_buffer}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$char\mbox{[}$\,$\mbox{]}$>$ lucene\+::core\+::store\+::\+Data\+Output\+::copy\+\_\+buffer\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1DataOutput_a1886d5be4f9ef158f0e8041a06717aab}\label{classlucene_1_1core_1_1store_1_1DataOutput_a1886d5be4f9ef158f0e8041a06717aab}} 
+\index{lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}!C\+O\+P\+Y\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE@{C\+O\+P\+Y\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}}
+\index{C\+O\+P\+Y\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE@{C\+O\+P\+Y\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}!lucene\+::core\+::store\+::\+Data\+Output@{lucene\+::core\+::store\+::\+Data\+Output}}
+\subsubsection{\texorpdfstring{C\+O\+P\+Y\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}{COPY\_BUFFER\_SIZE}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t lucene\+::core\+::store\+::\+Data\+Output\+::\+C\+O\+P\+Y\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE = 16384\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Store/\mbox{\hyperlink{DataOutput_8h}{Data\+Output.\+h}}\end{DoxyCompactItemize}

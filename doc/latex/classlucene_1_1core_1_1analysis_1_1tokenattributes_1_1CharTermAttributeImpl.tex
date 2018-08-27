@@ -15,7 +15,7 @@ Inheritance diagram for lucene\+:\+:core\+:\+:analysis\+:\+:tokenattributes\+:\+
 \item 
 \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a3f0f1dfd6edd1686f46fa84b95b17959}{Char\+Term\+Attribute\+Impl}} ()
 \item 
-\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_af846d32513f9e11a0b7443ea0ba41487}{Char\+Term\+Attribute\+Impl}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&other)
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_af846d32513f9e11a0b7443ea0ba41487}{Char\+Term\+Attribute\+Impl}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&other)
 \item 
 virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_aef0a9228f5cf3d4ad4c33d97f2a9a13b}{$\sim$\+Char\+Term\+Attribute\+Impl}} ()
 \item 
@@ -23,48 +23,48 @@ virtual \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1C
 \item 
 void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a4e0b1a5a06996822798414f3a41af6e6}{Clear}} () override
 \item 
-void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_aacb3a44d6999a381dc9217616ba91317}{Copy\+Buffer}} (const char $\ast$buffer, const uint32\+\_\+t offset, const uint32\+\_\+t length) override
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_aacb3a44d6999a381dc9217616ba91317}{Copy\+Buffer}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char $\ast$buffer, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t offset, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t length) override
 \item 
-char $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_af6663b6b4481ee51bd166f5c3123f9f8}{Buffer}} () const override
+char $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_af6663b6b4481ee51bd166f5c3123f9f8}{Buffer}} () \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} override
 \item 
-char $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_abc195e8927e23632d34d4c081ede76b4}{Resize\+Buffer}} (const uint32\+\_\+t new\+\_\+capacity) override
+char $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_abc195e8927e23632d34d4c081ede76b4}{Resize\+Buffer}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t new\+\_\+capacity) override
 \item 
-uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a20085f30b788448e61de1f5635cd95f0}{Length}} () const override
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a20085f30b788448e61de1f5635cd95f0}{Length}} () \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} override
 \item 
-std\+::string \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a286d2dd38ce24fb0da4c077e8f06bb25}{Sub\+Sequence}} (const uint32\+\_\+t inclusive\+\_\+start, const uint32\+\_\+t exclusive\+\_\+end) override
+std\+::string \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a286d2dd38ce24fb0da4c077e8f06bb25}{Sub\+Sequence}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t inclusive\+\_\+start, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t exclusive\+\_\+end) override
 \item 
-\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a752c93bfaa290094349858306468c9a9}{Set\+Length}} (const uint32\+\_\+t length) override
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a752c93bfaa290094349858306468c9a9}{Set\+Length}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t length) override
 \item 
 \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a328d66d5bfd40a9bcd91ffe59933bc15}{Set\+Empty}} () override
 \item 
-\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_aaf6bf26fa572599e284845f67b444900}{Append}} (const std\+::string \&csq) override
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_aaf6bf26fa572599e284845f67b444900}{Append}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&csq) override
 \item 
-\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a5d2f89510d37dc11bbf22a77ac6bff83}{Append}} (const std\+::string \&csq, const uint32\+\_\+t inclusive\+\_\+start, const uint32\+\_\+t exclusive\+\_\+end) override
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a5d2f89510d37dc11bbf22a77ac6bff83}{Append}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&csq, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t inclusive\+\_\+start, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t exclusive\+\_\+end) override
 \item 
-\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a1f8dccf1ecc42396f7f97b6a1972325f}{Append}} (const char c) override
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a1f8dccf1ecc42396f7f97b6a1972325f}{Append}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char c) override
 \item 
-\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ab8c8f791a3a504d86b3578a6f43810d1}{Append}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \&term\+\_\+att) override
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ab8c8f791a3a504d86b3578a6f43810d1}{Append}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \&term\+\_\+att) override
 \item 
 void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ae434068c40b8eab62af50e0e33a71bf4}{Reflect\+With}} (\mbox{\hyperlink{namespacelucene_1_1core_1_1util_a7dbb701adaed055f73fb95eec83da10a}{lucene\+::core\+::util\+::\+Attribute\+Reflector}} \&reflector) override
 \item 
-char \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a65259a0e94791f009d7109f7bbd7d74e}{operator\mbox{[}$\,$\mbox{]}}} (const uint32\+\_\+t idx) override
+char \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a65259a0e94791f009d7109f7bbd7d74e}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t idx) override
 \item 
-bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a2d741886d3be18e04bcbc1fbccad62a1}{operator==}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&other) const
+bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a2d741886d3be18e04bcbc1fbccad62a1}{operator==}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&other) \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}}
 \item 
 std\+::vector$<$ std\+::type\+\_\+index $>$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a7d8986b373cd9c2dfb2de25dd12000fd}{Attributes}} () override
 \item 
 void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ae37cc1fbce5614f5e60800d3f9f96d33}{Shallow\+Copy\+To}} (\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{lucene\+::core\+::util\+::\+Attribute\+Impl}} \&attr\+\_\+impl) override
 \item 
-\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ac49b714c3f8e438ddaa27dc1a2421144}{operator=}} (const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{lucene\+::core\+::util\+::\+Attribute\+Impl}} \&other)
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_ac49b714c3f8e438ddaa27dc1a2421144}{operator=}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{lucene\+::core\+::util\+::\+Attribute\+Impl}} \&other)
 \item 
-\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a4a53d4368af86441243246af1722390f}{operator=}} (const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&other)
+\mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a4a53d4368af86441243246af1722390f}{operator=}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&other)
 \item 
 \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{lucene\+::core\+::util\+::\+Attribute\+Impl}} $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a518bf3f405ddf676ee58fccb02ae3c23}{Clone}} () override
 \end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a4e54d600b1368df46af61c9bdae71cc0}{Grow\+Term\+Buffer}} (const uint32\+\_\+t new\+\_\+size)
+void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a4e54d600b1368df46af61c9bdae71cc0}{Grow\+Term\+Buffer}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t new\+\_\+size)
 \end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -80,7 +80,7 @@ uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattribute
 \subsection*{Static Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_af41df146fa133bcc320a7d281c559ae7}{C\+H\+A\+R\+\_\+\+T\+E\+R\+M\+\_\+\+A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+I\+M\+P\+L\+\_\+\+M\+I\+N\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}} = 10
+static \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_af41df146fa133bcc320a7d281c559ae7}{C\+H\+A\+R\+\_\+\+T\+E\+R\+M\+\_\+\+A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+I\+M\+P\+L\+\_\+\+M\+I\+N\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}} = 10
 \end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
@@ -96,7 +96,7 @@ static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1t
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Char\+Term\+Attribute\+Impl@{Char\+Term\+Attribute\+Impl}}
 \index{Char\+Term\+Attribute\+Impl@{Char\+Term\+Attribute\+Impl}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Char\+Term\+Attribute\+Impl()}{CharTermAttributeImpl()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily Char\+Term\+Attribute\+Impl\+::\+Char\+Term\+Attribute\+Impl (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&}]{other }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily Char\+Term\+Attribute\+Impl\+::\+Char\+Term\+Attribute\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&}]{other }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_aef0a9228f5cf3d4ad4c33d97f2a9a13b}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_aef0a9228f5cf3d4ad4c33d97f2a9a13b}} 
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!````~Char\+Term\+Attribute\+Impl@{$\sim$\+Char\+Term\+Attribute\+Impl}}
@@ -111,7 +111,7 @@ static const uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1t
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Append@{Append}}
 \index{Append@{Append}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Append()}{Append()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& Char\+Term\+Attribute\+Impl\+::\+Append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{csq }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& Char\+Term\+Attribute\+Impl\+::\+Append (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{csq }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -121,7 +121,7 @@ Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Append@{Append}}
 \index{Append@{Append}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Append()}{Append()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& Char\+Term\+Attribute\+Impl\+::\+Append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{csq,  }\item[{const uint32\+\_\+t}]{inclusive\+\_\+start,  }\item[{const uint32\+\_\+t}]{exclusive\+\_\+end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& Char\+Term\+Attribute\+Impl\+::\+Append (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{csq,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{inclusive\+\_\+start,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{exclusive\+\_\+end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -131,7 +131,7 @@ Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Append@{Append}}
 \index{Append@{Append}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Append()}{Append()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& Char\+Term\+Attribute\+Impl\+::\+Append (\begin{DoxyParamCaption}\item[{const char}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& Char\+Term\+Attribute\+Impl\+::\+Append (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -141,7 +141,7 @@ Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Append@{Append}}
 \index{Append@{Append}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Append()}{Append()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& Char\+Term\+Attribute\+Impl\+::\+Append (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \&}]{term\+\_\+att }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \& Char\+Term\+Attribute\+Impl\+::\+Append (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttribute}{Char\+Term\+Attribute}} \&}]{term\+\_\+att }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -199,7 +199,7 @@ Reimplemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattrib
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Copy\+Buffer@{Copy\+Buffer}}
 \index{Copy\+Buffer@{Copy\+Buffer}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Copy\+Buffer()}{CopyBuffer()}}
-{\footnotesize\ttfamily void Char\+Term\+Attribute\+Impl\+::\+Copy\+Buffer (\begin{DoxyParamCaption}\item[{const char $\ast$}]{buffer,  }\item[{const uint32\+\_\+t}]{offset,  }\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void Char\+Term\+Attribute\+Impl\+::\+Copy\+Buffer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char $\ast$}]{buffer,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{offset,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -219,7 +219,7 @@ Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Grow\+Term\+Buffer@{Grow\+Term\+Buffer}}
 \index{Grow\+Term\+Buffer@{Grow\+Term\+Buffer}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Grow\+Term\+Buffer()}{GrowTermBuffer()}}
-{\footnotesize\ttfamily void Char\+Term\+Attribute\+Impl\+::\+Grow\+Term\+Buffer (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{new\+\_\+size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily void Char\+Term\+Attribute\+Impl\+::\+Grow\+Term\+Buffer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{new\+\_\+size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a20085f30b788448e61de1f5635cd95f0}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a20085f30b788448e61de1f5635cd95f0}} 
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Length@{Length}}
@@ -235,7 +235,7 @@ Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!operator=@{operator=}}
 \index{operator=@{operator=}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& Char\+Term\+Attribute\+Impl\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{lucene\+::core\+::util\+::\+Attribute\+Impl}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& Char\+Term\+Attribute\+Impl\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl}{lucene\+::core\+::util\+::\+Attribute\+Impl}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -249,19 +249,19 @@ Reimplemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattrib
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!operator=@{operator=}}
 \index{operator=@{operator=}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& Char\+Term\+Attribute\+Impl\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&}]{other }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& Char\+Term\+Attribute\+Impl\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&}]{other }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a2d741886d3be18e04bcbc1fbccad62a1}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a2d741886d3be18e04bcbc1fbccad62a1}} 
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!operator==@{operator==}}
 \index{operator==@{operator==}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{operator==()}{operator==()}}
-{\footnotesize\ttfamily bool Char\+Term\+Attribute\+Impl\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&}]{other }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily bool Char\+Term\+Attribute\+Impl\+::operator== (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \&}]{other }\end{DoxyParamCaption}) const}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a65259a0e94791f009d7109f7bbd7d74e}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a65259a0e94791f009d7109f7bbd7d74e}} 
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!operator\mbox{[}\mbox{]}@{operator[]}}
 \index{operator\mbox{[}\mbox{]}@{operator[]}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{operator[]()}{operator[]()}}
-{\footnotesize\ttfamily char \& Char\+Term\+Attribute\+Impl\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{idx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily char \& Char\+Term\+Attribute\+Impl\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{idx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -281,7 +281,7 @@ Implements \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1AttributeImpl_a84d342
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Resize\+Buffer@{Resize\+Buffer}}
 \index{Resize\+Buffer@{Resize\+Buffer}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Resize\+Buffer()}{ResizeBuffer()}}
-{\footnotesize\ttfamily char $\ast$ Char\+Term\+Attribute\+Impl\+::\+Resize\+Buffer (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{new\+\_\+capacity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily char $\ast$ Char\+Term\+Attribute\+Impl\+::\+Resize\+Buffer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{new\+\_\+capacity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -301,7 +301,7 @@ Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Set\+Length@{Set\+Length}}
 \index{Set\+Length@{Set\+Length}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Set\+Length()}{SetLength()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& Char\+Term\+Attribute\+Impl\+::\+Set\+Length (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl}{Char\+Term\+Attribute\+Impl}} \& Char\+Term\+Attribute\+Impl\+::\+Set\+Length (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -325,7 +325,7 @@ Reimplemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattrib
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!Sub\+Sequence@{Sub\+Sequence}}
 \index{Sub\+Sequence@{Sub\+Sequence}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{Sub\+Sequence()}{SubSequence()}}
-{\footnotesize\ttfamily std\+::string Char\+Term\+Attribute\+Impl\+::\+Sub\+Sequence (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{inclusive\+\_\+start,  }\item[{const uint32\+\_\+t}]{exclusive\+\_\+end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily std\+::string Char\+Term\+Attribute\+Impl\+::\+Sub\+Sequence (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{inclusive\+\_\+start,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{exclusive\+\_\+end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -344,7 +344,7 @@ Implements \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1tokenattributes_1
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!C\+H\+A\+R\+\_\+\+T\+E\+R\+M\+\_\+\+A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+I\+M\+P\+L\+\_\+\+M\+I\+N\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE@{C\+H\+A\+R\+\_\+\+T\+E\+R\+M\+\_\+\+A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+I\+M\+P\+L\+\_\+\+M\+I\+N\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}}
 \index{C\+H\+A\+R\+\_\+\+T\+E\+R\+M\+\_\+\+A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+I\+M\+P\+L\+\_\+\+M\+I\+N\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE@{C\+H\+A\+R\+\_\+\+T\+E\+R\+M\+\_\+\+A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+I\+M\+P\+L\+\_\+\+M\+I\+N\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}!lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}}
 \subsubsection{\texorpdfstring{C\+H\+A\+R\+\_\+\+T\+E\+R\+M\+\_\+\+A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+I\+M\+P\+L\+\_\+\+M\+I\+N\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}{CHAR\_TERM\_ATTRIBUTE\_IMPL\_MIN\_BUFFER\_SIZE}}
-{\footnotesize\ttfamily const uint32\+\_\+t lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl\+::\+C\+H\+A\+R\+\_\+\+T\+E\+R\+M\+\_\+\+A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+I\+M\+P\+L\+\_\+\+M\+I\+N\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE = 10\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl\+::\+C\+H\+A\+R\+\_\+\+T\+E\+R\+M\+\_\+\+A\+T\+T\+R\+I\+B\+U\+T\+E\+\_\+\+I\+M\+P\+L\+\_\+\+M\+I\+N\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE = 10\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
 
 \mbox{\Hypertarget{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a9a4ece35b434c726c23ea3e1f0b46514}\label{classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1CharTermAttributeImpl_a9a4ece35b434c726c23ea3e1f0b46514}} 
 \index{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl@{lucene\+::core\+::analysis\+::tokenattributes\+::\+Char\+Term\+Attribute\+Impl}!term\+\_\+buffer@{term\+\_\+buffer}}

@@ -1,0 +1,92 @@
+\hypertarget{classlucene_1_1core_1_1store_1_1NativeFSLockFactory}{}\section{lucene\+:\+:core\+:\+:store\+:\+:Native\+F\+S\+Lock\+Factory Class Reference}
+\label{classlucene_1_1core_1_1store_1_1NativeFSLockFactory}\index{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}}
+
+
+{\ttfamily \#include $<$Lock.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:store\+:\+:Native\+F\+S\+Lock\+Factory\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlucene_1_1core_1_1store_1_1NativeFSLockFactory}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_1_1NativeFSLock}{Native\+F\+S\+Lock}}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1NativeFSLockFactory}{Native\+F\+S\+Lock\+Factory}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_a475cce1dec3dd6cfe86a48d0fc9d0512}{I\+N\+S\+T\+A\+N\+CE}}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Lock}{Lock}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_af41d7358d9d8b4dab47bc4a443ddd1ee}{Obtain\+F\+S\+Lock}} (\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory}{F\+S\+Directory}} \&dir, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&lock\+\_\+name)
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_a7ba78151a15b05204f56d24a2b89b7af}{Native\+F\+S\+Lock\+Factory}} ()=default
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_a466c2e84bbed2f80402e13a400ecad32}{Clear\+Lock\+Held}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&path)
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::set$<$ std\+::string $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_afe6f909fde9f0907977c787d8838dd7b}{L\+O\+C\+K\+\_\+\+H\+E\+LD}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_a7ba78151a15b05204f56d24a2b89b7af}\label{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_a7ba78151a15b05204f56d24a2b89b7af}} 
+\index{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}!Native\+F\+S\+Lock\+Factory@{Native\+F\+S\+Lock\+Factory}}
+\index{Native\+F\+S\+Lock\+Factory@{Native\+F\+S\+Lock\+Factory}!lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}}
+\subsubsection{\texorpdfstring{Native\+F\+S\+Lock\+Factory()}{NativeFSLockFactory()}}
+{\footnotesize\ttfamily lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory\+::\+Native\+F\+S\+Lock\+Factory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [default]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_a466c2e84bbed2f80402e13a400ecad32}\label{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_a466c2e84bbed2f80402e13a400ecad32}} 
+\index{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}!Clear\+Lock\+Held@{Clear\+Lock\+Held}}
+\index{Clear\+Lock\+Held@{Clear\+Lock\+Held}!lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}}
+\subsubsection{\texorpdfstring{Clear\+Lock\+Held()}{ClearLockHeld()}}
+{\footnotesize\ttfamily static void lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory\+::\+Clear\+Lock\+Held (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_af41d7358d9d8b4dab47bc4a443ddd1ee}\label{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_af41d7358d9d8b4dab47bc4a443ddd1ee}} 
+\index{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}!Obtain\+F\+S\+Lock@{Obtain\+F\+S\+Lock}}
+\index{Obtain\+F\+S\+Lock@{Obtain\+F\+S\+Lock}!lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}}
+\subsubsection{\texorpdfstring{Obtain\+F\+S\+Lock()}{ObtainFSLock()}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Lock}{Lock}} $>$ Native\+F\+S\+Lock\+Factory\+::\+Obtain\+F\+S\+Lock (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory}{F\+S\+Directory}} \&}]{dir,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{lock\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSLockFactory_a74469c668ec3d4eb0aaf1266b40c74e8}{lucene\+::core\+::store\+::\+F\+S\+Lock\+Factory}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_a475cce1dec3dd6cfe86a48d0fc9d0512}\label{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_a475cce1dec3dd6cfe86a48d0fc9d0512}} 
+\index{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}!I\+N\+S\+T\+A\+N\+CE@{I\+N\+S\+T\+A\+N\+CE}}
+\index{I\+N\+S\+T\+A\+N\+CE@{I\+N\+S\+T\+A\+N\+CE}!lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}}
+\subsubsection{\texorpdfstring{I\+N\+S\+T\+A\+N\+CE}{INSTANCE}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1NativeFSLockFactory}{Native\+F\+S\+Lock\+Factory}} $>$ Native\+F\+S\+Lock\+Factory\+::\+I\+N\+S\+T\+A\+N\+CE\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1NativeFSLockFactory}{Native\+F\+S\+Lock\+Factory}} \mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_afe6f909fde9f0907977c787d8838dd7b}\label{classlucene_1_1core_1_1store_1_1NativeFSLockFactory_afe6f909fde9f0907977c787d8838dd7b}} 
+\index{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}!L\+O\+C\+K\+\_\+\+H\+E\+LD@{L\+O\+C\+K\+\_\+\+H\+E\+LD}}
+\index{L\+O\+C\+K\+\_\+\+H\+E\+LD@{L\+O\+C\+K\+\_\+\+H\+E\+LD}!lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory@{lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory}}
+\subsubsection{\texorpdfstring{L\+O\+C\+K\+\_\+\+H\+E\+LD}{LOCK\_HELD}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::set$<$std\+::string$>$ lucene\+::core\+::store\+::\+Native\+F\+S\+Lock\+Factory\+::\+L\+O\+C\+K\+\_\+\+H\+E\+LD\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Store/\mbox{\hyperlink{Lock_8h}{Lock.\+h}}\item 
+Store/\mbox{\hyperlink{Lock_8cpp}{Lock.\+cpp}}\end{DoxyCompactItemize}

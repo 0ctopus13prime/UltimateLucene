@@ -35,7 +35,9 @@ T* CopyOf(const T* original,
           const uint32_t original_length,
           const uint32_t new_length) {
   T* copy = new T[new_length];
-  std::memcpy(copy, original, sizeof(T) * std::min(original_length, new_length));
+  std::memcpy(copy,
+              original,
+              sizeof(T) * std::min(original_length, new_length));
   return copy;
 }
 

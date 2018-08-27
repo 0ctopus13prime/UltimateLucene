@@ -18,13 +18,9 @@
 #ifndef SRC_STORE_DIRECTORY_H_
 #define SRC_STORE_DIRECTORY_H_
 
-#include <Store/Context.h>
 #include <Store/DataOutput.h>
-#include <Store/DataInput.h>
-#include <Store/Exception.h>
-#include <Util/File.h>
-#include <Util/Exception.h>
 #include <atomic>
+#include <memory>
 #include <string>
 #include <set>
 #include <vector>
@@ -80,7 +76,7 @@ class Directory {
 
   virtual void DeleteFile(const std::string& name) = 0;
 
-  virtual uint64_t FileLength(const std::string& name) = 0; 
+  virtual uint64_t FileLength(const std::string& name) = 0;
 
   virtual std::unique_ptr<IndexOutput>
   CreateOutput(const std::string& name, const IOContext& context) = 0;
@@ -129,10 +125,10 @@ class BaseDirectory: public Directory {
 class FSDirectory: public BaseDirectory {
  protected:
   std::string directory;
- 
+
  private:
   // TODO(0ctopus13prime): It's not thread safe. Make it thread safe
-  std::set<std::string> pending_deletes; 
+  std::set<std::string> pending_deletes;
   std::atomic<std::uint32_t> ops_since_last_delete;
   std::atomic<std::uint32_t> next_temp_file_counter;
 
@@ -206,8 +202,8 @@ class MMapDirectory: public FSDirectory {
                                         const IOContext& context);
 };
 
-}  // store
-}  // core
-}  // lucene
+}  // namespace store
+}  // namespace core
+}  // namespace lucene
 
 #endif  // SRC_STORE_DIRECTORY_H_

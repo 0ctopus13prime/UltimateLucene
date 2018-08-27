@@ -1,0 +1,128 @@
+\hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput}{}\section{lucene\+:\+:core\+:\+:store\+:\+:Byte\+Array\+Reference\+Data\+Output Class Reference}
+\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput}\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+
+
+{\ttfamily \#include $<$Data\+Output.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:store\+:\+:Byte\+Array\+Reference\+Data\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_acd5e49aa4aa0d360625f1b6c6915e46e}{Byte\+Array\+Reference\+Data\+Output}} (char \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_abcc6354e688741b6aeee2e92810d6830}{bytes}}\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_af7559d89752c8df6dc14ced938e9edff}{bytes\+\_\+len}}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t offset, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t len)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a7eb8216732243b3f2767eaba96d07959}{Byte\+Array\+Reference\+Data\+Output}} (char \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_abcc6354e688741b6aeee2e92810d6830}{bytes}}\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_af7559d89752c8df6dc14ced938e9edff}{bytes\+\_\+len}})
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a81963a9ec032e9c83868224ab29bd08e}{Reset}} (char new\+\_\+bytes\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t new\+\_\+bytes\+\_\+len, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t new\+\_\+offset, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t new\+\_\+len) noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a94db528474ad3988a8e0356366fd9a33}{Reset}} (char new\+\_\+bytes\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t new\+\_\+bytes\+\_\+len) noexcept
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_ac53348b3660ae9ba52b9393c3c253651}{Get\+Position}} () \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} noexcept
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a8fe0203aa432ae75b9fb280414476b80}{Write\+Byte}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char b)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a56eb71d664e7f32fd874acdf0c899e0c}{Write\+Bytes}} (char \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_abcc6354e688741b6aeee2e92810d6830}{bytes}}\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t offset, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t length)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_abcc6354e688741b6aeee2e92810d6830}{bytes}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_af7559d89752c8df6dc14ced938e9edff}{bytes\+\_\+len}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_ac7be7cf8a0d106f0cd2319c2d4d17a7c}{pos}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a9d38ace165736b26c770ba9bb542a488}{limit}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_acd5e49aa4aa0d360625f1b6c6915e46e}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_acd5e49aa4aa0d360625f1b6c6915e46e}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!Byte\+Array\+Reference\+Data\+Output@{Byte\+Array\+Reference\+Data\+Output}}
+\index{Byte\+Array\+Reference\+Data\+Output@{Byte\+Array\+Reference\+Data\+Output}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{Byte\+Array\+Reference\+Data\+Output()}{ByteArrayReferenceDataOutput()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::\+Byte\+Array\+Reference\+Data\+Output (\begin{DoxyParamCaption}\item[{char}]{bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{bytes\+\_\+len,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{offset,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a7eb8216732243b3f2767eaba96d07959}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a7eb8216732243b3f2767eaba96d07959}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!Byte\+Array\+Reference\+Data\+Output@{Byte\+Array\+Reference\+Data\+Output}}
+\index{Byte\+Array\+Reference\+Data\+Output@{Byte\+Array\+Reference\+Data\+Output}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{Byte\+Array\+Reference\+Data\+Output()}{ByteArrayReferenceDataOutput()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::\+Byte\+Array\+Reference\+Data\+Output (\begin{DoxyParamCaption}\item[{char}]{bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{bytes\+\_\+len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_ac53348b3660ae9ba52b9393c3c253651}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_ac53348b3660ae9ba52b9393c3c253651}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!Get\+Position@{Get\+Position}}
+\index{Get\+Position@{Get\+Position}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{Get\+Position()}{GetPosition()}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::\+Get\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a81963a9ec032e9c83868224ab29bd08e}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a81963a9ec032e9c83868224ab29bd08e}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!Reset@{Reset}}
+\index{Reset@{Reset}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::\+Reset (\begin{DoxyParamCaption}\item[{char}]{new\+\_\+bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{new\+\_\+bytes\+\_\+len,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{new\+\_\+offset,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{new\+\_\+len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a94db528474ad3988a8e0356366fd9a33}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a94db528474ad3988a8e0356366fd9a33}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!Reset@{Reset}}
+\index{Reset@{Reset}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::\+Reset (\begin{DoxyParamCaption}\item[{char}]{new\+\_\+bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{new\+\_\+bytes\+\_\+len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a8fe0203aa432ae75b9fb280414476b80}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a8fe0203aa432ae75b9fb280414476b80}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!Write\+Byte@{Write\+Byte}}
+\index{Write\+Byte@{Write\+Byte}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Byte()}{WriteByte()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::\+Write\+Byte (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_a22e242cc11ebfc3e7937eacb07106626}{lucene\+::core\+::store\+::\+Data\+Output}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a56eb71d664e7f32fd874acdf0c899e0c}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a56eb71d664e7f32fd874acdf0c899e0c}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!Write\+Bytes@{Write\+Bytes}}
+\index{Write\+Bytes@{Write\+Bytes}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{Write\+Bytes()}{WriteBytes()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::\+Write\+Bytes (\begin{DoxyParamCaption}\item[{char}]{bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{offset,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataOutput_ab2d4f729a14d87afd84ec558e11883d2}{lucene\+::core\+::store\+::\+Data\+Output}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_abcc6354e688741b6aeee2e92810d6830}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_abcc6354e688741b6aeee2e92810d6830}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!bytes@{bytes}}
+\index{bytes@{bytes}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{bytes}{bytes}}
+{\footnotesize\ttfamily char$\ast$ lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::bytes\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_af7559d89752c8df6dc14ced938e9edff}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_af7559d89752c8df6dc14ced938e9edff}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!bytes\+\_\+len@{bytes\+\_\+len}}
+\index{bytes\+\_\+len@{bytes\+\_\+len}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{bytes\+\_\+len}{bytes\_len}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::bytes\+\_\+len\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a9d38ace165736b26c770ba9bb542a488}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_a9d38ace165736b26c770ba9bb542a488}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!limit@{limit}}
+\index{limit@{limit}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{limit}{limit}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::limit\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_ac7be7cf8a0d106f0cd2319c2d4d17a7c}\label{classlucene_1_1core_1_1store_1_1ByteArrayReferenceDataOutput_ac7be7cf8a0d106f0cd2319c2d4d17a7c}} 
+\index{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}!pos@{pos}}
+\index{pos@{pos}!lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output@{lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output}}
+\subsubsection{\texorpdfstring{pos}{pos}}
+{\footnotesize\ttfamily uint32\+\_\+t lucene\+::core\+::store\+::\+Byte\+Array\+Reference\+Data\+Output\+::pos\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Store/\mbox{\hyperlink{DataOutput_8h}{Data\+Output.\+h}}\end{DoxyCompactItemize}

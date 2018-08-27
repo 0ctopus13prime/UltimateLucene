@@ -19,13 +19,13 @@ virtual int \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_ae8e04911
 \item 
 virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a475ba046fd74e43a1cce4c4702c791c2}{Read\+Line}} (std\+::string \&line)=0
 \item 
-virtual int \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a986e25a49a947dc113a22c6de033ebe9}{Read}} (char $\ast$cstr, const uint32\+\_\+t off, const uint32\+\_\+t len)=0
+virtual int \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a986e25a49a947dc113a22c6de033ebe9}{Read}} (char $\ast$cstr, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t off, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t len)=0
 \item 
-virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a3bd8e9f3e1d07d698bccabde41970219}{Skip}} (const uint64\+\_\+t n)=0
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a3bd8e9f3e1d07d698bccabde41970219}{Skip}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint64\+\_\+t n)=0
 \item 
 virtual bool \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a230fae02ca4a63de33fdaad6f9aafd96}{Mark\+Supported}} ()=0
 \item 
-virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a0b60b07a3f65098a50f10f6618097527}{Mark}} (const uint32\+\_\+t read\+\_\+ahead\+\_\+limit)=0
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a0b60b07a3f65098a50f10f6618097527}{Mark}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t read\+\_\+ahead\+\_\+limit)=0
 \item 
 virtual void \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1Reader_a5299f5469ce4ea9812ec79a59667945a}{Reset}} ()=0
 \item 
@@ -69,7 +69,7 @@ Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_
 \index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Mark@{Mark}}
 \index{Mark@{Mark}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
 \subsubsection{\texorpdfstring{Mark()}{Mark()}}
-{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Reader\+::\+Mark (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{read\+\_\+ahead\+\_\+limit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Reader\+::\+Mark (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{read\+\_\+ahead\+\_\+limit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
@@ -99,7 +99,7 @@ Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_
 \index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Read@{Read}}
 \index{Read@{Read}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
 \subsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily virtual int lucene\+::core\+::analysis\+::\+Reader\+::\+Read (\begin{DoxyParamCaption}\item[{char $\ast$}]{cstr,  }\item[{const uint32\+\_\+t}]{off,  }\item[{const uint32\+\_\+t}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily virtual int lucene\+::core\+::analysis\+::\+Reader\+::\+Read (\begin{DoxyParamCaption}\item[{char $\ast$}]{cstr,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{off,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
@@ -129,7 +129,7 @@ Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1analysis_1_1StringReader_
 \index{lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}!Skip@{Skip}}
 \index{Skip@{Skip}!lucene\+::core\+::analysis\+::\+Reader@{lucene\+::core\+::analysis\+::\+Reader}}
 \subsubsection{\texorpdfstring{Skip()}{Skip()}}
-{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Reader\+::\+Skip (\begin{DoxyParamCaption}\item[{const uint64\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::analysis\+::\+Reader\+::\+Skip (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint64\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 

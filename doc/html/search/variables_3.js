@@ -1,15 +1,22 @@
 var searchData=
 [
+  ['data_5ftype',['data_type',['../structz__stream__s.html#a9d8f63877d7639a8bca60f9fc3704fc4',1,'z_stream_s']]],
+  ['default',['DEFAULT',['../classlucene_1_1core_1_1store_1_1MergeInfo.html#a8c15f5ef4010990dfa3715b28fa75b41',1,'lucene::core::store::MergeInfo::DEFAULT()'],['../classlucene_1_1core_1_1store_1_1FlushInfo.html#ae3bd10904cadef389ecb82cf54dc1c7f',1,'lucene::core::store::FlushInfo::DEFAULT()'],['../classlucene_1_1core_1_1store_1_1IOContext.html#a354acead9c7f7b0f1d1c0a0717b2c0aa',1,'lucene::core::store::IOContext::DEFAULT()']]],
   ['default_5fattr_5ftype_5fids',['DEFAULT_ATTR_TYPE_IDS',['../classlucene_1_1core_1_1util_1_1AttributeFactory_1_1StaticImplementationAttributeFactory.html#a8bf6856d9370f3036f27bed2e0fa819a',1,'lucene::core::util::AttributeFactory::StaticImplementationAttributeFactory']]],
   ['default_5fattribute_5ffactory',['DEFAULT_ATTRIBUTE_FACTORY',['../namespacelucene_1_1core_1_1util.html#aff58249bc13b07b9fde5d2bce9afa79e',1,'lucene::core::util']]],
+  ['default_5fbuffersize',['DEFAULT_BUFFERSIZE',['../classlucene_1_1core_1_1store_1_1BufferedChecksum.html#ab07ac79f2ff8be2dac8f0fc485c2f74c',1,'lucene::core::store::BufferedChecksum']]],
   ['default_5fbytes',['DEFAULT_BYTES',['../classlucene_1_1core_1_1util_1_1BytesRef.html#abcb0c93627877d9d8b01889830e879b0',1,'lucene::core::util::BytesRef']]],
   ['default_5fmax_5ftoken_5flength',['DEFAULT_MAX_TOKEN_LENGTH',['../classlucene_1_1core_1_1analysis_1_1standard_1_1StandardAnalyzer.html#a3c01017747853f232cdceee30fea7a35',1,'lucene::core::analysis::standard::StandardAnalyzer']]],
   ['default_5ftoken_5fattribute_5ffactory',['DEFAULT_TOKEN_ATTRIBUTE_FACTORY',['../classlucene_1_1core_1_1analysis_1_1TokenStream.html#a3a38785c7907943994326cb9d7180671',1,'lucene::core::analysis::TokenStream']]],
   ['default_5ftype',['DEFAULT_TYPE',['../classlucene_1_1core_1_1analysis_1_1tokenattributes_1_1TypeAttribute.html#acb727b71590b34060e7d915afb885c27',1,'lucene::core::analysis::tokenattributes::TypeAttribute']]],
-  ['delegate',['delegate',['../classlucene_1_1core_1_1util_1_1AttributeFactory_1_1StaticImplementationAttributeFactory.html#af9df5d3fee613815d29578b1c297d8e5',1,'lucene::core::util::AttributeFactory::StaticImplementationAttributeFactory']]],
+  ['delegate',['delegate',['../classlucene_1_1core_1_1store_1_1RateLimitedIndexOutput.html#a259d5a942b7ab06f13ce7a0f2e884d63',1,'lucene::core::store::RateLimitedIndexOutput::delegate()'],['../classlucene_1_1core_1_1util_1_1AttributeFactory_1_1StaticImplementationAttributeFactory.html#af9df5d3fee613815d29578b1c297d8e5',1,'lucene::core::util::AttributeFactory::StaticImplementationAttributeFactory::delegate()']]],
   ['delete_5fattribute',['delete_attribute',['../classlucene_1_1core_1_1util_1_1AttributeSource_1_1State.html#a295bd737041155f73ff62277a6937926',1,'lucene::core::util::AttributeSource::State']]],
+  ['digest',['digest',['../classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput.html#a03959da784c91f969b5541e9c375cdb5',1,'lucene::core::store::BufferedChecksumIndexInput']]],
   ['dimension_5fcount',['dimension_count',['../classlucene_1_1core_1_1document_1_1FieldType.html#a86df8398e9e9765cda2d2e48c2ec8cce',1,'lucene::core::document::FieldType::dimension_count()'],['../classlucene_1_1core_1_1document_1_1FieldTypeBuilder.html#a67c239a6d02d8a224f8adb53099f2928',1,'lucene::core::document::FieldTypeBuilder::dimension_count()']]],
   ['dimension_5fnum_5fbytes',['dimension_num_bytes',['../classlucene_1_1core_1_1document_1_1FieldType.html#a66764229077763f23d13537795f7efe3',1,'lucene::core::document::FieldType::dimension_num_bytes()'],['../classlucene_1_1core_1_1document_1_1FieldTypeBuilder.html#ac0547d965a4fd08e2b36e57a8a20f0d5',1,'lucene::core::document::FieldTypeBuilder::dimension_num_bytes()']]],
+  ['direct',['direct',['../structgz__state.html#a114c6a0de43039853ead48a092792a7d',1,'gz_state']]],
+  ['directory',['directory',['../classlucene_1_1core_1_1store_1_1FSDirectory.html#a284b79d993221839dd479e57ce556381',1,'lucene::core::store::FSDirectory']]],
   ['doc_5fvalues_5ftype',['doc_values_type',['../classlucene_1_1core_1_1document_1_1FieldType.html#ac90952580a0964ee3ca3c9a8c6fe65a9',1,'lucene::core::document::FieldType::doc_values_type()'],['../classlucene_1_1core_1_1document_1_1FieldTypeBuilder.html#a86c3f0e4735885565b2f70cf171fbc16',1,'lucene::core::document::FieldTypeBuilder::doc_values_type()']]],
+  ['done',['done',['../structgz__header__s.html#ab8fd11f59b76a7d031e24bede8679d9d',1,'gz_header_s']]],
   ['double_5fvalue',['double_value',['../unionlucene_1_1core_1_1util_1_1numeric_1_1Number_1_1NumberRepresentation.html#a6b9e562594e60ec65552c33a8f717c30',1,'lucene::core::util::numeric::Number::NumberRepresentation']]]
 ];

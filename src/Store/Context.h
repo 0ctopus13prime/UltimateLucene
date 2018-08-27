@@ -14,14 +14,15 @@
  * limitations under the License.
  *
  */
-#ifndef SRC_UTIL_CONTEXT_H_
-#define SRC_UTIL_CONTEXT_H_
+#ifndef SRC_STORE_CONTEXT_H_
+#define SRC_STORE_CONTEXT_H_
 
 #include <Util/Etc.h>
 #include <cassert>
 #include <cstdint>
 #include <cstring>
 #include <memory>
+#include <utility>
 
 namespace lucene {
 namespace core {
@@ -55,7 +56,7 @@ class MergeInfo {
     return ((total_max_doc == other.total_max_doc) &&
            (estimate_merge_bytes == other.estimate_merge_bytes) &&
            (is_external == other.is_external) &&
-           (merge_max_num_segments == other.merge_max_num_segments)); 
+           (merge_max_num_segments == other.merge_max_num_segments));
   }
 };
 
@@ -84,13 +85,13 @@ class IOContext {
     MERGE, READ, FLUSH, DEFAULT
   };
 
-  const Context context;  
+  const Context context;
   const MergeInfo merge_info;
   const FlushInfo flush_info;
   const bool read_once;
 
  private:
-  IOContext(const bool read_once)
+  explicit IOContext(const bool read_once)
     : context(Context::READ),
       merge_info(MergeInfo::DEFAULT),
       read_once(read_once),
@@ -102,7 +103,7 @@ class IOContext {
       read_once(false),
       merge_info(merge_info),
       flush_info(FlushInfo::DEFAULT) {
-    assert(context != Context::MERGE || merge_info != MergeInfo::DEFAULT); 
+    assert(context != Context::MERGE || merge_info != MergeInfo::DEFAULT);
     assert(context != Context::FLUSH);
   }
 
@@ -111,18 +112,18 @@ class IOContext {
     : IOContext(false) {
   }
 
-  IOContext(const FlushInfo& flush_info)
+  explicit IOContext(const FlushInfo& flush_info)
     : context(Context::FLUSH),
       merge_info(MergeInfo::DEFAULT),
       read_once(false),
       flush_info(flush_info) {
   }
 
-  IOContext(const Context context)
+  explicit IOContext(const Context context)
     : IOContext(context, MergeInfo::DEFAULT) {
   }
 
-  IOContext(const MergeInfo& merge_info)
+  explicit IOContext(const MergeInfo& merge_info)
     : IOContext(Context::MERGE, merge_info) {
   }
 
@@ -136,10 +137,10 @@ class IOContext {
 
 class BufferedChecksum: public lucene::core::util::Checksum {
  public:
-  const uint32_t DEFAULT_BUFFERSIZE = 256; 
+  const uint32_t DEFAULT_BUFFERSIZE = 256;
 
  private:
-  std::unique_ptr<lucene::core::util::Checksum> in; 
+  std::unique_ptr<lucene::core::util::Checksum> in;
   std::unique_ptr<char[]> buffer;
   uint32_t buffer_size;
   uint32_t upto;
@@ -153,7 +154,7 @@ class BufferedChecksum: public lucene::core::util::Checksum {
   }
 
  public:
-  BufferedChecksum(std::unique_ptr<lucene::core::util::Checksum>&& in)
+  explicit BufferedChecksum(std::unique_ptr<lucene::core::util::Checksum>&& in)
     : lucene::core::util::Checksum(),
       in(std::forward<std::unique_ptr<lucene::core::util::Checksum>>(in)),
       buffer(std::make_unique<char[]>(BufferedChecksum::DEFAULT_BUFFERSIZE)),
@@ -207,4 +208,4 @@ class BufferedChecksum: public lucene::core::util::Checksum {
 }  // namespace core
 }  // namespace lucene
 
-#endif  // SRC_UTIL_CONTEXT_H_
+#endif  // SRC_STORE_CONTEXT_H_

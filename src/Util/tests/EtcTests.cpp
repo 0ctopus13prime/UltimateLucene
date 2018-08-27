@@ -95,7 +95,7 @@ TEST(ETC__TESTS, CRC32__TESTS) {
   crc32.Update(str1.c_str(), 0, str1.size());
   EXPECT_EQ(4079133648L/*From Java*/, crc32.GetValue());
   std::string str2("I'm very tired today. After this test "
-                   "I'm going to bath to relax myself"); 
+                   "I'm going to bath to relax myself");
   crc32.Update(str2.c_str(), 0, str2.size());
   EXPECT_EQ(785957158L/*From Java*/, crc32.GetValue());
   crc32.Reset();

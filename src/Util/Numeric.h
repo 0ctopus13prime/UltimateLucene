@@ -26,7 +26,7 @@
 namespace lucene {
 namespace core {
 namespace util {
-namespace numeric { // TODO(0ctopus13prime): Remove this.
+namespace numeric {  // TODO(0ctopus13prime): Remove this.
 
 typedef union {
   int16_t int16;

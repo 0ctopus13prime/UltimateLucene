@@ -1,0 +1,86 @@
+\hypertarget{classlucene_1_1core_1_1store_1_1MMapDirectory}{}\section{lucene\+:\+:core\+:\+:store\+:\+:M\+Map\+Directory Class Reference}
+\label{classlucene_1_1core_1_1store_1_1MMapDirectory}\index{lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}}
+
+
+{\ttfamily \#include $<$Directory.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:store\+:\+:M\+Map\+Directory\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlucene_1_1core_1_1store_1_1MMapDirectory}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1MMapDirectory_a92290f8e78a93ef15e58c8e114fc0fa3}{M\+Map\+Directory}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&path)
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1MMapDirectory_a8270d1bc0f9d410c19eac95e8ef8ea48}{M\+Map\+Directory}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&path, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1LockFactory}{Lock\+Factory}} $>$ \&\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BaseDirectory_a61e759bb8ca8ec591d2a067679164f3a}{lock\+\_\+factory}})
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1MMapDirectory_a1089bb27f5e5189909bb98835c49965b}{Set\+Pre\+Load}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} bool new\+\_\+preload) noexcept
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1MMapDirectory_af463dc9e012f72c23e7f29899f57464e}{Is\+Pre\+Load}} () \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} noexcept
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput}{Index\+Input}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1MMapDirectory_ab69c2621677342be11820cb290ac8a4b}{Open\+Input}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&name, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IOContext}{I\+O\+Context}} \&context)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1MMapDirectory_a7bd67252d7136e8185bf3a1cffc8245e}{preload}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1MMapDirectory_a92290f8e78a93ef15e58c8e114fc0fa3}\label{classlucene_1_1core_1_1store_1_1MMapDirectory_a92290f8e78a93ef15e58c8e114fc0fa3}} 
+\index{lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}!M\+Map\+Directory@{M\+Map\+Directory}}
+\index{M\+Map\+Directory@{M\+Map\+Directory}!lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}}
+\subsubsection{\texorpdfstring{M\+Map\+Directory()}{MMapDirectory()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily M\+Map\+Directory\+::\+M\+Map\+Directory (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1MMapDirectory}{M\+Map\+Directory}} \mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1MMapDirectory_a8270d1bc0f9d410c19eac95e8ef8ea48}\label{classlucene_1_1core_1_1store_1_1MMapDirectory_a8270d1bc0f9d410c19eac95e8ef8ea48}} 
+\index{lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}!M\+Map\+Directory@{M\+Map\+Directory}}
+\index{M\+Map\+Directory@{M\+Map\+Directory}!lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}}
+\subsubsection{\texorpdfstring{M\+Map\+Directory()}{MMapDirectory()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily M\+Map\+Directory\+::\+M\+Map\+Directory (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{path,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1LockFactory}{Lock\+Factory}} $>$ \&}]{lock\+\_\+factory }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1MMapDirectory_af463dc9e012f72c23e7f29899f57464e}\label{classlucene_1_1core_1_1store_1_1MMapDirectory_af463dc9e012f72c23e7f29899f57464e}} 
+\index{lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}!Is\+Pre\+Load@{Is\+Pre\+Load}}
+\index{Is\+Pre\+Load@{Is\+Pre\+Load}!lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}}
+\subsubsection{\texorpdfstring{Is\+Pre\+Load()}{IsPreLoad()}}
+{\footnotesize\ttfamily bool lucene\+::core\+::store\+::\+M\+Map\+Directory\+::\+Is\+Pre\+Load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1MMapDirectory_ab69c2621677342be11820cb290ac8a4b}\label{classlucene_1_1core_1_1store_1_1MMapDirectory_ab69c2621677342be11820cb290ac8a4b}} 
+\index{lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}!Open\+Input@{Open\+Input}}
+\index{Open\+Input@{Open\+Input}!lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}}
+\subsubsection{\texorpdfstring{Open\+Input()}{OpenInput()}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput}{Index\+Input}} $>$ M\+Map\+Directory\+::\+Open\+Input (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{name,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IOContext}{I\+O\+Context}} \&}]{context }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_a4889bc9f58be58f28cc6e0846fbd516c}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1MMapDirectory_a1089bb27f5e5189909bb98835c49965b}\label{classlucene_1_1core_1_1store_1_1MMapDirectory_a1089bb27f5e5189909bb98835c49965b}} 
+\index{lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}!Set\+Pre\+Load@{Set\+Pre\+Load}}
+\index{Set\+Pre\+Load@{Set\+Pre\+Load}!lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}}
+\subsubsection{\texorpdfstring{Set\+Pre\+Load()}{SetPreLoad()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+M\+Map\+Directory\+::\+Set\+Pre\+Load (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} bool}]{new\+\_\+preload }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1MMapDirectory_a7bd67252d7136e8185bf3a1cffc8245e}\label{classlucene_1_1core_1_1store_1_1MMapDirectory_a7bd67252d7136e8185bf3a1cffc8245e}} 
+\index{lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}!preload@{preload}}
+\index{preload@{preload}!lucene\+::core\+::store\+::\+M\+Map\+Directory@{lucene\+::core\+::store\+::\+M\+Map\+Directory}}
+\subsubsection{\texorpdfstring{preload}{preload}}
+{\footnotesize\ttfamily bool lucene\+::core\+::store\+::\+M\+Map\+Directory\+::preload\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Store/\mbox{\hyperlink{Directory_8h}{Directory.\+h}}\item 
+Store/\mbox{\hyperlink{Directory_8cpp}{Directory.\+cpp}}\end{DoxyCompactItemize}

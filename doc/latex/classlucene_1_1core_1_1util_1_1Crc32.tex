@@ -1,0 +1,104 @@
+\hypertarget{classlucene_1_1core_1_1util_1_1Crc32}{}\section{lucene\+:\+:core\+:\+:util\+:\+:Crc32 Class Reference}
+\label{classlucene_1_1core_1_1util_1_1Crc32}\index{lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}}
+
+
+{\ttfamily \#include $<$Etc.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:util\+:\+:Crc32\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1util_1_1Crc32}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_a54339ec81ec5ca5cd367eb8154dbe2c5}{Crc32}} ()
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_afba37e2e4718ddf2b2740261039eaf4b}{$\sim$\+Crc32}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_a2d602ecc736c5cc5a0281bccc032b4fc}{Update}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char b)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_aadb0ec93d3d2097302c869a1f4f61602}{Update}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char bytes\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t off, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t len)
+\item 
+int64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_a57040a35d56a41c72cc5364ff07d0095}{Get\+Value}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_a4e73914945d7e498799bd444b3fb3b2f}{Reset}} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int32\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_a6bb849cd1220fc45e59a277fec437e8a}{crc}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Crc32_a54339ec81ec5ca5cd367eb8154dbe2c5}\label{classlucene_1_1core_1_1util_1_1Crc32_a54339ec81ec5ca5cd367eb8154dbe2c5}} 
+\index{lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}!Crc32@{Crc32}}
+\index{Crc32@{Crc32}!lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}}
+\subsubsection{\texorpdfstring{Crc32()}{Crc32()}}
+{\footnotesize\ttfamily lucene\+::core\+::util\+::\+Crc32\+::\+Crc32 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Crc32_afba37e2e4718ddf2b2740261039eaf4b}\label{classlucene_1_1core_1_1util_1_1Crc32_afba37e2e4718ddf2b2740261039eaf4b}} 
+\index{lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}!````~Crc32@{$\sim$\+Crc32}}
+\index{````~Crc32@{$\sim$\+Crc32}!lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}}
+\subsubsection{\texorpdfstring{$\sim$\+Crc32()}{~Crc32()}}
+{\footnotesize\ttfamily lucene\+::core\+::util\+::\+Crc32\+::$\sim$\+Crc32 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Crc32_a57040a35d56a41c72cc5364ff07d0095}\label{classlucene_1_1core_1_1util_1_1Crc32_a57040a35d56a41c72cc5364ff07d0095}} 
+\index{lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}!Get\+Value@{Get\+Value}}
+\index{Get\+Value@{Get\+Value}!lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}}
+\subsubsection{\texorpdfstring{Get\+Value()}{GetValue()}}
+{\footnotesize\ttfamily int64\+\_\+t lucene\+::core\+::util\+::\+Crc32\+::\+Get\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_aad9ea66e424c89f3600c36e66cfe508c}{lucene\+::core\+::util\+::\+Checksum}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Crc32_a4e73914945d7e498799bd444b3fb3b2f}\label{classlucene_1_1core_1_1util_1_1Crc32_a4e73914945d7e498799bd444b3fb3b2f}} 
+\index{lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}!Reset@{Reset}}
+\index{Reset@{Reset}!lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily void lucene\+::core\+::util\+::\+Crc32\+::\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_a7e2d8a05474cad9ca3d67c1e770ffa29}{lucene\+::core\+::util\+::\+Checksum}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Crc32_a2d602ecc736c5cc5a0281bccc032b4fc}\label{classlucene_1_1core_1_1util_1_1Crc32_a2d602ecc736c5cc5a0281bccc032b4fc}} 
+\index{lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}!Update@{Update}}
+\index{Update@{Update}!lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}}
+\subsubsection{\texorpdfstring{Update()}{Update()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void lucene\+::core\+::util\+::\+Crc32\+::\+Update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_a7c6a70391ed64a38eb6f3db43876f652}{lucene\+::core\+::util\+::\+Checksum}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Crc32_aadb0ec93d3d2097302c869a1f4f61602}\label{classlucene_1_1core_1_1util_1_1Crc32_aadb0ec93d3d2097302c869a1f4f61602}} 
+\index{lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}!Update@{Update}}
+\index{Update@{Update}!lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}}
+\subsubsection{\texorpdfstring{Update()}{Update()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void lucene\+::core\+::util\+::\+Crc32\+::\+Update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char}]{bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{off,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_aab3bdd13efe91e6e582b56fd64a304b6}{lucene\+::core\+::util\+::\+Checksum}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Crc32_a6bb849cd1220fc45e59a277fec437e8a}\label{classlucene_1_1core_1_1util_1_1Crc32_a6bb849cd1220fc45e59a277fec437e8a}} 
+\index{lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}!crc@{crc}}
+\index{crc@{crc}!lucene\+::core\+::util\+::\+Crc32@{lucene\+::core\+::util\+::\+Crc32}}
+\subsubsection{\texorpdfstring{crc}{crc}}
+{\footnotesize\ttfamily int32\+\_\+t lucene\+::core\+::util\+::\+Crc32\+::crc\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Util/\mbox{\hyperlink{Etc_8h}{Etc.\+h}}\end{DoxyCompactItemize}

@@ -19,21 +19,18 @@
 #define SRC_STORE_DATAINPUT_H_
 
 #include <Util/Bits.h>
-#include <Util/Bytes.h>
-#include <Util/Etc.h>
 #include <Util/Exception.h>
 #include <Util/Numeric.h>
 #include <Store/Context.h>
 #include <Store/Exception.h>
 #include <sys/mman.h>
-#include <cstring>
 #include <algorithm>
 #include <map>
 #include <memory>
-#include <stdexcept>
 #include <set>
 #include <string>
 #include <thread>
+#include <utility>
 
 namespace lucene {
 namespace core {
@@ -69,7 +66,7 @@ class DataInput {
   int64_t ReadVInt64(const bool allow_negative) {
     char b = ReadByte();
     if (b >= 0) return b;
-    long i = b & 0x7FL;
+    int64_t i = b & 0x7FL;
     b = ReadByte();
     i |= (b & 0x7FL) << 7;
     if (b >= 0) return i;
@@ -104,12 +101,12 @@ class DataInput {
     } else {
       throw lucene::core::util::IOException(
             "Invalid vLong detected (negative values disallowed)");
-    }  
+    }
   }
 
  public:
   DataInput() = default;
-  
+
   virtual ~DataInput() = default;
 
   virtual char ReadByte() = 0;
@@ -193,7 +190,7 @@ class DataInput {
   }
 
   virtual std::string ReadString() {
-    const int32_t length = ReadVInt32(); 
+    const int32_t length = ReadVInt32();
     char bytes[length];  // TODO(0ctopus13prime): alloca? built in alloca?
     ReadBytes(bytes, 0, length);
 
@@ -202,12 +199,12 @@ class DataInput {
 
   virtual std::map<std::string, std::string> ReadMapOfStrings() {
     // TODO(0ctopus13prime): Implement it
-    return {};    
+    return {};
   }
 
   virtual std::set<std::string> ReadSetOfStrings() {
     // TODO(0ctopus13prime): Implement it
-    return {};    
+    return {};
   }
 
   virtual void SkipBytes(const int64_t num_bytes) {
@@ -232,17 +229,17 @@ class IndexInput: public DataInput {
   const std::string resource_desc;
 
  protected:
-  IndexInput(const std::string& resource_desc)
+  explicit IndexInput(const std::string& resource_desc)
     : DataInput(),
       resource_desc(resource_desc) {
   }
 
-  IndexInput(std::string&& resource_desc)
+  explicit IndexInput(std::string&& resource_desc)
     : DataInput(),
       resource_desc(std::forward<std::string>(resource_desc)) {
   }
 
-  IndexInput(const IndexInput& other)
+  explicit IndexInput(const IndexInput& other)
     : DataInput(),
       resource_desc(other.resource_desc) {
   }
@@ -253,14 +250,14 @@ class IndexInput: public DataInput {
     std::unique_ptr<IndexInput> slice;
 
    public:
-    DefaultRandomAccessInputImpl(std::unique_ptr<IndexInput>&& slice)
+    explicit DefaultRandomAccessInputImpl(std::unique_ptr<IndexInput>&& slice)
       : slice(std::forward<std::unique_ptr<IndexInput>>(slice)) {
     }
 
     ~DefaultRandomAccessInputImpl() { }
 
     char ReadByte(const uint64_t pos) {
-      slice->Seek(pos); 
+      slice->Seek(pos);
       return slice->ReadByte();
     }
 
@@ -273,7 +270,7 @@ class IndexInput: public DataInput {
       slice->Seek(pos);
       return slice->ReadInt32();
     }
-    
+
     int64_t ReadInt64(const uint64_t pos) {
       slice->Seek(pos);
       return slice->ReadInt64();
@@ -296,12 +293,12 @@ class IndexInput: public DataInput {
   virtual std::unique_ptr<IndexInput>
   Slice(const std::string& slice_description,
         const uint64_t offset,
-        const uint64_t length) = 0; 
+        const uint64_t length) = 0;
 
   std::unique_ptr<RandomAccessInput>
   RandomAccessSlice(const uint64_t offset,
                     const uint64_t length) {
-    std::unique_ptr<IndexInput> slice = Slice("randomaccess", offset, length); 
+    std::unique_ptr<IndexInput> slice = Slice("randomaccess", offset, length);
 
     if (RandomAccessInput* ra_input =
         dynamic_cast<RandomAccessInput*>(slice.get())) {
@@ -316,11 +313,11 @@ class IndexInput: public DataInput {
 
 class ChecksumIndexInput: public IndexInput {
  protected:
-  ChecksumIndexInput(const std::string& resource_desc)
+  explicit ChecksumIndexInput(const std::string& resource_desc)
     : IndexInput(resource_desc) {
   }
 
-  ChecksumIndexInput(std::string&& resource_desc)
+  explicit ChecksumIndexInput(std::string&& resource_desc)
     : IndexInput(std::forward<std::string>(resource_desc)) {
   }
 
@@ -333,10 +330,10 @@ class ChecksumIndexInput: public IndexInput {
 
     if (skip < 0) {
       throw lucene::core::util::IllegalArgumentException(
-            std::string("ChecksumIndexInput cannot seek backwards (pos = ") + 
+            std::string("ChecksumIndexInput cannot seek backwards (pos = ") +
             std::to_string(pos) +
             " GetFilePointer() = " +
-            std::to_string(cur_fp) + 
+            std::to_string(cur_fp) +
             ")");
     }
 
@@ -350,7 +347,7 @@ class BufferedChecksumIndexInput: public ChecksumIndexInput {
   std::unique_ptr<lucene::core::util::Checksum> digest;
 
  public:
-  BufferedChecksumIndexInput(std::unique_ptr<IndexInput>&& main)
+  explicit BufferedChecksumIndexInput(std::unique_ptr<IndexInput>&& main)
     : ChecksumIndexInput(std::string("BufferedChecksumIndexInput")),
       main(std::forward<std::unique_ptr<IndexInput>>(main)),
       digest(std::make_unique<BufferedChecksum>(
@@ -383,18 +380,18 @@ class BufferedChecksumIndexInput: public ChecksumIndexInput {
   uint64_t Length() {
     return main->Length();
   }
-  
+
   std::unique_ptr<IndexInput>
   Slice(const std::string& slice_desc,
         const uint64_t offset,
         const uint64_t length) {
-    throw lucene::core::util::UnsupportedOperationException(); 
+    throw lucene::core::util::UnsupportedOperationException();
   }
 };
 
 class BufferedIndexInput: public IndexInput, RandomAccessInput {
  public:
-  static const uint32_t BUFFER_SIZE = 1024; 
+  static const uint32_t BUFFER_SIZE = 1024;
   static const uint32_t MIN_BUFFER_SIZE = 8;
   static const uint32_t MERGE_BUFFER_SIZE = 4096;
 
@@ -435,7 +432,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
     }
     ReadInternal(buffer.get(), 0, new_length);
     buffer_length = new_length;
-    buffer_start = start; 
+    buffer_start = start;
     buffer_position = 0;
   }
 
@@ -456,7 +453,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
        const uint64_t length);
 
  public:
-  BufferedIndexInput(const std::string& resource_desc)
+  explicit BufferedIndexInput(const std::string& resource_desc)
     : BufferedIndexInput(resource_desc, BufferedIndexInput::BUFFER_SIZE) {
   }
 
@@ -503,14 +500,14 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
       uint32_t len_cp = len;
 
       if (available > 0) {
-        std::memcpy(bytes + offset, buffer.get() + buffer_position, available); 
+        std::memcpy(bytes + offset, buffer.get() + buffer_position, available);
         offset_cp += available;
         len_cp -= available;
         buffer_position += available;
       }
 
       if (use_buffer && len_cp < buffer_size) {
-        Refill();   
+        Refill();
         if (buffer_length < len_cp) {
           std::memcpy(bytes + offset, buffer.get(), buffer_length);
           throw lucene::core::util::EOFException();
@@ -519,7 +516,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
           buffer_position = len_cp;
         }
       } else {
-        const uint64_t after = buffer_start + buffer_position + len_cp; 
+        const uint64_t after = buffer_start + buffer_position + len_cp;
         if (after > Length()) {
           throw lucene::core::util::EOFException();
         }
@@ -601,7 +598,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
       return IndexInput::ReadInt64();
     }
   }
-  
+
   int32_t ReadVInt32() {
     if (5 <= (buffer_length - buffer_position)) {
       char b = buffer[buffer_position++];
@@ -630,7 +627,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
     if (9 <= buffer_length-buffer_position) {
       char b = buffer[buffer_position++];
       if (b >= 0) return b;
-      long i = b & 0x7FL;
+      int64_t i = b & 0x7FL;
       b = buffer[buffer_position++];
       i |= (b & 0x7FL) << 7;
       if (b >= 0) return i;
@@ -659,7 +656,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
             "Invalid vLong detected (negative values disallowed)");
     } else {
       return IndexInput::ReadVInt64();
-    }  
+    }
   }
 
   char ReadByte(const uint64_t pos) {
@@ -672,7 +669,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
       SeekInternal(pos);
       Refill();
       return buffer[0];
-    } 
+    }
 
     return buffer[static_cast<int32_t>(index)];
   }
@@ -746,37 +743,37 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
     }
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN_
-    iab.bytes[7] = buffer[idx++]; 
-    iab.bytes[6] = buffer[idx++]; 
-    iab.bytes[5] = buffer[idx++]; 
-    iab.bytes[4] = buffer[idx++]; 
-    iab.bytes[3] = buffer[idx++]; 
-    iab.bytes[2] = buffer[idx++]; 
-    iab.bytes[1] = buffer[idx++]; 
-    iab.bytes[0] = buffer[idx++]; 
+    iab.bytes[7] = buffer[idx++];
+    iab.bytes[6] = buffer[idx++];
+    iab.bytes[5] = buffer[idx++];
+    iab.bytes[4] = buffer[idx++];
+    iab.bytes[3] = buffer[idx++];
+    iab.bytes[2] = buffer[idx++];
+    iab.bytes[1] = buffer[idx++];
+    iab.bytes[0] = buffer[idx++];
 #else
-    iab.bytes[0] = buffer[idx++]; 
-    iab.bytes[1] = buffer[idx++]; 
-    iab.bytes[2] = buffer[idx++]; 
-    iab.bytes[3] = buffer[idx++]; 
-    iab.bytes[4] = buffer[idx++]; 
-    iab.bytes[5] = buffer[idx++]; 
-    iab.bytes[6] = buffer[idx++]; 
-    iab.bytes[7] = buffer[idx++]; 
+    iab.bytes[0] = buffer[idx++];
+    iab.bytes[1] = buffer[idx++];
+    iab.bytes[2] = buffer[idx++];
+    iab.bytes[3] = buffer[idx++];
+    iab.bytes[4] = buffer[idx++];
+    iab.bytes[5] = buffer[idx++];
+    iab.bytes[6] = buffer[idx++];
+    iab.bytes[7] = buffer[idx++];
 #endif
 
     return iab.int64;
   }
 
   uint64_t GetFilePointer() {
-    return buffer_start + buffer_position; 
+    return buffer_start + buffer_position;
   }
 
   void Seek(const uint64_t pos) {
     if (pos >= buffer_start && pos < (buffer_start + buffer_length)) {
       buffer_position = static_cast<uint32_t>(pos - buffer_start);
     } else {
-      buffer_start = pos; 
+      buffer_start = pos;
       buffer_position = 0;
       buffer_length = 0;
       SeekInternal(pos);
@@ -787,7 +784,10 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
   Slice(const std::string& slice_desc,
         const uint64_t offset,
         const uint64_t length) {
-    return std::move(BufferedIndexInput::Wrap(slice_desc, this, offset, length));
+    return std::move(BufferedIndexInput::Wrap(slice_desc,
+                                              this,
+                                              offset,
+                                              length));
   }
 
   void SetBufferSize(const uint32_t new_size) {
@@ -796,11 +796,11 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
       buffer_size = new_size;
       if (!buffer) {
         // TODO(0ctopus13prime): Reallocate in C?
-        char* new_buffer = new char[new_size]; 
+        char* new_buffer = new char[new_size];
         const uint32_t left_in_buffer = buffer_length - buffer_position;
         const uint32_t num_to_copy = (left_in_buffer > new_size ?
                                       new_size : left_in_buffer);
-        std::memcpy(new_buffer, buffer.get() + buffer_position, num_to_copy); 
+        std::memcpy(new_buffer, buffer.get() + buffer_position, num_to_copy);
         buffer_start += buffer_position;
         buffer_position = 0;
         buffer_length = num_to_copy;
@@ -818,7 +818,7 @@ class BufferedIndexInput: public IndexInput, RandomAccessInput {
       throw lucene::core::util::IllegalArgumentException(
             std::string("Buffer size must be at "
             "least MIN_BUFFER_SIZE = ") +
-            std::to_string(BufferedIndexInput::MIN_BUFFER_SIZE)); 
+            std::to_string(BufferedIndexInput::MIN_BUFFER_SIZE));
     }
   }
 };
@@ -867,7 +867,7 @@ class BufferedIndexInput::SlicedIndexInput: public BufferedIndexInput {
 class ByteArrayReferenceDataInput : public DataInput {
  private:
   char* bytes;
-  uint32_t pos; 
+  uint32_t pos;
   uint32_t limit;
 
  public:
@@ -990,7 +990,7 @@ class ByteArrayReferenceDataInput : public DataInput {
     i |= (b & 0x0F) << 28;
     if ((b & 0xF0) == 0) return i;
     throw lucene::core::util::InvalidStateException(
-          "Invalid vInt detected (too many bits)"); 
+          "Invalid vInt detected (too many bits)");
   }
 
   int64_t ReadVInt64() {
@@ -1058,13 +1058,13 @@ class BytesArrayReferenceIndexInput : public IndexInput {
   }
 
   void Seek(const uint64_t new_pos) {
-    pos = static_cast<int32_t>(new_pos); 
+    pos = static_cast<int32_t>(new_pos);
   }
 
   void Reset(char new_bytes[],
              const uint32_t offset,
              const uint32_t len) noexcept {
-    bytes = new_bytes; 
+    bytes = new_bytes;
     pos = offset;
     limit = offset + len;
   }
@@ -1084,10 +1084,10 @@ class BytesArrayReferenceIndexInput : public IndexInput {
   int16_t ReadInt16() {
     lucene::core::util::numeric::Int16AndBytes iab;
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-    iab.bytes[1] = bytes[pos++]; 
+    iab.bytes[1] = bytes[pos++];
     iab.bytes[0] = bytes[pos++];
 #else
-    iab.bytes[0] = bytes[pos++]; 
+    iab.bytes[0] = bytes[pos++];
     iab.bytes[1] = bytes[pos++];
 #endif
 
@@ -1097,13 +1097,13 @@ class BytesArrayReferenceIndexInput : public IndexInput {
   int32_t ReadInt32() {
     lucene::core::util::numeric::Int32AndBytes iab;
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-    iab.bytes[3] = bytes[pos++]; 
+    iab.bytes[3] = bytes[pos++];
     iab.bytes[2] = bytes[pos++];
-    iab.bytes[1] = bytes[pos++]; 
+    iab.bytes[1] = bytes[pos++];
     iab.bytes[0] = bytes[pos++];
 #else
-    iab.bytes[0] = bytes[pos++]; 
-    iab.bytes[1] = bytes[pos++]; 
+    iab.bytes[0] = bytes[pos++];
+    iab.bytes[1] = bytes[pos++];
     iab.bytes[2] = bytes[pos++];
     iab.bytes[3] = bytes[pos++];
 #endif
@@ -1114,21 +1114,21 @@ class BytesArrayReferenceIndexInput : public IndexInput {
   int64_t ReadInt64() {
     lucene::core::util::numeric::Int64AndBytes iab;
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-    iab.bytes[7] = bytes[pos++]; 
+    iab.bytes[7] = bytes[pos++];
     iab.bytes[6] = bytes[pos++];
-    iab.bytes[5] = bytes[pos++]; 
+    iab.bytes[5] = bytes[pos++];
     iab.bytes[4] = bytes[pos++];
-    iab.bytes[3] = bytes[pos++]; 
+    iab.bytes[3] = bytes[pos++];
     iab.bytes[2] = bytes[pos++];
-    iab.bytes[1] = bytes[pos++]; 
+    iab.bytes[1] = bytes[pos++];
     iab.bytes[0] = bytes[pos++];
 #else
-    iab.bytes[0] = bytes[pos++]; 
+    iab.bytes[0] = bytes[pos++];
     iab.bytes[1] = bytes[pos++];
-    iab.bytes[2] = bytes[pos++]; 
+    iab.bytes[2] = bytes[pos++];
     iab.bytes[3] = bytes[pos++];
-    iab.bytes[4] = bytes[pos++]; 
-    iab.bytes[5] = bytes[pos++]; 
+    iab.bytes[4] = bytes[pos++];
+    iab.bytes[5] = bytes[pos++];
     iab.bytes[6] = bytes[pos++];
     iab.bytes[7] = bytes[pos++];
 #endif
@@ -1275,7 +1275,7 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
   }
 
   void ReadBytes(char b[], const uint32_t offset, const uint32_t len) {
-    std::memcpy(b + offset, base + idx, len);      
+    std::memcpy(b + offset, base + idx, len);
     idx += len;
   }
 
@@ -1300,7 +1300,7 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
     iab.bytes[0] = base[pos];
     iab.bytes[1] = base[pos + 1];
 #endif
-   
+
     return iab.int16;
   }
 
@@ -1317,7 +1317,7 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
     iab.bytes[2] = base[pos + 2];
     iab.bytes[3] = base[pos + 3];
 #endif
-   
+
     return iab.int32;
   }
 
@@ -1354,7 +1354,7 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
       std::this_thread::yield();
       if (result != 0) {
         throw lucene::core::util::IOException(std::string("Failed to close ") +
-                                              resource_desc); 
+                                              resource_desc);
       }
     }
   }

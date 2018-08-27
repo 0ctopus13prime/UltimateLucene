@@ -18,6 +18,7 @@
 #define SRC_UTIL_EXCEPTION_H_
 
 #include <stdexcept>
+#include <string>
 
 namespace lucene {
 namespace core {
@@ -113,8 +114,8 @@ class NoSuchFileException: public std::runtime_error {
   }
 };
 
-}  // store
-}  // core
-}  // lucene
+}  // namespace util
+}  // namespace core
+}  // namespace lucene
 
 #endif  // SRC_UTIL_EXCEPTION_H_

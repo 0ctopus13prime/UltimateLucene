@@ -1,3 +1,20 @@
+/*
+ *
+ * Copyright (c) 2018-2019 Doo Yong Kim. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <Index/File.h>
@@ -77,10 +94,10 @@ BaseDirectory::BaseDirectory(const std::shared_ptr<LockFactory>& lock_factory)
     is_open(true),
     lock_factory(lock_factory) {
 }
-  
+
 void BaseDirectory::EnsureOpen() {
   if (!is_open) {
-    throw AlreadyClosedException("This Directory is closed");      
+    throw AlreadyClosedException("This Directory is closed");
   }
 }
 
@@ -99,7 +116,7 @@ FSDirectory::FSDirectory(const std::string path,
     ops_since_last_delete(),
     next_temp_file_counter() {
   if (!lucene::core::util::FileUtil::IsDirectory(path)) {
-    lucene::core::util::FileUtil::CreateDirectory(path); 
+    lucene::core::util::FileUtil::CreateDirectory(path);
   }
 
   directory = lucene::core::util::FileUtil::ToRealPath(path);
@@ -150,7 +167,7 @@ FSDirectory::ListAllWithSkipNames(const std::string& dir,
 
   for (const std::string& name : all_files) {
     if (skip_names.find(name) == skip_names.end()) {
-      ret.push_back(name); 
+      ret.push_back(name);
     }
   }
 
@@ -183,7 +200,7 @@ FSDirectory::CreateOutput(const std::string& name, const IOContext& context) {
          directory + '/' + name);
 }
 
-std::unique_ptr<IndexOutput> 
+std::unique_ptr<IndexOutput>
 FSDirectory::CreateTempOutput(const std::string& prefix,
                               const std::string& suffix,
                               const IOContext& context) {
@@ -203,8 +220,8 @@ FSDirectory::CreateTempOutput(const std::string& prefix,
       continue;
     }
 
-    path += name;    
-  } while(FileUtil::Exists(path));
+    path += name;
+  } while (FileUtil::Exists(path));
 
   return std::make_unique<FileIndexOutput>(
          std::string("FileIndexOutput(path=\"") + path,
@@ -266,7 +283,7 @@ bool FSDirectory::CheckPendingDeletions() {
 void FSDirectory::DeletePendingFiles() {
   if (!pending_deletes.empty()) {
     for (const std::string& name : pending_deletes) {
-      PrivateDeleteFile(name, true); 
+      PrivateDeleteFile(name, true);
     }
   }
 }
@@ -293,7 +310,7 @@ std::unique_ptr<IndexInput> MMapDirectory::OpenInput(const std::string& name,
 
   const int fd = open(abs_path.c_str(), O_RDONLY);
   struct stat sb;
-  if (fstat(fd, &sb) == -1 ) {
+  if (fstat(fd, &sb) == -1) {
     throw IOException("Failed to open " + abs_path);
   }
   char* addr = static_cast<char*>(mmap(NULL,

@@ -116,7 +116,7 @@ TEST(DATA__INPUT__TESTS, BYTE__ARRAY__REFERENCE__DATA__READ) {
     out.WriteString(str);
   }
 
-  ByteArrayReferenceDataInput bardi(out.GetBytes(), 0, out.GetPosition()); 
+  ByteArrayReferenceDataInput bardi(out.GetBytes(), 0, out.GetPosition());
   for (int i = 0 ; i < 100000 ; ++i) {
     ASSERT_EQ(static_cast<char>(i), bardi.ReadByte());
     ASSERT_EQ(static_cast<int16_t>(i), bardi.ReadInt16());
@@ -177,7 +177,7 @@ TEST(DATA__INPUT__TESTS, CHECK__SUM__INDEX__INPUT) {
     out_ptr->WriteInt16(static_cast<int16_t>(i));
     out_ptr->WriteZInt64(static_cast<int64_t>(i));
     str.resize(str_len);
-    str += std::to_string(i); 
+    str += std::to_string(i);
     out_ptr->WriteString(str);
   }
   out_ptr->Close();
@@ -195,7 +195,7 @@ TEST(DATA__INPUT__TESTS, CHECK__SUM__INDEX__INPUT) {
     ASSERT_EQ(static_cast<int16_t>(i), checksum_in.ReadInt16());
     ASSERT_EQ(static_cast<int64_t>(i), checksum_in.ReadZInt64());
     str.resize(str_len);
-    str += std::to_string(i); 
+    str += std::to_string(i);
     ASSERT_EQ(str, checksum_in.ReadString());
   }
 

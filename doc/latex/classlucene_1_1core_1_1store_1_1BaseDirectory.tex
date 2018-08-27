@@ -1,0 +1,84 @@
+\hypertarget{classlucene_1_1core_1_1store_1_1BaseDirectory}{}\section{lucene\+:\+:core\+:\+:store\+:\+:Base\+Directory Class Reference}
+\label{classlucene_1_1core_1_1store_1_1BaseDirectory}\index{lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}}
+
+
+{\ttfamily \#include $<$Directory.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:store\+:\+:Base\+Directory\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlucene_1_1core_1_1store_1_1BaseDirectory}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Lock}{Lock}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BaseDirectory_a42ea39f7b8b99972e6e39710e0563037}{Obtain\+Lock}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&name)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BaseDirectory_a94a76ba3222363ddb6f2457e88c9fa28}{Base\+Directory}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1LockFactory}{Lock\+Factory}} $>$ \&\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BaseDirectory_a61e759bb8ca8ec591d2a067679164f3a}{lock\+\_\+factory}})
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BaseDirectory_ae98262cc7ef9b3285ffe789eaa72e82a}{Ensure\+Open}} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+volatile bool \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BaseDirectory_aa05ba27e4262493ec57cabd5ed0f330a}{is\+\_\+open}}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1LockFactory}{Lock\+Factory}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BaseDirectory_a61e759bb8ca8ec591d2a067679164f3a}{lock\+\_\+factory}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BaseDirectory_a94a76ba3222363ddb6f2457e88c9fa28}\label{classlucene_1_1core_1_1store_1_1BaseDirectory_a94a76ba3222363ddb6f2457e88c9fa28}} 
+\index{lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}!Base\+Directory@{Base\+Directory}}
+\index{Base\+Directory@{Base\+Directory}!lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}}
+\subsubsection{\texorpdfstring{Base\+Directory()}{BaseDirectory()}}
+{\footnotesize\ttfamily Base\+Directory\+::\+Base\+Directory (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1LockFactory}{Lock\+Factory}} $>$ \&}]{lock\+\_\+factory }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}, {\ttfamily [protected]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BaseDirectory}{Base\+Directory}} 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BaseDirectory_ae98262cc7ef9b3285ffe789eaa72e82a}\label{classlucene_1_1core_1_1store_1_1BaseDirectory_ae98262cc7ef9b3285ffe789eaa72e82a}} 
+\index{lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}!Ensure\+Open@{Ensure\+Open}}
+\index{Ensure\+Open@{Ensure\+Open}!lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}}
+\subsubsection{\texorpdfstring{Ensure\+Open()}{EnsureOpen()}}
+{\footnotesize\ttfamily void Base\+Directory\+::\+Ensure\+Open (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_a908bb5ccea0c5fee6d27eedcca686a9f}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BaseDirectory_a42ea39f7b8b99972e6e39710e0563037}\label{classlucene_1_1core_1_1store_1_1BaseDirectory_a42ea39f7b8b99972e6e39710e0563037}} 
+\index{lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}!Obtain\+Lock@{Obtain\+Lock}}
+\index{Obtain\+Lock@{Obtain\+Lock}!lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}}
+\subsubsection{\texorpdfstring{Obtain\+Lock()}{ObtainLock()}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Lock}{Lock}} $>$ Base\+Directory\+::\+Obtain\+Lock (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_afe0348fa3979da64289fbd4c96db5845}{lucene\+::core\+::store\+::\+Directory}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BaseDirectory_aa05ba27e4262493ec57cabd5ed0f330a}\label{classlucene_1_1core_1_1store_1_1BaseDirectory_aa05ba27e4262493ec57cabd5ed0f330a}} 
+\index{lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}!is\+\_\+open@{is\+\_\+open}}
+\index{is\+\_\+open@{is\+\_\+open}!lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}}
+\subsubsection{\texorpdfstring{is\+\_\+open}{is\_open}}
+{\footnotesize\ttfamily volatile bool lucene\+::core\+::store\+::\+Base\+Directory\+::is\+\_\+open\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BaseDirectory_a61e759bb8ca8ec591d2a067679164f3a}\label{classlucene_1_1core_1_1store_1_1BaseDirectory_a61e759bb8ca8ec591d2a067679164f3a}} 
+\index{lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}!lock\+\_\+factory@{lock\+\_\+factory}}
+\index{lock\+\_\+factory@{lock\+\_\+factory}!lucene\+::core\+::store\+::\+Base\+Directory@{lucene\+::core\+::store\+::\+Base\+Directory}}
+\subsubsection{\texorpdfstring{lock\+\_\+factory}{lock\_factory}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1LockFactory}{Lock\+Factory}}$>$ lucene\+::core\+::store\+::\+Base\+Directory\+::lock\+\_\+factory\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Store/\mbox{\hyperlink{Directory_8h}{Directory.\+h}}\item 
+Store/\mbox{\hyperlink{Directory_8cpp}{Directory.\+cpp}}\end{DoxyCompactItemize}

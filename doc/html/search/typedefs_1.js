@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['delete_5funique_5fptr',['delete_unique_ptr',['../namespacelucene_1_1core_1_1analysis.html#a1ecb3e92b19c3afd8060d81a437a7a3b',1,'lucene::core::analysis']]]
+  ['byte',['Byte',['../ZlibCrc32_8h.html#ae3a497195d617519e5353ea7b417940f',1,'ZlibCrc32.h']]],
+  ['bytef',['Bytef',['../ZlibCrc32_8h.html#aeb722a888064be47e12d05f692e0f407',1,'ZlibCrc32.h']]]
 ];

@@ -36,7 +36,7 @@ class BitUtil {
   static uint64_t PopArray(const int64_t arr[],
                             const uint32_t word_offset,
                             const uint32_t num_words) noexcept {
-    uint64_t pop_count = 0;    
+    uint64_t pop_count = 0;
     for (uint32_t i = word_offset, end = word_offset + num_words
          ; i < end ; ++i) {
       pop_count += __builtin_popcount(arr[i]);

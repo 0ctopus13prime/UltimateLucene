@@ -15,8 +15,8 @@
  *
  */
 
-#ifndef SRC_STORE_DATA_H_
-#define SRC_STORE_DATA_H_
+#ifndef SRC_STORE_DATAOUTPUT_H_
+#define SRC_STORE_DATAOUTPUT_H_
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -35,6 +35,7 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <utility>
 
 namespace lucene {
 namespace core {
@@ -122,7 +123,7 @@ class DataOutput {
   }
 
   void WriteZInt32(const int32_t i) {
-    WriteVInt32(lucene::core::util::BitUtil::ZigZagEncode(i)); 
+    WriteVInt32(lucene::core::util::BitUtil::ZigZagEncode(i));
   }
 
   void WriteInt64(const int64_t i) {
@@ -159,7 +160,7 @@ class DataOutput {
   }
 
   void WriteZInt64(const int64_t i) {
-    WriteSignedVInt64(lucene::core::util::BitUtil::ZigZagEncode(i)); 
+    WriteSignedVInt64(lucene::core::util::BitUtil::ZigZagEncode(i));
   }
 
   void WriteString(const std::string& s) {
@@ -177,7 +178,7 @@ class DataOutput {
 
       // TODO(0ctopus13prime): Directly copy from input to
       //                       this without buffer copying?
-      input.ReadBytes(copy_buffer.get(), 0, to_copy); 
+      input.ReadBytes(copy_buffer.get(), 0, to_copy);
       WriteBytes(copy_buffer.get(), 0, to_copy);
       left -= to_copy;
     }
@@ -194,7 +195,7 @@ class DataOutput {
 
 class IndexOutput: public DataOutput {
  private:
-  const std::string resource_description; 
+  const std::string resource_description;
   const std::string name;
 
  protected:
@@ -224,24 +225,24 @@ class ByteArrayReferenceDataOutput: public DataOutput {
                                const uint32_t bytes_len,
                                const uint32_t offset,
                                const uint32_t len)
-   : bytes(bytes),
-     bytes_len(bytes_len),
-     pos(offset),
-     limit(offset + len) {
+    : bytes(bytes),
+      bytes_len(bytes_len),
+      pos(offset),
+      limit(offset + len) {
   }
 
   ByteArrayReferenceDataOutput(char bytes[], const uint32_t bytes_len)
-   : bytes(bytes),
-     bytes_len(bytes_len),
-     pos(0),
-     limit(bytes_len) {
+    : bytes(bytes),
+      bytes_len(bytes_len),
+      pos(0),
+      limit(bytes_len) {
   }
 
   void Reset(char new_bytes[],
              const uint32_t new_bytes_len,
              const uint32_t new_offset,
              const uint32_t new_len) noexcept {
-    bytes = new_bytes; 
+    bytes = new_bytes;
     bytes_len = new_bytes_len;
     pos = new_offset;
     limit = new_offset + new_len;
@@ -263,7 +264,7 @@ class ByteArrayReferenceDataOutput: public DataOutput {
   void WriteBytes(char bytes[],
                   const uint32_t offset,
                   const uint32_t length) {
-    std::memcpy(bytes + pos, bytes + offset, length); 
+    std::memcpy(bytes + pos, bytes + offset, length);
     pos += length;
   }
 };
@@ -278,7 +279,7 @@ class GrowableByteArrayDataOutput: public DataOutput {
   uint32_t length;
 
  public:
-  GrowableByteArrayDataOutput(const uint32_t cp)
+  explicit GrowableByteArrayDataOutput(const uint32_t cp)
     : bytes(std::make_unique<char[]>(cp)),
       bytes_len(cp),
       length(0) {
@@ -316,7 +317,7 @@ class GrowableByteArrayDataOutput: public DataOutput {
 
   void WriteString(const std::string& str) {
     WriteVInt32(str.length());
-    WriteBytes(str.c_str(), 0, str.length());   
+    WriteBytes(str.c_str(), 0, str.length());
   }
 
   char* GetBytes() const noexcept {
@@ -337,7 +338,7 @@ class FileIndexOutput: public IndexOutput {
   static const uint32_t BUF_SIZE = 8192;
 
  private:
-  lucene::core::util::Crc32 crc;    
+  lucene::core::util::Crc32 crc;
   uint64_t bytes_written;
   std::string path;
   int fd;
@@ -348,7 +349,7 @@ class FileIndexOutput: public IndexOutput {
  private:
   void flush() {
     if (buf_idx > 0) {
-      write(fd, buffer, buf_idx); 
+      write(fd, buffer, buf_idx);
       buf_idx = 0;
     }
   }
@@ -440,11 +441,11 @@ class RateLimitedIndexOutput: public IndexOutput {
  private:
   std::unique_ptr<IndexOutput> delegate;
 
- // TODO(0ctopus13prime): Implement it
+  // TODO(0ctopus13prime): Implement it
 };
 
 }  // namespace store
 }  // namespace core
 }  // namespace lucene
 
-#endif  // SRC_STORE_DATA_H_
+#endif  // SRC_STORE_DATAOUTPUT_H_

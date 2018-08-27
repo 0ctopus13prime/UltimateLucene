@@ -1,0 +1,141 @@
+\hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput}{}\section{lucene\+:\+:core\+:\+:store\+:\+:Buffered\+Checksum\+Index\+Input Class Reference}
+\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput}\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+
+
+{\ttfamily \#include $<$Data\+Input.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:store\+:\+:Buffered\+Checksum\+Index\+Input\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_afd7384af7f99e07f1a5df4a66ed3aa54}{Buffered\+Checksum\+Index\+Input}} (std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput}{Index\+Input}} $>$ \&\&\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_ab57fb18272b384d6cb10c59408103e0f}{main}})
+\item 
+char \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_acbb041afa162556f78073457a4e790f3}{Read\+Byte}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a99c8cadcd9bdde48bd22144bc1829baf}{Read\+Bytes}} (char bytes\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t offset, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t len)
+\item 
+int64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a00eeaf29512d43fa7757be71e10ca4d5}{Get\+Checksum}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_afdc432b747889c61d2452c532e18f2ed}{Close}} ()
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_abd1f04dcbc1c6ede194ce803f8b57032}{Get\+File\+Pointer}} ()
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a9adedda82b5550162668a1a72149f207}{Length}} ()
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput}{Index\+Input}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a3dbbd2618e6ab6dfeee220ae5b6b8cda}{Slice}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&slice\+\_\+desc, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint64\+\_\+t offset, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint64\+\_\+t length)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput}{Index\+Input}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_ab57fb18272b384d6cb10c59408103e0f}{main}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum}{lucene\+::core\+::util\+::\+Checksum}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a03959da784c91f969b5541e9c375cdb5}{digest}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_afd7384af7f99e07f1a5df4a66ed3aa54}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_afd7384af7f99e07f1a5df4a66ed3aa54}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!Buffered\+Checksum\+Index\+Input@{Buffered\+Checksum\+Index\+Input}}
+\index{Buffered\+Checksum\+Index\+Input@{Buffered\+Checksum\+Index\+Input}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{Buffered\+Checksum\+Index\+Input()}{BufferedChecksumIndexInput()}}
+{\footnotesize\ttfamily lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::\+Buffered\+Checksum\+Index\+Input (\begin{DoxyParamCaption}\item[{std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput}{Index\+Input}} $>$ \&\&}]{main }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_afdc432b747889c61d2452c532e18f2ed}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_afdc432b747889c61d2452c532e18f2ed}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!Close@{Close}}
+\index{Close@{Close}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput_a0e33e5c784c5bed48b63b469f5ee6ed6}{lucene\+::core\+::store\+::\+Index\+Input}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a00eeaf29512d43fa7757be71e10ca4d5}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a00eeaf29512d43fa7757be71e10ca4d5}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!Get\+Checksum@{Get\+Checksum}}
+\index{Get\+Checksum@{Get\+Checksum}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{Get\+Checksum()}{GetChecksum()}}
+{\footnotesize\ttfamily int64\+\_\+t lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::\+Get\+Checksum (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1ChecksumIndexInput_a3e435a226c121e1467727d51ad2f6d65}{lucene\+::core\+::store\+::\+Checksum\+Index\+Input}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_abd1f04dcbc1c6ede194ce803f8b57032}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_abd1f04dcbc1c6ede194ce803f8b57032}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!Get\+File\+Pointer@{Get\+File\+Pointer}}
+\index{Get\+File\+Pointer@{Get\+File\+Pointer}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{Get\+File\+Pointer()}{GetFilePointer()}}
+{\footnotesize\ttfamily uint64\+\_\+t lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::\+Get\+File\+Pointer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput_acd8f7eae5d3518db7e498507c68990af}{lucene\+::core\+::store\+::\+Index\+Input}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a9adedda82b5550162668a1a72149f207}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a9adedda82b5550162668a1a72149f207}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!Length@{Length}}
+\index{Length@{Length}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{Length()}{Length()}}
+{\footnotesize\ttfamily uint64\+\_\+t lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput_a220f07064bf89579cbb5f8e5aeb3707d}{lucene\+::core\+::store\+::\+Index\+Input}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_acbb041afa162556f78073457a4e790f3}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_acbb041afa162556f78073457a4e790f3}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!Read\+Byte@{Read\+Byte}}
+\index{Read\+Byte@{Read\+Byte}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{Read\+Byte()}{ReadByte()}}
+{\footnotesize\ttfamily char lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::\+Read\+Byte (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataInput_a60f2550ccbe4decde30f3773dc53c0ef}{lucene\+::core\+::store\+::\+Data\+Input}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a99c8cadcd9bdde48bd22144bc1829baf}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a99c8cadcd9bdde48bd22144bc1829baf}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!Read\+Bytes@{Read\+Bytes}}
+\index{Read\+Bytes@{Read\+Bytes}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{Read\+Bytes()}{ReadBytes()}}
+{\footnotesize\ttfamily void lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::\+Read\+Bytes (\begin{DoxyParamCaption}\item[{char}]{bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{offset,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1DataInput_aa5f24102b9b50a190bcb7a8edb82ea2d}{lucene\+::core\+::store\+::\+Data\+Input}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a3dbbd2618e6ab6dfeee220ae5b6b8cda}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a3dbbd2618e6ab6dfeee220ae5b6b8cda}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!Slice@{Slice}}
+\index{Slice@{Slice}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{Slice()}{Slice()}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput}{Index\+Input}}$>$ lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::\+Slice (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{slice\+\_\+desc,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint64\+\_\+t}]{offset,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint64\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput_a3a2d71caf506c20d7c866bdcda5e0171}{lucene\+::core\+::store\+::\+Index\+Input}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a03959da784c91f969b5541e9c375cdb5}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_a03959da784c91f969b5541e9c375cdb5}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!digest@{digest}}
+\index{digest@{digest}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{digest}{digest}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum}{lucene\+::core\+::util\+::\+Checksum}}$>$ lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::digest\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_ab57fb18272b384d6cb10c59408103e0f}\label{classlucene_1_1core_1_1store_1_1BufferedChecksumIndexInput_ab57fb18272b384d6cb10c59408103e0f}} 
+\index{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}!main@{main}}
+\index{main@{main}!lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input@{lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input}}
+\subsubsection{\texorpdfstring{main}{main}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexInput}{Index\+Input}}$>$ lucene\+::core\+::store\+::\+Buffered\+Checksum\+Index\+Input\+::main\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Store/\mbox{\hyperlink{DataInput_8h}{Data\+Input.\+h}}\end{DoxyCompactItemize}

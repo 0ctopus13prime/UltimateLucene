@@ -1,0 +1,90 @@
+\hypertarget{classlucene_1_1core_1_1util_1_1Checksum}{}\section{lucene\+:\+:core\+:\+:util\+:\+:Checksum Class Reference}
+\label{classlucene_1_1core_1_1util_1_1Checksum}\index{lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}}
+
+
+{\ttfamily \#include $<$Etc.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:util\+:\+:Checksum\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlucene_1_1core_1_1util_1_1Checksum}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_a2f830ed8572c07dba88d99d41c61e1db}{Checksum}} ()
+\item 
+virtual \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_a792d96bd67cb1691f2afda7fcd431006}{$\sim$\+Checksum}} ()
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_a7c6a70391ed64a38eb6f3db43876f652}{Update}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char b)=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_aab3bdd13efe91e6e582b56fd64a304b6}{Update}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char bytes\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t off, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t len)=0
+\item 
+virtual int64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_aad9ea66e424c89f3600c36e66cfe508c}{Get\+Value}} ()=0
+\item 
+virtual void \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Checksum_a7e2d8a05474cad9ca3d67c1e770ffa29}{Reset}} ()=0
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Checksum_a2f830ed8572c07dba88d99d41c61e1db}\label{classlucene_1_1core_1_1util_1_1Checksum_a2f830ed8572c07dba88d99d41c61e1db}} 
+\index{lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}!Checksum@{Checksum}}
+\index{Checksum@{Checksum}!lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}}
+\subsubsection{\texorpdfstring{Checksum()}{Checksum()}}
+{\footnotesize\ttfamily lucene\+::core\+::util\+::\+Checksum\+::\+Checksum (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Checksum_a792d96bd67cb1691f2afda7fcd431006}\label{classlucene_1_1core_1_1util_1_1Checksum_a792d96bd67cb1691f2afda7fcd431006}} 
+\index{lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}!````~Checksum@{$\sim$\+Checksum}}
+\index{````~Checksum@{$\sim$\+Checksum}!lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}}
+\subsubsection{\texorpdfstring{$\sim$\+Checksum()}{~Checksum()}}
+{\footnotesize\ttfamily virtual lucene\+::core\+::util\+::\+Checksum\+::$\sim$\+Checksum (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Checksum_aad9ea66e424c89f3600c36e66cfe508c}\label{classlucene_1_1core_1_1util_1_1Checksum_aad9ea66e424c89f3600c36e66cfe508c}} 
+\index{lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}!Get\+Value@{Get\+Value}}
+\index{Get\+Value@{Get\+Value}!lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}}
+\subsubsection{\texorpdfstring{Get\+Value()}{GetValue()}}
+{\footnotesize\ttfamily virtual int64\+\_\+t lucene\+::core\+::util\+::\+Checksum\+::\+Get\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksum_a8025cb018f833b7b9596fafac869fc47}{lucene\+::core\+::store\+::\+Buffered\+Checksum}}, and \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_a57040a35d56a41c72cc5364ff07d0095}{lucene\+::core\+::util\+::\+Crc32}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Checksum_a7e2d8a05474cad9ca3d67c1e770ffa29}\label{classlucene_1_1core_1_1util_1_1Checksum_a7e2d8a05474cad9ca3d67c1e770ffa29}} 
+\index{lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}!Reset@{Reset}}
+\index{Reset@{Reset}!lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::util\+::\+Checksum\+::\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksum_adc217a01c6783a02c84f7a1a013a3d92}{lucene\+::core\+::store\+::\+Buffered\+Checksum}}, and \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_a4e73914945d7e498799bd444b3fb3b2f}{lucene\+::core\+::util\+::\+Crc32}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Checksum_a7c6a70391ed64a38eb6f3db43876f652}\label{classlucene_1_1core_1_1util_1_1Checksum_a7c6a70391ed64a38eb6f3db43876f652}} 
+\index{lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}!Update@{Update}}
+\index{Update@{Update}!lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}}
+\subsubsection{\texorpdfstring{Update()}{Update()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::util\+::\+Checksum\+::\+Update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksum_a3dae873ad624ab688910f1582a94f5a4}{lucene\+::core\+::store\+::\+Buffered\+Checksum}}, and \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_a2d602ecc736c5cc5a0281bccc032b4fc}{lucene\+::core\+::util\+::\+Crc32}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1util_1_1Checksum_aab3bdd13efe91e6e582b56fd64a304b6}\label{classlucene_1_1core_1_1util_1_1Checksum_aab3bdd13efe91e6e582b56fd64a304b6}} 
+\index{lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}!Update@{Update}}
+\index{Update@{Update}!lucene\+::core\+::util\+::\+Checksum@{lucene\+::core\+::util\+::\+Checksum}}
+\subsubsection{\texorpdfstring{Update()}{Update()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual void lucene\+::core\+::util\+::\+Checksum\+::\+Update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} char}]{bytes\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{off,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} uint32\+\_\+t}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BufferedChecksum_aca5120e922ed6723c768d899c91522f4}{lucene\+::core\+::store\+::\+Buffered\+Checksum}}, and \mbox{\hyperlink{classlucene_1_1core_1_1util_1_1Crc32_aadb0ec93d3d2097302c869a1f4f61602}{lucene\+::core\+::util\+::\+Crc32}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Util/\mbox{\hyperlink{Etc_8h}{Etc.\+h}}\end{DoxyCompactItemize}

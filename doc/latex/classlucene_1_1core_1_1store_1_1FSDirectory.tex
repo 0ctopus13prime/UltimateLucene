@@ -1,0 +1,257 @@
+\hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory}{}\section{lucene\+:\+:core\+:\+:store\+:\+:F\+S\+Directory Class Reference}
+\label{classlucene_1_1core_1_1store_1_1FSDirectory}\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+
+
+{\ttfamily \#include $<$Directory.\+h$>$}
+
+Inheritance diagram for lucene\+:\+:core\+:\+:store\+:\+:F\+S\+Directory\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlucene_1_1core_1_1store_1_1FSDirectory}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_aadf6709d48842e43abe18e2cbcfb6119}{Fsync}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&name)
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a9295fa6067a5329703ae95e349088bc0}{List\+All}} ()
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a4e681691f8abcb8606a5b90fbd90f934}{File\+Length}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&name)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput}{Index\+Output}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a4d1e13c1fd5b956a2e063b954915bd2c}{Create\+Output}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&name, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IOContext}{I\+O\+Context}} \&context)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput}{Index\+Output}} $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a488eb837cbe2d5a46363e57c314def3a}{Create\+Temp\+Output}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&prefix, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&suffix, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IOContext}{I\+O\+Context}} \&context)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a142dc145b0d1a4003c6a940a1da0f1e5}{Sync}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::vector$<$ std\+::string $>$ \&names)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a28b5eecd955057c16fc3c8c94654bc5f}{Rename}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&source, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&dest)
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a3427605a8d3b36c51f623896f73e525c}{Sync\+Meta\+Data}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a5d0ea9b7fb90cbf6647276089a95b1a8}{Close}} ()
+\item 
+\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \& \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_ae6eb75c5f4a89406d3aae2587098f78b}{Get\+Directory}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a73d5bc12c68a2d5367d63c3256657a6a}{Delete\+File}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&name)
+\item 
+bool \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a82323816746e66f25406ce12a533b6b2}{Check\+Pending\+Deletions}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_afcbf784d0e537dcb65ef847a90dfc2d1}{Delete\+Pending\+Files}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_ad7c805ef344532b94337e476252fc9a2}{List\+All\+With\+Skip\+Names}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&dir, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::set$<$ std\+::string $>$ \&skip\+\_\+names)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_acb5f2add52231ebdbe138aad6d9cc0fb}{F\+S\+Directory}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string path, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1LockFactory}{Lock\+Factory}} $>$ \&\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1BaseDirectory_a61e759bb8ca8ec591d2a067679164f3a}{lock\+\_\+factory}})
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a08ad6588d4372560666fd62bf21f84db}{Ensure\+Can\+Read}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&name)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a284b79d993221839dd479e57ce556381}{directory}}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a9206f419d5fceb7a3a1bf71ce7f3047d}{Maybe\+Delete\+Pending\+Files}} ()
+\item 
+void \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_ab679ea582a711d7e79263d0022cbd0d7}{Private\+Delete\+File}} (\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&name, \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} bool is\+\_\+pending\+\_\+delete)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::set$<$ std\+::string $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a5adc58d180335b6ee768e746707f02c5}{pending\+\_\+deletes}}
+\item 
+std\+::atomic$<$ std\+::uint32\+\_\+t $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_af5440afc1ee53484e627fc4533fde7cb}{ops\+\_\+since\+\_\+last\+\_\+delete}}
+\item 
+std\+::atomic$<$ std\+::uint32\+\_\+t $>$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory_a3b864798b29e7fc2fd1add7a3d5c3cee}{next\+\_\+temp\+\_\+file\+\_\+counter}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_acb5f2add52231ebdbe138aad6d9cc0fb}\label{classlucene_1_1core_1_1store_1_1FSDirectory_acb5f2add52231ebdbe138aad6d9cc0fb}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!F\+S\+Directory@{F\+S\+Directory}}
+\index{F\+S\+Directory@{F\+S\+Directory}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{F\+S\+Directory()}{FSDirectory()}}
+{\footnotesize\ttfamily F\+S\+Directory\+::\+F\+S\+Directory (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string}]{path,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1LockFactory}{Lock\+Factory}} $>$ \&}]{lock\+\_\+factory }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\hyperlink{classlucene_1_1core_1_1store_1_1FSDirectory}{F\+S\+Directory}} 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a82323816746e66f25406ce12a533b6b2}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a82323816746e66f25406ce12a533b6b2}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Check\+Pending\+Deletions@{Check\+Pending\+Deletions}}
+\index{Check\+Pending\+Deletions@{Check\+Pending\+Deletions}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Check\+Pending\+Deletions()}{CheckPendingDeletions()}}
+{\footnotesize\ttfamily bool F\+S\+Directory\+::\+Check\+Pending\+Deletions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a5d0ea9b7fb90cbf6647276089a95b1a8}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a5d0ea9b7fb90cbf6647276089a95b1a8}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Close@{Close}}
+\index{Close@{Close}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_aa803c099bd4963d2ed83dbe10152d909}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a4d1e13c1fd5b956a2e063b954915bd2c}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a4d1e13c1fd5b956a2e063b954915bd2c}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Create\+Output@{Create\+Output}}
+\index{Create\+Output@{Create\+Output}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Create\+Output()}{CreateOutput()}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput}{Index\+Output}} $>$ F\+S\+Directory\+::\+Create\+Output (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{name,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IOContext}{I\+O\+Context}} \&}]{context }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_aae10f6510f3bfb7e561fc438d4419e4a}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a488eb837cbe2d5a46363e57c314def3a}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a488eb837cbe2d5a46363e57c314def3a}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Create\+Temp\+Output@{Create\+Temp\+Output}}
+\index{Create\+Temp\+Output@{Create\+Temp\+Output}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Create\+Temp\+Output()}{CreateTempOutput()}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IndexOutput}{Index\+Output}} $>$ F\+S\+Directory\+::\+Create\+Temp\+Output (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{prefix,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{suffix,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1IOContext}{I\+O\+Context}} \&}]{context }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_a1854df49ef06b705ae603f9430584106}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a73d5bc12c68a2d5367d63c3256657a6a}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a73d5bc12c68a2d5367d63c3256657a6a}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Delete\+File@{Delete\+File}}
+\index{Delete\+File@{Delete\+File}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Delete\+File()}{DeleteFile()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Delete\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_ae7e4ec460d8646abb925fa9d31a6f354}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_afcbf784d0e537dcb65ef847a90dfc2d1}\label{classlucene_1_1core_1_1store_1_1FSDirectory_afcbf784d0e537dcb65ef847a90dfc2d1}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Delete\+Pending\+Files@{Delete\+Pending\+Files}}
+\index{Delete\+Pending\+Files@{Delete\+Pending\+Files}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Delete\+Pending\+Files()}{DeletePendingFiles()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Delete\+Pending\+Files (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a08ad6588d4372560666fd62bf21f84db}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a08ad6588d4372560666fd62bf21f84db}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Ensure\+Can\+Read@{Ensure\+Can\+Read}}
+\index{Ensure\+Can\+Read@{Ensure\+Can\+Read}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Ensure\+Can\+Read()}{EnsureCanRead()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Ensure\+Can\+Read (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a4e681691f8abcb8606a5b90fbd90f934}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a4e681691f8abcb8606a5b90fbd90f934}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!File\+Length@{File\+Length}}
+\index{File\+Length@{File\+Length}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{File\+Length()}{FileLength()}}
+{\footnotesize\ttfamily uint64\+\_\+t F\+S\+Directory\+::\+File\+Length (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_a8a3db6f51db917f0cbec6e28ac9c685e}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_aadf6709d48842e43abe18e2cbcfb6119}\label{classlucene_1_1core_1_1store_1_1FSDirectory_aadf6709d48842e43abe18e2cbcfb6119}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Fsync@{Fsync}}
+\index{Fsync@{Fsync}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Fsync()}{Fsync()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Fsync (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{name }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_ae6eb75c5f4a89406d3aae2587098f78b}\label{classlucene_1_1core_1_1store_1_1FSDirectory_ae6eb75c5f4a89406d3aae2587098f78b}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Get\+Directory@{Get\+Directory}}
+\index{Get\+Directory@{Get\+Directory}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Get\+Directory()}{GetDirectory()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \& F\+S\+Directory\+::\+Get\+Directory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a9295fa6067a5329703ae95e349088bc0}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a9295fa6067a5329703ae95e349088bc0}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!List\+All@{List\+All}}
+\index{List\+All@{List\+All}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{List\+All()}{ListAll()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ F\+S\+Directory\+::\+List\+All (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_ac89cd351d7dc2a1e16763ae2a1984518}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_ad7c805ef344532b94337e476252fc9a2}\label{classlucene_1_1core_1_1store_1_1FSDirectory_ad7c805ef344532b94337e476252fc9a2}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!List\+All\+With\+Skip\+Names@{List\+All\+With\+Skip\+Names}}
+\index{List\+All\+With\+Skip\+Names@{List\+All\+With\+Skip\+Names}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{List\+All\+With\+Skip\+Names()}{ListAllWithSkipNames()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ F\+S\+Directory\+::\+List\+All\+With\+Skip\+Names (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{dir,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::set$<$ std\+::string $>$ \&}]{skip\+\_\+names }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a9206f419d5fceb7a3a1bf71ce7f3047d}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a9206f419d5fceb7a3a1bf71ce7f3047d}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Maybe\+Delete\+Pending\+Files@{Maybe\+Delete\+Pending\+Files}}
+\index{Maybe\+Delete\+Pending\+Files@{Maybe\+Delete\+Pending\+Files}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Maybe\+Delete\+Pending\+Files()}{MaybeDeletePendingFiles()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Maybe\+Delete\+Pending\+Files (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_ab679ea582a711d7e79263d0022cbd0d7}\label{classlucene_1_1core_1_1store_1_1FSDirectory_ab679ea582a711d7e79263d0022cbd0d7}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Private\+Delete\+File@{Private\+Delete\+File}}
+\index{Private\+Delete\+File@{Private\+Delete\+File}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Private\+Delete\+File()}{PrivateDeleteFile()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Private\+Delete\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{name,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} bool}]{is\+\_\+pending\+\_\+delete }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a28b5eecd955057c16fc3c8c94654bc5f}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a28b5eecd955057c16fc3c8c94654bc5f}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Rename@{Rename}}
+\index{Rename@{Rename}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Rename()}{Rename()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Rename (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{source,  }\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::string \&}]{dest }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_a41371672f0e4f3d05432013778fedfb0}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a142dc145b0d1a4003c6a940a1da0f1e5}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a142dc145b0d1a4003c6a940a1da0f1e5}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Sync@{Sync}}
+\index{Sync@{Sync}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Sync()}{Sync()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Sync (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ZlibCrc32_8h_a2c212835823e3c54a8ab6d95c652660e}{const}} std\+::vector$<$ std\+::string $>$ \&}]{names }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_a9bf7aa728353d62ada6d7d0b431b12a0}{lucene\+::core\+::store\+::\+Directory}}.
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a3427605a8d3b36c51f623896f73e525c}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a3427605a8d3b36c51f623896f73e525c}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!Sync\+Meta\+Data@{Sync\+Meta\+Data}}
+\index{Sync\+Meta\+Data@{Sync\+Meta\+Data}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{Sync\+Meta\+Data()}{SyncMetaData()}}
+{\footnotesize\ttfamily void F\+S\+Directory\+::\+Sync\+Meta\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlucene_1_1core_1_1store_1_1Directory_aa5ad7f9b517071b37c7d10858480f26d}{lucene\+::core\+::store\+::\+Directory}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a284b79d993221839dd479e57ce556381}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a284b79d993221839dd479e57ce556381}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!directory@{directory}}
+\index{directory@{directory}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{directory}{directory}}
+{\footnotesize\ttfamily std\+::string lucene\+::core\+::store\+::\+F\+S\+Directory\+::directory\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a3b864798b29e7fc2fd1add7a3d5c3cee}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a3b864798b29e7fc2fd1add7a3d5c3cee}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!next\+\_\+temp\+\_\+file\+\_\+counter@{next\+\_\+temp\+\_\+file\+\_\+counter}}
+\index{next\+\_\+temp\+\_\+file\+\_\+counter@{next\+\_\+temp\+\_\+file\+\_\+counter}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{next\+\_\+temp\+\_\+file\+\_\+counter}{next\_temp\_file\_counter}}
+{\footnotesize\ttfamily std\+::atomic$<$std\+::uint32\+\_\+t$>$ lucene\+::core\+::store\+::\+F\+S\+Directory\+::next\+\_\+temp\+\_\+file\+\_\+counter\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_af5440afc1ee53484e627fc4533fde7cb}\label{classlucene_1_1core_1_1store_1_1FSDirectory_af5440afc1ee53484e627fc4533fde7cb}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!ops\+\_\+since\+\_\+last\+\_\+delete@{ops\+\_\+since\+\_\+last\+\_\+delete}}
+\index{ops\+\_\+since\+\_\+last\+\_\+delete@{ops\+\_\+since\+\_\+last\+\_\+delete}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{ops\+\_\+since\+\_\+last\+\_\+delete}{ops\_since\_last\_delete}}
+{\footnotesize\ttfamily std\+::atomic$<$std\+::uint32\+\_\+t$>$ lucene\+::core\+::store\+::\+F\+S\+Directory\+::ops\+\_\+since\+\_\+last\+\_\+delete\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlucene_1_1core_1_1store_1_1FSDirectory_a5adc58d180335b6ee768e746707f02c5}\label{classlucene_1_1core_1_1store_1_1FSDirectory_a5adc58d180335b6ee768e746707f02c5}} 
+\index{lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}!pending\+\_\+deletes@{pending\+\_\+deletes}}
+\index{pending\+\_\+deletes@{pending\+\_\+deletes}!lucene\+::core\+::store\+::\+F\+S\+Directory@{lucene\+::core\+::store\+::\+F\+S\+Directory}}
+\subsubsection{\texorpdfstring{pending\+\_\+deletes}{pending\_deletes}}
+{\footnotesize\ttfamily std\+::set$<$std\+::string$>$ lucene\+::core\+::store\+::\+F\+S\+Directory\+::pending\+\_\+deletes\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Store/\mbox{\hyperlink{Directory_8h}{Directory.\+h}}\item 
+Store/\mbox{\hyperlink{Directory_8cpp}{Directory.\+cpp}}\end{DoxyCompactItemize}
