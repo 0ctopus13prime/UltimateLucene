@@ -120,6 +120,10 @@ class Crc32: public Checksum {
   }
 };
 
+class IntsRefBuilder {
+
+};
+
 }  // namespace util
 }  // namespace core
 }  // namespace lucene
