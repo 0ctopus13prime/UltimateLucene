@@ -69,14 +69,14 @@ TEST(ARRAY__UTIL__TEST, GROW) {
   std::unique_ptr<int[]> guard1(arr);
 
   std::pair<int*, uint32_t> p1 = Grow(arr, length, min_length);
-  EXPECT_NE(p1.first, nullptr);
+  EXPECT_NE(p1.first, arr);
   EXPECT_LE(min_length, p1.second);
   std::unique_ptr<int[]> guard2(p1.first);
 
   min_length = length - 1;  // smaller than length
   std::pair<int*, uint32_t> p2 = Grow(arr, length, min_length);
-  EXPECT_EQ(p2.first, nullptr);
-  EXPECT_EQ(p2.second, 0);
+  EXPECT_EQ(p2.first, arr);
+  EXPECT_EQ(p2.second, length);
 }
 
 TEST(ARRAY__UTIL, COPY__OF__RANGE) {

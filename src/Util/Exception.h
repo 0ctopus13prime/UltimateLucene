@@ -114,6 +114,21 @@ class NoSuchFileException: public std::runtime_error {
   }
 };
 
+class ArrayIndexOutOfBoundsException: public std::runtime_error {
+ public:
+  ArrayIndexOutOfBoundsException()
+    : std::runtime_error("ArrayIndexOutOfBoundsException") {
+  }
+
+  explicit ArrayIndexOutOfBoundsException(const std::string& err_msg)
+    : std::runtime_error(err_msg) {
+  }
+
+  explicit ArrayIndexOutOfBoundsException(const char* err_msg)
+    : std::runtime_error(err_msg) {
+  }
+};
+
 }  // namespace util
 }  // namespace core
 }  // namespace lucene

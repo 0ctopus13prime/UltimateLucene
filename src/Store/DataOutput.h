@@ -289,7 +289,7 @@ class GrowableByteArrayDataOutput: public DataOutput {
     if (length >= bytes_len) {
       std::pair<char*, uint32_t> result =
         lucene::core::util::arrayutil::Grow(bytes.get(), bytes_len);
-      if (result.first != nullptr) {
+      if (result.first != bytes.get()) {
         bytes.reset(result.first);
         bytes_len = result.second;
       }
@@ -305,7 +305,7 @@ class GrowableByteArrayDataOutput: public DataOutput {
     if (new_length >=  bytes_len) {
       std::pair<char*, uint32_t> result =
         lucene::core::util::arrayutil::Grow(bytes.get(), new_length);
-      if (result.first != nullptr) {
+      if (result.first != bytes.get()) {
         bytes.reset(result.first);
         bytes_len = result.second;
       }

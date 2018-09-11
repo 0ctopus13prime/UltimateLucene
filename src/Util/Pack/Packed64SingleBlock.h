@@ -15,19 +15,17 @@
  *
  */
 
-#ifndef SRC_UTIL_PACKED_H_
-#define SRC_UTIL_PACKED_H_
+// This file has been automatically generated, DO NOT EDIT
+
+#ifndef SRC_UTIL_PACK_PACKED64_H_
+#define SRC_UTIL_PACK_PACKED64_H_
 
 namespace lucene {
 namespace core {
 namespace util {
 
-class PagedGrowableWriter {
-
-};
-
 }  // namespace util
 }  // namespace core
 }  // namespace lucene
 
-#endif  // SRC_UTIL_PACKED_H_
+#endif  // SRC_UTIL_PACK_PACKED64_H_

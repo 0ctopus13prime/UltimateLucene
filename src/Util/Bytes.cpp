@@ -257,9 +257,10 @@ char& BytesRefBuilder::operator[](const uint32_t idx) {
 }
 
 void BytesRefBuilder::Grow(uint32_t new_capacity) {
+  char* bytes = ref.bytes.get();
   std::pair<char*, uint32_t> new_bytes_pair =
-    arrayutil::Grow(ref.bytes.get(), ref.capacity, new_capacity);
-  if (new_bytes_pair.first) {
+    arrayutil::Grow(bytes, ref.capacity, new_capacity);
+  if (new_bytes_pair.first != bytes) {
     ref.bytes.reset(new_bytes_pair.first);
     ref.capacity = new_bytes_pair.second;
   }

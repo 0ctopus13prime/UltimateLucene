@@ -546,6 +546,22 @@ class NumericUtils {
       }
     }
   }
+
+  static uint32_t NumberOfLeadingZeros(const uint32_t i) {
+    if (i != 0) {
+      return __builtin_clz(i);  
+    } else {
+      return 32;
+    }
+  }
+
+  static uint32_t NumberOfTrailingZeros(const uint32_t i) {
+    if (i != 0) {
+      return __builtin_ctz(i);  
+    } else {
+      return 32;
+    }
+  }
 };
 
 }  // namespace numeric

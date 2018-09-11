@@ -793,7 +793,7 @@ char* CharTermAttributeImpl::ResizeBuffer(const uint32_t new_capacity) {
   if (term_capacity < new_capacity) {
     std::pair<char*, uint32_t> new_term_buffer_info
       = Grow(term_buffer.get(), term_capacity, new_capacity);
-    if (new_term_buffer_info.first) {
+    if (new_term_buffer_info.first != term_buffer.get()) {
       term_buffer.reset(new_term_buffer_info.first);
       term_capacity = new_term_buffer_info.second;
     }

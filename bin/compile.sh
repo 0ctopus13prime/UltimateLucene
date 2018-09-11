@@ -51,8 +51,9 @@ main() {
   cmake $src
 
   # Do a make
-  #cmake --build .
-  make -j
+  # cmake --build .
+  # export VERBOSE=4
+  make
 
   # Tests if have to
   if [ "$TESTS" = "true" ]; then

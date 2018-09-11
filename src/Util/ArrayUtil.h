@@ -60,7 +60,7 @@ uint32_t Oversize(const uint32_t min_target_size) {
 }
 
 template <typename T>
-std::pair<T*, uint32_t> Grow(const T* array,
+std::pair<T*, uint32_t> Grow(T* array,
                              const uint32_t length,
                              const uint32_t min_size) {
   if (length < min_size) {
@@ -69,11 +69,11 @@ std::pair<T*, uint32_t> Grow(const T* array,
     return std::pair<T*, uint32_t>(new_array, new_length);
   }
 
-  return std::pair<T*, uint32_t>(nullptr, 0);
+  return std::pair<T*, uint32_t>(array, length);
 }
 
 template <typename T>
-std::pair<T*, uint32_t> Grow(const T* array,
+std::pair<T*, uint32_t> Grow(T* array,
                              const uint32_t length) {
   return Grow(array, length, length + 1);
 }

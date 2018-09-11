@@ -6,13 +6,16 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 ALPHANUM	Analysis/Standard.cpp	/^const uint32_t StandardTokenizer::ALPHANUM = 0;$/;"	m	class:StandardTokenizer	file:
 ALPHANUM	Analysis/Standard.h	/^  static const uint32_t ALPHANUM;$/;"	m	class:lucene::core::analysis::standard::StandardTokenizer
+ARCS_AS_FIXED_ARRAY	Util/Fst.h	/^  static const char ARCS_AS_FIXED_ARRAY = BIT_ARC_HAS_FINAL_OUTPUT;$/;"	m	class:lucene::core::util::FST
 ATTR_IMPL_TABLE	Util/Attribute.cpp	/^AttributeFactory::ATTR_IMPL_TABLE = {$/;"	m	class:AttributeFactory	file:
 ATTR_IMPL_TABLE	Util/Attribute.h	/^         ATTR_IMPL_TABLE;$/;"	m	class:lucene::core::util::AttributeFactory
 Accept	Analysis/TokenStream.cpp	/^bool StopFilter::Accept() {$/;"	f	class:StopFilter
 Add	Analysis/CharacterUtil.cpp	/^bool CharSet::Add(const char* str, uint32_t offset, uint32_t length) {$/;"	f	class:CharSet
 Add	Analysis/CharacterUtil.cpp	/^bool CharSet::Add(const std::string& str) {$/;"	f	class:CharSet
 Add	Document/Document.h	/^  void Add(lucene::core::document::Field&& field) {$/;"	f	class:lucene::core::document::Document
+Add	Util/Fst.h	/^  void Add(lucene::core::util::IntsRef& input, T output) {$/;"	f	class:lucene::core::util::Builder
 Add	Util/Numeric.h	/^  static void Add(const uint32_t bytes_per_dim,$/;"	f	class:lucene::core::util::numeric::NumericUtils
+AddArc	Util/Fst.h	/^  void AddArc(const uint32_t label, Node* target) {$/;"	f	class:lucene::core::util::Builder::UnCompiledNode
 AddAttribute	Analysis/TokenStream.h	/^  std::shared_ptr<ATTR> AddAttribute() {$/;"	f	class:lucene::core::analysis::TokenFilter
 AddAttribute	Util/Attribute.h	/^  std::shared_ptr<ATTR> AddAttribute() {$/;"	f	class:lucene::core::util::AttributeSource
 AddAttributeImpl	Util/Attribute.cpp	/^void AttributeSource::AddAttributeImpl(AttributeImpl* attr_impl) {$/;"	f	class:AttributeSource
@@ -33,6 +36,10 @@ Append	Util/Bytes.cpp	/^void BytesRefBuilder::Append(BytesRef& ref) {$/;"	f	clas
 Append	Util/Bytes.cpp	/^void BytesRefBuilder::Append(BytesRefBuilder& builder) {$/;"	f	class:BytesRefBuilder
 Append	Util/Bytes.cpp	/^void BytesRefBuilder::Append(const char c) {$/;"	f	class:BytesRefBuilder
 Append	Util/Bytes.cpp	/^void BytesRefBuilder::Append(const char* new_bytes,$/;"	f	class:BytesRefBuilder
+Arc	Util/Fst.h	/^  Arc(Arc&& other)$/;"	f	class:lucene::core::util::Builder::Arc
+Arc	Util/Fst.h	/^  Arc(const Arc& other)$/;"	f	class:lucene::core::util::Builder::Arc
+Arc	Util/Fst.h	/^class Builder<T>::Arc {$/;"	c	class:lucene::core::util::Builder
+Arc	Util/Fst.h	/^class FST<T>::Arc {$/;"	c	class:lucene::core::util::FST
 Assert	Util/ZlibCrc32.h	2562;"	d
 Assert	Util/ZlibCrc32.h	2569;"	d
 Attribute	Util/Attribute.h	/^class Attribute {$/;"	c	namespace:lucene::core::util
@@ -55,9 +62,17 @@ Attributes	Analysis/AttributeImpl.cpp	/^std::vector<std::type_index> PositionLen
 Attributes	Analysis/AttributeImpl.cpp	/^std::vector<std::type_index> TermFrequencyAttributeImpl::Attributes() {$/;"	f	class:TermFrequencyAttributeImpl
 Attributes	Analysis/AttributeImpl.cpp	/^std::vector<std::type_index> TypeAttributeImpl::Attributes() {$/;"	f	class:TypeAttributeImpl
 BINARY	Index/DocValue.h	/^  BINARY,$/;"	m	class:lucene::core::index::DocValuesType
+BIT_ARC_HAS_FINAL_OUTPUT	Util/Fst.h	/^  static const uint32_t BIT_ARC_HAS_FINAL_OUTPUT = (1 << 5);$/;"	m	class:lucene::core::util::FST
+BIT_ARC_HAS_OUTPUT	Util/Fst.h	/^  static const uint32_t BIT_ARC_HAS_OUTPUT = (1 << 4);$/;"	m	class:lucene::core::util::FST
+BIT_FINAL_ARC	Util/Fst.h	/^  static const uint32_t BIT_FINAL_ARC = (1 << 0);$/;"	m	class:lucene::core::util::FST
+BIT_LAST_ARC	Util/Fst.h	/^  static const uint32_t BIT_LAST_ARC = (1 << 1);$/;"	m	class:lucene::core::util::FST
+BIT_STOP_NODE	Util/Fst.h	/^  static const uint32_t BIT_STOP_NODE = (1 << 3);$/;"	m	class:lucene::core::util::FST
+BIT_TARGET_NEXT	Util/Fst.h	/^  static const uint32_t BIT_TARGET_NEXT = (1 << 2);$/;"	m	class:lucene::core::util::FST
 BUFFER_SIZE	Store/DataInput.h	/^  static const uint32_t BUFFER_SIZE = 1024;$/;"	m	class:lucene::core::store::BufferedIndexInput
 BUF_SIZE	Store/DataOutput.h	/^  static const uint32_t BUF_SIZE = 8192;$/;"	m	class:lucene::core::store::FileIndexOutput
 BYFOUR	Util/ZlibCrc32.h	2878;"	d
+BYTE1	Util/Fst.h	/^  enum class INPUT_TYPE { BYTE1, BYTE2, BYTE4 };$/;"	m	class:lucene::core::util::FST::INPUT_TYPE
+BYTE2	Util/Fst.h	/^  enum class INPUT_TYPE { BYTE1, BYTE2, BYTE4 };$/;"	m	class:lucene::core::util::FST::INPUT_TYPE
 BaseDirectory	Store/Directory.cpp	/^BaseDirectory::BaseDirectory(const std::shared_ptr<LockFactory>& lock_factory)$/;"	f	class:BaseDirectory
 BaseDirectory	Store/Directory.h	/^class BaseDirectory: public Directory {$/;"	c	namespace:lucene::core::store
 Begin	Analysis/CharacterUtil.cpp	/^INTERNAL_SET::iterator CharSet::Begin() {$/;"	f	class:CharSet
@@ -83,6 +98,8 @@ BufferedIndexInput	Store/DataInput.h	/^  BufferedIndexInput(const std::string& r
 BufferedIndexInput	Store/DataInput.h	/^  explicit BufferedIndexInput(const std::string& resource_desc)$/;"	f	class:lucene::core::store::BufferedIndexInput
 BufferedIndexInput	Store/DataInput.h	/^class BufferedIndexInput: public IndexInput, RandomAccessInput {$/;"	c	namespace:lucene::core::store
 Build	Document/Field.h	/^  FieldType Build() {$/;"	f	class:lucene::core::document::FieldTypeBuilder
+Builder	Util/Fst.h	/^  Builder(const typename FST<T>::INPUT_TYPE input_type,$/;"	f	class:lucene::core::util::Builder
+Builder	Util/Fst.h	/^class Builder {$/;"	c	namespace:lucene::core::util
 Byte	Util/ZlibCrc32.h	/^typedef unsigned char  Byte;  \/* 8 bits *\/$/;"	t
 Byte	Util/ZlibCrc32.h	168;"	d
 ByteArrayReferenceDataInput	Store/DataInput.h	/^  ByteArrayReferenceDataInput() {$/;"	f	class:lucene::core::store::ByteArrayReferenceDataInput
@@ -112,6 +129,13 @@ BytesRef	Util/Bytes.cpp	/^BytesRef::BytesRef(const uint32_t new_capacity)$/;"	f	
 BytesRef	Util/Bytes.h	/^class BytesRef {$/;"	c	namespace:lucene::core::util
 BytesRefBuilder	Util/Bytes.cpp	/^BytesRefBuilder::BytesRefBuilder()$/;"	f	class:BytesRefBuilder
 BytesRefBuilder	Util/Bytes.h	/^class BytesRefBuilder {$/;"	c	namespace:lucene::core::util
+BytesStore	Util/Fst.h	/^  BytesStore(std::unique_ptr<lucene::core::store::DataInput>&& in,$/;"	f	class:lucene::core::util::BytesStore
+BytesStore	Util/Fst.h	/^  explicit BytesStore(const uint32_t new_block_bits)$/;"	f	class:lucene::core::util::BytesStore
+BytesStore	Util/Fst.h	/^class BytesStore : public lucene::core::store::DataOutput {$/;"	c	namespace:lucene::core::util
+BytesStoreForwardFSTBytesReader	Util/Fst.h	/^BytesStoreForwardFSTBytesReader::BytesStoreForwardFSTBytesReader($/;"	f	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+BytesStoreForwardFSTBytesReader	Util/Fst.h	/^class BytesStoreForwardFSTBytesReader: public FSTBytesReader {$/;"	c	namespace:lucene::core::util
+BytesStoreReverseFSTBytesReader	Util/Fst.h	/^BytesStoreReverseFSTBytesReader::BytesStoreReverseFSTBytesReader($/;"	f	class:lucene::core::util::BytesStoreReverseFSTBytesReader
+BytesStoreReverseFSTBytesReader	Util/Fst.h	/^class BytesStoreReverseFSTBytesReader: public FSTBytesReader {$/;"	c	namespace:lucene::core::util
 BytesTermAttribute	Analysis/Attribute.h	/^  BytesTermAttribute(): bytes() { }$/;"	f	class:lucene::core::analysis::tokenattributes::BytesTermAttribute
 BytesTermAttribute	Analysis/Attribute.h	/^class BytesTermAttribute: public TermToBytesRefAttribute {$/;"	c	namespace:lucene::core::analysis::tokenattributes
 BytesTermAttributeImpl	Analysis/AttributeImpl.cpp	/^BytesTermAttributeImpl::BytesTermAttributeImpl($/;"	f	class:BytesTermAttributeImpl
@@ -216,6 +240,9 @@ CloseableThreadLocalReference	Util/Concurrency.h	/^class CloseableThreadLocalRef
 CompareIdenticalAttributeSource	Util/tests/AttributeSourceTests.cpp	/^void CompareIdenticalAttributeSource(AttributeSource& attr_source1,$/;"	f
 CompareTo	Util/Bytes.cpp	/^int BytesRef::CompareTo(const BytesRef& other) const {$/;"	f	class:BytesRef
 CompareTwoState	Util/tests/AttributeSourceTests.cpp	/^void CompareTwoState(AttributeSource::State& expected,$/;"	f
+CompileAllTargets	Util/Fst.h	/^  void CompileAllTargets(UnCompiledNode& node, const uint32_t tail_length) {$/;"	f	class:lucene::core::util::Builder
+CompileNode	Util/Fst.h	/^  CompileNode CompileNode(UnCompileNode& node_in, const uint32_t tail_length) {$/;"	f	class:lucene::core::util::Builder
+CompiledNode	Util/Fst.h	/^class Builder<T>::CompiledNode: public Builder<T>::Node {$/;"	c	class:lucene::core::util::Builder
 Contains	Analysis/CharacterUtil.cpp	/^bool CharSet::Contains(const char* str, uint32_t offset, uint32_t length) {$/;"	f	class:CharSet
 Contains	Analysis/CharacterUtil.cpp	/^bool CharSet::Contains(const std::string& str) {$/;"	f	class:CharSet
 ContainsKey	Analysis/CharacterUtil.h	/^  bool ContainsKey(const char* str, uint32_t offset, uint32_t length) {$/;"	f	class:lucene::core::analysis::characterutil::CharMap
@@ -226,6 +253,7 @@ CopyBytes	Store/DataOutput.h	/^  void CopyBytes(DataInput& input, const uint64_t
 CopyBytes	Util/Bytes.cpp	/^void BytesRefBuilder::CopyBytes(BytesRef& ref) {$/;"	f	class:BytesRefBuilder
 CopyBytes	Util/Bytes.cpp	/^void BytesRefBuilder::CopyBytes(BytesRefBuilder& builder) {$/;"	f	class:BytesRefBuilder
 CopyBytes	Util/Bytes.cpp	/^void BytesRefBuilder::CopyBytes(const char* new_bytes,$/;"	f	class:BytesRefBuilder
+CopyBytes	Util/Fst.h	/^  void CopyBytes(const uint64_t src, const uint64_t dest, const uint32_t len) {$/;"	f	class:lucene::core::util::BytesStore
 CopyChars	Util/Bytes.cpp	/^void BytesRefBuilder::CopyChars(std::string& text) {$/;"	f	class:BytesRefBuilder
 CopyChars	Util/Bytes.cpp	/^void BytesRefBuilder::CopyChars(std::string& text,$/;"	f	class:BytesRefBuilder
 CopyFrom	Store/Directory.cpp	/^void Directory::CopyFrom(Directory& from,$/;"	f	class:Directory
@@ -251,6 +279,7 @@ DEFAULT_ATTR_TYPE_IDS	Util/Attribute.h	/^  static std::unordered_set<std::type_i
 DEFAULT_ATTR_TYPE_IDS	Util/Attribute.h	/^::DEFAULT_ATTR_TYPE_IDS$/;"	m	class:lucene::core::util::AttributeFactory::StaticImplementationAttributeFactory
 DEFAULT_BUFFERSIZE	Store/Context.h	/^  const uint32_t DEFAULT_BUFFERSIZE = 256;$/;"	m	class:lucene::core::store::BufferedChecksum
 DEFAULT_BYTES	Util/Bytes.h	/^  static std::shared_ptr<char> DEFAULT_BYTES;$/;"	m	class:lucene::core::util::BytesRef
+DEFAULT_MAX_BLOCK_BITS	Util/Fst.h	/^  static const uint32_t DEFAULT_MAX_BLOCK_BITS = 30;$/;"	m	class:lucene::core::util::FST
 DEFAULT_MAX_TOKEN_LENGTH	Analysis/Standard.h	/^  static const uint32_t DEFAULT_MAX_TOKEN_LENGTH = 255;$/;"	m	class:lucene::core::analysis::standard::StandardAnalyzer
 DEFAULT_TOKEN_ATTRIBUTE_FACTORY	Analysis/TokenStream.h	/^  static lucene::core::util::AttributeFactory* DEFAULT_TOKEN_ATTRIBUTE_FACTORY;$/;"	m	class:lucene::core::analysis::TokenStream
 DEFAULT_TYPE	Analysis/Attribute.cpp	/^const char* TypeAttribute::DEFAULT_TYPE = "word";$/;"	m	class:TypeAttribute	file:
@@ -302,6 +331,7 @@ DummyTokenFilter	Analysis/tests/AnalyzerTests.cpp	/^  explicit DummyTokenFilter(
 DummyTokenFilter	Analysis/tests/AnalyzerTests.cpp	/^class DummyTokenFilter: public TokenFilter {$/;"	c	file:
 DummyTokenizer	Analysis/tests/AnalyzerTests.cpp	/^  DummyTokenizer()$/;"	f	class:DummyTokenizer
 DummyTokenizer	Analysis/tests/AnalyzerTests.cpp	/^class DummyTokenizer: public Tokenizer {$/;"	c	file:
+END_LABEL	Util/Fst.h	/^  static const int32_t END_LABEL = -1;$/;"	m	class:lucene::core::util::FST
 EOFException	Util/Exception.h	/^  EOFException()$/;"	f	class:lucene::core::util::EOFException
 EOFException	Util/Exception.h	/^  explicit EOFException(const char* err_msg)$/;"	f	class:lucene::core::util::EOFException
 EOFException	Util/Exception.h	/^  explicit EOFException(const std::string& err_msg)$/;"	f	class:lucene::core::util::EOFException
@@ -350,10 +380,18 @@ FAR	Util/ZlibCrc32.h	351;"	d
 FAR	Util/ZlibCrc32.h	353;"	d
 FAR	Util/ZlibCrc32.h	377;"	d
 FAR	Util/ZlibCrc32.h	414;"	d
+FILE_FORMAT_NAME	Util/Fst.cpp	/^const std::string FST<T>::FILE_FORMAT_NAME = "FST";$/;"	m	class:FST	file:
+FILE_FORMAT_NAME	Util/Fst.h	/^  static const std::string FILE_FORMAT_NAME;  \/\/ "FST"$/;"	m	class:lucene::core::util::FST
+FINAL_END_NODE	Util/Fst.h	/^  static const int64_t FINAL_END_NODE = -1;$/;"	m	class:lucene::core::util::FST
+FIXED_ARRAY_NUM_ARCS_DEEP	Util/Fst.h	/^  static const uint32_t FIXED_ARRAY_NUM_ARCS_DEEP = 10;$/;"	m	class:lucene::core::util::FST
+FIXED_ARRAY_NUM_ARCS_SHALLOW	Util/Fst.h	/^  static const uint32_t FIXED_ARRAY_NUM_ARCS_SHALLOW = 5;$/;"	m	class:lucene::core::util::FST
+FIXED_ARRAY_SHALLOW_DISTANCE	Util/Fst.h	/^  static const uint32_t FIXED_ARRAY_SHALLOW_DISTANCE = 3;$/;"	m	class:lucene::core::util::FST
 FLUSH	Store/Context.h	/^    MERGE, READ, FLUSH, DEFAULT$/;"	m	class:lucene::core::store::IOContext::Context
 FSDirectory	Store/Directory.cpp	/^FSDirectory::FSDirectory(const std::string path,$/;"	f	class:FSDirectory
 FSDirectory	Store/Directory.h	/^class FSDirectory: public BaseDirectory {$/;"	c	namespace:lucene::core::store
 FSLockFactory	Store/Lock.h	/^class FSLockFactory: public LockFactory {$/;"	c	namespace:lucene::core::store
+FST	Util/Fst.h	/^class FST {$/;"	c	namespace:lucene::core::util
+FSTBytesReader	Util/Fst.h	/^class FSTBytesReader: public lucene::core::store::DataInput {$/;"	c	namespace:lucene::core::util
 F_OPEN	Util/ZlibCrc32.h	2429;"	d
 F_OPEN	Util/ZlibCrc32.h	2523;"	d
 Field	Document/Field.h	/^  Field(Field&& other)$/;"	f	class:lucene::core::document::Field
@@ -372,6 +410,8 @@ FillCache	Analysis/TokenStream.cpp	/^void CachingTokenFilter::FillCache() {$/;"	
 FilteringTokenFilter	Analysis/TokenStream.cpp	/^FilteringTokenFilter::FilteringTokenFilter(TokenStream* in)$/;"	f	class:FilteringTokenFilter
 FilteringTokenFilter	Analysis/TokenStream.h	/^class FilteringTokenFilter: public TokenFilter {$/;"	c	namespace:lucene::core::analysis
 FindAttributeImplGenerator	Util/Attribute.cpp	/^AttributeFactory::FindAttributeImplGenerator($/;"	f	class:AttributeFactory
+Finish	Util/Fst.h	/^  FST* Finish() {$/;"	f	class:lucene::core::util::Builder
+Finish	Util/Fst.h	/^  void Finish() {$/;"	f	class:lucene::core::util::BytesStore
 FlagsAttribute	Analysis/Attribute.h	/^class FlagsAttribute: public lucene::core::util::Attribute {$/;"	c	namespace:lucene::core::analysis::tokenattributes
 FlagsAttributeImpl	Analysis/AttributeImpl.cpp	/^FlagsAttributeImpl::FlagsAttributeImpl()$/;"	f	class:FlagsAttributeImpl
 FlagsAttributeImpl	Analysis/AttributeImpl.cpp	/^FlagsAttributeImpl::FlagsAttributeImpl(const FlagsAttributeImpl& other)$/;"	f	class:FlagsAttributeImpl
@@ -388,6 +428,9 @@ FloatRange	Document/Field.h	/^class FloatRange : public Field {$/;"	c	namespace:
 Flush	Store/Context.h	/^  void Flush() {$/;"	f	class:lucene::core::store::BufferedChecksum
 FlushInfo	Store/Context.h	/^  FlushInfo(const uint32_t num_docs, const uint64_t estimated_segment_size)$/;"	f	class:lucene::core::store::FlushInfo
 FlushInfo	Store/Context.h	/^class FlushInfo {$/;"	c	namespace:lucene::core::store
+ForwardFSTBytesReader	Util/Fst.h	/^  ForwardFSTBytesReader(char* bytes)$/;"	f	class:lucene::core::util::ForwardFSTBytesReader
+ForwardFSTBytesReader	Util/Fst.h	/^class ForwardFSTBytesReader: public FSTBytesReader {$/;"	c	namespace:lucene::core::util
+FreezeTail	Util/Fst.h	/^  void FreezeTail(const uint32_t prefix_len_plus1) {$/;"	f	class:lucene::core::util::Builder
 FromBits	Util/Etc.cpp	/^Version Version::FromBits(const uint8_t major,$/;"	f	class:Version
 Fsync	Store/Directory.cpp	/^void FSDirectory::Fsync(const std::string& name) {$/;"	f	class:FSDirectory
 Fsync	Util/File.h	/^  static void Fsync(const std::string& path) {$/;"	f	class:lucene::core::util::FileUtil
@@ -423,6 +466,7 @@ GetFilePointer	Store/DataInput.h	/^  uint64_t GetFilePointer() {$/;"	f	class:luc
 GetFilePointer	Store/DataInput.h	/^  uint64_t GetFilePointer() {$/;"	f	class:lucene::core::store::BytesArrayReferenceIndexInput
 GetFilePointer	Store/DataOutput.h	/^  uint64_t GetFilePointer() {$/;"	f	class:lucene::core::store::FileIndexOutput
 GetFlags	Analysis/AttributeImpl.cpp	/^int32_t FlagsAttributeImpl::GetFlags() {$/;"	f	class:FlagsAttributeImpl
+GetForwardReader	Util/Fst.h	/^  std::unique_ptr<FSTBytesReader> GetForwardReader() {$/;"	f	class:lucene::core::util::BytesStore
 GetInstance	Util/Concurrency.h	/^  static TYPE& GetInstance() {$/;"	f	class:lucene::core::util::Singleton
 GetLines	Analysis/Analyzer.cpp	/^std::vector<std::string> GetLines(Reader& reader) {$/;"	f
 GetMajor	Util/Etc.h	/^  uint8_t GetMajor() const {$/;"	f	class:lucene::core::util::Version
@@ -434,6 +478,7 @@ GetMinor	Util/Etc.h	/^  uint8_t GetMinor() const {$/;"	f	class:lucene::core::uti
 GetNextToken	Analysis/Standard.cpp	/^uint32_t StandardTokenizerImpl::GetNextToken() {$/;"	f	class:StandardTokenizerImpl
 GetOffsetGap	Analysis/Analyzer.h	/^  uint32_t GetOffsetGap(const std::string& field_name) const {$/;"	f	class:lucene::core::analysis::Analyzer
 GetPayload	Analysis/AttributeImpl.cpp	/^BytesRef& PayloadAttributeImpl::GetPayload() {$/;"	f	class:PayloadAttributeImpl
+GetPosition	Util/Fst.h	/^  uint64_t GetPosition() {$/;"	f	class:lucene::core::util::BytesStore
 GetPositionIncrement	Analysis/AttributeImpl.cpp	/^uint32_t PackedTokenAttributeImpl::GetPositionIncrement() {$/;"	f	class:PackedTokenAttributeImpl
 GetPositionIncrement	Analysis/AttributeImpl.cpp	/^uint32_t PositionIncrementAttributeImpl::GetPositionIncrement() {$/;"	f	class:PositionIncrementAttributeImpl
 GetPositionIncrementGap	Analysis/Analyzer.h	/^  uint32_t GetPositionIncrementGap(const std::string& field_name) const {$/;"	f	class:lucene::core::analysis::Analyzer
@@ -443,6 +488,7 @@ GetPreRelease	Util/Etc.h	/^  uint8_t GetPreRelease() const {$/;"	f	class:lucene:
 GetReusableComponents	Analysis/Analyzer.cpp	/^GlobalReuseStrategy::GetReusableComponents(Analyzer& analyzer,$/;"	f	class:GlobalReuseStrategy
 GetReusableComponents	Analysis/Analyzer.cpp	/^PerFieldReuseStrategy::GetReusableComponents(Analyzer& analyzer,$/;"	f	class:PerFieldReuseStrategy
 GetReusableStringReader	Analysis/Analyzer.cpp	/^StringReader& TokenStreamComponents::GetReusableStringReader() {$/;"	f	class:TokenStreamComponents
+GetReverseReader	Util/Fst.h	/^  std::unique_ptr<FSTBytesReader> GetReverseReader(const bool allow_single) {$/;"	f	class:lucene::core::util::BytesStore
 GetSnowballWordSet	Analysis/Analyzer.cpp	/^CharSet GetSnowballWordSet(Reader& reader) {$/;"	f
 GetSnowballWordSet	Analysis/Analyzer.cpp	/^void GetSnowballWordSet(Reader& reader, CharSet& result) {$/;"	f
 GetState	Util/Attribute.cpp	/^AttributeSource::State* AttributeSource::StateHolder::GetState() {$/;"	f	class:AttributeSource::StateHolder
@@ -470,6 +516,7 @@ GlobalReuseStrategy	Analysis/Analyzer.cpp	/^GlobalReuseStrategy::GlobalReuseStra
 GlobalReuseStrategy	Analysis/Analyzer.h	/^class GlobalReuseStrategy: public Analyzer::ReuseStrategy {$/;"	c	namespace:lucene::core::analysis
 Grow	Util/ArrayUtil.h	/^std::pair<T*, uint32_t> Grow(const T* array,$/;"	f	namespace:lucene::core::util::arrayutil
 Grow	Util/Bytes.cpp	/^void BytesRefBuilder::Grow(uint32_t new_capacity) {$/;"	f	class:BytesRefBuilder
+GrowIf	Util/Fst.h	/^  void GrowIf() {$/;"	f	class:lucene::core::util::Builder::UnCompiledNode
 GrowTermBuffer	Analysis/AttributeImpl.cpp	/^void CharTermAttributeImpl::GrowTermBuffer(const uint32_t new_size) {$/;"	f	class:CharTermAttributeImpl
 GrowableByteArrayDataOutput	Store/DataOutput.h	/^  explicit GrowableByteArrayDataOutput(const uint32_t cp)$/;"	f	class:lucene::core::store::GrowableByteArrayDataOutput
 GrowableByteArrayDataOutput	Store/DataOutput.h	/^class GrowableByteArrayDataOutput: public DataOutput {$/;"	c	namespace:lucene::core::store
@@ -490,6 +537,7 @@ IDEOGRAPHIC	Analysis/Standard.h	/^  static const uint32_t IDEOGRAPHIC;$/;"	m	cla
 ILLEGAL_STATE_READER	Analysis/TokenStream.cpp	/^IllegalStateReader Tokenizer::ILLEGAL_STATE_READER;$/;"	m	class:Tokenizer	file:
 ILLEGAL_STATE_READER	Analysis/TokenStream.h	/^  static lucene::core::analysis::IllegalStateReader ILLEGAL_STATE_READER;$/;"	m	class:lucene::core::analysis::Tokenizer
 INITIAL_CAPACITY	Analysis/Analyzer.h	/^  static const uint32_t INITIAL_CAPACITY = 16;$/;"	m	class:lucene::core::analysis::WordlistLoader
+INPUT_TYPE	Util/Fst.h	/^  enum class INPUT_TYPE { BYTE1, BYTE2, BYTE4 };$/;"	c	class:lucene::core::util::FST
 INSTANCE	Store/Lock.h	/^  static const std::shared_ptr<NativeFSLockFactory> INSTANCE;$/;"	m	class:lucene::core::store::NativeFSLockFactory
 IOContext	Store/Context.h	/^  IOContext()$/;"	f	class:lucene::core::store::IOContext
 IOContext	Store/Context.h	/^  IOContext(const Context context, const MergeInfo merge_info)$/;"	f	class:lucene::core::store::IOContext
@@ -543,6 +591,8 @@ IntPoint	Document/Field.h	/^class IntPoint : public Field {$/;"	c	namespace:luce
 IntRange	Document/Field.h	/^  IntRange(const std::string& name,$/;"	f	class:lucene::core::document::IntRange
 IntRange	Document/Field.h	/^class IntRange : public Field {$/;"	c	namespace:lucene::core::document
 Interleave	Util/Bits.h	/^  static int64_t Interleave(const int32_t even, const int32_t odd) {$/;"	f	class:lucene::core::util::BitUtil
+IntsRef	Util/Etc.h	/^class IntsRef {$/;"	c	namespace:lucene::core::util
+IntsRefBuilder	Util/Etc.h	/^class IntsRefBuilder {$/;"	c	namespace:lucene::core::util
 InvalidStateException	Util/Exception.h	/^  InvalidStateException()$/;"	f	class:lucene::core::util::InvalidStateException
 InvalidStateException	Util/Exception.h	/^  explicit InvalidStateException(const char* err_msg)$/;"	f	class:lucene::core::util::InvalidStateException
 InvalidStateException	Util/Exception.h	/^  explicit InvalidStateException(const std::string& err_msg)$/;"	f	class:lucene::core::util::InvalidStateException
@@ -631,6 +681,7 @@ MarkSupported	Analysis/Reader.cpp	/^bool StringReader::MarkSupported() {$/;"	f	c
 MarkSupported	Analysis/Reader.h	/^  bool MarkSupported() {$/;"	f	class:lucene::core::analysis::IllegalStateReader
 MatchesExtension	Index/File.cpp	/^bool IndexFileNames::MatchesExtension(const std::string& file_name,$/;"	f	class:IndexFileNames
 MaybeDeletePendingFiles	Store/Directory.cpp	/^void FSDirectory::MaybeDeletePendingFiles() {$/;"	f	class:FSDirectory
+Merge	Util/Fst.h	/^  virtual T Merge(T& first, T& second) {$/;"	f	class:lucene::core::util::Outputs
 MergeInfo	Store/Context.h	/^  MergeInfo(const uint32_t total_max_doc,$/;"	f	class:lucene::core::store::MergeInfo
 MergeInfo	Store/Context.h	/^class MergeInfo {$/;"	c	namespace:lucene::core::store
 Move	Util/File.h	/^  static void Move(const std::string& source, const std::string& dest) {$/;"	f	class:lucene::core::util::FileUtil
@@ -640,9 +691,11 @@ NEGATIVE_INFINITY	Util/Numeric.h	/^  static const double NEGATIVE_INFINITY;  \/\
 NEGATIVE_INFINITY	Util/Numeric.h	/^  static const float NEGATIVE_INFINITY;  \/\/ -1.0F \/ 0.0;$/;"	m	class:lucene::core::util::numeric::FloatConsts
 NONE	Index/DocValue.h	/^  NONE,$/;"	m	class:lucene::core::index::DocValuesType
 NONE	Index/Field.h	/^  NONE,$/;"	m	class:lucene::core::index::IndexOptions
+NON_FINAL_END_NODE	Util/Fst.h	/^  static const int64_t NON_FINAL_END_NODE = 0;$/;"	m	class:lucene::core::util::FST
 NO_GZCOMPRESS	Util/ZlibCrc32.h	2671;"	d
 NO_MEMCPY	Util/ZlibCrc32.h	2529;"	d
 NO_MEMCPY	Util/ZlibCrc32.h	2536;"	d
+NO_OUTPUT	Util/Fst.h	/^  T NO_OUTPUT;$/;"	m	class:lucene::core::util::Builder
 NO_vsnprintf	Util/ZlibCrc32.h	2696;"	d
 NO_vsnprintf	Util/ZlibCrc32.h	2699;"	d
 NO_vsnprintf	Util/ZlibCrc32.h	2710;"	d
@@ -668,6 +721,8 @@ NoSuchFileException	Util/Exception.h	/^  NoSuchFileException()$/;"	f	class:lucen
 NoSuchFileException	Util/Exception.h	/^  explicit NoSuchFileException(const char* err_msg)$/;"	f	class:lucene::core::util::NoSuchFileException
 NoSuchFileException	Util/Exception.h	/^  explicit NoSuchFileException(const std::string& err_msg)$/;"	f	class:lucene::core::util::NoSuchFileException
 NoSuchFileException	Util/Exception.h	/^class NoSuchFileException: public std::runtime_error {$/;"	c	namespace:lucene::core::util
+Node	Util/Fst.h	/^class Builder<T>::Node {$/;"	c	class:lucene::core::util::Builder
+NodeHash	Util/Fst.h	/^class NodeHash {$/;"	c	namespace:lucene::core::util
 Normalize	Analysis/Analyzer.cpp	/^BytesRef Analyzer::Normalize(const std::string& field_name,$/;"	f	class:Analyzer
 Normalize	Analysis/Analyzer.cpp	/^TokenStream& Analyzer::Normalize(const std::string& field_name,$/;"	f	class:Analyzer
 Normalize	Analysis/Standard.cpp	/^StandardAnalyzer::Normalize(const std::string& field_name,$/;"	f	class:StandardAnalyzer
@@ -715,6 +770,7 @@ OnOrAfter	Util/Etc.cpp	/^bool Version::OnOrAfter(Version&& other) const {$/;"	f	
 OnOrAfter	Util/Etc.cpp	/^bool Version::OnOrAfter(const Version& other) const {$/;"	f	class:Version
 OpenChecksumInput	Store/Directory.cpp	/^Directory::OpenChecksumInput(const std::string& name,$/;"	f	class:Directory
 OpenInput	Store/Directory.cpp	/^std::unique_ptr<IndexInput> MMapDirectory::OpenInput(const std::string& name,$/;"	f	class:MMapDirectory
+Outputs	Util/Fst.h	/^class Outputs {$/;"	c	namespace:lucene::core::util
 Oversize	Util/ArrayUtil.h	/^uint32_t Oversize(const uint32_t min_target_size) {$/;"	f	namespace:lucene::core::util::arrayutil
 PENDING_SEGMENTS	Index/File.h	/^  static const std::string PENDING_SEGMENTS;$/;"	m	class:lucene::core::index::IndexFileNames
 POSITIVE_INFINITY	Util/Numeric.cpp	/^const double DoubleConsts::POSITIVE_INFINITY =$/;"	m	class:DoubleConsts	file:
@@ -730,6 +786,7 @@ Pack	Document/Field.h	/^  static lucene::core::util::BytesRef Pack(const int32_t
 PackedTokenAttributeImpl	Analysis/AttributeImpl.cpp	/^PackedTokenAttributeImpl::PackedTokenAttributeImpl($/;"	f	class:PackedTokenAttributeImpl
 PackedTokenAttributeImpl	Analysis/AttributeImpl.cpp	/^PackedTokenAttributeImpl::PackedTokenAttributeImpl()$/;"	f	class:PackedTokenAttributeImpl
 PackedTokenAttributeImpl	Analysis/AttributeImpl.h	/^class PackedTokenAttributeImpl: public CharTermAttributeImpl,$/;"	c	namespace:lucene::core::analysis::tokenattributes
+PagedGrowableWriter	Util/Packed.h	/^class PagedGrowableWriter {$/;"	c	namespace:lucene::core::util
 Parse	Util/Etc.cpp	/^Version Version::Parse(const std::string& version) {$/;"	f	class:Version
 Parse	Util/Etc.cpp	/^Version Version::Parse(std::string&& version) {$/;"	f	class:Version
 ParseGeneration	Index/File.cpp	/^uint64_t IndexFileNames::ParseGeneration(const std::string& filename) {$/;"	f	class:IndexFileNames
@@ -750,6 +807,7 @@ PositionLengthAttribute	Analysis/Attribute.h	/^class PositionLengthAttribute: pu
 PositionLengthAttributeImpl	Analysis/AttributeImpl.cpp	/^PositionLengthAttributeImpl::PositionLengthAttributeImpl($/;"	f	class:PositionLengthAttributeImpl
 PositionLengthAttributeImpl	Analysis/AttributeImpl.cpp	/^PositionLengthAttributeImpl::PositionLengthAttributeImpl()$/;"	f	class:PositionLengthAttributeImpl
 PositionLengthAttributeImpl	Analysis/AttributeImpl.h	/^class PositionLengthAttributeImpl: public lucene::core::util::AttributeImpl,$/;"	c	namespace:lucene::core::analysis::tokenattributes
+PrependOutput	Util/Fst.h	/^  void PrependOutput(const T& output_prefix) {$/;"	f	class:lucene::core::util::Builder::UnCompiledNode
 PrivateDeleteFile	Store/Directory.cpp	/^void FSDirectory::PrivateDeleteFile(const std::string& name,$/;"	f	class:FSDirectory
 Put	Analysis/CharacterUtil.h	/^  bool Put(const char* str, uint32_t offset, uint32_t length, VALUE& value) {$/;"	f	class:lucene::core::analysis::characterutil::CharMap
 Put	Analysis/CharacterUtil.h	/^  bool Put(const char* str, uint32_t offset, uint32_t length, VALUE&& value) {$/;"	f	class:lucene::core::analysis::characterutil::CharMap
@@ -773,12 +831,20 @@ ReadByte	Store/DataInput.h	/^  char ReadByte() {$/;"	f	class:lucene::core::store
 ReadByte	Store/DataInput.h	/^  char ReadByte() {$/;"	f	class:lucene::core::store::BytesArrayReferenceIndexInput
 ReadByte	Store/DataInput.h	/^  char ReadByte(const uint64_t pos) {$/;"	f	class:lucene::core::store::BufferedIndexInput
 ReadByte	Store/DataInput.h	/^  char ReadByte(const uint64_t pos) {$/;"	f	class:lucene::core::store::ByteBufferIndexInput
+ReadByte	Util/Fst.h	/^  char ReadByte() {$/;"	f	class:lucene::core::util::ForwardFSTBytesReader
+ReadByte	Util/Fst.h	/^  char ReadByte() {$/;"	f	class:lucene::core::util::ReverseFSTBytesReader
+ReadByte	Util/Fst.h	/^char BytesStoreForwardFSTBytesReader::ReadByte() {$/;"	f	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+ReadByte	Util/Fst.h	/^char BytesStoreReverseFSTBytesReader::ReadByte() {$/;"	f	class:lucene::core::util::BytesStoreReverseFSTBytesReader
 ReadBytes	Store/DataInput.h	/^  void ReadBytes(char b[], const uint32_t offset, const uint32_t len) {$/;"	f	class:lucene::core::store::ByteBufferIndexInput
 ReadBytes	Store/DataInput.h	/^  void ReadBytes(char b[],$/;"	f	class:lucene::core::store::ByteArrayReferenceDataInput
 ReadBytes	Store/DataInput.h	/^  void ReadBytes(char b[],$/;"	f	class:lucene::core::store::BytesArrayReferenceIndexInput
 ReadBytes	Store/DataInput.h	/^  void ReadBytes(char bytes[], const uint32_t offset, const uint32_t len) {$/;"	f	class:lucene::core::store::BufferedChecksumIndexInput
 ReadBytes	Store/DataInput.h	/^  void ReadBytes(char bytes[],$/;"	f	class:lucene::core::store::BufferedIndexInput
 ReadBytes	Store/DataInput.h	/^  void ReadBytes(char bytes[],$/;"	f	class:lucene::core::store::DataInput
+ReadBytes	Util/Fst.h	/^  void ReadBytes(char bytes[],$/;"	f	class:lucene::core::util::ReverseFSTBytesReader
+ReadBytes	Util/Fst.h	/^  void ReadBytes(char dest[], const uint32_t offset, const uint32_t len) {$/;"	f	class:lucene::core::util::ForwardFSTBytesReader
+ReadBytes	Util/Fst.h	/^void BytesStoreForwardFSTBytesReader::ReadBytes(char bytes[],$/;"	f	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+ReadBytes	Util/Fst.h	/^void BytesStoreReverseFSTBytesReader::ReadBytes(char bytes[],$/;"	f	class:lucene::core::util::BytesStoreReverseFSTBytesReader
 ReadInt16	Store/DataInput.h	/^    int16_t ReadInt16(const uint64_t pos) {$/;"	f	class:lucene::core::store::IndexInput::DefaultRandomAccessInputImpl
 ReadInt16	Store/DataInput.h	/^  int16_t ReadInt16() {$/;"	f	class:lucene::core::store::BufferedIndexInput
 ReadInt16	Store/DataInput.h	/^  int16_t ReadInt16() {$/;"	f	class:lucene::core::store::ByteArrayReferenceDataInput
@@ -838,6 +904,7 @@ RemoveAllAttributes	Util/Attribute.cpp	/^void AttributeSource::RemoveAllAttribut
 RemoveField	Document/Document.h	/^  void RemoveField(const std::string& name) {$/;"	f	class:lucene::core::document::Document
 RemoveFields	Document/Document.h	/^  void RemoveFields(const std::string& name) {$/;"	f	class:lucene::core::document::Document
 Rename	Store/Directory.cpp	/^void FSDirectory::Rename(const std::string& source, const std::string& dest) {$/;"	f	class:FSDirectory
+ReplaceLast	Util/Fst.h	/^  void ReplaceLast(const uint32_t last_to_match,$/;"	f	class:lucene::core::util::Builder::UnCompiledNode
 Reset	Analysis/Analyzer.cpp	/^void StringTokenStream::Reset() {$/;"	f	class:StringTokenStream
 Reset	Analysis/Reader.cpp	/^void StringReader::Reset() {$/;"	f	class:StringReader
 Reset	Analysis/Reader.h	/^  void Reset() {$/;"	f	class:lucene::core::analysis::IllegalStateReader
@@ -856,6 +923,9 @@ ResizeBuffer	Analysis/AttributeImpl.cpp	/^char* CharTermAttributeImpl::ResizeBuf
 RestoreState	Util/Attribute.cpp	/^void AttributeSource::RestoreState(AttributeSource::State* state) {$/;"	f	class:AttributeSource
 ReuseStrategy	Analysis/Analyzer.cpp	/^Analyzer::ReuseStrategy::ReuseStrategy() {$/;"	f	class:Analyzer::ReuseStrategy
 ReuseStrategy	Analysis/Analyzer.h	/^  class ReuseStrategy {$/;"	c	class:lucene::core::analysis::Analyzer
+Reverse	Util/Fst.h	/^  void Reverse(const uint64_t src_pos, const uint64_t dest_pos) {$/;"	f	class:lucene::core::util::BytesStore
+ReverseFSTBytesReader	Util/Fst.h	/^  ReverseFSTBytesReader(const char* bytes)$/;"	f	class:lucene::core::util::ReverseFSTBytesReader
+ReverseFSTBytesReader	Util/Fst.h	/^class ReverseFSTBytesReader: public FSTBytesReader {$/;"	c	namespace:lucene::core::util
 SAFE_DELETER	Util/Attribute.cpp	/^AttributeSource::StateHolder::SAFE_DELETER = [](State** state_ptr){$/;"	m	class:AttributeSource::StateHolder	file:
 SAFE_DELETER	Util/Attribute.h	/^    static std::function<void(State**)> SAFE_DELETER;$/;"	m	class:lucene::core::util::AttributeSource::StateHolder
 SEEK_CUR	Util/ZlibCrc32.h	526;"	d
@@ -910,7 +980,9 @@ SRC_UTIL_CONCURRENCY_H_	Util/Concurrency.h	19;"	d
 SRC_UTIL_ETC_H_	Util/Etc.h	19;"	d
 SRC_UTIL_EXCEPTION_H_	Util/Exception.h	18;"	d
 SRC_UTIL_FILE_H_	Util/File.h	19;"	d
+SRC_UTIL_FST_H_	Util/Fst.h	19;"	d
 SRC_UTIL_NUMERIC_H_	Util/Numeric.h	19;"	d
+SRC_UTIL_PACKED_H_	Util/Packed.h	19;"	d
 STATIC_TREES	Util/ZlibCrc32.h	2394;"	d
 STDC	Util/ZlibCrc32.h	230;"	d
 STDC	Util/ZlibCrc32.h	239;"	d
@@ -957,6 +1029,7 @@ SetIntValue	Document/Field.h	/^  virtual void SetIntValue(const int32_t value) {
 SetIntValue	Document/Field.h	/^  void SetIntValue(const int32_t value) {$/;"	f	class:lucene::core::document::IntPoint
 SetIntValues	Document/Field.h	/^  void SetIntValues(const int32_t points[], const uint32_t length) {$/;"	f	class:lucene::core::document::IntPoint
 SetKeyword	Analysis/AttributeImpl.cpp	/^void KeywordAttributeImpl::SetKeyword(const bool new_keyword) {$/;"	f	class:KeywordAttributeImpl
+SetLastOutput	Util/Fst.h	/^  void SetLastOutput(const uint32_t label_to_match, T&& new_output) {$/;"	f	class:lucene::core::util::Builder::UnCompiledNode
 SetLength	Analysis/AttributeImpl.cpp	/^CharTermAttributeImpl& CharTermAttributeImpl::SetLength(const uint32_t length) {$/;"	f	class:CharTermAttributeImpl
 SetLength	Util/Bytes.cpp	/^void BytesRefBuilder::SetLength(const uint32_t new_length) {$/;"	f	class:BytesRefBuilder
 SetLongValue	Document/Field.h	/^  virtual void SetLongValue(const int64_t value) {$/;"	f	class:lucene::core::document::Field
@@ -1018,6 +1091,11 @@ Skip	Analysis/Reader.cpp	/^void StringReader::Skip(const uint64_t n) {$/;"	f	cla
 Skip	Analysis/Reader.h	/^  void Skip(const uint64_t n) {$/;"	f	class:lucene::core::analysis::IllegalStateReader
 SkipBytes	Store/DataInput.h	/^  virtual void SkipBytes(const int64_t num_bytes) {$/;"	f	class:lucene::core::store::DataInput
 SkipBytes	Store/DataInput.h	/^  void SkipBytes(const uint64_t count) {$/;"	f	class:lucene::core::store::ByteArrayReferenceDataInput
+SkipBytes	Util/Fst.h	/^  void SkipBytes(const uint32_t len) {$/;"	f	class:lucene::core::util::BytesStore
+SkipBytes	Util/Fst.h	/^  void SkipBytes(const uint64_t count) {$/;"	f	class:lucene::core::util::ForwardFSTBytesReader
+SkipBytes	Util/Fst.h	/^  void SkipBytes(const uint64_t count) {$/;"	f	class:lucene::core::util::ReverseFSTBytesReader
+SkipBytes	Util/Fst.h	/^void BytesStoreForwardFSTBytesReader::SkipBytes(const uint64_t count) {$/;"	f	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+SkipBytes	Util/Fst.h	/^void BytesStoreReverseFSTBytesReader::SkipBytes(const uint64_t count) {$/;"	f	class:lucene::core::util::BytesStoreReverseFSTBytesReader
 Slice	Store/DataInput.h	/^  Slice(const std::string& slice_desc,$/;"	f	class:lucene::core::store::BufferedChecksumIndexInput
 Slice	Store/DataInput.h	/^  Slice(const std::string& slice_desc,$/;"	f	class:lucene::core::store::BufferedIndexInput
 Slice	Store/DataInput.h	/^  Slice(const std::string& slice_desc,$/;"	f	class:lucene::core::store::BytesArrayReferenceIndexInput
@@ -1192,6 +1270,7 @@ TEST	Util/tests/FileUtilTests.cpp	/^TEST(FILE__UTIL__TESTS, CREATE__DIRECTORY) {
 TEST	Util/tests/FileUtilTests.cpp	/^TEST(FILE__UTIL__TESTS, EXSTS) {$/;"	f
 TEST	Util/tests/FileUtilTests.cpp	/^TEST(FILE__UTIL__TESTS, LIST__FILES) {$/;"	f
 TEST	Util/tests/FileUtilTests.cpp	/^TEST(FILE__UTIL__TESTS, MOVE) {$/;"	f
+TEST	Util/tests/FstTests.cpp	/^TEST(BYTESREF__TESTS, BASIC__TEST) {$/;"	f
 TEST	Util/tests/NumericTests.cpp	/^TEST(NUMERIC_TESTS, NUMBER__TESTS) {$/;"	f
 TEST	Util/tests/NumericTests.cpp	/^TEST(NUMERIC_TESTS, NUMERIC___UTILS__TESTS1) {$/;"	f
 TEST	Util/tests/NumericTests.cpp	/^TEST(NUMERIC_TESTS, NUMERIC___UTILS__TESTS2) {$/;"	f
@@ -1266,6 +1345,7 @@ Tracevv	Util/ZlibCrc32.h	2572;"	d
 TransparentTokenFilter	Analysis/tests/TokenStreamTests.cpp	/^  explicit TransparentTokenFilter(TokenStream* in)$/;"	f	class:TransparentTokenFilter
 TransparentTokenFilter	Analysis/tests/TokenStreamTests.cpp	/^class TransparentTokenFilter: public TokenFilter {$/;"	c	file:
 Trim	Analysis/CharacterUtil.cpp	/^void lucene::core::analysis::characterutil::Trim(std::string& str) {$/;"	f	class:lucene::core::analysis::characterutil
+Truncate	Util/Fst.h	/^  void Truncate(const uint64_t new_len) {$/;"	f	class:lucene::core::util::BytesStore
 Type	Analysis/AttributeImpl.cpp	/^std::string& PackedTokenAttributeImpl::Type() {$/;"	f	class:PackedTokenAttributeImpl
 Type	Analysis/AttributeImpl.cpp	/^std::string& TypeAttributeImpl::Type() {$/;"	f	class:TypeAttributeImpl
 TypeAttribute	Analysis/Attribute.h	/^class TypeAttribute: public lucene::core::util::Attribute {$/;"	c	namespace:lucene::core::analysis::tokenattributes
@@ -1275,6 +1355,8 @@ TypeAttributeImpl	Analysis/AttributeImpl.h	/^class TypeAttributeImpl: public luc
 TypeId	Util/Attribute.h	/^  static std::type_index TypeId() {$/;"	f	class:lucene::core::util::Attribute
 UNALIGNED_OK	Util/ZlibCrc32.h	225;"	d
 UTF8ToString	Util/Bytes.cpp	/^std::string BytesRef::UTF8ToString() {$/;"	f	class:BytesRef
+UnCompiledNode	Util/Fst.h	/^  UnCompiledNode(Builder<T>* owner, const uint32_t depth)$/;"	f	class:lucene::core::util::Builder::UnCompiledNode
+UnCompiledNode	Util/Fst.h	/^class Builder<T>::UnCompiledNode : public Builder<T>::Node {$/;"	c	class:lucene::core::util::Builder
 UnsupportedOperationException	Util/Exception.h	/^  UnsupportedOperationException()$/;"	f	class:lucene::core::util::UnsupportedOperationException
 UnsupportedOperationException	Util/Exception.h	/^  explicit UnsupportedOperationException(const char* err_msg)$/;"	f	class:lucene::core::util::UnsupportedOperationException
 UnsupportedOperationException	Util/Exception.h	/^  explicit UnsupportedOperationException(const std::string& err_msg)$/;"	f	class:lucene::core::util::UnsupportedOperationException
@@ -1283,6 +1365,15 @@ Update	Store/Context.h	/^  void Update(const char b) {$/;"	f	class:lucene::core:
 Update	Store/Context.h	/^  void Update(const char bytes[], const uint32_t off, const uint32_t len) {$/;"	f	class:lucene::core::store::BufferedChecksum
 Update	Util/Etc.h	/^  void Update(const char b) {$/;"	f	class:lucene::core::util::Crc32
 Update	Util/Etc.h	/^  void Update(const char bytes[], const uint32_t off, const uint32_t len) {$/;"	f	class:lucene::core::util::Crc32
+VERSION_CURRENT	Util/Fst.h	/^  static const uint32_t VERSION_CURRENT = VERSION_PACKED_REMOVED;$/;"	m	class:lucene::core::util::FST
+VERSION_INT_NUM_BYTES_PER_ARC	Util/Fst.h	/^  static const uint32_t VERSION_INT_NUM_BYTES_PER_ARC = 1;$/;"	m	class:lucene::core::util::FST
+VERSION_NO_NODE_ARC_COUNTS	Util/Fst.h	/^  static const uint32_t VERSION_NO_NODE_ARC_COUNTS =5;$/;"	m	class:lucene::core::util::FST
+VERSION_PACKED	Util/Fst.h	/^  static const uint32_t VERSION_PACKED = 3;$/;"	m	class:lucene::core::util::FST
+VERSION_PACKED_REMOVED	Util/Fst.h	/^  static const uint32_t VERSION_PACKED_REMOVED = 6;$/;"	m	class:lucene::core::util::FST
+VERSION_SHORT_BYTE2_LABELS	Util/Fst.h	/^  static const uint32_t VERSION_SHORT_BYTE2_LABELS = 2;$/;"	m	class:lucene::core::util::FST
+VERSION_START	Util/Fst.h	/^  static const uint32_t VERSION_START = 0;$/;"	m	class:lucene::core::util::FST
+VERSION_VINT_TARGET	Util/Fst.h	/^  static const uint32_t VERSION_VINT_TARGET = 4;$/;"	m	class:lucene::core::util::FST
+ValidOutput	Util/Fst.h	/^  bool ValidOutput(T& output) const {$/;"	f	class:lucene::core::util::Builder
 VerifyAndEncode	Document/Field.h	/^  static void VerifyAndEncode(const double min[],$/;"	f	class:lucene::core::document::DoubleRange
 VerifyAndEncode	Document/Field.h	/^  static void VerifyAndEncode(const float min[],$/;"	f	class:lucene::core::document::FloatRange
 VerifyAndEncode	Document/Field.h	/^  static void VerifyAndEncode(const int32_t min[],$/;"	f	class:lucene::core::document::IntRange
@@ -1301,10 +1392,15 @@ Wrap	Store/DataInput.cpp	/^BufferedIndexInput::Wrap(const std::string& slice_des
 WriteByte	Store/DataOutput.h	/^  void WriteByte(const char b) {$/;"	f	class:lucene::core::store::ByteArrayReferenceDataOutput
 WriteByte	Store/DataOutput.h	/^  void WriteByte(const char b) {$/;"	f	class:lucene::core::store::FileIndexOutput
 WriteByte	Store/DataOutput.h	/^  void WriteByte(const char b) {$/;"	f	class:lucene::core::store::GrowableByteArrayDataOutput
+WriteByte	Util/Fst.h	/^  void WriteByte(const char b) {$/;"	f	class:lucene::core::util::BytesStore
+WriteByte	Util/Fst.h	/^  void WriteByte(const uint32_t dest, const char b) {$/;"	f	class:lucene::core::util::BytesStore
 WriteBytes	Store/DataOutput.h	/^  void WriteBytes(char bytes[],$/;"	f	class:lucene::core::store::ByteArrayReferenceDataOutput
 WriteBytes	Store/DataOutput.h	/^  void WriteBytes(const char bytes[], const uint32_t bytes_length) {$/;"	f	class:lucene::core::store::DataOutput
 WriteBytes	Store/DataOutput.h	/^  void WriteBytes(const char bytes[],$/;"	f	class:lucene::core::store::FileIndexOutput
 WriteBytes	Store/DataOutput.h	/^  void WriteBytes(const char in_bytes[],$/;"	f	class:lucene::core::store::GrowableByteArrayDataOutput
+WriteBytes	Util/Fst.h	/^  void WriteBytes(const char bytes[],$/;"	f	class:lucene::core::util::BytesStore
+WriteBytes	Util/Fst.h	/^  void WriteBytes(const uint64_t dest,$/;"	f	class:lucene::core::util::BytesStore
+WriteInt	Util/Fst.h	/^  void WriteInt(const uint64_t pos, const uint32_t value) {$/;"	f	class:lucene::core::util::BytesStore
 WriteInt16	Store/DataOutput.h	/^  void WriteInt16(const int16_t i) {$/;"	f	class:lucene::core::store::DataOutput
 WriteInt32	Store/DataOutput.h	/^  void WriteInt32(const int32_t i) {$/;"	f	class:lucene::core::store::DataOutput
 WriteInt64	Store/DataOutput.h	/^  void WriteInt64(const int64_t i) {$/;"	f	class:lucene::core::store::DataOutput
@@ -1313,6 +1409,7 @@ WriteSetOfStrings	Store/DataOutput.h	/^  void WriteSetOfStrings(const std::set<s
 WriteSignedVInt64	Store/DataOutput.h	/^  void WriteSignedVInt64(int64_t i) {$/;"	f	class:lucene::core::store::DataOutput
 WriteString	Store/DataOutput.h	/^  void WriteString(const std::string& s) {$/;"	f	class:lucene::core::store::DataOutput
 WriteString	Store/DataOutput.h	/^  void WriteString(const std::string& str) {$/;"	f	class:lucene::core::store::GrowableByteArrayDataOutput
+WriteTo	Util/Fst.h	/^  void WriteTo(lucene::core::store::DataOutput* out) {$/;"	f	class:lucene::core::util::BytesStore
 WriteVInt32	Store/DataOutput.h	/^  void WriteVInt32(int32_t i) {$/;"	f	class:lucene::core::store::DataOutput
 WriteVInt64	Store/DataOutput.h	/^  void WriteVInt64(const int64_t i) {$/;"	f	class:lucene::core::store::DataOutput
 WriteZInt32	Store/DataOutput.h	/^  void WriteZInt32(const int32_t i) {$/;"	f	class:lucene::core::store::DataOutput
@@ -1421,6 +1518,8 @@ adler32_combine64	Util/ZlibCrc32.h	58;"	d
 adler32_z	Util/ZlibCrc32.h	59;"	d
 alloc_func	Util/ZlibCrc32.h	/^typedef voidpf (*alloc_func) OF((voidpf opaque, uInt items, uInt size));$/;"	t
 alloc_func	Util/ZlibCrc32.h	170;"	d
+allow_array_arcs	Util/Fst.h	/^      allow_array_arcs(allow_array_arcs) {$/;"	f	class:lucene::core::util::Builder
+allow_array_arcs	Util/Fst.h	/^  bool allow_array_arcs;$/;"	m	class:lucene::core::util::Builder
 analysis	Analysis/Analyzer.h	/^namespace analysis {$/;"	n	namespace:lucene::core
 analysis	Analysis/Attribute.h	/^namespace analysis {$/;"	n	namespace:lucene::core
 analysis	Analysis/AttributeImpl.h	/^namespace analysis {$/;"	n	namespace:lucene::core
@@ -1428,6 +1527,10 @@ analysis	Analysis/CharacterUtil.h	/^namespace analysis {$/;"	n	namespace:lucene:
 analysis	Analysis/Reader.h	/^namespace analysis {$/;"	n	namespace:lucene::core
 analysis	Analysis/Standard.h	/^namespace analysis {$/;"	n	namespace:lucene::core
 analysis	Analysis/TokenStream.h	/^namespace analysis {$/;"	n	namespace:lucene::core
+arc_count	Util/Fst.h	/^  uint64_t arc_count;$/;"	m	class:lucene::core::util::Builder
+arc_idx	Util/Fst.h	/^  uint32_t arc_idx;$/;"	m	class:lucene::core::util::FST::Arc
+arcs	Util/Fst.h	/^  std::unique_ptr<Arc[]> arcs; $/;"	m	class:lucene::core::util::Builder::UnCompiledNode
+arcs_size	Util/Fst.h	/^  uint32_t arcs_size;$/;"	m	class:lucene::core::util::Builder::UnCompiledNode
 arrayutil	Util/ArrayUtil.h	/^namespace arrayutil {$/;"	n	namespace:lucene::core::util
 attribute	Util/Attribute.h	/^    AttributeImpl* attribute;$/;"	m	class:lucene::core::util::AttributeSource::final
 attribute_impls	Util/Attribute.h	/^                     std::shared_ptr<AttributeImpl>> attribute_impls;$/;"	m	class:lucene::core::util::AttributeSource
@@ -1436,6 +1539,10 @@ avail_in	Util/ZlibCrc32.h	/^    uInt     avail_in;  \/* number of bytes availabl
 avail_out	Util/ZlibCrc32.h	/^    uInt     avail_out; \/* remaining free space at next_out *\/$/;"	m	struct:z_stream_s
 base	Store/DataInput.h	/^  IndexInput* base;$/;"	m	class:lucene::core::store::BufferedIndexInput::SlicedIndexInput
 base	Store/DataInput.h	/^  const char* base;$/;"	m	class:lucene::core::store::ByteBufferIndexInput
+block_bits	Util/Fst.h	/^  uint32_t block_bits;$/;"	m	class:lucene::core::util::BytesStore
+block_mask	Util/Fst.h	/^  uint32_t block_mask;$/;"	m	class:lucene::core::util::BytesStore
+block_size	Util/Fst.h	/^  uint32_t block_size;$/;"	m	class:lucene::core::util::BytesStore
+blocks	Util/Fst.h	/^  std::vector<std::pair<std::unique_ptr<char[]>, uint32_t>> blocks;$/;"	m	class:lucene::core::util::BytesStore
 buf_idx	Store/DataOutput.h	/^  uint32_t buf_idx;$/;"	m	class:lucene::core::store::FileIndexOutput
 buffer	Store/Context.h	/^  std::unique_ptr<char[]> buffer;$/;"	m	class:lucene::core::store::BufferedChecksum
 buffer	Store/DataInput.h	/^  std::unique_ptr<char[]> buffer;$/;"	m	class:lucene::core::store::BufferedIndexInput
@@ -1447,6 +1554,7 @@ buffer_size	Store/DataInput.h	/^  uint32_t buffer_size;$/;"	m	class:lucene::core
 buffer_start	Store/DataInput.h	/^  uint64_t buffer_start;$/;"	m	class:lucene::core::store::BufferedIndexInput
 bugfix	Util/Etc.h	/^  uint8_t bugfix;$/;"	m	class:lucene::core::util::Version
 builder	Analysis/AttributeImpl.h	/^  lucene::core::util::BytesRefBuilder builder;$/;"	m	class:lucene::core::analysis::tokenattributes::CharTermAttributeImpl
+byte_array	Util/Fst.h	/^  char* byte_array;$/;"	m	class:lucene::core::util::FST
 bytes	Analysis/Attribute.h	/^  lucene::core::util::BytesRef bytes;$/;"	m	class:lucene::core::analysis::tokenattributes::BytesTermAttribute
 bytes	Analysis/AttributeImpl.h	/^  lucene::core::util::BytesRef bytes;$/;"	m	class:lucene::core::analysis::tokenattributes::BytesTermAttributeImpl
 bytes	Store/DataInput.h	/^  char* bytes;$/;"	m	class:lucene::core::store::ByteArrayReferenceDataInput
@@ -1454,14 +1562,20 @@ bytes	Store/DataInput.h	/^  char* bytes;$/;"	m	class:lucene::core::store::BytesA
 bytes	Store/DataOutput.h	/^  char* bytes;$/;"	m	class:lucene::core::store::ByteArrayReferenceDataOutput
 bytes	Store/DataOutput.h	/^  std::unique_ptr<char[]> bytes;$/;"	m	class:lucene::core::store::GrowableByteArrayDataOutput
 bytes	Util/Bytes.h	/^  std::shared_ptr<char> bytes;$/;"	m	class:lucene::core::util::BytesRef
+bytes	Util/Fst.h	/^  BytesStore bytes;$/;"	m	class:lucene::core::util::FST
+bytes	Util/Fst.h	/^  BytesStore& bytes;$/;"	m	class:lucene::core::util::Builder
+bytes	Util/Fst.h	/^  char* bytes;$/;"	m	class:lucene::core::util::ForwardFSTBytesReader
+bytes	Util/Fst.h	/^  const char* bytes;$/;"	m	class:lucene::core::util::ReverseFSTBytesReader
 bytes	Util/Numeric.h	/^  char bytes[2];$/;"	m	union:lucene::core::util::numeric::__anon1
 bytes	Util/Numeric.h	/^  char bytes[4];$/;"	m	union:lucene::core::util::numeric::__anon2
 bytes	Util/Numeric.h	/^  char bytes[8];$/;"	m	union:lucene::core::util::numeric::__anon3
 bytes_att	Document/Field.h	/^    bytes_att;$/;"	m	class:lucene::core::document::Field::BinaryTokenStream
 bytes_len	Store/DataOutput.h	/^  uint32_t bytes_len;$/;"	m	class:lucene::core::store::ByteArrayReferenceDataOutput
 bytes_len	Store/DataOutput.h	/^  uint32_t bytes_len;$/;"	m	class:lucene::core::store::GrowableByteArrayDataOutput
+bytes_per_arc	Util/Fst.h	/^  uint32_t bytes_per_arc;$/;"	m	class:lucene::core::util::FST::Arc
 bytes_written	Store/DataOutput.h	/^  uint64_t bytes_written;$/;"	m	class:lucene::core::store::FileIndexOutput
 cache	Analysis/TokenStream.h	/^    cache;$/;"	m	class:lucene::core::analysis::CachingTokenFilter
+cached_root_arcs	Util/Fst.h	/^  Arc* cached_root_arcs;$/;"	m	class:lucene::core::util::FST
 capacity	Util/Bytes.h	/^  uint32_t capacity;$/;"	m	class:lucene::core::util::BytesRef
 char_term_attr	Analysis/tests/AnalyzerTests.cpp	/^  std::shared_ptr<CharTermAttribute> char_term_attr;$/;"	m	class:DummyTokenFilter	file:
 char_term_attr	Analysis/tests/AnalyzerTests.cpp	/^  std::shared_ptr<CharTermAttribute> char_term_attr;$/;"	m	class:DummyTokenizer	file:
@@ -1508,7 +1622,10 @@ core	Util/Concurrency.h	/^namespace core {$/;"	n	namespace:lucene
 core	Util/Etc.h	/^namespace core {$/;"	n	namespace:lucene
 core	Util/Exception.h	/^namespace core {$/;"	n	namespace:lucene
 core	Util/File.h	/^namespace core {$/;"	n	namespace:lucene
+core	Util/Fst.h	/^namespace core {$/;"	n	namespace:lucene
 core	Util/Numeric.h	/^namespace core {$/;"	n	namespace:lucene
+core	Util/Packed.h	/^namespace core {$/;"	n	namespace:lucene
+count	Util/Fst.h	/^  uint64_t count;$/;"	m	class:lucene::core::util::NodeHash
 crc	Store/DataOutput.h	/^  lucene::core::util::Crc32 crc;$/;"	m	class:lucene::core::store::FileIndexOutput
 crc	Util/Etc.h	/^  int32_t crc;$/;"	m	class:lucene::core::util::Crc32
 crc32	Util/ZlibCrc32.h	65;"	d
@@ -1526,7 +1643,11 @@ crc_table	Util/ZlibCrc32.c	/^local z_crc_t FAR crc_table[TBLS][256];$/;"	v
 crc_table	Util/ZlibCrc32.h	/^local const z_crc_t FAR crc_table[TBLS][256] =$/;"	v
 crc_table_empty	Util/ZlibCrc32.c	/^local volatile int crc_table_empty = 1;$/;"	v
 ctime	Store/Lock.h	/^    time_t ctime;$/;"	m	class:lucene::core::store::NativeFSLockFactory::NativeFSLock
+current	Util/Fst.h	/^  char* current;$/;"	m	class:lucene::core::util::BytesStore
+current	Util/Fst.h	/^  char* current;$/;"	m	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+current	Util/Fst.h	/^  char* current;$/;"	m	class:lucene::core::util::BytesStoreReverseFSTBytesReader
 data_type	Util/ZlibCrc32.h	/^    int     data_type;  \/* best guess about the data type: binary or text$/;"	m	struct:z_stream_s
+dedup_hash	Util/Fst.h	/^  std::unique_ptr<NodeHash<T>> dedup_hash;$/;"	m	class:lucene::core::util::Builder
 deflate	Util/ZlibCrc32.h	69;"	d
 deflateBound	Util/ZlibCrc32.h	70;"	d
 deflateCopy	Util/ZlibCrc32.h	71;"	d
@@ -1550,6 +1671,7 @@ deflate_copyright	Util/ZlibCrc32.h	86;"	d
 delegate	Store/DataOutput.h	/^  std::unique_ptr<IndexOutput> delegate;$/;"	m	class:lucene::core::store::RateLimitedIndexOutput
 delegate	Util/Attribute.h	/^  ATTR_FACTORY delegate;$/;"	m	class:lucene::core::util::AttributeFactory::StaticImplementationAttributeFactory
 delete_attribute	Util/Attribute.h	/^    bool delete_attribute;$/;"	m	class:lucene::core::util::AttributeSource::final
+depth	Util/Fst.h	/^  uint32_t depth;$/;"	m	class:lucene::core::util::Builder::UnCompiledNode
 digest	Store/DataInput.h	/^  std::unique_ptr<lucene::core::util::Checksum> digest;$/;"	m	class:lucene::core::store::BufferedChecksumIndexInput
 dimension_count	Document/Field.h	/^  uint32_t dimension_count;$/;"	m	class:lucene::core::document::FieldType
 dimension_count	Document/Field.h	/^  uint32_t dimension_count;$/;"	m	class:lucene::core::document::FieldTypeBuilder
@@ -1557,12 +1679,14 @@ dimension_num_bytes	Document/Field.h	/^  uint32_t dimension_num_bytes;$/;"	m	cla
 dimension_num_bytes	Document/Field.h	/^  uint32_t dimension_num_bytes;$/;"	m	class:lucene::core::document::FieldTypeBuilder
 direct	Util/ZlibCrc32.h	/^    int direct;             \/* 0 if processing gzip, 1 if transparent *\/$/;"	m	struct:__anon4
 directory	Store/Directory.h	/^  std::string directory;$/;"	m	class:lucene::core::store::FSDirectory
+do_share_non_singleton_nodes	Util/Fst.h	/^  bool do_share_non_singleton_nodes;$/;"	m	class:lucene::core::util::Builder
 doc_values_type	Document/Field.h	/^  lucene::core::index::DocValuesType doc_values_type;$/;"	m	class:lucene::core::document::FieldType
 doc_values_type	Document/Field.h	/^  lucene::core::index::DocValuesType doc_values_type;$/;"	m	class:lucene::core::document::FieldTypeBuilder
 document	Document/Document.h	/^namespace document {$/;"	n	namespace:lucene::core
 document	Document/Field.h	/^namespace document {$/;"	n	namespace:lucene::core
 done	Util/ZlibCrc32.h	/^    int     done;       \/* true when done reading gzip header (not used$/;"	m	struct:gz_header_s
 double_value	Util/Numeric.h	/^    double double_value;$/;"	m	union:lucene::core::util::numeric::Number::NumberRepresentation
+empty_output	Util/Fst.h	/^  T empty_output;$/;"	m	class:lucene::core::util::FST
 encoded_value	Util/Etc.h	/^  uint32_t encoded_value;$/;"	m	class:lucene::core::util::Version
 end_offset	Analysis/AttributeImpl.h	/^  uint32_t end_offset;$/;"	m	class:lucene::core::analysis::tokenattributes::OffsetAttributeImpl
 end_offset	Analysis/AttributeImpl.h	/^  uint32_t end_offset;$/;"	m	class:lucene::core::analysis::tokenattributes::PackedTokenAttributeImpl
@@ -1590,11 +1714,15 @@ final	Util/Attribute.h	/^  class State final {$/;"	c	class:lucene::core::util::A
 final_state	Analysis/TokenStream.h	/^  std::unique_ptr<lucene::core::util::AttributeSource::State> final_state;$/;"	m	class:lucene::core::analysis::CachingTokenFilter
 first_time	Analysis/TokenStream.h	/^  bool first_time;$/;"	m	class:lucene::core::analysis::CachingTokenFilter
 flags	Analysis/AttributeImpl.h	/^  int32_t flags;$/;"	m	class:lucene::core::analysis::tokenattributes::FlagsAttributeImpl
+flags	Util/Fst.h	/^  char flags;$/;"	m	class:lucene::core::util::FST::Arc
 flush	Store/DataOutput.h	/^  void flush() {$/;"	f	class:lucene::core::store::FileIndexOutput
 flush_info	Store/Context.h	/^  const FlushInfo flush_info;$/;"	m	class:lucene::core::store::IOContext
 flushed_on_close	Store/DataOutput.h	/^  bool flushed_on_close;$/;"	m	class:lucene::core::store::FileIndexOutput
 free_func	Util/ZlibCrc32.h	/^typedef void   (*free_func)  OF((voidpf opaque, voidpf address));$/;"	t
 free_func	Util/ZlibCrc32.h	172;"	d
+frontier	Util/Fst.h	/^  std::unique_ptr<UnCompiledNode[]> frontier;$/;"	m	class:lucene::core::util::Builder
+fst	Util/Fst.h	/^  FST<T> fst;$/;"	m	class:lucene::core::util::Builder
+fst	Util/Fst.h	/^  FST<T> fst;$/;"	m	class:lucene::core::util::NodeHash
 get_crc_table	Util/ZlibCrc32.c	/^const z_crc_t FAR * ZEXPORT get_crc_table()$/;"	f
 get_crc_table	Util/ZlibCrc32.h	87;"	d
 gf2_matrix_square	Util/ZlibCrc32.c	/^local void gf2_matrix_square(square, mat)$/;"	f
@@ -1660,6 +1788,7 @@ ignore_case	Analysis/CharacterUtil.h	/^  bool ignore_case;$/;"	m	class:lucene::c
 ignore_case	Analysis/CharacterUtil.h	/^  bool ignore_case;$/;"	m	class:lucene::core::analysis::characterutil::CharPtrRangeInfoHasher
 ignore_case	Analysis/CharacterUtil.h	/^  bool ignore_case;$/;"	m	class:lucene::core::analysis::characterutil::CharSet
 in	Store/Context.h	/^  std::unique_ptr<lucene::core::util::Checksum> in;$/;"	m	class:lucene::core::store::BufferedChecksum
+in	Util/Fst.h	/^  std::unique_ptr<FSTBytesReader> in;$/;"	m	class:lucene::core::util::NodeHash
 in	Util/ZlibCrc32.h	/^    unsigned char *in;      \/* input buffer (double-sized when writing) *\/$/;"	m	struct:__anon4
 in_func	Util/ZlibCrc32.h	/^typedef unsigned (*in_func) OF((void FAR *,$/;"	t
 in_func	Util/ZlibCrc32.h	178;"	d
@@ -1702,7 +1831,9 @@ inflate_table	Util/ZlibCrc32.h	154;"	d
 input	Analysis/CharacterUtil.h	/^  std::unique_ptr<Reader> input;$/;"	m	class:lucene::core::analysis::characterutil::CharFilter
 input	Analysis/TokenStream.h	/^  Reader* input;  \/\/ Read onlly$/;"	m	class:lucene::core::analysis::Tokenizer
 input	Analysis/TokenStream.h	/^  std::shared_ptr<TokenStream> input;$/;"	m	class:lucene::core::analysis::TokenFilter
+input_count	Util/Fst.h	/^  uint64_t input_count;$/;"	m	class:lucene::core::util::Builder::UnCompiledNode
 input_pending	Analysis/TokenStream.h	/^  Reader* input_pending;  \/\/ Read only$/;"	m	class:lucene::core::analysis::Tokenizer
+input_type	Util/Fst.h	/^  INPUT_TYPE input_type;$/;"	m	class:lucene::core::util::FST
 int16	Util/Numeric.h	/^  int16_t int16;$/;"	m	union:lucene::core::util::numeric::__anon1
 int32	Util/Numeric.h	/^  int32_t int32;$/;"	m	union:lucene::core::util::numeric::__anon2
 int64	Util/Numeric.h	/^  int64_t int64;$/;"	m	union:lucene::core::util::numeric::__anon3
@@ -1714,6 +1845,8 @@ intf	Util/ZlibCrc32.h	179;"	d
 isClone	Store/DataInput.h	/^  bool isClone;$/;"	m	class:lucene::core::store::ByteBufferIndexInput
 isClosed	Store/DataInput.h	/^  bool* isClosed;$/;"	m	class:lucene::core::store::ByteBufferIndexInput
 is_external	Store/Context.h	/^  const bool is_external;$/;"	m	class:lucene::core::store::MergeInfo
+is_final	Util/Fst.h	/^  bool is_final;$/;"	m	class:lucene::core::util::Builder::Arc
+is_final	Util/Fst.h	/^  bool is_final;$/;"	m	class:lucene::core::util::Builder::UnCompiledNode
 is_integral	Util/Numeric.h	/^  bool is_integral;$/;"	m	class:lucene::core::util::numeric::Number
 is_open	Store/Directory.h	/^  volatile bool is_open;$/;"	m	class:lucene::core::store::BaseDirectory
 is_tmp	Analysis/CharacterUtil.h	/^  bool is_tmp;$/;"	m	class:lucene::core::analysis::characterutil::CharPtrRangeInfo
@@ -1721,6 +1854,10 @@ iss	Analysis/Reader.h	/^  std::istringstream iss;$/;"	m	class:lucene::core::anal
 item	Util/Concurrency.h	/^  TYPE item;$/;"	m	class:lucene::core::util::ThreadLocalItemWrapper
 iterator	Analysis/TokenStream.h	/^    ::iterator iterator;$/;"	m	class:lucene::core::analysis::CachingTokenFilter
 keyword	Analysis/AttributeImpl.h	/^  bool keyword;$/;"	m	class:lucene::core::analysis::tokenattributes::KeywordAttributeImpl
+label	Util/Fst.h	/^  uint32_t label;$/;"	m	class:lucene::core::util::Builder::Arc
+label	Util/Fst.h	/^  uint32_t label;$/;"	m	class:lucene::core::util::FST::Arc
+last_frozen_node	Util/Fst.h	/^  uint64_t last_frozen_node;$/;"	m	class:lucene::core::util::Builder
+last_input	Util/Fst.h	/^  lucene::core::util::IntsRefBuilder last_input;$/;"	m	class:lucene::core::util::Builder
 length	Analysis/Analyzer.h	/^  size_t length;$/;"	m	class:lucene::core::analysis::StringTokenStream
 length	Analysis/CharacterUtil.h	/^  const uint32_t length;$/;"	m	class:lucene::core::analysis::characterutil::CharPtrRangeInfo
 length	Store/DataInput.h	/^  const uint64_t length;$/;"	m	class:lucene::core::store::ByteBufferIndexInput
@@ -1761,7 +1898,9 @@ lucene	Util/Concurrency.h	/^namespace lucene {$/;"	n
 lucene	Util/Etc.h	/^namespace lucene {$/;"	n
 lucene	Util/Exception.h	/^namespace lucene {$/;"	n
 lucene	Util/File.h	/^namespace lucene {$/;"	n
+lucene	Util/Fst.h	/^namespace lucene {$/;"	n
 lucene	Util/Numeric.h	/^namespace lucene {$/;"	n
+lucene	Util/Packed.h	/^namespace lucene {$/;"	n
 main	Analysis/tests/AnalyzerTests.cpp	/^int main(int argc, char* argv[]) {$/;"	f
 main	Analysis/tests/AttributeImplTests.cpp	/^int main(int argc, char* argv[]) {$/;"	f
 main	Analysis/tests/CharacterUtilTests.cpp	/^int main(int argc, char* argv[]) {$/;"	f
@@ -1779,15 +1918,19 @@ main	Util/tests/BytesRefTests.cpp	/^int main(int argc, char* argv[]) {$/;"	f
 main	Util/tests/ConcurrencyTests.cpp	/^int main(int argc, char* argv[]) {$/;"	f
 main	Util/tests/EtcTests.cpp	/^int main(int argc, char* argv[]) {$/;"	f
 main	Util/tests/FileUtilTests.cpp	/^int main(int argc, char* argv[]) {$/;"	f
+main	Util/tests/FstTests.cpp	/^int main(int argc, char* argv[]) {$/;"	f
 main	Util/tests/NumericTests.cpp	/^int main(int argc, char* argv[]) {$/;"	f
 major	Util/Etc.cpp	31;"	d	file:
 major	Util/Etc.h	/^  uint8_t major;$/;"	m	class:lucene::core::util::Version
 make_crc_table	Util/ZlibCrc32.c	/^local void make_crc_table()$/;"	f
 mark	Analysis/Reader.h	/^  uint32_t mark;$/;"	m	class:lucene::core::analysis::StringReader
+mask	Util/Fst.h	/^  uint64_t mask;$/;"	m	class:lucene::core::util::NodeHash
 max_token_length	Analysis/Standard.h	/^  int32_t max_token_length\/* = StandardAnalyzer.DEFAULT_MAX_TOKEN_LENGTH*\/;$/;"	m	class:lucene::core::analysis::standard::StandardTokenizer
 max_token_length	Analysis/Standard.h	/^  uint32_t max_token_length;$/;"	m	class:lucene::core::analysis::standard::StandardAnalyzer
 merge_info	Store/Context.h	/^  const MergeInfo merge_info;$/;"	m	class:lucene::core::store::IOContext
 merge_max_num_segments	Store/Context.h	/^  const uint32_t merge_max_num_segments;$/;"	m	class:lucene::core::store::MergeInfo
+min_suffix_count1	Util/Fst.h	/^  uint32_t min_suffix_count1;$/;"	m	class:lucene::core::util::Builder
+min_suffix_count2	Util/Fst.h	/^  uint32_t min_suffix_count2;$/;"	m	class:lucene::core::util::Builder
 minor	Util/Etc.cpp	32;"	d	file:
 minor	Util/Etc.h	/^  uint8_t minor;$/;"	m	class:lucene::core::util::Version
 mode	Util/ZlibCrc32.h	/^    int mode;               \/* see gzip modes above *\/$/;"	m	struct:__anon4
@@ -1800,11 +1943,33 @@ name_max	Util/ZlibCrc32.h	/^    uInt    name_max;   \/* space at name (only when
 new_ptr	Util/ZlibCrc32.c	/^    voidpf new_ptr;$/;"	m	struct:ptr_table_s	file:
 next	Util/Attribute.h	/^    State* next;$/;"	m	class:lucene::core::util::AttributeSource::final
 next	Util/ZlibCrc32.h	/^    unsigned char *next;$/;"	m	struct:gzFile_s
+next_arc	Util/Fst.h	/^  uint64_t next_arc;$/;"	m	class:lucene::core::util::FST::Arc
+next_buffer	Util/Fst.h	/^  uint32_t next_buffer;$/;"	m	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+next_buffer	Util/Fst.h	/^  uint32_t next_buffer;$/;"	m	class:lucene::core::util::BytesStoreReverseFSTBytesReader
+next_final_output	Util/Fst.h	/^  T next_final_output;$/;"	m	class:lucene::core::util::Builder::Arc
+next_final_output	Util/Fst.h	/^  T next_final_output;$/;"	m	class:lucene::core::util::FST::Arc
 next_in	Util/ZlibCrc32.h	/^    z_const Bytef *next_in;     \/* next input byte *\/$/;"	m	struct:z_stream_s
 next_out	Util/ZlibCrc32.h	/^    Bytef    *next_out; \/* next output byte will go here *\/$/;"	m	struct:z_stream_s
 next_ptr	Util/ZlibCrc32.c	/^local int next_ptr = 0;$/;"	v
+next_read	Util/Fst.h	/^  uint32_t next_read;$/;"	m	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+next_read	Util/Fst.h	/^  uint32_t next_read;$/;"	m	class:lucene::core::util::BytesStoreReverseFSTBytesReader
 next_temp_file_counter	Store/Directory.h	/^  std::atomic<std::uint32_t> next_temp_file_counter;$/;"	m	class:lucene::core::store::FSDirectory
+next_write	Util/Fst.h	/^  uint32_t next_write;$/;"	m	class:lucene::core::util::BytesStore
+node	Util/Fst.h	/^  uint64_t node;$/;"	m	class:lucene::core::util::Builder::CompiledNode
+node_count	Util/Fst.h	/^  uint64_t node_count;$/;"	m	class:lucene::core::util::Builder
 noexcept	Util/Attribute.h	/^    void CleanAttribute() noexcept;$/;"	m	class:lucene::core::util::AttributeSource::final
+noexcept	Util/Fst.h	/^  bool Reversed() const noexcept;$/;"	m	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+noexcept	Util/Fst.h	/^  bool Reversed() const noexcept;$/;"	m	class:lucene::core::util::BytesStoreReverseFSTBytesReader
+noexcept	Util/Fst.h	/^  uint64_t GetPosition() const noexcept;$/;"	m	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+noexcept	Util/Fst.h	/^  uint64_t GetPosition() const noexcept;$/;"	m	class:lucene::core::util::BytesStoreReverseFSTBytesReader
+noexcept	Util/Fst.h	/^  virtual bool IsCompiled() const noexcept = 0;$/;"	m	class:lucene::core::util::Builder::Node
+noexcept	Util/Fst.h	/^  virtual bool Reversed() const noexcept = 0;$/;"	m	class:lucene::core::util::FSTBytesReader
+noexcept	Util/Fst.h	/^  virtual uint64_t GetPosition() const noexcept = 0;$/;"	m	class:lucene::core::util::FSTBytesReader
+noexcept	Util/Fst.h	/^  virtual void SetPosition(const uint64_t pos) noexcept = 0;$/;"	m	class:lucene::core::util::FSTBytesReader
+noexcept	Util/Fst.h	/^  void SetPosition(const uint64_t new_pos) noexcept;$/;"	m	class:lucene::core::util::BytesStoreReverseFSTBytesReader
+noexcept	Util/Fst.h	/^  void SetPosition(const uint64_t pos) noexcept;$/;"	m	class:lucene::core::util::BytesStoreForwardFSTBytesReader
+num_arcs	Util/Fst.h	/^  uint32_t num_arcs;$/;"	m	class:lucene::core::util::Builder::UnCompiledNode
+num_arcs	Util/Fst.h	/^  uint32_t num_arcs;$/;"	m	class:lucene::core::util::FST::Arc
 num_docs	Store/Context.h	/^  const uint32_t num_docs;$/;"	m	class:lucene::core::store::FlushInfo
 numeric	Util/Numeric.h	/^namespace numeric {  \/\/ TODO(0ctopus13prime): Remove this.$/;"	n	namespace:lucene::core::util
 offset	Analysis/CharacterUtil.h	/^  const uint32_t offset;$/;"	m	class:lucene::core::analysis::characterutil::CharPtrRangeInfo
@@ -1891,6 +2056,10 @@ other	Store/Lock.h	/^    NativeFSLock(const NativeFSLock& other) = delete;$/;"	m
 out	Util/ZlibCrc32.h	/^    unsigned char *out;     \/* output buffer (double-sized when reading) *\/$/;"	m	struct:__anon4
 out_func	Util/ZlibCrc32.h	/^typedef int (*out_func) OF((void FAR *, unsigned char FAR *, unsigned));$/;"	t
 out_func	Util/ZlibCrc32.h	180;"	d
+output	Util/Fst.h	/^  T output;$/;"	m	class:lucene::core::util::Builder::Arc
+output	Util/Fst.h	/^  T output;$/;"	m	class:lucene::core::util::Builder::UnCompiledNode
+output	Util/Fst.h	/^  T output;$/;"	m	class:lucene::core::util::FST::Arc
+outputs	Util/Fst.h	/^  Outputs<T> outputs;$/;"	m	class:lucene::core::util::FST
 override	Analysis/Analyzer.h	/^                            TokenStreamComponents* components) override;$/;"	m	class:lucene::core::analysis::GlobalReuseStrategy
 override	Analysis/Analyzer.h	/^                            TokenStreamComponents* components) override;$/;"	m	class:lucene::core::analysis::PerFieldReuseStrategy
 override	Analysis/Analyzer.h	/^                        const std::string& field_name) override;$/;"	m	class:lucene::core::analysis::GlobalReuseStrategy
@@ -2020,6 +2189,7 @@ override	Analysis/TokenStream.h	/^  void Reset() override;$/;"	m	class:lucene::c
 override	Analysis/TokenStream.h	/^  void Reset() override;$/;"	m	class:lucene::core::analysis::TokenFilter
 override	Analysis/TokenStream.h	/^  void Reset() override;$/;"	m	class:lucene::core::analysis::Tokenizer
 override	Util/Attribute.h	/^  CreateAttributeInstance(const std::type_index attr_type_id) override;$/;"	m	class:lucene::core::util::AttributeFactory::DefaultAttributeFactory
+owner	Util/Fst.h	/^  Builder<T>* owner;$/;"	m	class:lucene::core::util::Builder::UnCompiledNode
 past	Util/ZlibCrc32.h	/^    int past;               \/* true if read requested past end *\/$/;"	m	struct:__anon4
 path	Store/DataOutput.h	/^  std::string path;$/;"	m	class:lucene::core::store::FileIndexOutput
 path	Util/ZlibCrc32.h	/^    char *path;             \/* path or fd for error messages *\/$/;"	m	struct:__anon4
@@ -2028,7 +2198,10 @@ pending_deletes	Store/Directory.h	/^  std::set<std::string> pending_deletes;$/;"
 pos	Store/DataInput.h	/^  uint32_t pos;$/;"	m	class:lucene::core::store::ByteArrayReferenceDataInput
 pos	Store/DataInput.h	/^  uint32_t pos;$/;"	m	class:lucene::core::store::BytesArrayReferenceIndexInput
 pos	Store/DataOutput.h	/^  uint32_t pos;$/;"	m	class:lucene::core::store::ByteArrayReferenceDataOutput
+pos	Util/Fst.h	/^  uint32_t pos;$/;"	m	class:lucene::core::util::ForwardFSTBytesReader
+pos	Util/Fst.h	/^  uint32_t pos;$/;"	m	class:lucene::core::util::ReverseFSTBytesReader
 pos	Util/ZlibCrc32.h	/^    z_off64_t pos;$/;"	m	struct:gzFile_s
+pos_arcs_start	Util/Fst.h	/^  uint64_t pos_arcs_start;$/;"	m	class:lucene::core::util::FST::Arc
 pos_incr_att	Analysis/Standard.h	/^  std::shared_ptr<tokenattributes::PositionIncrementAttribute> pos_incr_att;$/;"	m	class:lucene::core::analysis::standard::StandardTokenizer
 pos_incr_attr	Analysis/TokenStream.h	/^  std::shared_ptr<tokenattributes::PositionIncrementAttribute> pos_incr_attr;$/;"	m	class:lucene::core::analysis::FilteringTokenFilter
 position_increment	Analysis/AttributeImpl.h	/^  uint32_t position_increment;$/;"	m	class:lucene::core::analysis::tokenattributes::PackedTokenAttributeImpl
@@ -2053,9 +2226,12 @@ resource_desc	Store/DataInput.h	/^  const std::string resource_desc;$/;"	m	class
 resource_description	Store/DataOutput.h	/^  const std::string resource_description;$/;"	m	class:lucene::core::store::IndexOutput
 reusable_string_reader	Analysis/Analyzer.h	/^  StringReader reusable_string_reader;$/;"	m	class:lucene::core::analysis::TokenStreamComponents
 reuse_strategy	Analysis/Analyzer.h	/^  std::unique_ptr<ReuseStrategy> reuse_strategy;$/;"	m	class:lucene::core::analysis::Analyzer
+reused_byte_per_arc	Util/Fst.h	/^  uint32_t reused_byte_per_arc[4];$/;"	m	class:lucene::core::util::Builder
 rprs	Util/Numeric.h	/^  } rprs;$/;"	m	class:lucene::core::util::numeric::Number	typeref:union:lucene::core::util::numeric::Number::NumberRepresentation
 scanner	Analysis/Standard.h	/^  StandardTokenizerImpl scanner;$/;"	m	class:lucene::core::analysis::standard::StandardTokenizer
+scratch_arc	Util/Fst.h	/^  typename FST<T>::Arc scratch_arc;$/;"	m	class:lucene::core::util::NodeHash
 seek	Util/ZlibCrc32.h	/^    int seek;               \/* true if seek request pending *\/$/;"	m	struct:__anon4
+share_max_tail_length	Util/Fst.h	/^  uint32_t share_max_tail_length;$/;"	m	class:lucene::core::util::Builder
 sink	Analysis/Analyzer.h	/^  std::shared_ptr<TokenStream> sink;$/;"	m	class:lucene::core::analysis::TokenStreamComponents
 size	Util/ZlibCrc32.h	/^    unsigned size;          \/* buffer size, zero if not allocated yet *\/$/;"	m	struct:__anon4
 skip	Util/ZlibCrc32.h	/^    z_off64_t skip;         \/* amount to skip (already rewound if backwards) *\/$/;"	m	struct:__anon4
@@ -2067,6 +2243,7 @@ snprintf	Util/ZlibCrc32.h	2727;"	d
 source	Analysis/Analyzer.h	/^  std::shared_ptr<Tokenizer> source;$/;"	m	class:lucene::core::analysis::TokenStreamComponents
 standard	Analysis/Standard.h	/^namespace standard {$/;"	n	namespace:lucene::core::analysis
 start	Util/ZlibCrc32.h	/^    z_off64_t start;        \/* where the gzip data started, for rewinding *\/$/;"	m	struct:__anon4
+start_node	Util/Fst.h	/^  int64_t start_node;$/;"	m	class:lucene::core::util::FST
 start_offset	Analysis/AttributeImpl.h	/^  uint32_t start_offset;$/;"	m	class:lucene::core::analysis::tokenattributes::OffsetAttributeImpl
 start_offset	Analysis/AttributeImpl.h	/^  uint32_t start_offset;$/;"	m	class:lucene::core::analysis::tokenattributes::PackedTokenAttributeImpl
 start_offset	Analysis/tests/TokenStreamTests.cpp	/^  uint32_t start_offset;$/;"	m	class:NaiveWhiteSpaceTokenizer	file:
@@ -2081,6 +2258,8 @@ store	Store/DataOutput.h	/^namespace store {$/;"	n	namespace:lucene::core
 store	Store/Directory.h	/^namespace store {$/;"	n	namespace:lucene::core
 store	Store/Exception.h	/^namespace store {$/;"	n	namespace:lucene::core
 store	Store/Lock.h	/^namespace store {$/;"	n	namespace:lucene::core
+store	Util/Fst.h	/^  BytesStore* store; $/;"	m	class:lucene::core::util::BytesStoreReverseFSTBytesReader
+store	Util/Fst.h	/^  BytesStore* store;$/;"	m	class:lucene::core::util::BytesStoreForwardFSTBytesReader
 store_term_vector_offsets	Document/Field.h	/^  bool store_term_vector_offsets;$/;"	m	class:lucene::core::document::FieldType
 store_term_vector_offsets	Document/Field.h	/^  bool store_term_vector_offsets;$/;"	m	class:lucene::core::document::FieldTypeBuilder
 store_term_vector_payloads	Document/Field.h	/^  bool store_term_vector_payloads;$/;"	m	class:lucene::core::document::FieldType
@@ -2096,7 +2275,10 @@ stored_value	Analysis/Analyzer.h	/^                                          sto
 str	Analysis/CharacterUtil.h	/^  const char* str;$/;"	m	class:lucene::core::analysis::characterutil::CharPtrRangeInfo
 strategy	Util/ZlibCrc32.h	/^    int strategy;           \/* compression strategy *\/$/;"	m	struct:__anon4
 strm	Util/ZlibCrc32.h	/^    z_stream strm;          \/* stream structure in-place (not a pointer) *\/$/;"	m	struct:__anon4
+table	Util/Fst.h	/^  lucene::core::util::PagedGrowableWriter table;$/;"	m	class:lucene::core::util::NodeHash
 table	Util/ZlibCrc32.c	/^local ptr_table table[MAX_PTR];$/;"	v
+target	Util/Fst.h	/^  Node* target;$/;"	m	class:lucene::core::util::Builder::Arc
+target	Util/Fst.h	/^  uint64_t target;$/;"	m	class:lucene::core::util::FST::Arc
 term_att	Analysis/Standard.h	/^  std::shared_ptr<tokenattributes::CharTermAttribute> term_att;$/;"	m	class:lucene::core::analysis::standard::StandardTokenizer
 term_att	Analysis/TokenStream.h	/^  std::shared_ptr<tokenattributes::CharTermAttribute> term_att;$/;"	m	class:lucene::core::analysis::LowerCaseFilter
 term_att	Analysis/TokenStream.h	/^  std::shared_ptr<tokenattributes::CharTermAttribute> term_att;$/;"	m	class:lucene::core::analysis::StopFilter
@@ -2153,12 +2335,15 @@ util	Util/Concurrency.h	/^namespace util {$/;"	n	namespace:lucene::core
 util	Util/Etc.h	/^namespace util {$/;"	n	namespace:lucene::core
 util	Util/Exception.h	/^namespace util {$/;"	n	namespace:lucene::core
 util	Util/File.h	/^namespace util {$/;"	n	namespace:lucene::core
+util	Util/Fst.h	/^namespace util {$/;"	n	namespace:lucene::core
 util	Util/Numeric.h	/^namespace util {$/;"	n	namespace:lucene::core
+util	Util/Packed.h	/^namespace util {$/;"	n	namespace:lucene::core
 value	Analysis/Analyzer.h	/^  std::string& value;$/;"	m	class:lucene::core::analysis::StringTokenStream
 value	Document/Field.h	/^  lucene::core::util::BytesRef value;$/;"	m	class:lucene::core::document::Field::BinaryTokenStream
 value	Document/Field.h	/^  std::string value;$/;"	m	class:lucene::core::document::Field::StringTokenStream
 verbose	Util/ZlibCrc32.c	115;"	d	file:
 version	Analysis/Analyzer.h	/^  lucene::core::util::Version version;$/;"	m	class:lucene::core::analysis::Analyzer
+version	Util/Fst.h	/^  uint32_t version;$/;"	m	class:lucene::core::util::FST
 voidp	Util/ZlibCrc32.h	/^   typedef Byte       *voidp;$/;"	t
 voidp	Util/ZlibCrc32.h	/^   typedef void       *voidp;$/;"	t
 voidp	Util/ZlibCrc32.h	185;"	d

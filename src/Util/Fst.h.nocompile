@@ -23,7 +23,7 @@
 #include <Util/ArrayUtil.h>
 #include <Util/Etc.h>
 #include <Util/Exception.h>
-#include <Util/Packed.h>
+#include <Util/Pack/Writer.h>
 #include <cstring>
 #include <algorithm>
 #include <limits>
@@ -460,8 +460,6 @@ class BytesStore : public lucene::core::store::DataOutput {
   }
 };
 
-
-
 template<typename T>
 class Outputs {
  public:
@@ -495,6 +493,10 @@ class Outputs {
   virtual T Merge(T& first, T& second) {
     throw lucene::core::util::UnsupportedOperationException();
   }
+
+  virtual bool operator==(const Outputs& other) const = 0;
+  
+  virtual int32_t HashCode() const = 0;
 };
 
 template<typename T>
@@ -562,12 +564,169 @@ class Builder;
 template<typename T>
 class NodeHash {
  private:
-  lucene::core::util::PagedGrowableWriter table;
+  PagedGrowableWriter table;
   uint64_t count;
-  uint64_t mask;
-  FST<T> fst;
+  int64_t mask;
+  FST<T>* fst;
   typename FST<T>::Arc scratch_arc;
   std::unique_ptr<FSTBytesReader> in;
+
+ private:
+  NodeHash(PagedGrowableWriter&& table, NodeHash<T>&& other)
+    : table(std::forward<PagedGrowableWriter>(table)),
+      count(other.count),
+      mask(table.Size() - 1),
+      fst(other.fst),
+      scratch_arc(std::move(other.scratch_arc)),
+      in(std::move(other.in)) {
+  }
+
+  bool NodesEqual(typename Builder<T>::UnCompiledNode& node,
+                  const uint64_t address) {
+    fst->ReadFirstRealTargetArc(address, scratch_arc, in.get());
+    if (scratch_arc.bytes_per_arc != 0 &&
+        node.num_arc != scratch_arc.num_arcs) {
+      return false; 
+    }
+
+    for (uint32_t arc_upto = 0 ; arc_upto < node.num_arcs ; ++arc_upto) {
+      typename Builder<T>::Arc& arc = node.arcs[arc_upto];
+      if (arc.label != scratch_arc.label ||
+          arc.output != scratch_arc.output ||
+          dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node
+            != scratch_arc.target ||
+          arc.is_final != scratch_arc.IsFinal()) {
+        return false;
+      } else if (scratch_arc.IsLast()) {
+        return (arc_upto == node.num_arcs - 1);
+      } else {
+        fst->ReadNextRealArc(scratch_arc, in.get());
+      }
+    }
+
+    return false;
+  }
+
+  int64_t Hash(typename Builder<T>::UmCompiledNode& node) {
+    const uint32_t PRIME = 31;  
+    int64_t h = 0;
+
+    for (uint32_t arc_idx = 0 ; arc_idx < node.num_arcs ; ++arc_idx) {
+      Builder<T>::Arc& arc = node.arcs[arc_idx];
+      h = PRIME * h + arc.label;
+      const int64_t n =
+      dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target).node;
+      h = PRIME * h + static_cast<int32_t>(n ^ (n >> 32));
+      h = PRIME * h + arc.output.HashCode();
+      h = PRIME * h + arc.next_final_output.HashCode();
+      if (arc.is_final) {
+        h += 17;
+      }
+    }
+
+    return (h & std::numeric_limits<int64_t>::max());
+  }
+
+  int64_t Hash(const int64_t node) {
+    const uint32_t PRIME = 31;
+    int64_t h = 0;
+    fst->ReadFirstRealTargetArc(node, scratch_arc, in.get());
+    while (true) {
+      h = PRIME * h + scratch_arc.label;
+      h = PRIME * h +
+          static_cast<int32_t>(scratch_arc.target ^ (scratch_arc.target >> 32));
+      h = PRIME * h + scratch_arc.output.HashCode();
+      h = PRIME * h + scratch_arc.next_final_output.HashCode();
+      if (scratch_arc.IsFinal()) {
+        h += 17;
+      }
+
+      if (scratch_arc.IsLast()) {
+        break;
+      }
+
+      fst->ReadNextRealArc(scratch_arc, in.get());
+    }
+
+    return (h & std::numeric_limits<int64_t>::max());
+  }
+
+  int64_t Add(Builder<T>& builder,
+              typename Builder<T>::UnCompiledNode& node_in) {
+    const int64_t h = Hash(node_in);
+    int64_t pos = (h & mask);
+    int32_t c = 0;
+
+    while (true) {
+      const int64_t v = table.Get(pos);
+      if (v == 0) {
+        const int64_t node = fst->AddNode(builder, node_in);
+        count++;
+        table.Set(pos, node);
+        if (count > (2 * table.Size()) / 3) {
+          Rehash();
+        }
+      } else if (NodesEqual(node_in, v)) {
+        return v;
+      }
+
+      pos = ((pos + (++c)) & mask);
+    }
+  }
+
+  void AddNew(const uint64_t address) {
+    int64_t pos = (Hash(address) & mask);
+    int32_t c = 0;
+
+    while (true) {
+      if (table.Get(pos) == 0) {
+        table.Set(pos, address);
+        break;
+      }
+
+      pos = ((pos + (++c)) & mask);
+    }
+  }
+
+  void Rehash() {
+    NodeHash<T> new_one(PagedGrowableWriter(2 * table.Size(), 1 << 30, ), std::move(*this));
+    
+    for (uint32_t idx = 0 ; idx < table.Size() ; ++idx) {
+      const int64_t address = table.Get(idx);
+
+      if (address != 0) {
+        new_one.AddNew(address);  
+      }
+    }
+
+    operator=(std::move(new_one));
+  }
+
+ public:
+  NodeHash(FST<T>* fst, std::unique_ptr<FSTBytesReader>&& in)
+    : table(16, 1 << 27, 8, ),
+      count(0),
+      mask(16),
+      fst(fst),
+      scratch_arc(),
+      in(std::forward<std::unique_ptr<FSTBytesReader>>(in)) {
+  }
+
+  NodeHash(const NodeHash<T>& other) {
+    // TODO(0ctopus13prime): Fill this
+  }
+
+  NodeHash(NodeHash<T>&& other) {
+    // TODO(0ctopus13prime): Fill this
+  }
+
+  NodeHash<T>& operator=(const NodeHash<T>& other) {
+    // TODO(0ctopus13prime): Fill this
+  }
+
+  NodeHash<T>& operator=(NodeHash<T>&& other) {
+    // TODO(0ctopus13prime): Fill this
+  }
 };
 
 template<typename T>
@@ -588,12 +747,123 @@ class Builder {
   uint32_t reused_byte_per_arc[4];
   uint32_t share_max_tail_length;
   lucene::core::util::IntsRefBuilder last_input;
-  std::unique_ptr<UnCompiledNode[]> frontier;
+  std::vector<UnCompiledNode> frontier;
   uint64_t last_frozen_node;
   uint64_t arc_count;
   uint64_t node_count;
   bool do_share_non_singleton_nodes;
   bool allow_array_arcs;
+
+ private:
+  CompiledNode CompileNode(UnCompiledNode& node_in,
+                           const uint32_t tail_length) {
+    int64_t node;
+    const uint64_t bytes_pos_start = bytes.GetPosition();
+
+    if (dedup_hash &&
+        (do_share_non_singleton_nodes || node_in.num_arcs <= 1) &&
+        tail_length <= share_max_tail_length) {
+      if (node_in.num_arcs == 0) {
+        node = fst.AddNode(this, node_in); 
+        last_frozen_node = node;
+      } else {
+        node = dedup_hash.Add(this, node_in);
+      }
+    } else {
+      node = fst.AddNode(this, node_in);
+    }
+
+    const uint64_t bytes_pos_end = bytes.GetPosition();
+    if (bytes_pos_end != bytes_pos_start) {
+      last_frozen_node = node;
+    }
+
+    node_in.Clear();
+
+    CompiledNode fn;
+    fn.node = node;
+    return fn;
+  }
+  
+  void FreezeTail(const uint32_t prefix_len_plus1) {
+    const uint32_t down_to = (1 > prefix_len_plus1 ? 1 : prefix_len_plus1);
+
+    for (uint32_t idx = last_input.Length() ; idx >= down_to ; --idx) {
+      bool do_prune = false;
+      bool do_compile = false;
+
+      UnCompiledNode& node = frontier[idx];
+      UnCompiledNode& parent = frontier[idx - 1]; 
+
+      if (node.input_count < min_suffix_count1) {
+        do_prune = true;
+        do_compile = true;
+      } else if(idx > prefix_len_plus1) {
+        if (parent.input_count < min_suffix_count2 ||
+            (min_suffix_count2 == 1 && parent.input_count == 1 && idx > 1)) {
+          do_prune = true;
+        } else {
+          do_prune = false;
+        }
+        do_compile = true;
+      } else {
+        do_compile = (min_suffix_count2 == 0);
+      }
+
+      if (node.input_count < min_suffix_count2 ||
+          (min_suffix_count2 == 1 && node.input_count == 1 && idx > 1)) {
+        for (uint32_t arc_idx = 0 ; arc_idx < node.num_arcs ; ++arc_idx) {
+          UnCompiledNode& target =
+          dynamic_cast<UnCompiledNode&>(*node.arcs[arc_idx].target); 
+          target.Clear();
+        }
+
+        node.num_arcs = 0;
+      }
+
+      if (do_prune) {
+        node.Clear();
+        parent.DeleteLast(last_input.IntAt(idx - 1), node);
+      } else {
+        if (min_suffix_count2 != 0) {
+          CompileAllTargets(node, last_input.Length() - idx);
+        }
+        T& next_final_output = node.output;
+        const bool is_final = (node.is_final || node.num_arcs == 0);
+
+        if (do_compile) {
+          parent.ReplaceLast(last_input.IntAt(idx - 1),
+                             CompileNode(node, 1 + last_input.Length() - idx),
+                             next_final_output,
+                             is_final);
+        } else {
+          parent.ReplaceLast(last_input.IntAt(idx - 1),
+                             node,
+                             next_final_output,
+                             is_final);
+          frontier[idx] = UnCompiledNode(this, idx);
+        }
+      }
+    }
+  }
+
+  bool ValidOutput(T& output) const {
+    return (output == NO_OUTPUT || output != NO_OUTPUT);
+  }
+
+  void CompileAllTargets(UnCompiledNode& node, const uint32_t tail_length) {
+    for (uint32_t arc_idx = 0 ; arc_idx < node.num_arcs ; arc_idx++) {
+      Arc& arc = node.arcs[arc_idx];
+      if (!arc.target.IsCompiled()) {
+        UnCompiledNode& n = dynamic_cast<UnCompiledNode&>(*(arc.target));
+        if (n.num_arcs == 0) {
+          arc.is_final = n.is_final = true;
+        }
+
+        arc.target = CompileNode(n, tail_length - 1);
+      }
+    }
+  }
 
  public:
   Builder(const typename FST<T>::INPUT_TYPE input_type,
@@ -632,12 +902,129 @@ class Builder {
       last_frozen_node(0),
       arc_count(0),
       node_count(0),
-      do_share_non_singleton_nodes(false),
-      allow_array_arcs(false) {
+      do_share_non_singleton_nodes(do_share_non_singleton_nodes),
+      allow_array_arcs(allow_array_arcs) {
     if (do_share_suffix) {
       dedup_hash =
       std::make_unique<NodeHash<T>>(fst, bytes.GetReverseReader(false));
     }
+  }
+
+  uint64_t GetTermCount() const noexcept {
+    return frontier[0].input_count; 
+  }
+
+  uint64_t GetNodeCount() const noexcept {
+    return 1 + node_count;
+  }
+
+  uint64_t GetArcCount() const noexcept {
+    return arc_count;
+  }
+
+  uint64_t GetMappedStateCount() const noexcept {
+    return (dedup_hash ? node_count : 0L);
+  }
+
+  void Add(lucene::core::util::IntsRef& input, T& output) {
+    if (output == NO_OUTPUT) {
+      output = NO_OUTPUT;
+    }
+
+    if (input.length == 0) {
+      frontier[0].input_count++;
+      frontier[0].is_final = true;
+      fst.SetEmptyOutput(output);
+      return;
+    }
+
+    uint32_t pos1 = 0;
+    uint32_t pos2 = input.offset;
+    uint32_t pos1_stop = std::min(last_input.Length(), input.length);
+    while (true) {
+      frontier[pos1].input_count++;
+      if (pos1 >= pos1_stop ||
+          last_input.IntAt(pos1) != input.ints[pos2]) {
+        break;
+      }
+
+      pos1++;
+      pos2++;
+    }
+
+    const uint32_t prefix_len_plus1 = pos1 + 1;
+
+    if (frontier.size() < input.length + 1) {
+      frontier.resize(frontier.size() * 2); 
+    }
+
+    FreezeTail(prefix_len_plus1);
+
+    for (uint32_t idx = prefix_len_plus1 ; idx <= input.length ; ++idx) {
+      frontier[idx - 1].AddArc(input.ints[input.offset + idx - 1],
+                               frontier[idx]);
+      frontier[idx].input_count++;
+    }
+
+    UnCompiledNode& last_node = frontier[input.length];
+    if (last_input.Length() != input.length ||
+        prefix_len_plus1 != input.length + 1) {
+      last_node.is_final = true;
+      last_node.output = NO_OUTPUT;
+    }
+
+    for (uint32_t idx = 1 ; idx < prefix_len_plus1 ; ++idx) {
+      UnCompiledNode& node = frontier[idx];
+      UnCompiledNode& parent_node = frontier[idx - 1];
+
+      T& last_output =
+      parent_node.GetLastOuptut(input.ints[input.offset + idx - 1]);
+
+      T common_output_prefix;
+      T word_suffix;
+
+      if (last_output != NO_OUTPUT) {
+        common_output_prefix = fst.outputs.Common(output, last_output);
+        word_suffix = fst.outputs.Substract(last_output, common_output_prefix);
+        parent_node.SetLastOutput(input.ints[input.offset + idx - 1],
+                                  common_output_prefix);
+        node.PrependOutput(word_suffix);
+      } else {
+        common_output_prefix = word_suffix = NO_OUTPUT;
+      }
+
+      output = fst.outputs.Substract(output, common_output_prefix);
+    }
+
+    if (last_input.Length() == input.length &&
+        prefix_len_plus1 == 1 + input.length) {
+      last_node.output = fst.outputs.Merge(last_node.output, output);
+    } else {
+      frontier[prefix_len_plus1 - 1].SetLastOutput(
+      input.ints[input.offset + prefix_len_plus1], output);
+    }
+
+    last_input.CopyInts(input);
+  }
+
+  FST<T>* Finish() {
+    UnCompiledNode& root = *(frontier[0]);
+    FreezeTail(0);
+    if (root.input_count < min_suffix_count1 ||
+        root.input_count < min_suffix_count2 ||
+        root.num_arcs == 0) {
+      if ((!fst.AcceptEmptyOutput()) ||
+          (min_suffix_count1 > 0 || min_suffix_count2 > 0)) {
+        return nullptr;
+      }
+    } else {
+      if (min_suffix_count2 != 0) {
+        CompileAllTargets(root, last_input.Length());
+      }
+    }
+    fst.Finish(CompileNode(root, last_input.Length()).node);
+
+    return &fst;
   }
 };
 
@@ -695,7 +1082,7 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
   void GrowIf() {
     if (num_arcs == arcs_size) {
       std::pair<Arc*, uint32_t> pair =
-      lucene::core::util::arrayutil::Grow(arcs, arcs_size);
+      lucene::core::util::arrayutil::Grow(arcs, arcs_size + 1);
       
       arcs.reset(pair.first);
       arcs_size = pair.second;
@@ -714,6 +1101,8 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
       is_final(false) {
   }
 
+  UnCompiledNode(const UnCompiledNode& other) = delete;
+
   bool IsCompiled() const noexcept {
     return false;
   }
@@ -729,11 +1118,11 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
     return arcs[num_arcs - 1].output;
   }
 
-  void AddArc(const uint32_t label, Node* target) {
+  void AddArc(const uint32_t label, Node& target) {
     GrowIf();
     Arc& arc = arcs[num_arcs++]; 
     arc.label = label;
-    arc.target = target;
+    arc.target = &target;
     arc.output = arc.next_final_output = owner->NO_OUTPUT;
     arc.is_final = false;
   }
@@ -782,7 +1171,8 @@ class Builder<T>::CompiledNode: public Builder<T>::Node {
 /**
  *  BytesStoreForwardFSTBytesReader
  */
-BytesStoreForwardFSTBytesReader::BytesStoreForwardFSTBytesReader(BytesStore* store)
+BytesStoreForwardFSTBytesReader::BytesStoreForwardFSTBytesReader(
+  BytesStore* store)
   : store(store),
     current(nullptr),
     next_buffer(0),
@@ -798,7 +1188,9 @@ char BytesStoreForwardFSTBytesReader::ReadByte() {
   return current[next_read++];
 }
 
-void BytesStoreForwardFSTBytesReader::ReadBytes(char bytes[], const uint32_t offset, const uint32_t len) {
+void BytesStoreForwardFSTBytesReader::ReadBytes(char bytes[],
+                                                const uint32_t offset,
+                                                const uint32_t len) {
   uint32_t len_tmp = len;
   uint32_t offset_tmp = offset;
 
@@ -845,7 +1237,8 @@ bool BytesStoreForwardFSTBytesReader::Reversed() const noexcept {
 /**
  *  BytesStoreReverseFSTBytesReader
  */
-BytesStoreReverseFSTBytesReader::BytesStoreReverseFSTBytesReader(BytesStore* store)
+BytesStoreReverseFSTBytesReader::BytesStoreReverseFSTBytesReader(
+  BytesStore* store)
   : store(store),
     current(store->blocks.size() == 0 ? nullptr : store->blocks[0].first.get()),
     next_buffer(0),
@@ -862,7 +1255,9 @@ char BytesStoreReverseFSTBytesReader::ReadByte() {
   return ret;
 }
 
-void BytesStoreReverseFSTBytesReader::ReadBytes(char bytes[], const uint32_t offset, const uint32_t len) {
+void BytesStoreReverseFSTBytesReader::ReadBytes(char bytes[],
+                                                const uint32_t offset,
+                                                const uint32_t len) {
   char* base = bytes + offset;
   for (uint32_t i = 0 ; i < len ; ++i) {
     base[i] = ReadByte();
@@ -878,7 +1273,8 @@ uint64_t BytesStoreReverseFSTBytesReader::GetPosition() const noexcept {
   static_cast<uint64_t>(next_buffer + 1) * store->block_size + next_read; 
 }
 
-void BytesStoreReverseFSTBytesReader::SetPosition(const uint64_t new_pos) noexcept {
+void
+BytesStoreReverseFSTBytesReader::SetPosition(const uint64_t new_pos) noexcept {
   const uint32_t buffer_idx =
   static_cast<uint32_t>(new_pos >> store->block_bits);
   next_buffer = buffer_idx - 1;
