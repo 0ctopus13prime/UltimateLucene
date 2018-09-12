@@ -26,7 +26,7 @@ include_directories(${PROJECT_SOURCE_DIR}/../include)
 
 add_headers_and_sources(DoochiCore Analysis)
 add_headers_and_sources(DoochiCore Util)
-add_headers_and_sources(DoochiCore Util/Pack)
+#add_headers_and_sources(DoochiCore Util/Pack)
 add_headers_and_sources(DoochiCore Document)
 add_headers_and_sources(DoochiCore Index)
 add_headers_and_sources(DoochiCore Store)

@@ -236,10 +236,10 @@ class PackedInts {
    public:
     virtual ~Reader() = default;
 
-    virtual uint32_t Get(const uint32_t index,
+    virtual uint32_t Get(uint32_t index,
                          int64_t arr[],
-                         const uint32_t off,
-                         const uint32_t len) {
+                         uint32_t off,
+                         uint32_t len) {
       const uint32_t gets = std::min(Size() - index, len);
       for (uint32_t i = index, o = off, end = index + gets ;
            i < end ;
@@ -248,7 +248,7 @@ class PackedInts {
       }
     }
 
-    virtual int64_t Get(const uint32_t docID) = 0;
+    virtual int64_t Get(uint32_t docID) = 0;
 
     virtual uint32_t Size() = 0;
   };  // class Reader
@@ -261,7 +261,7 @@ class PackedInts {
       : value_count(value_count) {
     }
 
-    virtual int64_t Get(const uint32_t index) = 0;
+    virtual int64_t Get(uint32_t index) = 0;
 
     uint32_t Size() {
       return value_count;
@@ -277,14 +277,14 @@ class PackedInts {
       : value_count(value_count) {
     }
 
-    int64_t Get(const uint32_t index) {
+    int64_t Get(uint32_t index) {
       return 0;
     }
 
-    uint32_t Get(const uint32_t index,
+    uint32_t Get(uint32_t index,
                 int64_t arr[],
-                const uint32_t off,
-                const uint32_t len) {
+                uint32_t off,
+                uint32_t len) {
       const uint32_t actual_len = std::min(len, value_count - index);
       memset(arr + offset, 0, sizeof(int64_t) * actual_len);
       return actual_len;
@@ -365,7 +365,7 @@ class PackedInts {
       out->WriteVInt(GetFormat().GetId());
     }
 
-    virtual void Add(const int64_t v) = 0;
+    virtual void Add(int64_t v) = 0;
 
     int32_t BitsPerValue() const noexcept {
       return bits_per_value;
@@ -380,12 +380,12 @@ class PackedInts {
    public:
     virtual uint32_t GetBitsPerValue() = 0;
 
-    virtual void Set(const uint32_t index, const int64_t value) = 0;
+    virtual void Set(uint32_t index, int64_t value) = 0;
 
-    virtual uint32_t Set(const uint32_t index,
+    virtual uint32_t Set(uint32_t index,
                          const int64_t arr[],
-                         const uint32_t off,
-                         const uint32_t len) {
+                         uint32_t off,
+                         uint32_t len) {
       const uint32_t actual_len = std::min(len, Size() - index);
 
       for (uint32_t i = index, o = off, end = index + len ;
@@ -395,9 +395,9 @@ class PackedInts {
       }
     }
 
-    virtual void Fill(const uint32_t from_index,
-                      const uint32_t to_index,
-                      const int64_t val) {
+    virtual void Fill(uint32_t from_index,
+                      uint32_t to_index,
+                      int64_t val) {
       for (uint32_t i = from_index ; i < to_index ; ++i) {
         Set(i, val);
       }
