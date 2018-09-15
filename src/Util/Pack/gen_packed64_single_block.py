@@ -41,6 +41,9 @@ HEADER_HEAD = """
 #ifndef SRC_UTIL_PACK_PACKED64_H_
 #define SRC_UTIL_PACK_PACKED64_H_
 
+#include <Util/Pack/PackedInts.h>
+#include <Util/Pack/BulkOperation.h>
+
 namespace lucene {
 namespace core {
 namespace util {
@@ -70,9 +73,9 @@ class Packed64SingleBlock : public PackedInts::MutableImpl {
       const uint32_t mid = (l + h) >> 1;
       const uint32_t mid_val = SUPPORTED_BITS_PER_VALUE[mid];
 
-      if (mid_val < key) {
+      if (mid_val < bits_per_value) {
         l = mid + 1;
-      } else {
+      } else if (mid_val > bits_per_value) {
         h = mid - 1;
       } else {
         return true;
@@ -86,19 +89,24 @@ class Packed64SingleBlock : public PackedInts::MutableImpl {
   Create(uint32_t value_count,
          uint32_t bits_per_value);
 
- private:
-  std::unique_ptr<uint64_t> blocks;
+ protected:
   uint32_t blocks_size;
+  std::unique_ptr<uint64_t[]> blocks;
 
  protected:
   Packed64SingleBlock(const uint32_t value_count,
                       const uint32_t bits_per_value)
     : PackedInts::MutableImpl(value_count, bits_per_value),
-      blocks(std::make_unique<uint64_t>(RequiredCapacity(value_count, values_per_block))),
-      blocks_size(RequiredCapacity(value_count, values_per_block)) {
+      blocks_size(RequiredCapacity(value_count, 64 / bits_per_value)),
+      blocks(std::make_unique<uint64_t[]>(RequiredCapacity(value_count, blocks_size))) {
   }
 
  public:
+  using PackedInts::Mutable::Set;
+  using PackedInts::Reader::Get;
+
+  virtual ~Packed64SingleBlock() = default;
+
   void Clear() {
     std::memset(blocks.get(), 0, blocks_size * sizeof(uint64_t));
   }
@@ -126,7 +134,7 @@ class Packed64SingleBlock : public PackedInts::MutableImpl {
     }
 
     // Bulk get
-    const PackedInts::Decoder* decoder = BulkOperation.Of(PackedInts::Format::PACKED_SINGLE_BLOCK, bits_per_value);
+    PackedInts::Decoder* decoder = BulkOperation::Of(PackedInts::Format::PACKED_SINGLE_BLOCK, bits_per_value);
     const uint32_t block_index = (index / values_per_block);
     const uint32_t nblocks = (index + len) / values_per_block - block_index;
     decoder->Decode(blocks.get(), block_index, arr, off, nblocks);
@@ -137,7 +145,7 @@ class Packed64SingleBlock : public PackedInts::MutableImpl {
     if (index > original_index) {
       return (index - original_index);
     } else {
-      return PackedInts::MutableImpl::Get(index, arr, off, len);
+      return Get(index, arr, off, len);
     }
   }
 
@@ -174,7 +182,7 @@ class Packed64SingleBlock : public PackedInts::MutableImpl {
     if (index > original_index) {
       return (index - original_index);
     } else {
-      return PackedInts::MutableImple::Set(index, arr, off, len);
+      return Set(index, arr, off, len);
     }
   }
 
@@ -183,7 +191,7 @@ class Packed64SingleBlock : public PackedInts::MutableImpl {
             int64_t val) {
     const uint32_t values_per_block = (64 / bits_per_value);
     if (to_index - from_index <= values_per_block << 1) {
-      PackedInts::MutableImpl::Fill(from_index, to_index, val);
+      Fill(from_index, to_index, val);
       return;
     }
 
@@ -203,7 +211,7 @@ class Packed64SingleBlock : public PackedInts::MutableImpl {
       block_value = block_value | (val << (i * bits_per_value));
     }
 
-    std::copy(blocks.get() + from_block, blocks.get() + to_block, block_value);
+    std::fill(blocks.get() + from_block, blocks.get() + to_block, block_value);
 
     // Fill the gap
     for (uint32_t i = values_per_block * to_block ; i < to_index ; ++i) {
@@ -350,7 +358,7 @@ class Packed64SingleBlock::Packed64SingleBlock%d : public Packed64SingleBlock {
     const uint32_t o = (index >> %d);
     const uint32_t b = (index & %d);
     const uint32_t shift = (b << %d);
-""")
+""" % ((64 / bpv), (64 / bpv), (bpv)))
 
     l(
 """

@@ -18,11 +18,17 @@
 #ifndef SRC_UTIL_PACK_PACKEDINTS_H_
 #define SRC_UTIL_PACK_PACKEDINTS_H_
 
+#include <Codec/CodecUtil.h>
 #include <Store/DataInput.h>
+#include <Store/DataOutput.h>
+#include <Util/Etc.h>
 #include <Util/Exception.h>
+#include <Util/Numeric.h>
+#include <cassert>
 #include <cmath>
 #include <cstring>
 #include <algorithm>
+#include <limits>
 #include <memory>
 #include <string>
 
@@ -32,12 +38,12 @@ namespace util {
 
 class PackedInts {
  public:
-  static const float FASTEST;
-  static const float FAST;
-  static const float DEFAULT;
-  static const float COMPACT;
+  static const float FASTEST;  // 7F
+  static const float FAST;    // 0.5F
+  static const float DEFAULT;  // 0.25F
+  static const float COMPACT;  // 0F
   static const uint32_t DEFAULT_BUFFER_SIZE = 1024;
-  static const std::string CODEC_NAME;
+  static const std::string CODEC_NAME;  // "PackedInts"
   static const uint32_t VERSION_MONOTONIC_WITHOUT_ZIGZAG = 2;
   static const uint32_t VERSION_START = VERSION_MONOTONIC_WITHOUT_ZIGZAG;
   static const uint32_t VERSION_CURRENT = VERSION_MONOTONIC_WITHOUT_ZIGZAG;
@@ -70,8 +76,9 @@ class PackedInts {
     }
 
    public:
-    FormatAndBits& operator=(const FormatAndBits& other)
-      : id(other.id) {
+    Format& operator=(const Format& other) {
+      id = other.id;
+      return *this;
     }
 
     bool operator==(const Format& other) const noexcept {
@@ -90,9 +97,11 @@ class PackedInts {
                        const uint32_t value_count,
                        const uint32_t bits_per_value) const noexcept {
       if (id == 0)  {  // PACKED
-        return static_cast<uint64_t>(ceil(static_cast<double>(value_count) *
-                                     bits_per_value / 8));
+        return
+        static_cast<uint64_t>(std::ceil(static_cast<double>(value_count) *
+                              bits_per_value / 8));
       } else {  // PACKED_SINGLE_BLOCK
+        assert(bits_per_value >= 0 && bits_per_value <= 64);
         return (8L * LongCount(packed_ints_version,
                                value_count,
                                bits_per_value));
@@ -103,9 +112,11 @@ class PackedInts {
                        const uint32_t value_count,
                        const uint32_t bits_per_value) const noexcept {
       if (id == 0) {  // PACKED
+        assert(bits_per_value >= 0 && bits_per_value <= 64);
         const uint64_t byte_count = ByteCount(packed_ints_version,
                                               value_count,
                                               bits_per_value);
+        assert(byte_count < 8L * std::numeric_limits<int64_t>::max());
         if ((byte_count % 8) == 0) {
           return static_cast<uint32_t>(byte_count / 8);
         } else {
@@ -114,34 +125,27 @@ class PackedInts {
       } else {  // PACKED_SINGLE_BLOCK
         const uint32_t values_per_block = (64 / bits_per_value);
         const uint32_t overhead = (64 % bits_per_value);
-        return static_cast<uint32_t>(ceil(static_cast<double>(value_count) /
-                                     values_per_block));
+        return
+        static_cast<uint32_t>(std::ceil(static_cast<double>(value_count) /
+                              values_per_block));
       }
     }
 
-    virtual bool
-    IsSupported(const uint32_t bits_per_value) const noexcept {
-      if (id == 0) {
-        return (bits_per_value >= 1 && bits_per_value <= 64);
-      } else {
-        // TODO(0ctopus13prime): Fix this
-        // return Packed64SingleBlock.isSupported(bitsPerValue);
-      }
-    }
+    bool IsSupported(const uint32_t bits_per_value) const noexcept;
 
-    virtual float
-    OverheadPerValue(const uint32_t bits_per_value) const noexcept {
-      if (id == 0) {
+    float OverheadPerValue(const uint32_t bits_per_value) const noexcept {
+      if (id == 0) {  // PACKED
         return 0;
-      } else {
+      } else {  // PACKED_SINGLE_BLOCK
+        assert(IsSupported(bits_per_value));
         const uint32_t values_per_block = (64 / bits_per_value);
         const uint32_t overhead = (64 % bits_per_value);
         return (static_cast<float>(overhead) / values_per_block);
       }
     }
-
-    virtual float
-    OverheadRatio(const uint32_t bits_per_value) const noexcept {
+    
+    float OverheadRatio(const uint32_t bits_per_value) const noexcept {
+      assert(IsSupported(bits_per_value));
       return OverheadPerValue(bits_per_value) / bits_per_value;
     }
   };  // class Format
@@ -151,15 +155,15 @@ class PackedInts {
     Format format;
     uint32_t bits_per_value;
 
-    FormatAndBits(Format format, const uint32_t bits_per_value)
+    FormatAndBits(const Format format, const uint32_t bits_per_value)
       : format(format),
         bits_per_value(bits_per_value) {
     }
   };  // class FormatAndBits
 
-  class Decoder {
+  class BlockBase {
    public:
-    virtual ~Decoder() = default;
+    virtual ~BlockBase() = default;
 
     virtual uint32_t LongBlockCount() = 0;
 
@@ -168,6 +172,11 @@ class PackedInts {
     virtual uint32_t ByteBlockCount() = 0;
 
     virtual uint32_t ByteValueCount() = 0;
+  };
+
+  class Decoder: public virtual BlockBase {
+   public:
+    virtual ~Decoder() = default;
 
     virtual void Decode(const uint64_t blocks[],
                         uint32_t blocks_offset,
@@ -175,7 +184,7 @@ class PackedInts {
                         uint32_t values_offset,
                         uint32_t iterations) = 0;
 
-    virtual void Decode(const uint8_t blocks[],
+    virtual void Decode(const char blocks[],
                         uint32_t blocks_offset,
                         int64_t values[],
                         uint32_t values_offset,
@@ -187,25 +196,17 @@ class PackedInts {
                         uint32_t values_offset,
                         uint32_t iterations) = 0;
 
-    virtual void Decode(const uint8_t blocks[],
+    virtual void Decode(const char blocks[],
                         uint32_t blocks_offset,
                         int32_t values[],
                         uint32_t values_offset,
                         uint32_t iterations) = 0;
   };  // class Decoder
 
-  class Encoder {
+  class Encoder: public virtual BlockBase {
    public:
     virtual ~Encoder() = default;
 
-    virtual uint32_t LongBlockCount() = 0;
-
-    virtual uint32_t LongValueCount() = 0;
-
-    virtual uint32_t ByteBlockCount() = 0;
-
-    virtual uint32_t ByteValueCount() = 0;
-
     virtual void Encode(const int64_t values[],
                         uint32_t values_offset,
                         uint64_t blocks[],
@@ -214,7 +215,7 @@ class PackedInts {
 
     virtual void Encode(const int64_t values[],
                         uint32_t values_offset,
-                        uint8_t blocks[],
+                        char blocks[],
                         uint32_t blocks_offset,
                         uint32_t iterations) = 0;
 
@@ -226,7 +227,7 @@ class PackedInts {
 
     virtual void Encode(const int32_t values[],
                         uint32_t values_offset,
-                        uint8_t blocks[],
+                        char blocks[],
                         uint32_t blocks_offset,
                         uint32_t iterations) = 0;
 
@@ -253,48 +254,6 @@ class PackedInts {
     virtual uint32_t Size() = 0;
   };  // class Reader
 
-  class ReaderImpl : public Reader {
-   protected:
-    uint32_t value_count;
-
-    ReaderImpl(const uint32_t value_count)
-      : value_count(value_count) {
-    }
-
-    virtual int64_t Get(uint32_t index) = 0;
-
-    uint32_t Size() {
-      return value_count;
-    }
-  };  // class ReaderImpl
-
-  class NullReader : public Reader {
-   private:
-    uint32_t value_count;
-
-   public:
-    NullReader(const uint32_t value_count)
-      : value_count(value_count) {
-    }
-
-    int64_t Get(uint32_t index) {
-      return 0;
-    }
-
-    uint32_t Get(uint32_t index,
-                int64_t arr[],
-                uint32_t off,
-                uint32_t len) {
-      const uint32_t actual_len = std::min(len, value_count - index);
-      memset(arr + offset, 0, sizeof(int64_t) * actual_len);
-      return actual_len;
-    }
-
-    uint32_t Size() {
-      return value_count;
-    }
-  };  // class NullReader
-
   class ReaderIterator {
    public:
     virtual ~ReaderIterator() = default;
@@ -310,26 +269,43 @@ class PackedInts {
     virtual uint32_t Ord() = 0;
   };  // ReaderIterator
 
+  class ReaderImpl : public Reader {
+   protected:
+    uint32_t value_count;
+
+    ReaderImpl(const uint32_t value_count)
+      : Reader(),
+        value_count(value_count) {
+    }
+
+    virtual int64_t Get(uint32_t index) = 0;
+
+    uint32_t Size() {
+      return value_count;
+    }
+  };  // class ReaderImpl
+
   class ReaderIteratorImpl : public ReaderIterator {
    protected:
-    std::unique_ptr<DataInput> in;
+    lucene::core::store::DataInput* in;
     uint32_t bits_per_value;
     uint32_t value_count;
 
    public:
     ReaderIteratorImpl(const uint32_t value_count,
                        const uint32_t bits_per_value,
-                       std::unique_ptr<DataInput>&& in)
-      : in(std::forward<std::unique_ptr<DataInput>>(in)),
+                       lucene::core::store::DataInput* in)
+      : ReaderIterator(),
+        in(in),
         bits_per_value(bits_per_value),
         value_count(value_count) {
     }
 
     int64_t Next() {
-      LongsRef& next_values = Next(1);
-      const int64_t result = next_values.longs[next_values.offset];
-      ++next_values.offset;
-      --next_values.length;
+      LongsRef& next_values = ReaderIterator::Next(1);
+      const int64_t result = next_values.Longs()[next_values.Offset()];
+      next_values.IncOffset();
+      next_values.DecLength();
 
       return result;
     }
@@ -343,41 +319,78 @@ class PackedInts {
     }
   };  // ReaderIteratorImpl
 
+  class NullReader : public Reader {
+   private:
+    uint32_t value_count;
+
+   public:
+    NullReader(const uint32_t value_count)
+      : value_count(value_count) {
+    }
+
+    int64_t Get(uint32_t index) {
+      return 0;
+    }
+
+    uint32_t Get(uint32_t index,
+                 int64_t arr[],
+                 uint32_t off,
+                 uint32_t len) {
+      assert(len > 0);
+      assert(index >= 0 && index < value_count);
+      len = std::min(len, value_count - index);
+      std::memset(arr + off, 0, sizeof(int64_t) * len);
+      return len;
+    }
+
+    uint32_t Size() {
+      return value_count;
+    }
+  };  // class NullReader
+
   class Writer {
    protected:
-    std::unique_ptr<DataOutput> out;
+    lucene::core::store::DataOutput* out;
     uint32_t value_count;
     uint32_t bits_per_value;
 
-    Writer(std::unique_ptr<DataOut>&& out,
-           uint32_t value_count,
-           uint32_t bits_per_value)
-      : out(std::forward<std::unique_ptr<DataOut>>(out)),
+    Writer(lucene::core::store::DataOutput* out,
+           const uint32_t value_count,
+           const uint32_t bits_per_value)
+      : out(out),
         value_count(value_count),
         bits_per_value(bits_per_value) {
+      assert(bits_per_value <= 64);
+      assert(value_count >= 0 || value_count == -1);
     }
+
+    virtual PackedInts::Format GetFormat() = 0;
 
    public:
-    void WriteHeader() {
-      CodecUtil::WriteHeader(out.get(), CODEC_NAME, VERSION_CURRENT);
-      out->WriteVInt(bits_per_value);
-      out->WriteVInt(value_count);
-      out->WriteVInt(GetFormat().GetId());
-    }
-
     virtual void Add(int64_t v) = 0;
 
     int32_t BitsPerValue() const noexcept {
       return bits_per_value;
     }
 
-    virtual void Finishi() = 0;
+    void WriteHeader() {
+      lucene::core::codec::CodecUtil::WriteHeader(out,
+                                                  CODEC_NAME,
+                                                  VERSION_CURRENT);
+      out->WriteVInt32(bits_per_value);
+      out->WriteVInt32(value_count);
+      out->WriteVInt32(GetFormat().GetId());
+    }
+
+    virtual void Finish() = 0;
 
     virtual uint32_t Ord() = 0;
   };  // class Writer
 
   class Mutable : public Reader {
    public:
+    virtual ~Mutable() = default;
+
     virtual uint32_t GetBitsPerValue() = 0;
 
     virtual void Set(uint32_t index, int64_t value) = 0;
@@ -386,7 +399,9 @@ class PackedInts {
                          const int64_t arr[],
                          uint32_t off,
                          uint32_t len) {
-      const uint32_t actual_len = std::min(len, Size() - index);
+      assert(len > 0);
+      assert(index >= 0 && index <= Size());
+      len = std::min(len, Size() - index);
 
       for (uint32_t i = index, o = off, end = index + len ;
            i < end ;
@@ -410,8 +425,20 @@ class PackedInts {
       Fill(0, Size(), 0);
     }
 
-    void Save(DataOutput* out) {
+    void Save(lucene::core::store::DataOutput* out) {
       // TODO(0ctopus13prime) : Implement this
+      std::unique_ptr<Writer> writer =
+      GetWriterNoHeader(out,
+                        GetFormat(),
+                        Size(),
+                        GetBitsPerValue(),
+                        DEFAULT_BUFFER_SIZE);
+      writer->WriteHeader();
+      for (uint32_t i = 0 ; i < Size() ; ++i) {
+        writer->Add(Get(i));
+      }
+
+      writer->Finish();
     }
 
     Format GetFormat() const noexcept {
@@ -436,6 +463,9 @@ class PackedInts {
     uint32_t Size() {
       return value_count;
     }
+
+   public:
+    virtual ~MutableImpl() = default;
   };  // MutableImpl
 
  public:
@@ -472,13 +502,14 @@ class PackedInts {
                                      std::to_string(block_size));
     }
 
-    return NumericUtils::NumberOfTrailingZeros(block_size);
+    return lucene::core::util::numeric::NumericUtils
+           ::NumberOfTrailingZeros(block_size);
   }
 
   static uint32_t NumBlocks(const uint64_t size, const uint32_t block_size) {
     const uint32_t num_blocks =
       static_cast<const uint32_t>(size / block_size) +
-      ((size % block_size) & 1);
+      ((size % block_size) == 0 ? 0 : 1);
 
     if (static_cast<const uint64_t>(num_blocks) * block_size < size) {
       throw IllegalArgumentException("Size is too large for this block size");
@@ -487,14 +518,69 @@ class PackedInts {
     return num_blocks;
   }
 
-  static uint32_t BitsRequired(const uint64_t max_value);
+  static uint32_t BitsRequired(const uint64_t max_value) {
+    if (max_value < 0) {
+      throw IllegalArgumentException("`max_value` must be non-negative (Got: " +
+                                     std::to_string(max_value) + ")");
+    }
+
+    return UnsignedBitsRequired(max_value);
+  }
 
   static void Copy(PackedInts::Reader* src,
-                   const uint32_t src_pos,
+                   uint32_t src_pos,
                    PackedInts::Mutable* dest,
-                   const uint32_t dest_pos,
-                   const uint32_t len,
-                   const uint32_t mem);
+                   uint32_t dest_pos,
+                   uint32_t len,
+                   uint32_t mem) {
+    assert(src_pos + len <= src->Size());
+    assert(dest_pos + len <= dest->Size());
+    const uint32_t capacity = (mem >> 3);
+    if (capacity == 0) {
+      for (uint32_t i = 0 ; i < len ; ++i) {
+        dest->Set(dest_pos++, src->Get(src_pos++));
+      }
+    } else if (len > 0) {
+      // Use bulk operations
+      const uint32_t buf_size = std::min(capacity, len);
+      int64_t buf[buf_size];
+      Copy(src, src_pos, dest, dest_pos, len, buf, buf_size);
+    }
+  }
+
+  static void Copy(PackedInts::Reader* src,
+                   uint32_t src_pos,
+                   PackedInts::Mutable* dest,
+                   uint32_t dest_pos,
+                   uint32_t len,
+                   int64_t buf[],
+                   uint32_t buf_size) {
+    uint32_t remaining = 0;
+    while (len > 0) {
+      const uint32_t read =
+        src->Get(src_pos, buf, remaining, std::min(len, buf_size));
+      assert(read > 0);
+      src_pos += read;
+      len -= read;
+      remaining += read;
+      const uint32_t written = dest->Set(dest_pos, buf, 0, remaining);
+      assert(written > 0);
+      dest_pos += written;
+      if (written < remaining) {
+        std::memcpy(buf, buf + written,
+                    sizeof(int64_t) * (remaining - written));
+      }
+      remaining -= written;
+    }
+
+    while (remaining > 0) {
+      const uint32_t written = dest->Set(dest_pos, buf, 0, remaining);
+      dest_pos += written;
+      remaining -= written;
+      std::memcpy(buf, buf + written,
+                  sizeof(int64_t) * remaining);
+    }
+  }
 
   static PackedInts::FormatAndBits
   FastestFormatAndBits(const uint32_t value_count,
@@ -518,7 +604,7 @@ class PackedInts {
   static PackedInts::Encoder*
   GetEncoder(PackedInts::Format format,
              const uint32_t version,
-             cosnt uint32_t bits_per_value);
+             const uint32_t bits_per_value);
 
   static std::unique_ptr<PackedInts::Mutable>
   GetMutable(const uint32_t value_count,
@@ -540,10 +626,10 @@ class PackedInts {
                     const uint32_t value_count,
                     const uint32_t bits_per_value);
 
-  static PackedInts::ReaderIterator
+  static std::unique_ptr<PackedInts::ReaderIterator>
   GetReaderIterator(lucene::core::store::DataInput* in, const uint32_t mem);
 
-  static PackedInts::ReaderIterator
+  static std::unique_ptr<PackedInts::ReaderIterator>
   GetReaderIteratorNoHeader(lucene::core::store::DataInput* in,
                             PackedInts::Format format,
                             const uint32_t version,
@@ -566,7 +652,10 @@ class PackedInts {
 
   static const uint64_t MaxValue(const uint32_t bits_per_value);
 
-  static const uint32_t UnsignedBitsRequired(const int64_t bits);
+  static const uint32_t UnsignedBitsRequired(const int64_t bits) {
+    return std::max(1U, 64 - lucene::core::util::numeric
+                            ::NumericUtils::NumberOfLeadingZeros(bits));
+  }
 };
 
 }  // namespace util

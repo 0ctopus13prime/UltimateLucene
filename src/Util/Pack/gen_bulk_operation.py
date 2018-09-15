@@ -44,14 +44,14 @@ HEAD = """
 #ifndef SRC_UTIL_PACK_BULKOPERATION_H_
 #define SRC_UTIL_PACK_BULKOPERATION_H_
 
-namespace lucene {
-namespace core {
-namespace util {
-
 #include <Util/Exception.h>
 #include <Util/Pack/PackedInts.h>
 #include <cmath>
 #include <string>
+
+namespace lucene {
+namespace core {
+namespace util {
 
 """
 
@@ -92,8 +92,8 @@ def gen_bulk_operation():
 """
 class BulkOperation : public PackedInts::Decoder, public PackedInts::Encoder {
  private:
-  static const BulkOperation*[] packed_bulk_ops;
-  static const BulkOperation*[] packed_single_block_bulk_ops;
+  static BulkOperation* packed_bulk_ops[];
+  static BulkOperation* packed_single_block_bulk_ops[];
 
  protected:
   uint32_t WriteLong(const int64_t block, char blocks[],
@@ -112,8 +112,8 @@ class BulkOperation : public PackedInts::Decoder, public PackedInts::Encoder {
   }
 
  public:
-  BulkOperation* Of(const PackedInts::Format format,
-                    const uint32_t bits_per_value) {
+  static BulkOperation* Of(const PackedInts::Format format,
+                           const uint32_t bits_per_value) {
     if (format == PackedInts::Format::PACKED) {
       return packed_bulk_ops[bits_per_value - 1];
     } else if (format == PackedInts::Format::PACKED_SINGLE_BLOCK) {
@@ -142,13 +142,13 @@ class BulkOperation : public PackedInts::Decoder, public PackedInts::Encoder {
 
 class BulkOperationPacked : public BulkOperation {
  private:
-  const uint32_t bits_per_value;
-  const uint32_t long_block_count;
-  const uint32_t long_value_count;
-  const uint32_t byte_block_count;
-  const uint32_t byte_value_count;
-  const uint64_t mask;
-  const uint32_t uint_mask;
+  uint32_t bits_per_value;
+  uint32_t long_block_count;
+  uint32_t long_value_count;
+  uint32_t byte_block_count;
+  uint32_t byte_value_count;
+  uint64_t mask;
+  uint32_t uint_mask;
 
  public:
   BulkOperationPacked(const uint32_t bits_per_value) {
@@ -159,8 +159,8 @@ class BulkOperationPacked : public BulkOperation {
     }
     this->long_block_count = blocks;
     this->long_value_count = 64 * this->long_block_count / bits_per_value;
-    const uint32_t byte_block_count = 8 * this->long_block_count;
-    const uint32_t byte_value_count = this->long_value_count;
+    uint32_t byte_block_count = 8 * this->long_block_count;
+    uint32_t byte_value_count = this->long_value_count;
     while ((byte_block_count & 1) == 0 && (byte_value_count & 1) == 0) {
       byte_block_count >>= 1;
       byte_value_count >>= 1;
@@ -212,7 +212,7 @@ class BulkOperationPacked : public BulkOperation {
     }
   }
 
-  void Decode(const uint8_t blocks[],
+  void Decode(const char blocks[],
               uint32_t blocks_offset,
               int64_t values[],
               uint32_t values_offset,
@@ -256,21 +256,21 @@ class BulkOperationPacked : public BulkOperation {
       if (bits_left < 0) {
         values[values_offset++] = static_cast<int32_t>(
           ((blocks[blocks_offset++] & ((1LU << (bits_per_value + bits_left)) - 1)) << -bits_left)
-          | (blocks[blocks_offset] >>> (64 + bits_left)));
+          | (blocks[blocks_offset] >> (64 + bits_left)));
       } else {
         values[values_offset++] = static_cast<int32_t>((blocks[blocks_offset] >> bits_left) & mask);
       }
     }
   }
 
-  void Decode(const uint8_t blocks[],
+  void Decode(const char blocks[],
               uint32_t blocks_offset,
               int32_t values[],
               uint32_t values_offset,
               uint32_t iterations) {
     int32_t next_value = 0; 
     int bits_left = bits_per_value;
-    for (uint32_t i = 0 ; i < iterations * byte_block_coutn ; ++i) {
+    for (uint32_t i = 0 ; i < iterations * byte_block_count ; ++i) {
       const uint32_t bytes = blocks[blocks_offset++];
       if (bits_left > 8) {
         // Just buffer it
@@ -282,7 +282,7 @@ class BulkOperationPacked : public BulkOperation {
         values[values_offset++] = static_cast<int32_t>((next_value | (bytes >> bits)));
         while (bits >= bits_per_value) {
           bits -= bits_per_value;
-          values[values_offset++] = static_cast<int32_t>(((bytes >> bits) & int_mask));
+          values[values_offset++] = static_cast<int32_t>(((bytes >> bits) & uint_mask));
         }
 
         // Then buffer it again
@@ -298,7 +298,7 @@ class BulkOperationPacked : public BulkOperation {
               uint32_t blocks_offset,
               uint32_t iterations) {
     uint64_t next_block = 0;
-    int32_t bist_left = 64;
+    int32_t bits_left = 64;
     for (uint32_t i = 0 ; i < long_value_count * iterations ; ++i) {
       bits_left -= bits_per_value;
       if (bits_left > 0) {
@@ -317,7 +317,7 @@ class BulkOperationPacked : public BulkOperation {
     }
   }
 
-  void Encode(cosnt int32_t values[],
+  void Encode(const int32_t values[],
               uint32_t values_offset,
               uint64_t blocks[],
               uint32_t blocks_offset,
@@ -334,9 +334,9 @@ class BulkOperationPacked : public BulkOperation {
         next_block = 0;
         bits_left = 64;
       } else {
-        next_block |= ((values[values_offset] & 0xFFFFFFFFL) >> -bits_left)
+        next_block |= ((values[values_offset] & 0xFFFFFFFFL) >> -bits_left);
         blocks[blocks_offset++] = next_block;
-        nextBlock = (values[values_offset++] & ((1L << -bits_left) - 1)) << (64 + bits_left);
+        next_block = (values[values_offset++] & ((1L << -bits_left) - 1)) << (64 + bits_left);
         bits_left += 64;
       }
     }
@@ -344,7 +344,7 @@ class BulkOperationPacked : public BulkOperation {
 
   void Encode(const int64_t values[],
               uint32_t values_offset,
-              uint8_t blocks[],
+              char blocks[],
               uint32_t blocks_offset,
               uint32_t iterations) {
     uint32_t next_block = 0;
@@ -357,10 +357,10 @@ class BulkOperationPacked : public BulkOperation {
         bits_left -= bits_per_value;
       } else {
         uint32_t bits = (bits_per_value - bits_left);
-        blocks[blocks_offset++] = static_cast<uint8_t>(next_block | (v >> bits));
+        blocks[blocks_offset++] = static_cast<char>(next_block | (v >> bits));
         while (bits >= 8) {
           bits -= 8;
-          blocks[blocks_offset++] = static_cast<uint8_t>(v >> bits);
+          blocks[blocks_offset++] = static_cast<char>(v >> bits);
         }
 
         // Then buffer
@@ -372,7 +372,7 @@ class BulkOperationPacked : public BulkOperation {
 
   void Encode(const int32_t values[],
               uint32_t values_offset,
-              uint8_t blocks[],
+              char blocks[],
               uint32_t blocks_offset,
               uint32_t iterations) {
     uint32_t next_block = 0;  
@@ -381,10 +381,10 @@ class BulkOperationPacked : public BulkOperation {
       const int32_t v = values[values_offset++];
       if (bits_left < 0 || bits_per_value >= bits_left) {
         uint32_t bits = (bits_per_value - bits_left); 
-        blocks[blocks_offset++] = static_cast<uint8_t>(next_block | (v >> bits));
+        blocks[blocks_offset++] = static_cast<char>(next_block | (v >> bits));
         while (bits >= 8) {
           bits -= 8;
-          blocks[blocks_offset++] = static_cast<uint8_t>(v >> bits);
+          blocks[blocks_offset++] = static_cast<char>(v >> bits);
         }
 
         bits_left = (8 - bits);
@@ -397,8 +397,93 @@ class BulkOperationPacked : public BulkOperation {
   }
 };
 
+// TODO(0ctopus13prime): Implement it
 class BulkOperationPackedSingleBlock : public BulkOperation {
+ private:
+  static const uint32_t BLOCK_COUNT = 1;
+  
+  const uint32_t bits_per_value;
+  const uint32_t value_count;
+  const uint64_t mask;
 
+ public:
+  BulkOperationPackedSingleBlock(const uint32_t bits_per_value)
+    : bits_per_value(bits_per_value),
+      value_count(64 / bits_per_value),
+      mask((1L << bits_per_value) - 1) {
+  }
+
+  uint32_t LongBlockCount() {
+    return 0;
+  }
+
+  uint32_t LongValueCount() {
+    return 0;
+  }
+
+  uint32_t ByteBlockCount() {
+    return 0;
+  }
+
+  uint32_t ByteValueCount() {
+    return 0;
+  }
+
+  void Decode(const uint64_t blocks[],
+              uint32_t blocks_offset,
+              int64_t values[],
+              uint32_t values_offset,
+              uint32_t iterations) {
+  }
+
+  void Decode(const char blocks[],
+              uint32_t blocks_offset,
+              int64_t values[],
+              uint32_t values_offset,
+              uint32_t iterations) {
+  }
+
+  void Decode(const uint64_t blocks[],
+              uint32_t blocks_offset,
+              int32_t values[],
+              uint32_t values_offset,
+              uint32_t iterations) {
+  }
+
+  void Decode(const char blocks[],
+              uint32_t blocks_offset,
+              int32_t values[],
+              uint32_t values_offset,
+              uint32_t iterations) {
+  }
+
+  void Encode(const int64_t values[],
+              uint32_t values_offset,
+              uint64_t blocks[],
+              uint32_t blocks_offset,
+              uint32_t iterations) {
+  }
+
+  void Encode(const int64_t values[],
+              uint32_t values_offset,
+              char blocks[],
+              uint32_t blocks_offset,
+              uint32_t iterations) {
+  }
+
+  void Encode(const int32_t values[],
+              uint32_t values_offset,
+              uint64_t blocks[],
+              uint32_t blocks_offset,
+              uint32_t iterations) {
+  }
+
+  void Encode(const int32_t values[],
+              uint32_t values_offset,
+              char blocks[],
+              uint32_t blocks_offset,
+              uint32_t iterations) {
+  }
 };
 """.strip())
 
@@ -467,7 +552,7 @@ class BulkOperationPacked%d : public BulkOperationPacked {
         l(
 """      const uint64_t block = blocks[blocks_offset++];
       for (int64_t shift = %d ; shift >= 0 ; shift -= %d) {
-        values[value_offset++] = %s(block >> shift) & %d%s;
+        values[values_offset++] = %s(block >> shift) & %d%s;
       }
 """ % (64 - bpv, bpv, cast_start, mask, cast_end))
       else:
@@ -476,11 +561,11 @@ class BulkOperationPacked%d : public BulkOperationPacked {
           bit_offset = (i * bpv) % 64
           if bit_offset == 0:
             # Start of block
-            ln("      const uint64_t block%d = blocks[block_offset++];" % block_offset)
-            ln("      values[values_offset++] = %sblock%d >> %d%s" % (cast_start, block_offset, 64 - bpv, cast_end))
+            ln("      const uint64_t block%d = blocks[blocks_offset++];" % block_offset)
+            ln("      values[values_offset++] = %sblock%d >> %d%s;" % (cast_start, block_offset, 64 - bpv, cast_end))
           elif bit_offset + bpv == 64:
             # End of block
-            ln("      values[vlaue_offset++] = %sblock%d & %dL%s;" % (cast_start, block_offset, mask, cast_end))
+            ln("      values[values_offset++] = %sblock%d & %dL%s;" % (cast_start, block_offset, mask, cast_end))
           elif bit_offset + bpv < 64:
             # Middle of block
             ln("      values[values_offset++] = %s(block%d >> %d) & %dL%s;" % (cast_start, block_offset, 64 - bit_offset - bpv, mask, cast_end))
@@ -497,7 +582,7 @@ class BulkOperationPacked%d : public BulkOperationPacked {
 
     l(
 """
-void Decode(const uint8_t blocks[],
+void Decode(const char blocks[],
             uint32_t blocks_offset,
             %s values[],
             uint32_t values_offset,
@@ -507,7 +592,7 @@ void Decode(const uint8_t blocks[],
     else:
       if is_power_of_two(bpv) and bpv < 8:
         ln("    for (uint32_t j = 0 ; j < iterations ; ++j) {")
-        ln("      const uint8_t block = blocks[blocks_offset++];")
+        ln("      const char block = blocks[blocks_offset++];")
         for shift in xrange(8 - bpv, 0, -bpv):
           ln("      values[values_offset++] = (block >> %d) & %d;" % (shift, mask))
         ln("      values[values_offset++] = block & %d;" % mask)

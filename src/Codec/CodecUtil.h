@@ -19,6 +19,7 @@
 #define SRC_CODEC_CODECUTIL_H_
 
 #include <Store/DataInput.h>
+#include <Store/DataOutput.h>
 #include <string>
 
 namespace lucene {
@@ -42,7 +43,7 @@ class CodecUtil {
   static uint32_t CheckHeader(lucene::core::store::DataInput* in,
                               const std::string& codec,
                               const uint32_t min_version,
-                              const uint32_T max_version);
+                              const uint32_t max_version);
 
   static uint32_t CheckHeaderNoMagic(lucene::core::store::DataInput* in,
                                      const std::string& codec,
@@ -78,17 +79,13 @@ class CodecUtil {
 
   static void WriteFooter(lucene::core::store::IndexOutput* out);
 
-  static int64_t CheckFooter(lucene::core::store::ChecksumIndexInput* in);
-
-  /*
-  TODO(0ctopus13prime): Fix this
-  static void CheckFooter(lucene::core::store::ChecksumIndexInput* in,
-                          Throwable ...??);
-  */
-
   static int64_t RetrieveChecksum(lucene::core::store::IndexInput* in);
 
   static int64_t ChecksumEntireFile(lucene::core::store::IndexInput* input);
+
+  static void WriteHeader(const lucene::core::store::DataOutput* out,
+                          const std::string& codec,
+                          const uint32_t version);
 };
 
 }  // namespace codec

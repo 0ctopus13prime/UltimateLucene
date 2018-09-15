@@ -84,6 +84,21 @@ class IllegalArgumentException: public std::runtime_error {
   }
 };
 
+class IllegalStateException: public std::runtime_error {
+ public:
+  IllegalStateException()
+    : std::runtime_error("IllegalStateException") {
+  }
+
+  explicit IllegalStateException(const std::string& err_msg)
+    : std::runtime_error(err_msg) {
+  }
+
+  explicit IllegalStateException(const char* err_msg)
+    : std::runtime_error(err_msg) {
+  }
+};
+
 class EOFException: public std::runtime_error {
  public:
   EOFException()

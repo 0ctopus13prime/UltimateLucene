@@ -16,8 +16,12 @@
  */
 
 #include <Util/Pack/PackedInts.h>
+#include <Util/Pack/Packed64SingleBlock.h>
+#include <Util/Pack/Writer.h>
 
 using lucene::core::util::PackedInts;
+using lucene::core::util::Packed64SingleBlock;
+using lucene::core::util::PackedWriter;
 
 /**
  *  PackedInts
@@ -31,3 +35,20 @@ const std::string CODEC_NAME("PackedInts");
 
 const PackedInts::Format PackedInts::Format::PACKED(0);
 const PackedInts::Format PackedInts::Format::PACKED_SINGLE_BLOCK(1);
+
+bool PackedInts::Format::IsSupported(const uint32_t bits_per_value) const noexcept {
+  if (id == 0) {  // PACKED
+    return (bits_per_value >= 1 && bits_per_value <= 64);
+  } else {  // PACKED_SINGLE_BLOCK
+    return Packed64SingleBlock::IsSupported(bits_per_value);
+  }
+}
+
+std::unique_ptr<PackedInts::Writer>
+PackedInts::GetWriterNoHeader(lucene::core::store::DataOutput* out,
+                              PackedInts::Format format,
+                              const uint32_t value_count,
+                              const uint32_t bits_per_value,
+                              const uint32_t mem) {
+  return std::make_unique<PackedWriter>(format, out, value_count, bits_per_value, mem);
+}
