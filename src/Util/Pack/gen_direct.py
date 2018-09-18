@@ -102,7 +102,7 @@ def gen_direct():
 """
   Direct%d(const uint32_t packed_ints_version,
            lucene::core::store::DataInput* in,
-           const uint32_t value_count) {""" % bpv)
+           const uint32_t value_count)""" % bpv)
     ln("    : PackedInts::MutableImpl(value_count, %d)," % bpv)
     ln("      values(std::make_unique<%s[]>(value_count))," % TYPES[bpv])
     ln("      values_size(value_count) {")
@@ -121,7 +121,7 @@ def gen_direct():
 
     ln(
 """
-  int64_t Get(const uint32_t idx) {
+  int64_t Get(const uint32_t index) {
     return values[index]%s;
   }
 
@@ -141,7 +141,7 @@ def gen_direct():
                const uint32_t off,
                const uint32_t len) {
     const uint32_t gets = std::min(value_count - index, len);
-    std::mempcy(arr + off, values.get() + index, gets);
+    std::memcpy(arr + off, values.get() + index, gets);
     return gets;
   }
 
@@ -150,7 +150,7 @@ def gen_direct():
                const uint32_t off,
                const uint32_t len) {
     const uint32_t sets = std::min(value_count - index, len);
-    std::memcpy(values + index, arr + off, sets);
+    std::memcpy(values.get() + index, arr + off, sets);
     return sets;
   }
 
@@ -188,7 +188,7 @@ def gen_direct():
   void Fill(const uint32_t from_index,
             const uint32_t to_index,
             const int64_t val) {
-    std::fill_n(values.get() + from_index, to_index - from_index, %sval);
+    std::fill_n(values.get() + from_index, to_index - from_index, %s(val));
   }""" % CASTS[bpv])
 
     ln("};")

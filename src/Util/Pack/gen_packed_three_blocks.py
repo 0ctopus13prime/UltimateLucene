@@ -59,10 +59,10 @@ TAIL = """
 #endif  // SRC_UTIL_PACK_PACKEDTHREEBLOCKS_H_
 """
 
-TYPES = {8: "uint8_t", 16: "uint16_t"}
+TYPES = {8: "char", 16: "uint16_t"}
 METHODS = {8: "Int8", 16: "Int16"}
 MASKS = {8: " & 0xFFL", 16: " & 0xFFFFL", 32: " & 0xFFFFFFFFL", 64: ""}
-CASTS = {8: "static_cast<uint8_t> ", 16: "static_cast<uint16_t> ", 32: "static_cast<uint32_t> ", 64: ""}
+CASTS = {8: "static_cast<char> ", 16: "static_cast<uint16_t> ", 32: "static_cast<uint32_t> ", 64: ""}
 
 f = None
 
@@ -113,12 +113,12 @@ def gen():
   Packed%dThreeBlocks(const uint32_t packed_ints_version,
                       lucene::core::store::DataInput* in,
                       const uint32_t value_count)
-    : Packed%dThreeBlock(value_count) {""" % (TYPES[bpv],
-                                              bpv,
-                                              bpv * 3,
-                                              TYPES[bpv],
-                                              bpv,
-                                              bpv))
+    : Packed%dThreeBlocks(value_count) {""" % (TYPES[bpv],
+                                               bpv,
+                                               bpv * 3,
+                                               TYPES[bpv],
+                                               bpv,
+                                               bpv))
 
     if bpv == 8:
       ln("    in->ReadBytes(blocks.get(), 0, 3 * value_count);");
@@ -177,10 +177,10 @@ def gen():
 
   void Fill(const uint32_t from_index,
             const uint32_t to_index,
-            const int64_t val) {
+            const int64_t value) {
     const %s block1 = %s(value >> %d);
     const %s block2 = %s(value >> %d);
-    const %s block3 = %s(val);
+    const %s block3 = %s(value);
 
     for (uint32_t i = from_index * 3, end = to_index * 3 ; i < end ; i += 3) {
       blocks[i] = block1;

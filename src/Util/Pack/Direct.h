@@ -44,7 +44,7 @@ public:
 
   Direct8(const uint32_t packed_ints_version,
            lucene::core::store::DataInput* in,
-           const uint32_t value_count) {
+           const uint32_t value_count)
     : PackedInts::MutableImpl(value_count, 8),
       values(std::make_unique<uint8_t[]>(value_count)),
       values_size(value_count) {
@@ -60,7 +60,7 @@ public:
     }
   }
 
-  int64_t Get(const uint32_t idx) {
+  int64_t Get(const uint32_t index) {
     return values[index] & 0xFFL;
   }
 
@@ -97,7 +97,7 @@ public:
   void Fill(const uint32_t from_index,
             const uint32_t to_index,
             const int64_t val) {
-    std::fill_n(values.get() + from_index, to_index - from_index, static_cast<uint8_t> val);
+    std::fill_n(values.get() + from_index, to_index - from_index, static_cast<uint8_t> (val));
   }
 };
 
@@ -115,7 +115,7 @@ public:
 
   Direct16(const uint32_t packed_ints_version,
            lucene::core::store::DataInput* in,
-           const uint32_t value_count) {
+           const uint32_t value_count)
     : PackedInts::MutableImpl(value_count, 16),
       values(std::make_unique<uint16_t[]>(value_count)),
       values_size(value_count) {
@@ -131,7 +131,7 @@ public:
     }
   }
 
-  int64_t Get(const uint32_t idx) {
+  int64_t Get(const uint32_t index) {
     return values[index] & 0xFFFFL;
   }
 
@@ -168,7 +168,7 @@ public:
   void Fill(const uint32_t from_index,
             const uint32_t to_index,
             const int64_t val) {
-    std::fill_n(values.get() + from_index, to_index - from_index, static_cast<uint16_t> val);
+    std::fill_n(values.get() + from_index, to_index - from_index, static_cast<uint16_t> (val));
   }
 };
 
@@ -186,7 +186,7 @@ public:
 
   Direct64(const uint32_t packed_ints_version,
            lucene::core::store::DataInput* in,
-           const uint32_t value_count) {
+           const uint32_t value_count)
     : PackedInts::MutableImpl(value_count, 64),
       values(std::make_unique<uint64_t[]>(value_count)),
       values_size(value_count) {
@@ -202,7 +202,7 @@ public:
     }
   }
 
-  int64_t Get(const uint32_t idx) {
+  int64_t Get(const uint32_t index) {
     return values[index];
   }
 
@@ -219,7 +219,7 @@ public:
                const uint32_t off,
                const uint32_t len) {
     const uint32_t gets = std::min(value_count - index, len);
-    std::mempcy(arr + off, values.get() + index, gets);
+    std::memcpy(arr + off, values.get() + index, gets);
     return gets;
   }
 
@@ -228,7 +228,7 @@ public:
                const uint32_t off,
                const uint32_t len) {
     const uint32_t sets = std::min(value_count - index, len);
-    std::memcpy(values + index, arr + off, sets);
+    std::memcpy(values.get() + index, arr + off, sets);
     return sets;
   }
 
@@ -253,7 +253,7 @@ public:
 
   Direct32(const uint32_t packed_ints_version,
            lucene::core::store::DataInput* in,
-           const uint32_t value_count) {
+           const uint32_t value_count)
     : PackedInts::MutableImpl(value_count, 32),
       values(std::make_unique<uint32_t[]>(value_count)),
       values_size(value_count) {
@@ -269,7 +269,7 @@ public:
     }
   }
 
-  int64_t Get(const uint32_t idx) {
+  int64_t Get(const uint32_t index) {
     return values[index] & 0xFFFFFFFFL;
   }
 
@@ -306,7 +306,7 @@ public:
   void Fill(const uint32_t from_index,
             const uint32_t to_index,
             const int64_t val) {
-    std::fill_n(values.get() + from_index, to_index - from_index, static_cast<uint32_t> val);
+    std::fill_n(values.get() + from_index, to_index - from_index, static_cast<uint32_t> (val));
   }
 };
 

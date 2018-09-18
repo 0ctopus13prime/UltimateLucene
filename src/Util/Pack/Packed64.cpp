@@ -15,7 +15,9 @@
  *
  */
 
-#include <Util/Pack/Packed64SingleBlock.h>
+// This file has been automatically generated, DO NOT EDIT
+
+#include <Util/Pack/Packed64.h>
 #include <Util/Exception.h>
 
 using lucene::core::util::Packed64SingleBlock;
@@ -75,4 +77,17 @@ Packed64SingleBlock::Create(uint32_t value_count,
       IllegalArgumentException("Unsupported number of bits per value: " +
                                std::to_string(32));
   }
+}
+
+std::unique_ptr<Packed64SingleBlock>
+Packed64SingleBlock::Create(lucene::core::store::DataInput* in,
+                            uint32_t value_count,
+                            uint32_t bits_per_value) {
+  std::unique_ptr<Packed64SingleBlock> reader =
+    Create(value_count, bits_per_value);
+  for (uint32_t i = 0 ; i < reader->blocks_size ; ++i) {
+    reader->blocks[i] = in->ReadInt64();
+  }
+
+  return std::move(reader);
 }

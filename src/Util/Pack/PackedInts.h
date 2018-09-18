@@ -116,7 +116,7 @@ class PackedInts {
         const uint64_t byte_count = ByteCount(packed_ints_version,
                                               value_count,
                                               bits_per_value);
-        assert(byte_count < 8L * std::numeric_limits<int64_t>::max());
+        assert(byte_count < 8L * std::numeric_limits<int32_t>::max());
         if ((byte_count % 8) == 0) {
           return static_cast<uint32_t>(byte_count / 8);
         } else {
@@ -260,7 +260,7 @@ class PackedInts {
 
     virtual int64_t Next() = 0;
 
-    virtual LongsRef& Next(const uint32_t count) = 0;
+    virtual LongsRef& Next(uint32_t count) = 0;
 
     virtual uint32_t GetBitsPerValue() = 0;
 
@@ -278,9 +278,11 @@ class PackedInts {
         value_count(value_count) {
     }
 
+    ~ReaderImpl() = default;
+
     virtual int64_t Get(uint32_t index) = 0;
 
-    uint32_t Size() {
+    virtual uint32_t Size() {
       return value_count;
     }
   };  // class ReaderImpl
@@ -426,7 +428,6 @@ class PackedInts {
     }
 
     void Save(lucene::core::store::DataOutput* out) {
-      // TODO(0ctopus13prime) : Implement this
       std::unique_ptr<Writer> writer =
       GetWriterNoHeader(out,
                         GetFormat(),
@@ -583,13 +584,13 @@ class PackedInts {
   }
 
   static PackedInts::FormatAndBits
-  FastestFormatAndBits(const uint32_t value_count,
-                       const uint32_t bits_per_value,
-                       const float acceptable_overhead_ratio);
+  FastestFormatAndBits(uint32_t value_count,
+                       uint32_t bits_per_value,
+                       float acceptable_overhead_ratio);
 
   static PackedInts::Decoder* GetDecoder(PackedInts::Format format,
-                                  const uint32_t version,
-                                  const uint32_t bits_per_value);
+                                         const uint32_t version,
+                                         const uint32_t bits_per_value);
 
   static std::unique_ptr<PackedInts::Reader>
   GetDirectReader(lucene::core::store::IndexInput* in);

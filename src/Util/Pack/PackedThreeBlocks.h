@@ -35,7 +35,7 @@ class Packed8ThreeBlocks : public PackedInts::MutableImpl {
   static const uint32_t MAX_SIZE = 0x7FFFFFFF / 3;
 
  private:
-  std::unique_ptr<uint8_t[]> blocks;
+  std::unique_ptr<char[]> blocks;
   uint32_t blocks_size;
 
  public:
@@ -47,13 +47,13 @@ class Packed8ThreeBlocks : public PackedInts::MutableImpl {
       throw ArrayIndexOutOfBoundsException("MAX_SIZE exceeded");
     }
 
-    blocks = std::make_unique<uint8_t[]>(value_count);
+    blocks = std::make_unique<char[]>(value_count);
   }
 
   Packed8ThreeBlocks(const uint32_t packed_ints_version,
                       lucene::core::store::DataInput* in,
                       const uint32_t value_count)
-    : Packed8ThreeBlock(value_count) {
+    : Packed8ThreeBlocks(value_count) {
     in->ReadBytes(blocks.get(), 0, 3 * value_count);
   }
 
@@ -81,9 +81,9 @@ class Packed8ThreeBlocks : public PackedInts::MutableImpl {
 
   void Set(const uint32_t index, const int64_t value) {
     const uint32_t o = (index * 3);
-    blocks[o] = static_cast<uint8_t> (value >> 16);
-    blocks[o + 1] = static_cast<uint8_t> (value >> 8);
-    blocks[o + 2] = static_cast<uint8_t> (value);
+    blocks[o] = static_cast<char> (value >> 16);
+    blocks[o + 1] = static_cast<char> (value >> 8);
+    blocks[o + 2] = static_cast<char> (value);
   }
 
   uint32_t Set(const uint32_t index,
@@ -93,9 +93,9 @@ class Packed8ThreeBlocks : public PackedInts::MutableImpl {
     const uint32_t sets = std::min(value_count - index, len);
     for (uint32_t i = off, o = index * 3, end = off + sets ; i < end ; ++i) {
       const int64_t value = arr[i];
-      blocks[o++] = static_cast<uint8_t> (value >> 16);
-      blocks[o++] = static_cast<uint8_t> (value >> 8);
-      blocks[o++] = static_cast<uint8_t> (value);
+      blocks[o++] = static_cast<char> (value >> 16);
+      blocks[o++] = static_cast<char> (value >> 8);
+      blocks[o++] = static_cast<char> (value);
     }
 
     return sets;
@@ -103,10 +103,10 @@ class Packed8ThreeBlocks : public PackedInts::MutableImpl {
 
   void Fill(const uint32_t from_index,
             const uint32_t to_index,
-            const int64_t val) {
-    const uint8_t block1 = static_cast<uint8_t> (value >> 16);
-    const uint8_t block2 = static_cast<uint8_t> (value >> 8);
-    const uint8_t block3 = static_cast<uint8_t> (val);
+            const int64_t value) {
+    const char block1 = static_cast<char> (value >> 16);
+    const char block2 = static_cast<char> (value >> 8);
+    const char block3 = static_cast<char> (value);
 
     for (uint32_t i = from_index * 3, end = to_index * 3 ; i < end ; i += 3) {
       blocks[i] = block1;
@@ -143,7 +143,7 @@ class Packed16ThreeBlocks : public PackedInts::MutableImpl {
   Packed16ThreeBlocks(const uint32_t packed_ints_version,
                       lucene::core::store::DataInput* in,
                       const uint32_t value_count)
-    : Packed16ThreeBlock(value_count) {
+    : Packed16ThreeBlocks(value_count) {
     for (uint32_t i = 0 ; i < 3 * value_count ; ++i) {
       blocks[i] = in->ReadInt16();
     }
@@ -195,10 +195,10 @@ class Packed16ThreeBlocks : public PackedInts::MutableImpl {
 
   void Fill(const uint32_t from_index,
             const uint32_t to_index,
-            const int64_t val) {
+            const int64_t value) {
     const uint16_t block1 = static_cast<uint16_t> (value >> 32);
     const uint16_t block2 = static_cast<uint16_t> (value >> 16);
-    const uint16_t block3 = static_cast<uint16_t> (val);
+    const uint16_t block3 = static_cast<uint16_t> (value);
 
     for (uint32_t i = from_index * 3, end = to_index * 3 ; i < end ; i += 3) {
       blocks[i] = block1;
