@@ -249,7 +249,7 @@ class PackedInts {
       }
     }
 
-    virtual int64_t Get(uint32_t docID) = 0;
+    virtual int64_t Get(uint32_t index) = 0;
 
     virtual uint32_t Size() = 0;
   };  // class Reader

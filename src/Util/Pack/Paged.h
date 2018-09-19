@@ -22,6 +22,8 @@
 #include <Util/Exception.h>
 #include <Util/Numeric.h>
 #include <Util/Pack/PackedInts.h>
+#include <Util/Pack/Writer.h>
+#include <cassert>
 #include <string>
 
 namespace lucene {
@@ -29,7 +31,7 @@ namespace core {
 namespace util {
 
 template <typename T>
-class AbstractPagedMutable : LongValues {
+class AbstractPagedMutable: public LongValues {
  public:
   static const uint32_t MIN_BLOCK_SIZE = 1 << 6;
   static const uint32_t MAX_BLOCK_SIZE = 1 << 30;
@@ -92,7 +94,7 @@ class AbstractPagedMutable : LongValues {
   }
 
   virtual std::unique_ptr<PackedInts::Mutable>
-  NewMutable(const uint32_t value_count, const uint32_t bits_per_value) = 0;
+  NewMutable(uint32_t value_count, uint32_t bits_per_value) = 0;
 
   uint32_t LastPageSize(const uint64_t size) const noexcept {
     const uint32_t size = IndexInPage(size);
@@ -174,12 +176,88 @@ class AbstractPagedMutable : LongValues {
   }
 };
 
-class PagedGrowableWriter : AbstractPagedMutable<PagedGrowableWriter> {
+class PagedGrowableWriter: public AbstractPagedMutable<PagedGrowableWriter> {
+ private:
+  float acceptable_overhead_ratio;
 
+ public:
+  PagedGrowableWriter(const uint64_t size,
+                      const uint32_t page_size,
+                      const uint32_t start_bits_per_value,
+                      const float acceptable_overhead_ratio,
+                      const bool fill_pages=true)
+    : AbstractPagedMutable<PagedGrowableWriter>(start_bits_per_value,
+                                                size,
+                                                page_size),
+      acceptable_overhead_ratio(acceptable_overhead_ratio) {
+    if (fill_pages) {
+      FillPages();
+    }
+  }
+
+  std::unique_ptr<PackedInts::Mutable>
+  NewMutable(uint32_t value_count, uint32_t bits_per_value) {
+    return std::make_unique<GrowableWriter>(bits_per_value,
+                                            value_count,
+                                            acceptable_overhead_ratio);
+  }
+
+  std::unique_ptr<T> NewUnfilledCopy(uint64_t new_size) {
+    return std::make_unique<PagedGrowableWriter>(new_size,
+                                                 PageSize(),
+                                                 bits_per_value,
+                                                 acceptable_overhead_ratio,
+                                                 false);  
+  }
 };
 
-class PagedMutable : AbstractPagedMutable<PagedMutable> {
+class PagedMutable: public AbstractPagedMutable<PagedMutable> {
+ private:
+  PackedInts::Format format;
 
+ private:
+  PagedMutable(const uint64_t size,
+               const uint32_t page_size,
+               const uint32_t bits_per_value,
+               PackedInts::Format format)
+    : AbstractPagedMutable<PagedMutable>(bits_per_value, size, page_size),
+      format(format) {
+  }
+
+  PagedMutable(const uint64_t size,
+               const uint32_t page_size,
+               PackedInts::FormatAndBits format_and_bits)
+    : PagedMutable(size,
+                   page_size,
+                   format_and_bits.bits_per_value,
+                   format_and_bits.format) {
+  }
+
+ public:
+  PagedMutable(const uint64_t size,
+               const uint32_t page_size,
+               const uint32_t bits_per_value,
+               const float acceptable_overhead_ratio)
+    : PagedMutable(size,
+                   page_size,
+                   PackedInts::FastestFormatAndBits(page_size,
+                                                  bits_per_value,
+                                                  acceptable_overhead_ratio)) {
+    FillPages();
+  }
+
+  std::unique_ptr<PackedInts::Mutable>
+  NewMutable(uint32_t value_count, uint32_t bits_per_value) {
+    assert(this->bits_per_value >= bits_per_value);
+    return PackedInts::GetMutable(value_count, this->bits_per_value, format);
+  }
+
+  std::unique_ptr<T> NewUnfilledCopy(uint64_t new_size) {
+    return std::make_unique<PagedMutable>(new_size,
+                                          PageSize(),
+                                          bits_per_value,
+                                          format);
+  }
 };
 
 }  // namespace util
