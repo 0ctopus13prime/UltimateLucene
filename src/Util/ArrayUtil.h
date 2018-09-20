@@ -28,6 +28,9 @@
 namespace lucene {
 namespace core {
 namespace util {
+
+// TODO(0ctopus13prime): Remove arrayutil namespace,
+//                       Define a static util class instead
 namespace arrayutil {
 
 template <typename T>
@@ -48,6 +51,7 @@ T* CopyOf(const T* original, const uint32_t original_length) {
 
 // TODO(0ctopus13prime): I'm not sure this is a valid implementation.
 // How can I limit maximum array size like Java does?
+// TODO(0ctopus13prime): Remove template
 template <typename T>
 uint32_t Oversize(const uint32_t min_target_size) {
   uint32_t extra = (min_target_size >> 3);  // extra <- min_target_size / 8
