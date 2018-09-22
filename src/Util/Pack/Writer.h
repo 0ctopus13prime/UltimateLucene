@@ -14,14 +14,16 @@
  * limitations under the License.
  *
  */
-
 #ifndef SRC_UTIL_PACK_WRITER_H_
 #define SRC_UTIL_PACK_WRITER_H_
 
 #include <Store/DataOutput.h>
+#include <Util/Bits.h>
 #include <Util/Exception.h>
+#include <Util/Numeric.h>
 #include <Util/Pack/PackedInts.h>
 #include <Util/Pack/BulkOperation.h>
+#include <Util/Pack/LongValues.h>
 #include <cassert>
 #include <cstring>
 #include <algorithm>
@@ -116,7 +118,7 @@ class PackedWriter: public PackedInts::Writer {
   uint32_t Ord() {
     return written - 1;
   }
-};
+};  // PackedWriter
 
 class GrowableWriter: public PackedInts::Mutable {
  private:
@@ -210,7 +212,7 @@ class GrowableWriter: public PackedInts::Mutable {
   void Save(lucene::core::store::DataOutput* out) {
     current->Save(out);
   }
-};
+};  // GrowableWriter
 
 class DirectWriter {
  private:
@@ -263,7 +265,7 @@ class DirectWriter {
     return -(l + 1);
   }
 
-  uint32_t RoundBits(const uint32_t bits_required) {
+  static uint32_t RoundBits(const uint32_t bits_required) {
     int32_t idx = BinarySearchSupportedBits(bits_required);
     if(idx < 0) {
       return SUPPORTED_BITS_PER_VALUE[-idx - 1];
@@ -324,7 +326,11 @@ class DirectWriter {
   }
 
  public:
-  std::unique_ptr<DirectWriter>
+  static uint32_t BitsRequired(const int64_t max_value) {
+    return RoundBits(PackedInts::BitsRequired(max_value));
+  }
+
+  static std::unique_ptr<DirectWriter>
   GetInstance(lucene::core::store::DataOutput* output,
               const uint64_t num_values,
               const uint32_t bits_per_value) {
@@ -337,14 +343,315 @@ class DirectWriter {
     return std::make_unique<DirectWriter>(output, num_values, bits_per_value);
   }
 
-  uint32_t BitsRequired(const int64_t max_value) {
-    return RoundBits(PackedInts::BitsRequired(max_value));
-  }
-
-  uint32_t UnsignedBitsRequired(const int64_t max_value) {
+  static uint32_t UnsignedBitsRequired(const int64_t max_value) {
     return RoundBits(PackedInts::UnsignedBitsRequired(max_value));
   }
-};
+};  // DirectWriter
+
+class AbstractBlockPackedWriter {
+ public:
+  static const uint32_t MIN_BLOCK_SIZE = 64;
+  static const uint32_t MAX_BLOCK_SIZE = 1 << (30 - 3);
+  static const uint32_t MIN_VALUE_EQUALS_0 = 1 << 0;
+  static const uint32_t BPV_SHIFT = 1;
+
+ protected:
+  lucene::core::store::DataOutput* out; 
+  std::unique_ptr<int64_t[]> values;
+  std::unique_ptr<char[]> blocks;
+  uint32_t values_size;
+  uint32_t off;
+  uint64_t ord;
+  uint32_t blocks_size;
+  bool finished;
+
+ protected:
+  static void
+  WriteVInt64(lucene::core::store::DataOutput* out, uint64_t i) {
+    uint32_t k = 0;
+    while ((i & ~0x7FL) != 0L && k++ < 8) {
+      out->WriteByte(static_cast<char>((i & 0x7FL) | 0x80L));
+      i >>= 7;
+    }
+
+    out->WriteByte(static_cast<char>(i));
+  }
+
+  virtual void Flush() = 0;
+
+  void WriteValues(const uint32_t bits_required) {
+    PackedInts::Encoder* encoder =
+      PackedInts::GetEncoder(PackedInts::Format::PACKED,
+                             PackedInts::VERSION_CURRENT,
+                             bits_required); 
+    const uint32_t iterations = values_size / encoder->ByteValueCount(); 
+    const uint32_t block_size = encoder->ByteBlockCount() * iterations;
+    if (!blocks || blocks_size < block_size) {
+      blocks = std::make_unique<char[]>(block_size);
+      blocks_size = block_size;
+    }
+
+    if (off < values_size) {
+      std::memset(values.get() + off, 0, sizeof(int64_t) * values_size);
+    }
+    encoder->Encode(values.get(), 0, blocks.get(), 0, iterations);
+    const uint32_t block_count =
+      static_cast<uint32_t>(PackedInts::Format::PACKED.ByteCount(
+                            PackedInts::VERSION_CURRENT, off, bits_required));
+    out->WriteBytes(blocks.get(), block_count);
+  }
+
+ private:
+  void CheckNotFinished() const {
+    if (finished) {
+      throw InvalidStateException();
+    }
+  }
+
+ public:
+  AbstractBlockPackedWriter(lucene::core::store::DataOutput* out,
+                            const uint32_t block_size) {
+    PackedInts::CheckBlockSize(block_size, MIN_BLOCK_SIZE, MAX_BLOCK_SIZE);
+    Reset(out);
+    values = std::make_unique<int64_t[]>(block_size);
+    values_size = block_size;
+    blocks_size = 0;
+  }
+
+  virtual ~AbstractBlockPackedWriter() = 0;
+
+  void Reset(lucene::core::store::DataOutput* out) {
+    assert(out != nullptr);
+    this->out = out;
+    off = 0;
+    ord = 0;
+    finished = false;
+  }
+
+  void Add(const int64_t l) {
+    CheckNotFinished();
+    if (off == values_size) {
+      Flush();
+    }
+
+    values[off++] = l;
+    ++ord;
+  }
+
+  void Finish() {
+    CheckNotFinished();
+    if (off > 0) {
+      Flush();
+    }
+
+    finished = true;
+  }
+
+  int64_t Ord() const noexcept {
+    return ord;
+  }
+};  // AbstractBlockPackedWriter
+
+class BlockPackedWriter: public AbstractBlockPackedWriter {
+ public:
+  BlockPackedWriter(lucene::core::store::DataOutput* out,
+                    const uint32_t block_size) 
+    : AbstractBlockPackedWriter(out, block_size) {
+  }
+
+ protected:
+  void Flush() {
+    assert(off > 0);
+    int64_t min = *(std::min_element(values.get(), values.get() + values_size));
+    int64_t max = *(std::max_element(values.get(), values.get() + values_size));
+
+    const int64_t delta = (max - min);
+    uint32_t bits_required = (delta == 0 ? 
+                              0 : PackedInts::UnsignedBitsRequired(delta));
+    if (bits_required == 64) {
+      // There is no need to delta-encoding
+      min = 0;
+    } else if (min > 0) {
+      // Make min as small as possible so that WriteVInt64 requires fewer bytes
+      min = std::max(0UL, max - PackedInts::MaxValue(bits_required));
+    }
+
+    const uint32_t token = (bits_required << BPV_SHIFT) |
+                           (min == 0 ? MIN_VALUE_EQUALS_0 : 0);
+    out->WriteByte(static_cast<char>(token));
+
+    if (min != 0) {
+      WriteVInt64(out, BitUtil::ZigZagEncode(min) - 1);
+    }
+
+    if (bits_required > 0) {
+      if (min != 0) {
+        std::for_each(values.get(), values.get() + off, [min](int64_t& value){
+          value -= min; 
+        });
+      }
+
+      WriteValues(bits_required);
+    }
+
+    off = 0;
+  }
+};  // BlockPackedWriter
+
+class MonotonicBlockPackedWriter: public AbstractBlockPackedWriter {
+ public:
+  MonotonicBlockPackedWriter(lucene::core::store::DataOutput* out,
+                             const uint32_t block_size)
+    : AbstractBlockPackedWriter(out, block_size) {
+  }
+
+  void Add(const int64_t l) {
+    assert(l >= 0);
+    AbstractBlockPackedWriter::Add(l);
+  }
+
+ protected:
+  void Flush() {
+    assert(off > 0);
+
+    const float avg = (off == 1 ? 
+                       0 :
+                       static_cast<float>(
+                         values[off - 1] - values[0] / (off - 1) 
+                       ));
+
+    int64_t min = values[0];
+    // Adjust min so that all deltas will be positive
+    for (uint32_t i = 1 ; i < off ; ++i) {
+      const int64_t actual = values[i];
+      const int64_t expected = MonotonicLongValues::Expected(min, avg, i);
+      if (expected > actual) {
+        min -= (expected - actual);
+      }
+    }
+
+    int64_t max_delta = 0;
+    for (uint32_t i = 0 ; i < off ; ++i) {
+      values[i] = (values[i] - MonotonicLongValues::Expected(min, avg, i));
+      max_delta = std::max(max_delta, values[i]);
+    }
+
+    out->WriteZInt64(min);
+    out->WriteInt32(lucene::core::util::numeric::Float::FloatToIntBits(avg));
+    if (max_delta == 0) {
+      out->WriteVInt32(0);
+    } else {
+      const uint32_t bits_required = PackedInts::BitsRequired(max_delta);
+      out->WriteVInt32(bits_required);
+      WriteValues(bits_required);
+    }
+
+    off = 0;
+  }
+};  // MonotonicBlockPackedWriter
+
+class DirectMonotonicWriter {
+ public:
+  static const uint32_t MIN_BLOCK_SHIFT = 2;
+  static const uint32_t MAX_BLOCK_SHIFT = 22;
+
+ protected:
+  lucene::core::store::IndexOutput* meta;
+  lucene::core::store::IndexOutput* data;
+  uint64_t num_values;
+  uint64_t base_data_pointer;
+  std::unique_ptr<int64_t[]> buffer;
+  uint64_t count;
+  int64_t previous;
+  uint32_t buffer_off;
+  uint32_t buffer_size;
+  bool finished;
+
+ private:
+  void Flush() {
+    assert(buffer_size != 0);
+
+    const float avg_inc = static_cast<float>(
+      static_cast<double>(buffer[buffer_off - 1] - buffer[0]) /
+      std::max(1U, buffer_off - 1));
+    
+    for (int64_t i = 0 ; i < buffer_off ; ++i) {
+      const int64_t expected = static_cast<int64_t>(avg_inc * i);
+      buffer[i] -= expected;
+    }
+
+    const int64_t min =
+      *(std::min_element(buffer.get(), buffer.get() + buffer_off));
+    int64_t max_delta = 0;
+    std::for_each(
+      buffer.get(),
+      buffer.get() + buffer_off,
+      [min, &max_delta](int64_t& v){
+        v -= min;   
+        max_delta |= v;
+      });
+
+    meta->WriteInt64(min);
+    meta->WriteInt32(lucene::core::util::numeric::
+                     Float::FloatToIntBits(avg_inc));
+    meta->WriteInt64(data->GetFilePointer() - base_data_pointer);
+    if (max_delta == 0) {
+      meta->WriteByte(0);
+    } else {
+      const uint32_t bits_required =
+        DirectWriter::UnsignedBitsRequired(max_delta);
+      std::unique_ptr<DirectWriter> writer =
+        DirectWriter::GetInstance(data, buffer_off, bits_required);
+        for (uint32_t i = 0 ; i < buffer_size ; ++i) {
+          writer->Add(buffer[i]);
+        }
+        writer->Finish();
+        meta->WriteByte(static_cast<char>(bits_required));
+    }
+
+    buffer_off = 0;
+  }
+
+ public:
+  DirectMonotonicWriter(lucene::core::store::IndexOutput* meta,
+                        lucene::core::store::IndexOutput* data,
+                        const uint64_t num_values,
+                        const uint32_t block_shift)
+    : meta(meta),
+      data(data),
+      num_values(num_values),
+      base_data_pointer(data->GetFilePointer()),
+      buffer(std::make_unique<int64_t[]>(1 << block_shift)),
+      count(0),
+      previous(std::numeric_limits<int64_t>::min()),
+      buffer_off(0),
+      buffer_size(1 << block_shift),
+      finished(false) {
+  }
+
+  void add(const int64_t v) {
+    assert(v >= previous);
+
+    if (buffer_off == buffer_size) {
+      Flush();
+    }
+
+    buffer[buffer_off++] = v;
+    previous = v;
+    count++;
+  }
+
+  void Finish() {
+    assert(count == num_values);
+    assert(!finished);
+
+    if (buffer_off > 0) {
+      Flush();
+    }
+
+    finished = true;
+  }
+};  // DirectMonotonicWriter 
 
 }  // namespace util
 }  // namespace core

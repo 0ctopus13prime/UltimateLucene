@@ -39,25 +39,25 @@ class PackedLongValues {
   static const uint32_t MAX_PAGE_SIZE = (1 << 20);
 
  public:
-  static PackedLongValues::Builder
+  static std::unique_ptr<PackedLongValues::Builder>
   PackedBuilder(const uint32_t page_size,
                 const float acceptable_overhead_ratio);
 
-  static PackedLongValues::Builder
+  static std::unique_ptr<PackedLongValues::Builder>
   PackedBuilder(const float acceptable_overhead_ratio);
 
-  static PackedLongValues::Builder
+  static std::unique_ptr<PackedLongValues::Builder>
   DeltaPackedBuilder(const uint32_t page_size,
                      const float acceptable_overhead_ratio);
 
-  static PackedLongValues::Builder
+  static std::unique_ptr<PackedLongValues::Builder>
   DeltaPackedBuilder(const float acceptable_overhead_ratio);
 
-  static PackedLongValues::Builder
+  static std::unique_ptr<PackedLongValues::Builder>
   MonotonicBuilder(const uint32_t page_size,
                    const float acceptable_overhead_ratio);
 
-  static PackedLongValues::Builder
+  static std::unique_ptr<PackedLongValues::Builder>
   MonotonicBuilder(const float acceptable_overhead_ratio);
 
  protected:

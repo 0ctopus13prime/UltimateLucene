@@ -31,11 +31,12 @@ using lucene::core::util::Direct32;
 using lucene::core::util::Direct64;
 using lucene::core::util::IllegalArgumentException;
 using lucene::core::util::PackedInts;
-// using lucene::core::util::Packed64;
+using lucene::core::util::Packed64;
 using lucene::core::util::Packed64SingleBlock;
 using lucene::core::util::PackedWriter;
 using lucene::core::util::Packed8ThreeBlocks;
 using lucene::core::util::Packed16ThreeBlocks;
+using lucene::core::util::IllegalArgumentException;
 
 /**
  *  PackedInts
@@ -220,12 +221,55 @@ PackedInts::GetReaderNoHeader(lucene::core::store::DataInput* in,
         }
     }
 
-    // return std::make_unique<Packed64>(version, in, value_count, bits_per_value);
-    return std::unique_ptr<PackedInts::Reader>();
+    return std::make_unique<Packed64>(version, in, value_count, bits_per_value);
   } else if (format == PackedInts::Format::PACKED_SINGLE_BLOCK) {
     return Packed64SingleBlock::Create(in, value_count, bits_per_value);
   } else {
     throw IllegalArgumentException("Unknown writer format, format's id=" +
                                    std::to_string(format.GetId()));
+  }
+}
+
+std::unique_ptr<PackedInts::Mutable>
+PackedInts::GetMutable(const uint32_t value_count,
+                       const uint32_t bits_per_value,
+                       const float acceptable_overhead_ratio) {
+  PackedInts::FormatAndBits format_and_bits = FastestFormatAndBits(value_count, bits_per_value, acceptable_overhead_ratio);
+  return GetMutable(value_count, bits_per_value, format_and_bits.format);
+}
+
+std::unique_ptr<PackedInts::Mutable>
+PackedInts::GetMutable(const uint32_t value_count,
+                       const uint32_t bits_per_value,
+                       PackedInts::Format format) {
+  assert(value_count >= 0); 
+  if (format == PackedInts::Format::PACKED) {
+    switch (bits_per_value) {
+      case 8:
+        return std::make_unique<Direct8>(value_count);
+      case 16:
+        return std::make_unique<Direct16>(value_count);
+      case 32:
+        return std::make_unique<Direct32>(value_count);
+      case 64:
+        return std::make_unique<Direct64>(value_count);
+      case 24:
+        if (value_count <= Packed8ThreeBlocks::MAX_SIZE) {
+          return std::make_unique<Packed8ThreeBlocks>(value_count);
+        }
+        break;
+      case 48:
+        if (value_count <= Packed16ThreeBlocks::MAX_SIZE) {
+          return
+          std::make_unique<Packed16ThreeBlocks>(value_count);
+        }
+        break;
+    }
+
+    return std::make_unique<Packed64>(value_count, bits_per_value);
+  } else if (format == PackedInts::Format::PACKED_SINGLE_BLOCK) {
+    return Packed64SingleBlock::Create(value_count, bits_per_value);
+  } else {
+     throw IllegalArgumentException();
   }
 }
