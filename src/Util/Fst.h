@@ -23,7 +23,8 @@
 #include <Util/ArrayUtil.h>
 #include <Util/Etc.h>
 #include <Util/Exception.h>
-#include <Util/Pack/Writer.h>
+#include <Util/Pack/Paged.h>
+#include <cassert>
 #include <cstring>
 #include <algorithm>
 #include <limits>
@@ -179,20 +180,20 @@ class BytesStore : public lucene::core::store::DataOutput {
   friend class BytesStoreForwardFSTBytesReader;
 
   std::vector<std::pair<std::unique_ptr<char[]>, uint32_t>> blocks;
-  uint32_t block_size;
   uint32_t block_bits;
+  uint32_t block_size;
   uint32_t block_mask;
-  char* current;
   uint32_t next_write;
+  char* current;
 
  public:
-  explicit BytesStore(const uint32_t new_block_bits)
+  explicit BytesStore(const uint32_t block_bits)
     : blocks(),
-      block_size(1 << new_block_bits),
-      block_bits(new_block_bits),
+      block_bits(block_bits),
+      block_size(1 << block_bits),
       block_mask(block_size - 1),
-      current(nullptr),
-      next_write(block_size) {
+      next_write(block_size),
+      current(nullptr) {
   }
 
   BytesStore(std::unique_ptr<lucene::core::store::DataInput>&& in,
@@ -215,7 +216,7 @@ class BytesStore : public lucene::core::store::DataOutput {
       std::unique_ptr<char[]> block(new char[chunk]);
       in->ReadBytes(block.get(), 0, chunk);
       blocks.push_back(std::pair<std::unique_ptr<char[]>, uint32_t>(
-        std::move(block), chunk));
+                       std::move(block), chunk));
       left -= chunk;
     }
 
@@ -234,9 +235,9 @@ class BytesStore : public lucene::core::store::DataOutput {
     if (next_write == block_size) {
       std::pair<std::unique_ptr<char[]>, uint32_t> block_pair(
         new char[block_size], block_size);
+      current = block_pair.first.get();
       blocks.push_back(std::move(block_pair));
       next_write = 0;
-      current = block_pair.first.get();
     }
 
     current[next_write++] = b;
@@ -278,7 +279,8 @@ class BytesStore : public lucene::core::store::DataOutput {
                   const char bytes[],
                   const uint32_t offset,
                   const uint32_t len) {
-    const uint64_t end = dest + len;
+    assert(dest + len <= GetPosition());
+    const uint64_t end = (dest + len);
     uint32_t block_index = static_cast<uint32_t>(end >> block_bits);
     uint32_t down_to = static_cast<uint32_t>(end & block_mask);
 
@@ -295,11 +297,7 @@ class BytesStore : public lucene::core::store::DataOutput {
     while (len_tmp > 0) {
       if (len_tmp <= down_to) {
         std::memcpy(block + (down_to - len), bytes + offset, len);
-        --block_index;
-        std::pair<std::unique_ptr<char[]>, uint32_t>& block_pair_tmp =
-          blocks[block_index];
-        block = block_pair_tmp.first.get();
-        down_to = block_size;
+        break;
       } else {
         len_tmp -= down_to;
         std::memcpy(block, bytes + offset + len_tmp, down_to);
@@ -313,7 +311,8 @@ class BytesStore : public lucene::core::store::DataOutput {
   }
 
   void CopyBytes(const uint64_t src, const uint64_t dest, const uint32_t len) {
-    const uint64_t end = src + len;
+    assert(src < dest);
+    const uint64_t end = (src + len);
     uint32_t block_index = static_cast<uint32_t>(end >> block_bits);
     uint32_t down_to = static_cast<uint32_t>(end & block_mask);
     if (down_to == 0) {
@@ -332,7 +331,7 @@ class BytesStore : public lucene::core::store::DataOutput {
         break;
       } else {
         len_tmp -= down_to;
-        WriteBytes(block, dest + len_tmp, down_to);
+        WriteBytes(dest + len_tmp, block, 0, down_to);
         block_index--;
         std::pair<std::unique_ptr<char[]>, uint32_t>& block_pair_tmp =
           blocks[block_index];
@@ -359,6 +358,8 @@ class BytesStore : public lucene::core::store::DataOutput {
   }
 
   void Reverse(const uint64_t src_pos, const uint64_t dest_pos) {
+    assert(src_pos < dest_pos);
+    assert(dest_pos < GetPosition());
     uint32_t src_block_index = static_cast<uint32_t>(src_pos >> block_bits);
     uint32_t src = static_cast<uint32_t>(src_pos & block_mask);
     char* src_block = blocks[src_block_index].first.get();
@@ -377,8 +378,9 @@ class BytesStore : public lucene::core::store::DataOutput {
         src = 0;
       }
 
-      dest--;
-      if (dest == -1) {
+      if (dest != 0) {
+        --dest;
+      } else {
         dest_block_index--;
         dest_block = blocks[dest_block_index].first.get();
         dest = block_size - 1;
@@ -390,7 +392,7 @@ class BytesStore : public lucene::core::store::DataOutput {
     uint32_t len_tmp = len;
 
     while (len_tmp > 0) {
-      const uint32_t chunk = block_size - next_write;
+      const uint32_t chunk = (block_size - next_write);
       if (len_tmp <= chunk) {
         next_write += len_tmp;
         break;
@@ -410,6 +412,8 @@ class BytesStore : public lucene::core::store::DataOutput {
   }
 
   void Truncate(const uint64_t new_len) {
+    assert(new_len <= GetPosition());
+    assert(new_len >= 0);
     uint32_t block_index = static_cast<uint32_t>(new_len >> block_bits);
     next_write = static_cast<uint32_t>(new_len & block_mask);
     if (next_write == 0) {
@@ -423,6 +427,8 @@ class BytesStore : public lucene::core::store::DataOutput {
     } else {
       current = blocks[block_index].first.get();
     }
+
+    assert(new_len == GetPosition());
   }
 
   void Finish() {
@@ -430,8 +436,7 @@ class BytesStore : public lucene::core::store::DataOutput {
       std::unique_ptr<char[]> last_buffer(new char[next_write]);
       std::memcpy(last_buffer.get(), current, next_write);
       std::pair<std::unique_ptr<char[]>, uint32_t> block_pair(
-        new char[block_size], block_size);
-      current = block_pair.first.get();
+        std::move(last_buffer), block_size);
       blocks[blocks.size() - 1] = std::move(block_pair);
       current = nullptr;
     }
@@ -458,7 +463,7 @@ class BytesStore : public lucene::core::store::DataOutput {
       return std::make_unique<BytesStoreReverseFSTBytesReader>(this);
     }
   }
-};
+};  // BytesStore
 
 template<typename T>
 class Outputs {
@@ -572,6 +577,7 @@ class NodeHash {
   std::unique_ptr<FSTBytesReader> in;
 
  private:
+  // Only for rehash
   NodeHash(PagedGrowableWriter&& table, NodeHash<T>&& other)
     : table(std::forward<PagedGrowableWriter>(table)),
       count(other.count),
@@ -595,13 +601,14 @@ class NodeHash {
           arc.output != scratch_arc.output ||
           dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node
             != scratch_arc.target ||
+          arc.next_final_output != scratch_arc.next_final_output ||
           arc.is_final != scratch_arc.IsFinal()) {
         return false;
       } else if (scratch_arc.IsLast()) {
         return (arc_upto == node.num_arcs - 1);
-      } else {
-        fst->ReadNextRealArc(scratch_arc, in.get());
       }
+
+      fst->ReadNextRealArc(scratch_arc, in.get());
     }
 
     return false;
@@ -612,10 +619,10 @@ class NodeHash {
     int64_t h = 0;
 
     for (uint32_t arc_idx = 0 ; arc_idx < node.num_arcs ; ++arc_idx) {
-      Builder<T>::Arc& arc = node.arcs[arc_idx];
+      typename Builder<T>::Arc& arc = node.arcs[arc_idx];
       h = PRIME * h + arc.label;
       const int64_t n =
-      dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target).node;
+        dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node;
       h = PRIME * h + static_cast<int32_t>(n ^ (n >> 32));
       h = PRIME * h + arc.output.HashCode();
       h = PRIME * h + arc.next_final_output.HashCode();
@@ -660,7 +667,9 @@ class NodeHash {
     while (true) {
       const int64_t v = table.Get(pos);
       if (v == 0) {
+        // Freeze & Add
         const int64_t node = fst->AddNode(builder, node_in);
+        assert(Hash(node) == h);
         count++;
         table.Set(pos, node);
         if (count > (2 * table.Size()) / 3) {
@@ -678,18 +687,20 @@ class NodeHash {
     int64_t pos = (Hash(address) & mask);
     int32_t c = 0;
 
-    while (true) {
-      if (table.Get(pos) == 0) {
-        table.Set(pos, address);
-        break;
-      }
-
+    while (table.Get(pos)) {
       pos = ((pos + (++c)) & mask);
     }
+
+    table.Set(pos, address);
   }
 
   void Rehash() {
-    NodeHash<T> new_one(PagedGrowableWriter(2 * table.Size(), 1 << 30, ), std::move(*this));
+    NodeHash<T> new_one(PagedGrowableWriter(
+                          2 * table.Size(),
+                          1 << 30,
+                          PackedInts::BitsRequired(count),
+                          PackedInts::COMPACT),
+                        std::move(*this));
     
     for (uint32_t idx = 0 ; idx < table.Size() ; ++idx) {
       const int64_t address = table.Get(idx);
@@ -704,7 +715,7 @@ class NodeHash {
 
  public:
   NodeHash(FST<T>* fst, std::unique_ptr<FSTBytesReader>&& in)
-    : table(16, 1 << 27, 8, ),
+    : table(16, 1 << 27, 8, PackedInts::COMPACT),
       count(0),
       mask(16),
       fst(fst),
@@ -712,20 +723,25 @@ class NodeHash {
       in(std::forward<std::unique_ptr<FSTBytesReader>>(in)) {
   }
 
-  NodeHash(const NodeHash<T>& other) {
-    // TODO(0ctopus13prime): Fill this
-  }
+  NodeHash(const NodeHash<T>& other) = delete;
 
-  NodeHash(NodeHash<T>&& other) {
-    // TODO(0ctopus13prime): Fill this
-  }
+  NodeHash<T>& operator=(const NodeHash<T>& other) = delete;
 
-  NodeHash<T>& operator=(const NodeHash<T>& other) {
-    // TODO(0ctopus13prime): Fill this
+  NodeHash(NodeHash<T>&& other)
+    : table(std::move(other.table)),
+      mask(other.mask),
+      fst(other.fst),
+      scratch_arc(other.scratch_arc),
+      in(std::move(other.in)) {
   }
 
   NodeHash<T>& operator=(NodeHash<T>&& other) {
-    // TODO(0ctopus13prime): Fill this
+    table = std::move(other.table);
+    count = other.count;
+    mask = other.mask;
+    fst = other.fst;
+    scratch_arc = other.scratch_arc;
+    in = std::move(other.in);
   }
 };
 
@@ -873,7 +889,7 @@ class Builder {
               0,
               true,
               true,
-              std::numeric_limits<uint32_t>::max(),
+              std::numeric_limits<int32_t>::max(),
               outputs,
               true,
               15) {
@@ -893,12 +909,11 @@ class Builder {
       NO_OUTPUT(outputs.GetNoOutput()),
       min_suffix_count1(min_suffix_count1),
       min_suffix_count2(min_suffix_count2),
-      do_share_non_singleton_nodes(do_share_non_singleton_nodes),
       bytes(fst.bytes),
-      reused_byte_per_arc{0, 0, 0, 0},
+      reused_byte_per_arc{0},
       share_max_tail_length(0),
       last_input(),
-      frontier(new UnCompiledNode[10]),
+      frontier(),
       last_frozen_node(0),
       arc_count(0),
       node_count(0),
@@ -906,7 +921,12 @@ class Builder {
       allow_array_arcs(allow_array_arcs) {
     if (do_share_suffix) {
       dedup_hash =
-      std::make_unique<NodeHash<T>>(fst, bytes.GetReverseReader(false));
+        std::make_unique<NodeHash<T>>(fst, bytes.GetReverseReader(false));
+    }
+
+    frontier.reserve(10);
+    for (uint32_t idx = 0 ; idx < 10 ; ++idx) {
+      frontier.push_back(UnCompiledNode(this, idx));
     }
   }
 
@@ -915,7 +935,7 @@ class Builder {
   }
 
   uint64_t GetNodeCount() const noexcept {
-    return 1 + node_count;
+    return (1 + node_count);
   }
 
   uint64_t GetArcCount() const noexcept {
@@ -930,6 +950,9 @@ class Builder {
     if (output == NO_OUTPUT) {
       output = NO_OUTPUT;
     }
+
+    assert(last_input.Length() == 0 || !(input < last_input.Get()));
+    assert(ValidOutput(output));
 
     if (input.length == 0) {
       frontier[0].input_count++;
@@ -952,12 +975,10 @@ class Builder {
       pos2++;
     }
 
-    const uint32_t prefix_len_plus1 = pos1 + 1;
+    const uint32_t prefix_len_plus1 = (pos1 + 1);
 
-    if (frontier.size() < input.length + 1) {
-      frontier.resize(frontier.size() * 2); 
-    }
-
+    // Minimize / Compile states from previous input's
+    // orphan'd suffix
     FreezeTail(prefix_len_plus1);
 
     for (uint32_t idx = prefix_len_plus1 ; idx <= input.length ; ++idx) {
@@ -973,19 +994,23 @@ class Builder {
       last_node.output = NO_OUTPUT;
     }
 
+    // Push conflicting outputs forward, only as far as needed
     for (uint32_t idx = 1 ; idx < prefix_len_plus1 ; ++idx) {
       UnCompiledNode& node = frontier[idx];
       UnCompiledNode& parent_node = frontier[idx - 1];
 
       T& last_output =
       parent_node.GetLastOuptut(input.ints[input.offset + idx - 1]);
+      assert(ValidOutput(last_output));
 
       T common_output_prefix;
       T word_suffix;
 
       if (last_output != NO_OUTPUT) {
         common_output_prefix = fst.outputs.Common(output, last_output);
+        assert(ValidOutput(common_output_prefix));
         word_suffix = fst.outputs.Substract(last_output, common_output_prefix);
+        assert(ValidOutput(word_suffix));
         parent_node.SetLastOutput(input.ints[input.offset + idx - 1],
                                   common_output_prefix);
         node.PrependOutput(word_suffix);
@@ -997,13 +1022,18 @@ class Builder {
     }
 
     if (last_input.Length() == input.length &&
-        prefix_len_plus1 == 1 + input.length) {
+        prefix_len_plus1 == (1 + input.length)) {
+      // Same input more than 1 time in a row, mapping to
+      // multiple outputs
       last_node.output = fst.outputs.Merge(last_node.output, output);
     } else {
+      // This new arc is private to this new input; 
+      // set its arc output to the leftover output:
       frontier[prefix_len_plus1 - 1].SetLastOutput(
-      input.ints[input.offset + prefix_len_plus1], output);
+      input.ints[input.offset + prefix_len_plus1 - 1], output);
     }
 
+    // Save last input
     last_input.CopyInts(input);
   }
 
@@ -1102,6 +1132,30 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
   }
 
   UnCompiledNode(const UnCompiledNode& other) = delete;
+
+  UnCompiledNode& operator=(const UnCompiledNode& other) = delete;
+
+  UnCompiledNode(UnCompiledNode&& other)
+    : owner(other.owner),
+      arcs(std::move(other.arcs)),
+      output(other.output),
+      input_count(other.input_count),
+      num_arcs(other.num_arcs),
+      arcs_size(other.arcs_size),
+      depth(other.depth),
+      is_final(other.is_final) {
+  }
+
+  UnCompiledNode& operator=(UnCompiledNode&& other) {
+    owner = other.owner;
+    arcs = std::move(other.arcs);
+    output = other.output;
+    input_count = other.input_count;
+    num_arcs = other.num_arcs;
+    arcs_size = other.arcs_size;
+    depth = other.depth;
+    is_final = other.is_final;
+  }
 
   bool IsCompiled() const noexcept {
     return false;

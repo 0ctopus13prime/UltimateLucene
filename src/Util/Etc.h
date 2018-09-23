@@ -201,6 +201,19 @@ class IntsRef {
     other.is_reference = true;
   }
 
+  bool operator<(const IntsRef& other) {
+    const uint32_t len = std::min(length, other.length);
+    int* my_base = (ints + offset);
+    int* other_base = (other.ints + other.offset);
+    for (uint32_t i = 0 ; i < len ; ++i) {
+      if (my_base[i] > other_base[i]) {
+        return false;
+      }
+    }
+
+    return (length < other.length);
+  }
+
   ~IntsRef() {
     if (!is_reference && ints != nullptr) {
       delete[] ints; 

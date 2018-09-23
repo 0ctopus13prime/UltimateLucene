@@ -31,19 +31,18 @@ namespace core {
 namespace util {
 
 template <typename T>
-class AbstractPagedMutable: public LongValues {
+class AbstractPagedMutable: public Int64Values {
  public:
-  static const uint32_t MIN_BLOCK_SIZE = 1 << 6;
-  static const uint32_t MAX_BLOCK_SIZE = 1 << 30;
+  static const uint32_t MIN_BLOCK_SIZE = (1 << 6);
+  static const uint32_t MAX_BLOCK_SIZE = (1 << 30);
 
  protected:
   uint64_t size;
   uint32_t page_shift;
   uint32_t page_mask;
   uint32_t sub_mutables_size;
-  std::unique_ptr<PackedInts::Mutable*,
-                  std::function<void(PackedInts::Mutable**)>> sub_mutables;
   uint32_t bits_per_value;
+  std::unique_ptr<std::unique_ptr<PackedInts::Mutable>[]> sub_mutables;
 
  protected:
   AbstractPagedMutable(const uint32_t bits_per_value,
@@ -52,15 +51,12 @@ class AbstractPagedMutable: public LongValues {
     : size(size),
       page_shift(PackedInts::CheckBlockSize(page_size,
                                             MIN_BLOCK_SIZE,
-                                            MAX_BLOCK_SIZE))
+                                            MAX_BLOCK_SIZE)),
       page_mask(page_size - 1),
       sub_mutables_size(PackedInts::NumBlocks(size, page_size)),
-      sub_mutables(new PackedInts::Mutable*[sub_mutables_size](),
-                   [this] (PackedInts::Mutable** target) {
-                     std::for_each(target,
-                                 target + sub_mutables_size,
-                                 std::default_delete<PackedInts::Mutable[]>());
-                   }) {
+      bits_per_value(bits_per_value),
+      sub_mutables(std::make_unique<std::unique_ptr<PackedInts::Mutable>[]>
+                   (sub_mutables_size)) {
   }
 
   AbstractPagedMutable(const AbstractPagedMutable& other) = delete;
@@ -70,6 +66,7 @@ class AbstractPagedMutable: public LongValues {
       page_shift(other.page_shift),
       page_mask(other.page_mask),
       sub_mutables_size(other.sub_mutables_size),
+      bits_per_value(other.bits_per_value),
       sub_mutables(std::move(other.sub_mutables)) {
   }
 
@@ -78,18 +75,19 @@ class AbstractPagedMutable: public LongValues {
     page_shift = other.page_shift;
     page_mask = other.page_mask;
     sub_mutables_size = other.sub_mutables_size;
-    sub_mutables = std::move(other.sub_mutables);
     bits_per_value = other.bits_per_value;
+    sub_mutables = std::move(other.sub_mutables);
 
     return *this;
   }
 
   void FillPages() {
+    const uint32_t num_pages = PackedInts::NumBlocks(size, PageSize());
     for (uint32_t i = 0 ; i < sub_mutables_size ; ++i) {
       const uint32_t value_count = (i != num_pages - 1 ?
                                     PageSize() :
                                     LastPageSize(size));
-      sub_mutables[i] = NewMutable(value_count, bits_per_value).release(); 
+      sub_mutables[i] = NewMutable(value_count, bits_per_value);
     }
   }
 
@@ -97,8 +95,8 @@ class AbstractPagedMutable: public LongValues {
   NewMutable(uint32_t value_count, uint32_t bits_per_value) = 0;
 
   uint32_t LastPageSize(const uint64_t size) const noexcept {
-    const uint32_t size = IndexInPage(size);
-    return (size == 0 ? PageSize() : size);
+    const uint32_t sz = IndexInPage(size);
+    return (sz == 0 ? PageSize() : sz);
   }
 
   uint32_t PageSize() const noexcept {
@@ -109,15 +107,13 @@ class AbstractPagedMutable: public LongValues {
     return size;
   }
 
-  uint32_t PageIndex(const uint64_t index) {
+  uint32_t PageIndex(const uint64_t index) const noexcept {
     return static_cast<uint32_t>(index >> page_shift);
   }
 
-  uint32_t IndexInPage(const uint64_t index) {
+  uint32_t IndexInPage(const uint64_t index) const noexcept {
     return static_cast<uint32_t>(index & page_mask);
   }
-
-  virtual std::unique_ptr<T> NewUnfilledCopy(const uint64_t new_size) = 0;
 
  public:
   int64_t Get(const uint64_t index) {
@@ -132,26 +128,29 @@ class AbstractPagedMutable: public LongValues {
     sub_mutables[page_index]->Set(index_in_page, value);
   }
 
+  virtual std::unique_ptr<AbstractPagedMutable> NewUnfilledCopy(const uint64_t new_size) = 0;
+
   std::unique_ptr<T> Resize(const uint64_t new_size) {
-    std::unique_ptr<T> copy = NewUnfilledCopy(new_size);
-    const uint32_t num_common_pages = std::min(copy->sub_mutables);
+    std::unique_ptr<T> copy(dynamic_cast<T*>(NewUnfilledCopy(new_size).release()));
+    const uint32_t num_common_pages =
+      std::min(copy->sub_mutables_size, sub_mutables_size);
     uint64_t copy_buffer[1024];  // TODO(0ctopus13prime): alloca?
 
     for (uint32_t i = 0 ; i < copy->sub_mutables_size ; ++i) {
       const uint32_t value_count =
       (i != copy->sub_mutables_size - 1 ? PageSize() : LastPageSize(new_size));
       const uint32_t bpv = (i < num_common_pages ?
-                            sub_mutables[i].GetBitsPerValue() :
+                            sub_mutables[i]->GetBitsPerValue() :
                             bits_per_value);
-      copy->sub_mutables[i] = NewMutable(value_count, bpv).release();
+      copy->sub_mutables[i] = NewMutable(value_count, bpv);
 
       if (i < num_common_pages) {
         const uint32_t copy_length = std::min(value_count,
                                               sub_mutables[i]->Size());
 
-        PackedInts::Copy(sub_mutables[i],
-                         0 ,
-                         copy->sub_mutables[i],
+        PackedInts::Copy(sub_mutables[i].get(),
+                         0,
+                         copy->sub_mutables[i].get(),
                          0,
                          copy_length,
                          copy_buffer);
@@ -195,6 +194,18 @@ class PagedGrowableWriter: public AbstractPagedMutable<PagedGrowableWriter> {
     }
   }
 
+  PagedGrowableWriter(PagedGrowableWriter&& other)
+    : AbstractPagedMutable<PagedGrowableWriter>(std::move(other)),
+      acceptable_overhead_ratio(other.acceptable_overhead_ratio) {
+  }
+
+  PagedGrowableWriter& operator=(PagedGrowableWriter&& other) {
+    AbstractPagedMutable<PagedGrowableWriter>::operator=(std::move(other));
+    acceptable_overhead_ratio = other.acceptable_overhead_ratio;
+
+    return *this;
+  }
+
   std::unique_ptr<PackedInts::Mutable>
   NewMutable(uint32_t value_count, uint32_t bits_per_value) {
     return std::make_unique<GrowableWriter>(bits_per_value,
@@ -202,7 +213,7 @@ class PagedGrowableWriter: public AbstractPagedMutable<PagedGrowableWriter> {
                                             acceptable_overhead_ratio);
   }
 
-  std::unique_ptr<T> NewUnfilledCopy(uint64_t new_size) {
+  std::unique_ptr<AbstractPagedMutable> NewUnfilledCopy(uint64_t new_size) {
     return std::make_unique<PagedGrowableWriter>(new_size,
                                                  PageSize(),
                                                  bits_per_value,
@@ -246,19 +257,31 @@ class PagedMutable: public AbstractPagedMutable<PagedMutable> {
     FillPages();
   }
 
+  PagedMutable(PagedMutable&& other)
+    : AbstractPagedMutable<PagedMutable>(std::move(other)),
+      format(other.format) {
+  }
+
+  PagedMutable& operator=(PagedMutable&& other) {
+    AbstractPagedMutable<PagedMutable>::operator=(std::move(other));
+    format = other.format;
+    return *this;
+  }
+
   std::unique_ptr<PackedInts::Mutable>
   NewMutable(uint32_t value_count, uint32_t bits_per_value) {
     assert(this->bits_per_value >= bits_per_value);
     return PackedInts::GetMutable(value_count, this->bits_per_value, format);
   }
 
-  std::unique_ptr<T> NewUnfilledCopy(uint64_t new_size) {
-    return std::make_unique<PagedMutable>(new_size,
-                                          PageSize(),
-                                          bits_per_value,
-                                          format);
+  std::unique_ptr<AbstractPagedMutable> NewUnfilledCopy(uint64_t new_size) {
+    return std::unique_ptr<PagedMutable>(
+           new PagedMutable(new_size,
+                            PageSize(),
+                            bits_per_value,
+                            format));
   }
-};
+};  // PagedMutable
 
 }  // namespace util
 }  // namespace core
