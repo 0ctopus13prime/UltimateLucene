@@ -125,9 +125,10 @@ class Crc32: public Checksum {
   }
 };
 
+// TODO(0ctopus13prime): Remove `is_reference`, using MSB in length instead.
 class IntsRef {
  public:
-  int* ints; 
+  int32_t* ints; 
   uint32_t offset;
   uint32_t capacity;
   uint32_t length;
@@ -158,7 +159,7 @@ class IntsRef {
       is_reference(true) {
   }
 
-  explicit IntsRef(const IntsRef& other)
+  IntsRef(const IntsRef& other)
     : ints(other.ints),
       capacity(other.capacity),
       offset(other.offset),
@@ -169,7 +170,7 @@ class IntsRef {
     }
   }
 
-  explicit IntsRef(IntsRef&& other)
+  IntsRef(IntsRef&& other)
     : ints(other.ints),
       offset(other.offset),
       length(other.length),
@@ -179,39 +180,70 @@ class IntsRef {
   }
 
   IntsRef& operator=(const IntsRef& other) {
-    ints = other.ints;
-    capacity = other.capacity;
-    offset = other.offset;
-    length = other.length;
-    is_reference = other.is_reference;
+    if (this != &other) {
+      ints = other.ints;
+      capacity = other.capacity;
+      offset = other.offset;
+      length = other.length;
+      is_reference = other.is_reference;
 
-    if (!is_reference) {
-      ints = lucene::core::util::arrayutil::CopyOf<int>(ints, capacity);
+      if (!is_reference) {
+        ints = lucene::core::util::arrayutil::CopyOf<int>(ints, capacity);
+      }
     }
   }
 
   IntsRef& operator=(IntsRef&& other) {
-    ints = other.ints;
-    capacity = other.capacity;
-    offset = other.offset;
-    length = other.length;
-    is_reference = other.is_reference;
+    if (this != &other) {
+      ints = other.ints;
+      capacity = other.capacity;
+      offset = other.offset;
+      length = other.length;
+      is_reference = other.is_reference;
 
-    // Prevent double memory release
-    other.is_reference = true;
+      // Prevent double memory release
+      other.is_reference = true;
+    }
   }
 
-  bool operator<(const IntsRef& other) {
-    const uint32_t len = std::min(length, other.length);
-    int* my_base = (ints + offset);
-    int* other_base = (other.ints + other.offset);
-    for (uint32_t i = 0 ; i < len ; ++i) {
-      if (my_base[i] > other_base[i]) {
-        return false;
+  bool operator<(const IntsRef& other) const {
+    if (this != &other) {
+      const uint32_t len = std::min(length, other.length);
+      int32_t* my_base = (ints + offset);
+      int32_t* other_base = (other.ints + other.offset);
+      for (uint32_t i = 0 ; i < len ; ++i) {
+        if (my_base[i] > other_base[i]) {
+          return false;
+        }
+      }
+
+      return (length < other.length);
+    }
+
+    return false;
+  }
+
+  bool operator==(const IntsRef& other) const {
+    if (this != &other) {
+      if (length != other.length) {
+        return false;    
+      } else {
+        int32_t* my_base = (ints + offset);
+        int32_t* other_base = (other.ints + other.offset);
+        uint32_t idx = 0;  
+        while (idx < length && (my_base[idx] == other_base[idx])) {
+          ++idx;
+        }
+
+        return (idx == length);
       }
     }
 
-    return (length < other.length);
+    return true;
+  }
+
+  bool operator!=(const IntsRef& other) const {
+    return !(operator==(other));
   }
 
   ~IntsRef() {
@@ -219,7 +251,7 @@ class IntsRef {
       delete[] ints; 
     }
   }
-};
+};  // IntsRef
 
 class IntsRefBuilder {
  private:

@@ -73,7 +73,7 @@ void Directory::CopyFrom(Directory& from,
   try {
     std::unique_ptr<IndexInput> is(from.OpenInput(src, context));
     std::unique_ptr<IndexOutput> os(CreateOutput(dest, context));
-    os->CopyBytes(*(is.get()), is->Length());
+    os->CopyBytes(is.get(), is->Length());
   } catch(...) {
     IOUtils::DeleteFilesIgnoringExceptions(*this, {});
   }

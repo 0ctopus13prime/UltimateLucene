@@ -651,7 +651,11 @@ class PackedInts {
                     const uint32_t bits_per_value,
                     const uint32_t mem);
 
-  static const uint64_t MaxValue(const uint32_t bits_per_value);
+  static const uint64_t MaxValue(const uint32_t bits_per_value) {
+    return (bits_per_value == 64 ?
+            std::numeric_limits<int64_t>::max() :
+            ((1L << bits_per_value) - 1));
+  }
 
   static const uint32_t UnsignedBitsRequired(const int64_t bits) {
     return std::max(1U, 64 - lucene::core::util::numeric

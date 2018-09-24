@@ -168,7 +168,7 @@ class DataOutput {
     WriteBytes(s.c_str(), 0, s.length());
   }
 
-  void CopyBytes(DataInput& input, const uint64_t num_bytes) {
+  void CopyBytes(DataInput* input, const uint64_t num_bytes) {
     AllocateCopyBufferIf();
 
     uint64_t left = num_bytes;
@@ -178,7 +178,7 @@ class DataOutput {
 
       // TODO(0ctopus13prime): Directly copy from input to
       //                       this without buffer copying?
-      input.ReadBytes(copy_buffer.get(), 0, to_copy);
+      input->ReadBytes(copy_buffer.get(), 0, to_copy);
       WriteBytes(copy_buffer.get(), 0, to_copy);
       left -= to_copy;
     }

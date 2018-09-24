@@ -18,6 +18,16 @@
 #include <Util/Fst.h>
 
 using lucene::core::util::FST;
+using lucene::core::util::IntsRef;
+using lucene::core::util::IntSequenceOutputs;
 
+/**
+ *  FST
+ */
 template<typename T>
-const std::string FST<T>::FILE_FORMAT_NAME = "FST";
+const std::string FST<T>::FILE_FORMAT_NAME("FST");
+
+/**
+ *  IntSequenceOutputs 
+ */
+IntsRef IntSequenceOutputs::NO_OUTPUT;

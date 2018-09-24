@@ -18,6 +18,7 @@
 #ifndef SRC_UTIL_FST_H_
 #define SRC_UTIL_FST_H_
 
+#include <Codec/CodecUtil.h>
 #include <Store/DataInput.h>
 #include <Store/DataOutput.h>
 #include <Util/ArrayUtil.h>
@@ -32,6 +33,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_map>
 
 namespace lucene {
 namespace core {
@@ -187,6 +189,17 @@ class BytesStore : public lucene::core::store::DataOutput {
   char* current;
 
  public:
+  BytesStore(const BytesStore& other) = delete;
+
+  BytesStore(BytesStore&& other)
+    : blocks(std::move(other.blocks)),
+      block_bits(other.block_bits),
+      block_size(other.block_size),
+      block_mask(other.block_mask),
+      next_write(other.next_write),
+      current(other.current) {
+  }
+
   explicit BytesStore(const uint32_t block_bits)
     : blocks(),
       block_bits(block_bits),
@@ -310,6 +323,7 @@ class BytesStore : public lucene::core::store::DataOutput {
     }
   }
 
+  using lucene::core::store::DataOutput::CopyBytes;
   void CopyBytes(const uint64_t src, const uint64_t dest, const uint32_t len) {
     assert(src < dest);
     const uint64_t end = (src + len);
@@ -456,7 +470,8 @@ class BytesStore : public lucene::core::store::DataOutput {
     }
   }
 
-  std::unique_ptr<FSTBytesReader> GetReverseReader(const bool allow_single) {
+  std::unique_ptr<FSTBytesReader>
+  GetReverseReader(const bool allow_single = true) {
     if (allow_single && block_size == 1) {
       return std::make_unique<ReverseFSTBytesReader>(blocks[0].first.get());
     } else {
@@ -468,8 +483,6 @@ class BytesStore : public lucene::core::store::DataOutput {
 template<typename T>
 class Outputs {
  public:
-  Outputs() = default;
-
   virtual ~Outputs() = default;
 
   virtual T Common(T& output1, T& output2) = 0;
@@ -481,269 +494,149 @@ class Outputs {
   virtual T Write(T& output, lucene::core::store::DataOutput* out) = 0;
 
   virtual T WriteFinalOutput(T& output,
-                             lucene::core::store::DataOutput* out) = 0;
+                             lucene::core::store::DataOutput* out) {
+    Write(output, out);
+  }
 
   virtual T Read(lucene::core::store::DataInput* in) = 0;
 
-  virtual void SkipOutput(lucene::core::store::DataInput* in) = 0;
+  virtual void SkipOutput(lucene::core::store::DataInput* in) {
+    Read(in);
+  }
 
-  virtual T ReadFinalOutput(lucene::core::store::DataInput* in) = 0;
+  virtual T ReadFinalOutput(lucene::core::store::DataInput* in) {
+    return Read(in);
+  }
 
-  virtual void SkipFinalOutput(lucene::core::store::DataInput* in) = 0;
+  virtual void SkipFinalOutput(lucene::core::store::DataInput* in) {
+    SkipOutput(in);
+  }
 
-  virtual T GetNoOutput() = 0;
+  virtual T& GetNoOutput() = 0;
 
   virtual std::string OutputToString(T& output) = 0;
 
   virtual T Merge(T& first, T& second) {
     throw lucene::core::util::UnsupportedOperationException();
   }
+};  // Outputs<T>
 
-  virtual bool operator==(const Outputs& other) const = 0;
-  
-  virtual int32_t HashCode() const = 0;
-};
-
-template<typename T>
-class FST {
- public:
-  static const uint32_t BIT_FINAL_ARC = (1 << 0);
-  static const uint32_t BIT_LAST_ARC = (1 << 1);
-  static const uint32_t BIT_TARGET_NEXT = (1 << 2);
-  static const uint32_t BIT_STOP_NODE = (1 << 3);
-  static const uint32_t BIT_ARC_HAS_OUTPUT = (1 << 4);
-  static const uint32_t BIT_ARC_HAS_FINAL_OUTPUT = (1 << 5);
-  static const char ARCS_AS_FIXED_ARRAY = BIT_ARC_HAS_FINAL_OUTPUT;
-  static const uint32_t FIXED_ARRAY_SHALLOW_DISTANCE = 3;
-  static const uint32_t FIXED_ARRAY_NUM_ARCS_SHALLOW = 5;
-  static const uint32_t FIXED_ARRAY_NUM_ARCS_DEEP = 10;
-  static const uint32_t DEFAULT_MAX_BLOCK_BITS = 30;
-
+class IntSequenceOutputs: public Outputs<IntsRef> {
  private:
-  static const std::string FILE_FORMAT_NAME;  // "FST"
-  static const uint32_t VERSION_START = 0;
-  static const uint32_t VERSION_INT_NUM_BYTES_PER_ARC = 1;
-  static const uint32_t VERSION_SHORT_BYTE2_LABELS = 2;
-  static const uint32_t VERSION_PACKED = 3;
-  static const uint32_t VERSION_VINT_TARGET = 4;
-  static const uint32_t VERSION_NO_NODE_ARC_COUNTS =5;
-  static const uint32_t VERSION_PACKED_REMOVED = 6;
-  static const uint32_t VERSION_CURRENT = VERSION_PACKED_REMOVED;
-  static const int64_t FINAL_END_NODE = -1;
-  static const int64_t NON_FINAL_END_NODE = 0;
-  static const int32_t END_LABEL = -1;
+  static IntsRef NO_OUTPUT;
 
  public:
-  class Arc;
-  enum class INPUT_TYPE { BYTE1, BYTE2, BYTE4 };
-
- public:
-  INPUT_TYPE input_type;
-  T empty_output;
-  BytesStore bytes;
-  char* byte_array;
-  int64_t start_node;
-  Outputs<T> outputs;
-  Arc* cached_root_arcs;
-  uint32_t version;
-};
-
-template<typename T>
-class FST<T>::Arc {
- public:
-  uint32_t label;
-  T output;
-  T next_final_output;
-  uint64_t target;
-  uint64_t next_arc;
-  uint64_t pos_arcs_start;
-  uint32_t bytes_per_arc;
-  uint32_t arc_idx;
-  uint32_t num_arcs;
-  char flags;
-};
-
-template<typename T>
-class Builder;
-
-template<typename T>
-class NodeHash {
- private:
-  PagedGrowableWriter table;
-  uint64_t count;
-  int64_t mask;
-  FST<T>* fst;
-  typename FST<T>::Arc scratch_arc;
-  std::unique_ptr<FSTBytesReader> in;
-
- private:
-  // Only for rehash
-  NodeHash(PagedGrowableWriter&& table, NodeHash<T>&& other)
-    : table(std::forward<PagedGrowableWriter>(table)),
-      count(other.count),
-      mask(table.Size() - 1),
-      fst(other.fst),
-      scratch_arc(std::move(other.scratch_arc)),
-      in(std::move(other.in)) {
-  }
-
-  bool NodesEqual(typename Builder<T>::UnCompiledNode& node,
-                  const uint64_t address) {
-    fst->ReadFirstRealTargetArc(address, scratch_arc, in.get());
-    if (scratch_arc.bytes_per_arc != 0 &&
-        node.num_arc != scratch_arc.num_arcs) {
-      return false; 
-    }
-
-    for (uint32_t arc_upto = 0 ; arc_upto < node.num_arcs ; ++arc_upto) {
-      typename Builder<T>::Arc& arc = node.arcs[arc_upto];
-      if (arc.label != scratch_arc.label ||
-          arc.output != scratch_arc.output ||
-          dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node
-            != scratch_arc.target ||
-          arc.next_final_output != scratch_arc.next_final_output ||
-          arc.is_final != scratch_arc.IsFinal()) {
-        return false;
-      } else if (scratch_arc.IsLast()) {
-        return (arc_upto == node.num_arcs - 1);
-      }
-
-      fst->ReadNextRealArc(scratch_arc, in.get());
-    }
-
-    return false;
-  }
-
-  int64_t Hash(typename Builder<T>::UmCompiledNode& node) {
-    const uint32_t PRIME = 31;  
-    int64_t h = 0;
-
-    for (uint32_t arc_idx = 0 ; arc_idx < node.num_arcs ; ++arc_idx) {
-      typename Builder<T>::Arc& arc = node.arcs[arc_idx];
-      h = PRIME * h + arc.label;
-      const int64_t n =
-        dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node;
-      h = PRIME * h + static_cast<int32_t>(n ^ (n >> 32));
-      h = PRIME * h + arc.output.HashCode();
-      h = PRIME * h + arc.next_final_output.HashCode();
-      if (arc.is_final) {
-        h += 17;
-      }
-    }
-
-    return (h & std::numeric_limits<int64_t>::max());
-  }
-
-  int64_t Hash(const int64_t node) {
-    const uint32_t PRIME = 31;
-    int64_t h = 0;
-    fst->ReadFirstRealTargetArc(node, scratch_arc, in.get());
-    while (true) {
-      h = PRIME * h + scratch_arc.label;
-      h = PRIME * h +
-          static_cast<int32_t>(scratch_arc.target ^ (scratch_arc.target >> 32));
-      h = PRIME * h + scratch_arc.output.HashCode();
-      h = PRIME * h + scratch_arc.next_final_output.HashCode();
-      if (scratch_arc.IsFinal()) {
-        h += 17;
-      }
-
-      if (scratch_arc.IsLast()) {
-        break;
-      }
-
-      fst->ReadNextRealArc(scratch_arc, in.get());
-    }
-
-    return (h & std::numeric_limits<int64_t>::max());
-  }
-
-  int64_t Add(Builder<T>& builder,
-              typename Builder<T>::UnCompiledNode& node_in) {
-    const int64_t h = Hash(node_in);
-    int64_t pos = (h & mask);
-    int32_t c = 0;
-
-    while (true) {
-      const int64_t v = table.Get(pos);
-      if (v == 0) {
-        // Freeze & Add
-        const int64_t node = fst->AddNode(builder, node_in);
-        assert(Hash(node) == h);
-        count++;
-        table.Set(pos, node);
-        if (count > (2 * table.Size()) / 3) {
-          Rehash();
-        }
-      } else if (NodesEqual(node_in, v)) {
-        return v;
-      }
-
-      pos = ((pos + (++c)) & mask);
-    }
-  }
-
-  void AddNew(const uint64_t address) {
-    int64_t pos = (Hash(address) & mask);
-    int32_t c = 0;
-
-    while (table.Get(pos)) {
-      pos = ((pos + (++c)) & mask);
-    }
-
-    table.Set(pos, address);
-  }
-
-  void Rehash() {
-    NodeHash<T> new_one(PagedGrowableWriter(
-                          2 * table.Size(),
-                          1 << 30,
-                          PackedInts::BitsRequired(count),
-                          PackedInts::COMPACT),
-                        std::move(*this));
+  IntsRef Common(IntsRef& output1, IntsRef& output2) {
+    uint32_t pos1 = output1.offset;  
+    uint32_t pos2 = output2.offset;
+    uint32_t stop_at_1 = (pos1 + std::min(output1.length, output2.length));
+    while ((output1.ints[pos1++] == output2.ints[pos2++]) &&
+           (pos1 < stop_at_1));
     
-    for (uint32_t idx = 0 ; idx < table.Size() ; ++idx) {
-      const int64_t address = table.Get(idx);
+    if (pos1 == output1.offset) {
+      // No common prefix
+      return IntSequenceOutputs::NO_OUTPUT;
+    } else if (pos1 == output1.offset + output1.length) {
+      // Output1 is a prefix of output2
+      return output1;
+    } else if (pos2 == output2.offset + output2.length) {
+      // Output2 is a prefix of output1
+      return output2;
+    } else {
+      // Return a common prefix between output1 and output2
+      return IntsRef(output1.ints,
+                     output1.capacity,
+                     output1.offset,
+                     pos1 - output1.offset);
+    }
+  }
 
-      if (address != 0) {
-        new_one.AddNew(address);  
+  IntsRef Substract(IntsRef& output, IntsRef& inc) {
+    if (inc == NO_OUTPUT) {
+      // No prefix removed
+      return output;
+    } else if (inc.length == output.length) {
+      // Entire output removed
+      return NO_OUTPUT;
+    } else {
+      assert(inc.length > 0 && inc.length < output.length);
+      return IntsRef(output.ints,
+                     output.capacity,
+                     output.offset + inc.length,
+                     output.length - inc.length);
+    }
+  }
+
+  IntsRef Add(IntsRef& prefix, IntsRef& output) {
+    if (prefix == NO_OUTPUT) {
+      return output;
+    } else if (output == NO_OUTPUT) {
+      return prefix;
+    } else {
+      assert(prefix.length > 0 && output.length > 0);
+      IntsRef result(prefix.length + output.length);
+      std::memcpy(result.ints,
+                  prefix.ints + prefix.offset,
+                  prefix.length);
+      std::memcpy(result.ints + prefix.length,
+                  output.ints + output.offset,
+                  output.length);
+      result.length = (prefix.length + output.length);
+      return result;
+    }
+  }
+
+  IntsRef Write(IntsRef& prefix, lucene::core::store::DataOutput* out) {
+    out->WriteVInt32(prefix.length);
+    for (uint32_t idx = 0 ; idx < prefix.length ; ++idx) {
+      out->WriteVInt32(prefix.ints[prefix.offset + idx]);
+    }
+  }
+
+  IntsRef Read(lucene::core::store::DataInput* in) {
+    const int32_t len = in->ReadVInt32();
+    if (len == 0) {
+      return NO_OUTPUT;
+    } else {
+      IntsRef output(len);
+      for (uint32_t idx = 0 ; idx < len ; ++idx) {
+        output.ints[idx] = in->ReadVInt32();
       }
+      output.length = len;
+      return output;
+    }
+  }
+
+  void SkipOutput(lucene::core::store::DataInput* in) {
+    const int32_t len = in->ReadVInt32();
+    if (len == 0) {
+      return;
     }
 
-    operator=(std::move(new_one));
+    for (uint32_t idx = 0 ; idx < len ; ++idx) {
+      in->ReadVInt32();
+    }
   }
 
- public:
-  NodeHash(FST<T>* fst, std::unique_ptr<FSTBytesReader>&& in)
-    : table(16, 1 << 27, 8, PackedInts::COMPACT),
-      count(0),
-      mask(16),
-      fst(fst),
-      scratch_arc(),
-      in(std::forward<std::unique_ptr<FSTBytesReader>>(in)) {
+  IntsRef& GetNoOutput() {
+    return NO_OUTPUT;
   }
 
-  NodeHash(const NodeHash<T>& other) = delete;
-
-  NodeHash<T>& operator=(const NodeHash<T>& other) = delete;
-
-  NodeHash(NodeHash<T>&& other)
-    : table(std::move(other.table)),
-      mask(other.mask),
-      fst(other.fst),
-      scratch_arc(other.scratch_arc),
-      in(std::move(other.in)) {
+  std::string OutputToString(IntsRef& output) {
+    // TODO(0ctopus13prime): IT
+    return std::string();
   }
+};  // IntSequenceOutputs
 
-  NodeHash<T>& operator=(NodeHash<T>&& other) {
-    table = std::move(other.table);
-    count = other.count;
-    mask = other.mask;
-    fst = other.fst;
-    scratch_arc = other.scratch_arc;
-    in = std::move(other.in);
-  }
+enum class FST_INPUT_TYPE {
+  BYTE1, BYTE2, BYTE4
 };
+
+template<typename T>
+class FST;
+
+template<typename T>
+class NodeHash;
 
 template<typename T>
 class Builder {
@@ -839,7 +732,7 @@ class Builder {
 
       if (do_prune) {
         node.Clear();
-        parent.DeleteLast(last_input.IntAt(idx - 1), node);
+        parent.DeleteLast(last_input.IntAt(idx - 1), &node);
       } else {
         if (min_suffix_count2 != 0) {
           CompileAllTargets(node, last_input.Length() - idx);
@@ -848,14 +741,16 @@ class Builder {
         const bool is_final = (node.is_final || node.num_arcs == 0);
 
         if (do_compile) {
+          CompiledNode compiled_node =
+            CompileNode(node, 1 + last_input.Length() - idx); 
           parent.ReplaceLast(last_input.IntAt(idx - 1),
-                             CompileNode(node, 1 + last_input.Length() - idx),
-                             next_final_output,
+                             &compiled_node,
+                             std::move(next_final_output),
                              is_final);
         } else {
           parent.ReplaceLast(last_input.IntAt(idx - 1),
-                             node,
-                             next_final_output,
+                             &node,
+                             std::move(next_final_output),
                              is_final);
           frontier[idx] = UnCompiledNode(this, idx);
         }
@@ -864,13 +759,13 @@ class Builder {
   }
 
   bool ValidOutput(T& output) const {
-    return (output == NO_OUTPUT || output != NO_OUTPUT);
+    return (&output == &NO_OUTPUT || output != NO_OUTPUT);
   }
 
   void CompileAllTargets(UnCompiledNode& node, const uint32_t tail_length) {
     for (uint32_t arc_idx = 0 ; arc_idx < node.num_arcs ; arc_idx++) {
       Arc& arc = node.arcs[arc_idx];
-      if (!arc.target.IsCompiled()) {
+      if (!arc.target->IsCompiled()) {
         UnCompiledNode& n = dynamic_cast<UnCompiledNode&>(*(arc.target));
         if (n.num_arcs == 0) {
           arc.is_final = n.is_final = true;
@@ -882,31 +777,31 @@ class Builder {
   }
 
  public:
-  Builder(const typename FST<T>::INPUT_TYPE input_type,
-          const Outputs<T>& outputs)
+  Builder(const FST_INPUT_TYPE input_type,
+          std::unique_ptr<Outputs<T>>&& outputs)
     : Builder(input_type,
               0,
               0,
               true,
               true,
               std::numeric_limits<int32_t>::max(),
-              outputs,
+              std::move(outputs),
               true,
               15) {
   }
 
-  Builder(const typename FST<T>::INPUT_TYPE input_type,
+  Builder(const FST_INPUT_TYPE input_type,
           const uint32_t min_suffix_count1,
           const uint32_t max_suffix_count2,
           const bool do_share_suffix,
           const bool do_share_non_singleton_nodes,
           const uint32_t share_max_tail_length,
-          const Outputs<T> outputs,
+          std::unique_ptr<Outputs<T>>&& outputs,
           const bool allow_array_arcs,
           const uint32_t bytes_page_bits)
     : dedup_hash(),
-      fst(input_type, outputs, bytes_page_bits),
-      NO_OUTPUT(outputs.GetNoOutput()),
+      fst(input_type, std::move(outputs), bytes_page_bits),
+      NO_OUTPUT(outputs->GetNoOutput()),
       min_suffix_count1(min_suffix_count1),
       min_suffix_count2(min_suffix_count2),
       bytes(fst.bytes),
@@ -921,7 +816,7 @@ class Builder {
       allow_array_arcs(allow_array_arcs) {
     if (do_share_suffix) {
       dedup_hash =
-        std::make_unique<NodeHash<T>>(fst, bytes.GetReverseReader(false));
+        std::make_unique<NodeHash<T>>(&fst, bytes.GetReverseReader(false));
     }
 
     frontier.reserve(10);
@@ -1000,16 +895,16 @@ class Builder {
       UnCompiledNode& parent_node = frontier[idx - 1];
 
       T& last_output =
-      parent_node.GetLastOuptut(input.ints[input.offset + idx - 1]);
+      parent_node.GetLastOutput(input.ints[input.offset + idx - 1]);
       assert(ValidOutput(last_output));
 
       T common_output_prefix;
       T word_suffix;
 
-      if (last_output != NO_OUTPUT) {
-        common_output_prefix = fst.outputs.Common(output, last_output);
+      if (&last_output != &NO_OUTPUT) {
+        common_output_prefix = fst.outputs->Common(output, last_output);
         assert(ValidOutput(common_output_prefix));
-        word_suffix = fst.outputs.Substract(last_output, common_output_prefix);
+        word_suffix = fst.outputs->Substract(last_output, common_output_prefix);
         assert(ValidOutput(word_suffix));
         parent_node.SetLastOutput(input.ints[input.offset + idx - 1],
                                   common_output_prefix);
@@ -1018,14 +913,14 @@ class Builder {
         common_output_prefix = word_suffix = NO_OUTPUT;
       }
 
-      output = fst.outputs.Substract(output, common_output_prefix);
+      output = fst.outputs->Substract(output, common_output_prefix);
     }
 
     if (last_input.Length() == input.length &&
         prefix_len_plus1 == (1 + input.length)) {
       // Same input more than 1 time in a row, mapping to
       // multiple outputs
-      last_node.output = fst.outputs.Merge(last_node.output, output);
+      last_node.output = fst.outputs->Merge(last_node.output, output);
     } else {
       // This new arc is private to this new input; 
       // set its arc output to the leftover output:
@@ -1043,7 +938,7 @@ class Builder {
     if (root.input_count < min_suffix_count1 ||
         root.input_count < min_suffix_count2 ||
         root.num_arcs == 0) {
-      if ((!fst.AcceptEmptyOutput()) ||
+      if (!fst.AcceptEmptyOutput() ||
           (min_suffix_count1 > 0 || min_suffix_count2 > 0)) {
         return nullptr;
       }
@@ -1056,7 +951,7 @@ class Builder {
 
     return &fst;
   }
-};
+};  // Builder<T>
 
 template<typename T>
 class Builder<T>::Node {
@@ -1076,6 +971,8 @@ class Builder<T>::Arc {
   bool is_final;
   T output;
   T next_final_output;
+
+  Arc() = default;
 
   Arc(const Arc& other)
     : label(other.label),
@@ -1195,22 +1092,22 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
     --num_arcs;
   }
 
-  void SetLastOutput(const uint32_t label_to_match, T&& new_output) {
+  void SetLastOutput(const uint32_t label_to_match, T& new_output) {
     Arc& arc = arcs[num_arcs - 1];   
-    arc.output = std::forward<T>(new_output);
+    arc.output = new_output;
   }
 
   void PrependOutput(const T& output_prefix) {
     for (uint32_t arc_idx = 0 ; arc_idx < num_arcs ; ++arc_idx) {
       arcs[arc_idx].output =
-      owner->fst.outputs.Add(output_prefix, arcs[arc_idx].output);
+      owner->fst.outputs->Add(output_prefix, arcs[arc_idx].output);
     }
 
     if (is_final) {
-      output = owner->fst.outputs.Add(output_prefix, output);
+      output = owner->fst.outputs->Add(output_prefix, output);
     }
   }
-};
+};  // Builder<T>::UnCompiledNode
 
 template<typename T>
 class Builder<T>::CompiledNode: public Builder<T>::Node {
@@ -1219,6 +1116,654 @@ class Builder<T>::CompiledNode: public Builder<T>::Node {
 
   bool IsCompiled() const noexcept {
     return true;
+  }
+};  // Builder<T>::CompiledNode
+
+template<typename T>
+class FST {
+ friend class Builder<T>;
+
+ public:
+  static const uint32_t BIT_FINAL_ARC = (1 << 0);
+  static const uint32_t BIT_LAST_ARC = (1 << 1);
+  static const uint32_t BIT_TARGET_NEXT = (1 << 2);
+  static const uint32_t BIT_STOP_NODE = (1 << 3);
+  static const uint32_t BIT_ARC_HAS_OUTPUT = (1 << 4);
+  static const uint32_t BIT_ARC_HAS_FINAL_OUTPUT = (1 << 5);
+  static const char ARCS_AS_FIXED_ARRAY = BIT_ARC_HAS_FINAL_OUTPUT;
+  static const uint32_t FIXED_ARRAY_SHALLOW_DISTANCE = 3;
+  static const uint32_t FIXED_ARRAY_NUM_ARCS_SHALLOW = 5;
+  static const uint32_t FIXED_ARRAY_NUM_ARCS_DEEP = 10;
+  static const uint32_t DEFAULT_MAX_BLOCK_BITS = 30;
+
+ private:
+  static const std::string FILE_FORMAT_NAME;  // "FST"
+  static const uint32_t VERSION_START = 0;
+  static const uint32_t VERSION_INT_NUM_BYTES_PER_ARC = 1;
+  static const uint32_t VERSION_SHORT_BYTE2_LABELS = 2;
+  static const uint32_t VERSION_PACKED = 3;
+  static const uint32_t VERSION_VINT_TARGET = 4;
+  static const uint32_t VERSION_NO_NODE_ARC_COUNTS =5;
+  static const uint32_t VERSION_PACKED_REMOVED = 6;
+  static const uint32_t VERSION_CURRENT = VERSION_PACKED_REMOVED;
+  static const int64_t FINAL_END_NODE = -1;
+  static const int64_t NON_FINAL_END_NODE = 0;
+  static const int32_t END_LABEL = -1;
+  static const uint32_t MAX_BLOCK_BITS = 30;
+
+ public:
+  class Arc;
+
+  FST_INPUT_TYPE input_type;
+  T empty_output;
+  bool is_empty_output_empty;
+  BytesStore bytes;
+  bool is_bytes_empty;
+  std::unique_ptr<char[]> bytes_array;
+  uint32_t bytes_array_size;
+  int64_t start_node;
+  std::unique_ptr<Outputs<T>> outputs;
+  std::unordered_map<uint32_t, Arc> cached_root_arcs;
+  uint32_t version;
+
+ private:
+  static bool Flag(const uint32_t flag, const uint32_t bit) noexcept {
+    return ((flag & bit) != 0);
+  }
+
+ public:
+  FST(lucene::core::store::DataInput* in,
+      std::unique_ptr<Outputs<T>>&& outputs)
+    : FST(in, std::move(outputs), MAX_BLOCK_BITS) {
+  }
+
+  FST(lucene::core::store::DataInput* in,
+      std::unique_ptr<Outputs<T>>&& outputs,
+      const uint32_t max_block_bits) {
+    is_empty_output_empty = true;
+    this->outputs = std::move(outputs);
+
+    if (max_block_bits == 0 || max_block_bits > MAX_BLOCK_BITS) {
+      throw IllegalArgumentException("Max block bits should be 1 .. 30. Got " +
+                                     std::to_string(max_block_bits));
+    }
+
+    version =
+      lucene::core::codec::CodecUtil::CheckHeader(in,
+                                                  FILE_FORMAT_NAME,
+                                                  VERSION_PACKED,
+                                                  VERSION_CURRENT);
+    if (version < VERSION_PACKED_REMOVED &&
+        in->ReadByte() == 1) {
+        throw lucene::core::index::CorruptIndexException(
+              "Cannot read packed FSTs anymore");
+    }
+
+    if (in->ReadByte() == 1) {
+      // Accept empty string
+      // 1KB blocks
+      BytesStore empty_bytes(10);
+      const int32_t num_bytes = in->ReadVInt32();
+      empty_bytes.CopyBytes(in, num_bytes);
+
+      // De-serialize empty-string output:
+      std::unique_ptr<FSTBytesReader> reader =
+        empty_bytes.GetReverseReader();
+
+      // NoOutputs uses 0 bytes when writing its output,
+      // so we have to check here else BytesStore gets angry:
+      if (num_bytes > 0) {
+        reader->SetPosition(num_bytes - 1);
+      }
+
+      empty_output = outputs->ReadFinalOutput(reader.get());
+      is_empty_output_empty = false;
+    }
+
+    const char t = in->ReadByte();
+    switch (t) {
+      case 0:
+        input_type = FST_INPUT_TYPE::BYTE1;
+        break;
+      case 1:
+        input_type = FST_INPUT_TYPE::BYTE2;
+        break;
+      case 2:
+        input_type = FST_INPUT_TYPE::BYTE4;
+        break;
+      default:
+        throw IllegalStateException("Invalid input type " +
+                              std::to_string(static_cast<uint32_t>(t & 0xFF)));
+    }
+
+    start_node = in->ReadVInt64();
+    if (version < VERSION_NO_NODE_ARC_COUNTS) {
+      in->ReadVInt64();
+      in->ReadVInt64();
+      in->ReadVInt64();
+    }
+
+    const int64_t num_bytes = in->ReadVInt64();
+    is_bytes_empty = false;
+    if (num_bytes > (1 << max_block_bits)) {
+      // FST is big: We need to multiple pages
+      bytes = BytesStore(in, num_bytes, 1 << max_block_bits);
+      bytes_array.reset();
+      bytes_array_size = 0;
+    } else {
+      // FST file into a single block:
+      // Use ByteArrayBytesStoreReader for less overhead
+      bytes = BytesStore();
+      bytes_array_size = num_bytes;
+      bytes_array = std::make_unique<char[]>(bytes_array_size);
+      in->ReadBytes(bytes_array.get(), 0, bytes_array_size);
+    }
+
+    CacheRootArcs();
+  }
+
+  FST(const FST_INPUT_TYPE input_type, 
+      std::unique_ptr<Outputs<T>>&& outputs,
+      const uint32_t bytes_page_bits)
+    : input_type(input_type),
+      empty_output(),
+      is_empty_output_empty(true),
+      bytes(bytes_page_bits),
+      is_bytes_empty(false),
+      bytes_array(),
+      bytes_array_size(0),
+      start_node(-1),
+      outputs(std::move(outputs)),
+      cached_root_arcs(0x100),
+      version(VERSION_CURRENT) {
+  }
+
+  FST_INPUT_TYPE GetInputType() const noexcept {
+    return input_type;
+  }
+
+  T& GetEmptyOutput() const noexcept {
+    return empty_output;
+  }
+
+  void Save(lucene::core::store::DataOutput* out) {
+    lucene::core::codec::CodecUtil::WriteHeader(out,
+                                                FILE_FORMAT_NAME,
+                                                VERSION_CURRENT);
+    if (!is_empty_output_empty) {
+      out->WriteByte(static_cast<char>(1));
+      // TODO(0ctopus13prime): Implement RAMOutputStream
+      /*
+      lucene::core::store::RAMOutputStream ros;
+      outputs->WriteFinalOutput(empty_output, &ros);
+
+      const uint32_t empty_output_bytes_size = ros.GetFilePointer();
+      char empty_output_bytes[empty_output_bytes_size];
+      ros.WriteTo(empty_output_bytes, 0);
+
+      // Reverse
+      const uint32_t stop_at = (empty_output_bytes_size >> 1);
+      for (uint32_t upto = 0 ; upto < stop_at ; ++upto) {
+        const char b = empty_output_bytes[upto];
+        empty_output_bytes[upto] =
+          empty_output_bytes[empty_output_bytes_size - upto - 1];
+        empty_output_bytes[empty_output_bytes_size - upto - 1] = b;
+      }
+
+      out->WriteVInt32(empty_output_bytes_size);
+      out->WriteBytes(empty_output_bytes, 0, empty_output_bytes_size);
+      */
+    } else {
+      out->WriteByte(static_cast<char>(0));
+    }
+
+    switch (input_type) {
+      case FST_INPUT_TYPE::BYTE1:
+        out->WriteByte(0);
+        break;
+      case FST_INPUT_TYPE::BYTE2:
+        out->WriteByte(1);
+        break;
+      default:
+        out->WriteByte(2);
+        break;
+    }
+
+    out->WriteVInt64(start_node);
+    if (!is_bytes_empty) {
+      out->WriteVInt64(bytes.GetPosition());
+      bytes.WriteTo(out);
+    } else {
+      assert(bytes_array);
+      out->WriteVInt64(bytes_array_size);
+      out->WriteBytes(bytes_array.get(), 0, bytes_array_size);
+    }
+  }
+
+  void Save(const std::string& path) {
+    // TODO(0ctopus13prime): IT
+  }
+
+  void GetFirstArc(Arc& arc) {
+    T NO_OUTPUT = outputs->GetNoOutput(); 
+
+    if (!is_empty_output_empty) {
+      arc.flags = (BIT_FINAL_ARC | BIT_LAST_ARC);
+      arc.next_final_output = empty_output;
+      if (&empty_output != &NO_OUTPUT) {
+        arc.flags |= BIT_ARC_HAS_FINAL_OUTPUT; 
+      }
+    } else {
+      arc.floags = BIT_LAST_ARC;
+      arc.next_final_output = NO_OUTPUT;
+    }
+    arc.output = NO_OUTPUT;
+
+    arc.output = NO_OUTPUT;
+
+    // If there are no nodes, ie, the FST only accepts the
+    // empty string, then startNode is 0
+    arc.target = start_node;
+  }
+
+  void ReadLastTargetArc(Arc& follow,
+                         Arc& arc,
+                         FSTBytesReader& in) {
+    // TODO(0ctopus13prime): IT
+  }
+
+  void ReadFirstTargetArc(Arc& follow, Arc& arc, FSTBytesReader* in) {
+    // TODO(0ctopus13prime): IT
+  }
+
+  void ReadFirstRealTargetArc(const int64_t node,
+                              Arc& arc,
+                              FSTBytesReader* in) {
+    // TODO(0ctopus13prime): IT
+  }
+  
+  void ReadNextArc(Arc& arc, FSTBytesReader* in) {
+    // TODO(0ctopus13prime): IT
+  }
+
+  int32_t ReadNextArcLabel(Arc& arc, FSTBytesReader* in) {
+    // TODO(0ctopus13prime): IT
+    return 0;
+  }
+
+  void ReadNextRealArc(Arc& arc, FSTBytesReader* in) {
+    // TODO(0ctopus13prime): IT
+  }
+
+  void FindTargetArc(const int32_t label_to_match,
+                     Arc& follow,
+                     Arc& arc,
+                     FSTBytesReader* in) {
+    // TODO(0ctopus13prime): IT
+  }
+
+  std::unique_ptr<FSTBytesReader> GetBytesReader() {
+    // TODO(0ctopus13prime): IT
+    return {};
+  }
+
+ public:
+  static FST<T> Read(const std::string& path,
+                     std::unique_ptr<Outputs<T>> outputs) {
+    // TODO(0ctopus13prime): IT
+    return FST<T>(nullptr, std::unique_ptr<Outputs<T>>());
+  }
+
+  static bool TargetHasArcs(Arc& arc) {
+    // TODO(0ctopus13prime): IT
+    return true;
+  }
+
+ private:
+  void FindTargetArc(const int32_t label_to_match,
+                     Arc& follow,
+                     Arc& arc,
+                     FSTBytesReader* in,
+                     const bool use_root_arc_cache) {
+    // TODO(0ctopus13prime): IT
+  }
+
+  void SeekToNextNode(FSTBytesReader* in) {
+    // TODO(0ctopus13prime): IT
+  }
+
+  bool ShouldExpand(Builder<T>& builder, typename Builder<T>::UnCompiledNode& node) {
+    // TODO(0ctopus13prime): IT
+    return true;
+  }
+
+  bool AssertRootCachedArc(const int32_t label, Arc& cached_arc) {
+    // TODO(0ctopus13prime): IT
+    return true;
+  }
+
+  bool IsExpandedTarget(Arc& follow, FSTBytesReader* in) {
+    // TODO(0ctopus13prime): IT
+    return true;
+  }
+
+  int64_t ReadUnpackedNodeTarget(FSTBytesReader& in) {
+    // TODO(0ctopus13prime): IT
+    return 0L;
+  }
+
+  int64_t AddNode(Builder<T>& builder, typename Builder<T>::UnCompiledNode node_in) {
+    // TODO(0ctopus13prime): IT
+    return 0L;
+  }
+
+  void WriteLabel(lucene::core::store::DataOutput* out, const int32_t v) {
+    // TODO(0ctopus13prime): IT
+  }
+
+  int32_t ReadLabel(lucene::core::store::DataInput* in) {
+    // TODO(0ctopus13prime): IT
+    return 0;
+  }
+
+  void SetEmptyOutput(T& v) {
+    if (is_empty_output_empty) {
+      empty_output = v;
+    } else {
+      outputs->Merge(empty_output, v);
+    }
+  }
+
+  void CacheRootArcs() {
+    Arc arc;
+    GetFirstArc(arc);
+    if (TargetHasArcs(arc)) {
+      std::unique_ptr<FSTBytesReader> in = GetBytesReader(); 
+      std::unordered_map<uint32_t, Arc> arcs(0x100);
+      ReadFirstRealTargetArc(arc.target, arc, in.get());
+      uint32_t count = 0;
+      cached_root_arcs.clear();
+      while (true) {
+        assert(arc.label != END_LABEL);
+        if (arc.label < 0x80) {
+          arcs[arc.label] = arc;
+        } else {
+          break;
+        }
+
+        if (arc.IsLast()) {
+          break;
+        }
+
+        ReadNextRealArc(arc, in.get());
+        count++;
+      }  // End while
+
+      if (count >= FIXED_ARRAY_NUM_ARCS_SHALLOW) {
+        cached_root_arcs = std::move(arcs); 
+      }
+    }  // End if
+  }
+};  // FST
+
+template<typename T>
+class FST<T>::Arc {
+ public:
+  T output;
+  T next_final_output;
+  uint64_t target;
+  uint64_t next_arc;
+  uint64_t pos_arcs_start;
+  int32_t label;
+  int32_t bytes_per_arc;
+  uint32_t arc_idx;
+  uint32_t num_arcs;
+  uint8_t flags;
+
+  Arc()
+    : output(),
+      next_final_output(),
+      target(0),
+      next_arc(0),
+      pos_arcs_start(0),
+      label(0),
+      bytes_per_arc(0),
+      arc_idx(0),
+      num_arcs(0),
+      flags(0) {
+  }
+
+  Arc(const Arc& other)
+    : output(other.output),
+      next_final_output(other.next_final_output),
+      target(other.target),
+      next_arc(other.next_arc),
+      pos_arcs_start(other.pos_arcs_start),
+      label(other.label),
+      bytes_per_arc(other.bytes_per_arc),
+      arc_idx(other.arc_idx),
+      num_arcs(other.num_arcs),
+      flags(other.flags) {
+  }
+
+  Arc& operator=(const Arc& other) {
+    if (this != &other) {
+      output = other.output;
+      next_final_output = other.next_final_output;
+      target = other.target;
+      next_arc = other.next_arc;
+      pos_arcs_start = other.pos_arcs_start;
+      label = other.label;
+      bytes_per_arc = other.bytes_per_arc;
+      arc_idx = other.arc_idx;
+      num_arcs = other.num_arcs;
+      flags = other.flags;
+    }
+
+    return *this;
+  }
+
+  Arc(Arc&& other)
+    : output(std::move(other.output)),
+      next_final_output(std::move(other.next_final_output)),
+      target(other.target),
+      next_arc(other.next_arc),
+      pos_arcs_start(other.pos_arcs_start),
+      label(other.label),
+      bytes_per_arc(other.bytes_per_arc),
+      arc_idx(other.arc_idx),
+      num_arcs(other.num_arcs),
+      flags(other.flags) {
+  }
+
+  Arc& operator=(Arc&& other) {
+    if (this != &other) {
+      output = std::move(other.output);
+      next_final_output = std::move(other.next_final_output);
+      target = other.target;
+      next_arc = other.next_arc;
+      pos_arcs_start = other.pos_arcs_start;
+      label = other.label;
+      bytes_per_arc = other.bytes_per_arc;
+      arc_idx = other.arc_idx;
+      num_arcs = other.num_arcs;
+      flags = other.flags;
+    }
+
+    return *this;
+  }
+
+  bool Flag(const uint8_t flag) const noexcept {
+    return FST<T>::Flag(flags, flag);
+  }
+
+  bool IsLast() const noexcept {
+    return Flag(BIT_LAST_ARC);
+  }
+
+  bool IsFinal() const noexcept {
+    return Flag(BIT_FINAL_ARC);
+  }
+};  // FST<T>::Arc
+
+template<typename T>
+class NodeHash {
+ private:
+  PagedGrowableWriter table;
+  uint64_t count;
+  uint64_t mask;
+  FST<T>* fst;
+  typename FST<T>::Arc scratch_arc;
+  std::unique_ptr<FSTBytesReader> in;
+
+ private:
+  // Only for rehash
+  NodeHash(PagedGrowableWriter&& table, NodeHash<T>&& other)
+    : table(std::forward<PagedGrowableWriter>(table)),
+      count(other.count),
+      mask(this->table.Size() - 1),
+      fst(other.fst),
+      scratch_arc(std::move(other.scratch_arc)),
+      in(std::move(other.in)) {
+  }
+
+  bool NodesEqual(typename Builder<T>::UnCompiledNode& node,
+                  const uint64_t address) {
+    fst->ReadFirstRealTargetArc(address, scratch_arc, in.get());
+    if (scratch_arc.bytes_per_arc != 0 &&
+        node.num_arc != scratch_arc.num_arcs) {
+      return false; 
+    }
+
+    for (uint32_t arc_upto = 0 ; arc_upto < node.num_arcs ; ++arc_upto) {
+      typename Builder<T>::Arc& arc = node.arcs[arc_upto];
+      if (arc.label != scratch_arc.label ||
+          arc.output != scratch_arc.output ||
+          dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node
+            != scratch_arc.target ||
+          arc.next_final_output != scratch_arc.next_final_output ||
+          arc.is_final != scratch_arc.IsFinal()) {
+        return false;
+      } else if (scratch_arc.IsLast()) {
+        return (arc_upto == node.num_arcs - 1);
+      }
+
+      fst->ReadNextRealArc(scratch_arc, in.get());
+    }
+
+    return false;
+  }
+
+  int64_t Hash(typename Builder<T>::UnCompiledNode& node);
+
+  int64_t Hash(const int64_t node) {
+    const uint32_t PRIME = 31;
+    int64_t h = 0;
+    fst->ReadFirstRealTargetArc(node, scratch_arc, in.get());
+    while (true) {
+      h = PRIME * h + scratch_arc.label;
+      h = PRIME * h +
+          static_cast<int32_t>(scratch_arc.target ^ (scratch_arc.target >> 32));
+      h = PRIME * h + scratch_arc.output.HashCode();
+      h = PRIME * h + scratch_arc.next_final_output.HashCode();
+      if (scratch_arc.IsFinal()) {
+        h += 17;
+      }
+
+      if (scratch_arc.IsLast()) {
+        break;
+      }
+
+      fst->ReadNextRealArc(scratch_arc, in.get());
+    }
+
+    return (h & std::numeric_limits<int64_t>::max());
+  }
+
+  int64_t Add(Builder<T>& builder,
+              typename Builder<T>::UnCompiledNode& node_in) {
+    const int64_t h = Hash(node_in);
+    int64_t pos = (h & mask);
+    int32_t c = 0;
+
+    while (true) {
+      const int64_t v = table.Get(pos);
+      if (v == 0) {
+        // Freeze & Add
+        const int64_t node = fst->AddNode(builder, node_in);
+        assert(Hash(node) == h);
+        count++;
+        table.Set(pos, node);
+        if (count > (2 * table.Size()) / 3) {
+          Rehash();
+        }
+      } else if (NodesEqual(node_in, v)) {
+        return v;
+      }
+
+      pos = ((pos + (++c)) & mask);
+    }
+  }
+
+  void AddNew(const uint64_t address) {
+    int64_t pos = (Hash(address) & mask);
+    int32_t c = 0;
+
+    while (table.Get(pos)) {
+      pos = ((pos + (++c)) & mask);
+    }
+
+    table.Set(pos, address);
+  }
+
+  void Rehash() {
+    NodeHash<T> new_one(PagedGrowableWriter(
+                          2 * table.Size(),
+                          1 << 30,
+                          PackedInts::BitsRequired(count),
+                          PackedInts::COMPACT),
+                        std::move(*this));
+    
+    for (uint32_t idx = 0 ; idx < table.Size() ; ++idx) {
+      const int64_t address = table.Get(idx);
+
+      if (address != 0) {
+        new_one.AddNew(address);  
+      }
+    }
+
+    operator=(std::move(new_one));
+  }
+
+ public:
+  NodeHash(FST<T>* fst, std::unique_ptr<FSTBytesReader>&& in)
+    : table(16, 1 << 27, 8, PackedInts::COMPACT),
+      count(0),
+      mask(16),
+      fst(fst),
+      scratch_arc(),
+      in(std::forward<std::unique_ptr<FSTBytesReader>>(in)) {
+  }
+
+  NodeHash(const NodeHash<T>& other) = delete;
+
+  NodeHash<T>& operator=(const NodeHash<T>& other) = delete;
+
+  NodeHash(NodeHash<T>&& other)
+    : table(std::move(other.table)),
+      mask(other.mask),
+      fst(other.fst),
+      scratch_arc(other.scratch_arc),
+      in(std::move(other.in)) {
+  }
+
+  NodeHash<T>& operator=(NodeHash<T>&& other) {
+    table = std::move(other.table);
+    count = other.count;
+    mask = other.mask;
+    fst = other.fst;
+    scratch_arc = other.scratch_arc;
+    in = std::move(other.in);
   }
 };
 
@@ -1338,6 +1883,30 @@ BytesStoreReverseFSTBytesReader::SetPosition(const uint64_t new_pos) noexcept {
 
 bool BytesStoreReverseFSTBytesReader::Reversed() const noexcept {
   return true;
+}
+
+/*
+ *  NodeHash<T>
+ */
+template<typename T>
+int64_t NodeHash<T>::Hash(typename Builder<T>::UnCompiledNode& node) {
+  const uint32_t PRIME = 31;  
+  int64_t h = 0;
+
+  for (uint32_t arc_idx = 0 ; arc_idx < node.num_arcs ; ++arc_idx) {
+    typename Builder<T>::Arc& arc = node.arcs[arc_idx];
+    h = PRIME * h + arc.label;
+    const int64_t n =
+      dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node;
+    h = PRIME * h + static_cast<int32_t>(n ^ (n >> 32));
+    h = PRIME * h + arc.output.HashCode();
+    h = PRIME * h + arc.next_final_output.HashCode();
+    if (arc.is_final) {
+      h += 17;
+    }
+  }
+
+  return (h & std::numeric_limits<int64_t>::max());
 }
 
 }  // namespace util

@@ -20,9 +20,21 @@
 #include <iostream>
 
 using lucene::core::util::BytesStore;
+using lucene::core::util::Builder;
+using lucene::core::util::FST;
+using lucene::core::util::FST_INPUT_TYPE;
+using lucene::core::util::IntSequenceOutputs;
+using lucene::core::util::IntsRef;
 
 TEST(BYTESREF__TESTS, BASIC__TEST) {
   BytesStore bytes_store(5);
+  IntSequenceOutputs outputs;
+  Builder<IntsRef> builder(FST_INPUT_TYPE::BYTE1, std::make_unique<IntSequenceOutputs>());
+  const uint32_t len = 5;
+  IntsRef input(len);
+  IntsRef output(len);
+
+  builder.Add(input, output);
 }
 
 int main(int argc, char* argv[]) {
