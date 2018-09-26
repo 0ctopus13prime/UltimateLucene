@@ -17,6 +17,8 @@
 
 #include <Util/Fst.h>
 
+using lucene::core::util::BytesRef;
+using lucene::core::util::ByteSequenceOutputs;
 using lucene::core::util::FST;
 using lucene::core::util::IntsRef;
 using lucene::core::util::IntSequenceOutputs;
@@ -31,3 +33,8 @@ const std::string FST<T>::FILE_FORMAT_NAME("FST");
  *  IntSequenceOutputs 
  */
 IntsRef IntSequenceOutputs::NO_OUTPUT;
+
+/**
+ *  ByteSequenceOutputs
+ */
+BytesRef ByteSequenceOutputs::NO_OUTPUT;

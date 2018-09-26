@@ -503,7 +503,7 @@ TEST(DIRECTORY__TESTS, MMAP__DIRECTORY__ETC) {
     std::unique_ptr<IndexInput> in_ptr = dir.OpenInput(name, io_ctx);
 
     std::unique_ptr<IndexOutput> out_ptr = dir.CreateOutput(dup_name, io_ctx);
-    out_ptr->CopyBytes(*(in_ptr.get()), in_ptr->Length());
+    out_ptr->CopyBytes(in_ptr.get(), in_ptr->Length());
     out_ptr->Close();
   }
 
