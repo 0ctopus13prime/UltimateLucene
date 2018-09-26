@@ -15,26 +15,18 @@
  *
  */
 
-#include <Util/Fst.h>
+#ifndef SRC_UTIL_FSTUTIL_H_
+#define SRC_UTIL_FSTUTIL_H_
 
-using lucene::core::util::BytesRef;
-using lucene::core::util::ByteSequenceOutputs;
-using lucene::core::util::FST;
-using lucene::core::util::IntsRef;
-using lucene::core::util::IntSequenceOutputs;
+namespace lucene {
+namespace core {
+namespace util {
 
-/**
- *  FST
- */
-template<typename T>
-const std::string FST<T>::FILE_FORMAT_NAME("FST");
+class FstUtil {
+};
 
-/**
- *  IntSequenceOutputs
- */
-IntsRef IntSequenceOutputs::NO_OUTPUT;
+}  // util
+}  // core
+}  // lucene
 
-/**
- *  ByteSequenceOutputs
- */
-BytesRef ByteSequenceOutputs::NO_OUTPUT;
+#endif  // SRC_UTIL_FSTUTIL_H_

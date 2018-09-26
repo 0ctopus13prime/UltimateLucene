@@ -133,6 +133,14 @@ class IntsRef {
   uint32_t capacity;
   uint32_t length;
   bool is_reference;
+  bool is_no_output;
+
+ private:
+  void SafeDeleteInts() {
+    if (!is_reference && ints != nullptr) {
+      delete[] ints; 
+    }
+  }
 
  public:
   IntsRef()
@@ -181,6 +189,7 @@ class IntsRef {
 
   IntsRef& operator=(const IntsRef& other) {
     if (this != &other) {
+      SafeDeleteInts();
       ints = other.ints;
       capacity = other.capacity;
       offset = other.offset;
@@ -191,10 +200,13 @@ class IntsRef {
         ints = lucene::core::util::arrayutil::CopyOf<int>(ints, capacity);
       }
     }
+
+    return *this;
   }
 
   IntsRef& operator=(IntsRef&& other) {
     if (this != &other) {
+      SafeDeleteInts();
       ints = other.ints;
       capacity = other.capacity;
       offset = other.offset;
@@ -204,6 +216,8 @@ class IntsRef {
       // Prevent double memory release
       other.is_reference = true;
     }
+
+    return *this;
   }
 
   bool operator<(const IntsRef& other) const {
@@ -246,10 +260,19 @@ class IntsRef {
     return !(operator==(other));
   }
 
-  ~IntsRef() {
-    if (!is_reference && ints != nullptr) {
-      delete[] ints; 
+  int32_t HashCode() {
+    const int32_t prime = 31;
+    int32_t result = 0;
+    const int end = (offset + length);
+    for (int i = offset ; i < end ; ++i) {
+      result = ((prime * result) + ints[i]);
     }
+
+    return result;
+  }
+
+  ~IntsRef() {
+    SafeDeleteInts();
   }
 };  // IntsRef
 
@@ -300,6 +323,10 @@ class IntsRefBuilder {
       ref.ints = pair.first;
       ref.capacity = pair.second;
     }
+  }
+
+  void InitInts(IntsRef&& source) {
+    ref = std::forward<IntsRef>(source); 
   }
 
   void CopyInts(const int32_t other_ints[],

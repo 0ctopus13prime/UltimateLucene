@@ -309,11 +309,11 @@ void BytesRefBuilder::CopyBytes(BytesRefBuilder& builder) {
   Append(builder);
 }
 
-void BytesRefBuilder::CopyChars(std::string& text) {
+void BytesRefBuilder::CopyChars(const std::string& text) {
   CopyChars(text, 0, text.size());
 }
 
-void BytesRefBuilder::CopyChars(std::string& text,
+void BytesRefBuilder::CopyChars(const std::string& text,
                                 const uint32_t off,
                                 const uint32_t len) {
   Grow(len);

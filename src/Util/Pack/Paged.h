@@ -103,10 +103,6 @@ class AbstractPagedMutable: public Int64Values {
     return (page_mask + 1);
   }
 
-  uint64_t Size() const noexcept {
-    return size;
-  }
-
   uint32_t PageIndex(const uint64_t index) const noexcept {
     return static_cast<uint32_t>(index >> page_shift);
   }
@@ -116,6 +112,10 @@ class AbstractPagedMutable: public Int64Values {
   }
 
  public:
+  uint64_t Size() const noexcept {
+    return size;
+  }
+
   int64_t Get(const uint64_t index) {
     const uint32_t page_index = PageIndex(index);
     const uint32_t index_in_page = IndexInPage(index);

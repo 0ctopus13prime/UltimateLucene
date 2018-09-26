@@ -18,6 +18,10 @@
 #ifndef SRC_UTIL_FST_H_
 #define SRC_UTIL_FST_H_
 
+// TEST
+#include <iostream>
+// TEST
+
 #include <Codec/CodecUtil.h>
 #include <Store/DataInput.h>
 #include <Store/DataOutput.h>
@@ -487,16 +491,16 @@ class Outputs {
  public:
   virtual ~Outputs() = default;
 
-  virtual T Common(T& output1, T& output2) = 0;
+  virtual T Common(const T& output1, const T& output2) = 0;
 
-  virtual T Subtract(T& output, T& inc) = 0;
+  virtual T Subtract(const T& output, const T& inc) = 0;
 
-  virtual T Add(T& prefix, T& output) = 0;
+  virtual T Add(const T& prefix, const T& output) = 0;
 
-  virtual void Write(T& output, lucene::core::store::DataOutput* out) = 0;
+  virtual void Write(const T& output, lucene::core::store::DataOutput* out) = 0;
 
-  virtual void WriteFinalOutput(T& output,
-                             lucene::core::store::DataOutput* out) {
+  virtual void WriteFinalOutput(const T& output,
+                                lucene::core::store::DataOutput* out) {
     Write(output, out);
   }
 
@@ -514,11 +518,9 @@ class Outputs {
     SkipOutput(in);
   }
 
-  virtual T& GetNoOutput() = 0;
+  virtual std::string OutputToString(const T& output) = 0;
 
-  virtual std::string OutputToString(T& output) = 0;
-
-  virtual T Merge(T& first, T& second) {
+  virtual T Merge(const T& first, const T& second) {
     throw lucene::core::util::UnsupportedOperationException();
   }
 
@@ -531,6 +533,8 @@ class Outputs {
            (bottom >> 8) & 0x0000FF00 |
            bottom >> 24;
   }
+
+  virtual T& GetNoOutput() = 0;
 };  // Outputs<T>
 
 class IntSequenceOutputs: public Outputs<IntsRef> {
@@ -538,13 +542,14 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
   static IntsRef NO_OUTPUT;
 
  public:
-  IntsRef Common(IntsRef& output1, IntsRef& output2) {
+  IntsRef Common(const IntsRef& output1, const IntsRef& output2) {
     uint32_t pos1 = output1.offset;  
     uint32_t pos2 = output2.offset;
     uint32_t stop_at_1 = (pos1 + std::min(output1.length, output2.length));
-    while ((output1.ints[pos1++] == output2.ints[pos2++]) &&
-           (pos1 < stop_at_1));
-    
+  
+    while ((pos1 < stop_at_1) &&
+           (output1.ints[pos1++] == output2.ints[pos2++]));
+
     if (pos1 == output1.offset) {
       // No common prefix
       return NO_OUTPUT;
@@ -563,7 +568,7 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
     }
   }
 
-  IntsRef Subtract(IntsRef& output, IntsRef& inc) {
+  IntsRef Subtract(const IntsRef& output, const IntsRef& inc) {
     if (inc == NO_OUTPUT) {
       // No prefix removed
       return output;
@@ -579,7 +584,7 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
     }
   }
 
-  IntsRef Add(IntsRef& prefix, IntsRef& output) {
+  IntsRef Add(const IntsRef& prefix, const IntsRef& output) {
     if (prefix == NO_OUTPUT) {
       return output;
     } else if (output == NO_OUTPUT) {
@@ -598,7 +603,7 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
     }
   }
 
-  void Write(IntsRef& prefix, lucene::core::store::DataOutput* out) {
+  void Write(const IntsRef& prefix, lucene::core::store::DataOutput* out) {
     out->WriteVInt32(prefix.length);
     for (uint32_t idx = 0 ; idx < prefix.length ; ++idx) {
       out->WriteVInt32(prefix.ints[prefix.offset + idx]);
@@ -634,7 +639,7 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
     return NO_OUTPUT;
   }
 
-  std::string OutputToString(IntsRef& output) {
+  std::string OutputToString(const IntsRef& output) {
     // TODO(0ctopus13prime): IT
     return std::string();
   }
@@ -645,12 +650,13 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
   static BytesRef NO_OUTPUT;
 
  public:
-  BytesRef Common(BytesRef& output1, BytesRef& output2) {
+  BytesRef Common(const BytesRef& output1, const BytesRef& output2) {
     uint32_t pos1 = output1.offset;
     uint32_t pos2 = output2.offset;
     uint32_t stop_at_1 = (pos1 + std::min(output1.length, output2.length));
 
-    while (pos1 < stop_at_1 && output1.bytes.get()[pos1] != output2.bytes.get()[pos2]) {
+    while (pos1 < stop_at_1 &&
+           output1.bytes.get()[pos1] != output2.bytes.get()[pos2]) {
       pos1++;
       pos2++;
     }
@@ -668,7 +674,7 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
     }
   }
 
-  BytesRef Subtract(BytesRef& output, BytesRef& inc) {
+  BytesRef Subtract(const BytesRef& output, const BytesRef& inc) {
     if (inc == NO_OUTPUT) {
       // No prefix removed
       return output;
@@ -684,14 +690,16 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
     }
   }
 
-  BytesRef Add(BytesRef& prefix, BytesRef& output) {
+  BytesRef Add(const BytesRef& prefix, const BytesRef& output) {
     if (prefix == NO_OUTPUT) {
-      return output;
+      return NO_OUTPUT;
     } else if (output == NO_OUTPUT) {
-      return prefix;
+      return NO_OUTPUT;
     } else {
       BytesRef result(prefix.length + output.length);
-      std::memcpy(result.bytes.get(), prefix.bytes.get() + prefix.offset, prefix.length);
+      std::memcpy(result.bytes.get(),
+                  prefix.bytes.get() + prefix.offset,
+                  prefix.length);
       std::memcpy(result.bytes.get() + prefix.length,
                   output.bytes.get() + output.offset,
                   output.length);
@@ -700,7 +708,7 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
     }
   }
 
-  void Write(BytesRef& prefix, lucene::core::store::DataOutput* out) {
+  void Write(const BytesRef& prefix, lucene::core::store::DataOutput* out) {
     out->WriteVInt32(prefix.length);
     out->WriteBytes(prefix.bytes.get(), prefix.offset, prefix.length);
   }
@@ -713,7 +721,7 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
       output.length = len;
       return output;
     } else {
-      return NO_OUTPUT; 
+      return NO_OUTPUT;
     }
   }
 
@@ -724,11 +732,7 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
     }
   }
 
-  BytesRef& GetNoOutput() {
-    return NO_OUTPUT;
-  }
-
-  std::string OutputToString(BytesRef& output) {
+  std::string OutputToString(const BytesRef& output) {
     // TODO(0ctopus13prime): IT
     return std::string();
   }
@@ -1479,7 +1483,7 @@ class FST {
     if (is_empty_output_empty) {
       empty_output = v;
     } else {
-      outputs->Merge(empty_output, v);
+      empty_output = outputs->Merge(empty_output, v);
     }
   }
 

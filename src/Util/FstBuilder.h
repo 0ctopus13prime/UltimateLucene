@@ -34,6 +34,7 @@
 #include <cstring>
 #include <algorithm>
 #include <limits>
+#include <list>
 #include <memory>
 #include <string>
 #include <utility>
@@ -72,7 +73,7 @@ class NodeHash {
                   const uint64_t address) {
     fst->ReadFirstRealTargetArc(address, scratch_arc, in.get());
     if (scratch_arc.bytes_per_arc != 0 &&
-        node.num_arc != scratch_arc.num_arcs) {
+        node.num_arcs != scratch_arc.num_arcs) {
       return false; 
     }
 
@@ -139,32 +140,6 @@ class NodeHash {
     return (h & std::numeric_limits<int64_t>::max());
   }
 
-  int64_t Add(Builder<T>& builder,
-              typename Builder<T>::UnCompiledNode& node_in) {
-    const int64_t h = Hash(node_in);
-    int64_t pos = (h & mask);
-    int32_t c = 0;
-
-    while (true) {
-      const int64_t v = table.Get(pos);
-      if (v == 0) {
-        // Freeze & Add
-        const int64_t node = fst->AddNode(builder, node_in);
-        assert(Hash(node) == h);
-        count++;
-        table.Set(pos, node);
-        if (count > (2 * table.Size()) / 3) {
-          Rehash();
-        }
-        return node;
-      } else if (NodesEqual(node_in, v)) {
-        return v;
-      }
-
-      pos = ((pos + (++c)) & mask);
-    }
-  }
-
   void AddNew(const uint64_t address) {
     int64_t pos = (Hash(address) & mask);
     int32_t c = 0;
@@ -196,7 +171,8 @@ class NodeHash {
   }
 
  public:
-  NodeHash(FST<T>* fst, std::unique_ptr<FSTBytesReader>&& in)
+  NodeHash(FST<T>* fst,
+           std::unique_ptr<FSTBytesReader>&& in)
     : table(16, 1 << 27, 8, PackedInts::COMPACT),
       count(0),
       mask(15),
@@ -218,7 +194,7 @@ class NodeHash {
   }
 
   NodeHash<T>& operator=(NodeHash<T>&& other) {
-    if (this != *other) {
+    if (this != &other) {
       table = std::move(other.table);
       count = other.count;
       mask = other.mask;
@@ -229,10 +205,38 @@ class NodeHash {
 
     return *this;
   }
+
+  int64_t Add(Builder<T>& builder,
+              typename Builder<T>::UnCompiledNode& node_in) {
+    const int64_t h = Hash(node_in);
+    int64_t pos = (h & mask);
+    int32_t c = 0;
+
+    while (true) {
+      const int64_t v = table.Get(pos);
+      if (v == 0) {
+        // Freeze & Add
+        const int64_t node = builder.AddNode(node_in);
+        assert(Hash(node) == h);
+        count++;
+        table.Set(pos, node);
+        if (count > (2 * table.Size()) / 3) {
+          Rehash();
+        }
+        return node;
+      } else if (NodesEqual(node_in, v)) {
+        return v;
+      }
+
+      pos = ((pos + (++c)) & mask);
+    }
+  }
 };  // NodeHash
 
 template<typename T>
 class Builder {
+ friend class NodeHash<T>;
+
  public:
   class Node;
   class UnCompiledNode;
@@ -250,6 +254,7 @@ class Builder {
   uint32_t share_max_tail_length;
   lucene::core::util::IntsRefBuilder last_input;
   std::vector<UnCompiledNode> frontier;
+  std::list<CompiledNode> compiled_node_pool;
   uint64_t last_frozen_node;
   uint64_t arc_count;
   uint64_t node_count;
@@ -257,20 +262,18 @@ class Builder {
   bool allow_array_arcs;
 
  private:
-  int64_t AddNode(Builder<T>& builder,
-          typename Builder<T>::UnCompiledNode node_in) {
+  int64_t AddNode(typename Builder<T>::UnCompiledNode& node_in) {
     // TODO(0ctopus13prime): IT
     return 0L;
   }
 
-  bool ShouldExpand(Builder<T>& builder,
-                    typename Builder<T>::UnCompiledNode& node) {
+  bool ShouldExpand(typename Builder<T>::UnCompiledNode& node) {
     // TODO(0ctopus13prime): IT
     return true;
   }
 
-  CompiledNode CompileNode(UnCompiledNode& node_in,
-                           const uint32_t tail_length) {
+  CompiledNode& CompileNode(UnCompiledNode& node_in,
+                            const uint32_t tail_length) {
     int64_t node;
     const uint64_t bytes_pos_start = bytes.GetPosition();
 
@@ -278,13 +281,13 @@ class Builder {
         (do_share_non_singleton_nodes || node_in.num_arcs <= 1) &&
         tail_length <= share_max_tail_length) {
       if (node_in.num_arcs == 0) {
-        node = AddNode(this, node_in); 
+        node = AddNode(node_in); 
         last_frozen_node = node;
       } else {
-        node = dedup_hash->Add(this, node_in);
+        node = dedup_hash->Add(*this, node_in);
       }
     } else {
-      node = AddNode(this, node_in);
+      node = AddNode(node_in);
     }
 
     const uint64_t bytes_pos_end = bytes.GetPosition();
@@ -294,13 +297,12 @@ class Builder {
 
     node_in.Clear();
 
-    CompiledNode fn;
-    fn.node = node;
-    return fn;
+    compiled_node_pool.push_back(CompiledNode(node));
+    return compiled_node_pool.back();
   }
   
   void FreezeTail(const uint32_t prefix_len_plus1) {
-    const uint32_t down_to = (1 > prefix_len_plus1 ? 1 : prefix_len_plus1);
+    const uint32_t down_to = std::max(1U, prefix_len_plus1);
 
     for (uint32_t idx = last_input.Length() ; idx >= down_to ; --idx) {
       bool do_prune = false;
@@ -327,9 +329,7 @@ class Builder {
       if (node.input_count < min_suffix_count2 ||
           (min_suffix_count2 == 1 && node.input_count == 1 && idx > 1)) {
         for (uint32_t arc_idx = 0 ; arc_idx < node.num_arcs ; ++arc_idx) {
-          UnCompiledNode& target =
-          dynamic_cast<UnCompiledNode&>(*node.arcs[arc_idx].target); 
-          target.Clear();
+            dynamic_cast<UnCompiledNode*>(node.arcs[arc_idx].target)->Clear(); 
         }
 
         node.num_arcs = 0;
@@ -346,7 +346,7 @@ class Builder {
         const bool is_final = (node.is_final || node.num_arcs == 0);
 
         if (do_compile) {
-          CompiledNode compiled_node =
+          CompiledNode& compiled_node =
             CompileNode(node, 1 + last_input.Length() - idx); 
           parent.ReplaceLast(last_input.IntAt(idx - 1),
                              &compiled_node,
@@ -376,7 +376,7 @@ class Builder {
           arc.is_final = n.is_final = true;
         }
 
-        arc.target = CompileNode(n, tail_length - 1);
+        arc.target = &CompileNode(n, tail_length - 1);
       }
     }
   }
@@ -416,6 +416,7 @@ class Builder {
       share_max_tail_length(0),
       last_input(),
       frontier(),
+      compiled_node_pool(),
       last_frozen_node(0),
       arc_count(0),
       node_count(0),
@@ -423,10 +424,11 @@ class Builder {
       allow_array_arcs(allow_array_arcs) {
     if (do_share_suffix) {
       dedup_hash =
-        std::make_unique<NodeHash<T>>(&fst, bytes.GetReverseReader(false));
+        std::make_unique<NodeHash<T>>(&fst,
+                                      bytes.GetReverseReader(false));
     }
 
-    const uint32_t frontier_rsv_size = 10;
+    const uint32_t frontier_rsv_size = 20;
     frontier.reserve(frontier_rsv_size);
     for (uint32_t idx = 0 ; idx < frontier_rsv_size ; ++idx) {
       frontier.push_back(UnCompiledNode(this, idx));
@@ -449,7 +451,7 @@ class Builder {
     return (dedup_hash ? node_count : 0L);
   }
 
-  void Add(lucene::core::util::IntsRef& input, T& output) {
+  void Add(lucene::core::util::IntsRef&& input, T&& output) {
     if (output == NO_OUTPUT) {
       output = NO_OUTPUT;
     }
@@ -467,12 +469,26 @@ class Builder {
     uint32_t pos1 = 0;
     uint32_t pos2 = input.offset;
     uint32_t pos1_stop = std::min(last_input.Length(), input.length);
+  
+    std::cout << "Get prefix. "
+              << "pos1 -> " << pos1
+              << ", pos2 -> " << pos2
+              << ", pos1_stop -> " << pos1_stop << std::endl;
+
     while (true) {
       frontier[pos1].input_count++;
+
       if (pos1 >= pos1_stop ||
           last_input.IntAt(pos1) != input.ints[pos2]) {
         break;
       }
+
+      std::cout << "Last input at(" << pos1
+                << ") -> " << last_input.IntAt(pos1) << std::endl;
+
+      std::cout << "Input at(" << pos2
+                << ") -> " << input.ints[pos2] << std::endl;
+
 
       pos1++;
       pos2++;
@@ -480,15 +496,24 @@ class Builder {
 
     const uint32_t prefix_len_plus1 = (pos1 + 1);
 
+    std::cout << "\nPre FreezeTail" << std::endl;
+
     // Minimize / Compile states from previous input's
     // orphan'd suffix
     FreezeTail(prefix_len_plus1);
 
+    std::cout << "FreezeTail is done" << std::endl;
+
+    std::cout << "\nStart installing new nodes" << std::endl;
+
     for (uint32_t idx = prefix_len_plus1 ; idx <= input.length ; ++idx) {
+      std::cout << "Idx -> " << idx << ", Frontier's size -> " << frontier.size() << std::endl;
       frontier[idx - 1].AddArc(input.ints[input.offset + idx - 1],
                                frontier[idx]);
       frontier[idx].input_count++;
     }
+
+    std::cout << "Installing new nodes is done" << std::endl;
 
     UnCompiledNode& last_node = frontier[input.length];
     if (last_input.Length() != input.length ||
@@ -497,32 +522,51 @@ class Builder {
       last_node.output = NO_OUTPUT;
     }
 
+    std::cout << "\nStart push back output value" << std::endl;
+
     // Push conflicting outputs forward, only as far as needed
+    T common_prefix;
+    T word_suffix;
+
     for (uint32_t idx = 1 ; idx < prefix_len_plus1 ; ++idx) {
+      std::cout << "idx -> " << idx << ", Prefix len plus 1 -> "
+        << prefix_len_plus1 << std::endl;
       UnCompiledNode& node = frontier[idx];
       UnCompiledNode& parent_node = frontier[idx - 1];
 
+      std::cout << "11111111111" << std::endl;
       T& last_output =
-      parent_node.GetLastOutput(input.ints[input.offset + idx - 1]);
-      assert(ValidOutput(last_output));
+        parent_node.GetLastOutput(input.ints[input.offset + idx - 1]);
+      // assert(ValidOutput(last_output));
 
-      T common_output_prefix;
-      T word_suffix;
 
       if (&last_output != &NO_OUTPUT) {
-        common_output_prefix = fst.outputs->Common(output, last_output);
-        assert(ValidOutput(common_output_prefix));
-        word_suffix = fst.outputs->Substract(last_output, common_output_prefix);
-        assert(ValidOutput(word_suffix));
+        std::cout << "22222222222" << std::endl;
+        common_prefix = 
+          fst.outputs->Common(output,
+                              last_output);
+        // assert(ValidOutput(common_prefix));
+        std::cout << "33333333333" << std::endl;
+        word_suffix = 
+          fst.outputs->Subtract(last_output,
+                                common_prefix);
+        // assert(ValidOutput(word_suffix));
+        std::cout << "44444444444" << std::endl;
         parent_node.SetLastOutput(input.ints[input.offset + idx - 1],
-                                  common_output_prefix);
+                                  std::move(common_prefix));
+        std::cout << "55555555555" << std::endl;
         node.PrependOutput(word_suffix);
       } else {
-        common_output_prefix = word_suffix = NO_OUTPUT;
+        std::cout << "66666666666" << std::endl;
+        common_prefix = word_suffix = NO_OUTPUT;
       }
 
-      output = fst.outputs->Substract(output, common_output_prefix);
+      std::cout << "66666666666" << std::endl;
+      output =
+        fst.outputs->Subtract(output, common_prefix);
     }
+
+    std::cout << "Push back output is done" << std::endl;
 
     if (last_input.Length() == input.length &&
         prefix_len_plus1 == (1 + input.length)) {
@@ -533,11 +577,12 @@ class Builder {
       // This new arc is private to this new input; 
       // set its arc output to the leftover output:
       frontier[prefix_len_plus1 - 1].SetLastOutput(
-      input.ints[input.offset + prefix_len_plus1 - 1], output);
+        input.ints[input.offset + prefix_len_plus1 - 1],
+        std::move(output));
     }
 
     // Save last input
-    last_input.CopyInts(input);
+    last_input.InitInts(std::move(input));
   }
 
   FST<T>* Finish() {
@@ -555,6 +600,7 @@ class Builder {
         CompileAllTargets(root, last_input.Length());
       }
     }
+
     fst.Finish(CompileNode(root, last_input.Length()).node);
 
     return &fst;
@@ -582,13 +628,9 @@ class Builder<T>::Arc {
 
   Arc() = default;
 
-  Arc(const Arc& other)
-    : label(other.label),
-      target(other.target),
-      is_final(other.is_final),
-      output(other.output),
-      next_final_output(other.next_final_output) {
-  }
+  Arc(const Arc& other) = delete;
+
+  Arc& operator=(const Arc& other) = delete;
 
   Arc(Arc&& other)
     : label(other.label),
@@ -596,6 +638,18 @@ class Builder<T>::Arc {
       is_final(other.is_final),
       output(std::move(other.output)),
       next_final_output(std::move(other.next_final_output)) {
+  }
+
+  Arc& operator=(Arc&& other) {
+    if (this != &other) {
+      label = other.label;
+      target = other.target;
+      is_final = other.is_final;
+      output = std::move(other.output);
+      next_final_output = std::move(other.next_final_output);
+    }
+
+    return *this;
   }
 };  // Builder<T>::Arc
 
@@ -617,7 +671,9 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
   void GrowIf() {
     if (num_arcs == arcs_size) {
       std::pair<Arc*, uint32_t> pair =
-      lucene::core::util::arrayutil::Grow(arcs, arcs_size + 1);
+        lucene::core::util::arrayutil::Grow(arcs.get(),
+                                            arcs_size,
+                                            arcs_size + 1);
       
       arcs.reset(pair.first);
       arcs_size = pair.second;
@@ -667,10 +723,9 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
   }
 
   void Clear() noexcept {
-    num_arcs = 0;
+    input_count = num_arcs = 0;
     is_final = false;
     output = owner->NO_OUTPUT;
-    input_count = 0;
   }
 
   T& GetLastOutput(const uint32_t label_to_match) const noexcept {
@@ -700,15 +755,15 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
     --num_arcs;
   }
 
-  void SetLastOutput(const uint32_t label_to_match, T& new_output) {
+  void SetLastOutput(const uint32_t label_to_match, T&& new_output) {
     Arc& arc = arcs[num_arcs - 1];   
-    arc.output = new_output;
+    arc.output = std::forward<T>(new_output);
   }
 
   void PrependOutput(const T& output_prefix) {
     for (uint32_t arc_idx = 0 ; arc_idx < num_arcs ; ++arc_idx) {
       arcs[arc_idx].output =
-      owner->fst.outputs->Add(output_prefix, arcs[arc_idx].output);
+        owner->fst.outputs->Add(output_prefix, arcs[arc_idx].output);
     }
 
     if (is_final) {
@@ -719,11 +774,19 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
 
 template<typename T>
 class Builder<T>::CompiledNode: public Builder<T>::Node {
- private:
-  uint64_t node;
+ public:
+  const uint64_t node;
 
   bool IsCompiled() const noexcept {
     return true;
+  }
+
+  explicit CompiledNode(const uint64_t node)
+    : node(node) {
+  }
+
+  CompiledNode(const CompiledNode& other)
+    : node(other.node) {
   }
 };  // Builder<T>::CompiledNode
 
