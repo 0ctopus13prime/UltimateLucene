@@ -56,12 +56,14 @@ TEST(BYTESREF__TESTS, BASIC__TEST) {
   Builder<IntsRef> builder(FST_INPUT_TYPE::BYTE1,
                            std::make_unique<IntSequenceOutputs>());
 
-  for (int i = 0 ; i < 1000 ; ++i) {
+  for (int i = 0 ; i < 100 ; ++i) {
     std::cout << "i -> " << i << std::endl;
     std::string key("k-" + std::to_string(i));
     std::string val("v-" + std::to_string(i));
     AddKeyValue(builder, key, val);
   }
+
+  builder.Finish();
 }
 
 int main(int argc, char* argv[]) {

@@ -586,7 +586,7 @@ class Builder {
   }
 
   FST<T>* Finish() {
-    UnCompiledNode& root = *(frontier[0]);
+    UnCompiledNode& root = frontier[0];
     FreezeTail(0);
     if (root.input_count < min_suffix_count1 ||
         root.input_count < min_suffix_count2 ||
