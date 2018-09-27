@@ -148,9 +148,9 @@ TEST(FIELD__TESTS, DOUBLE__POINT__TEST) {
     auto opt = dp.BinaryValue();
     if (opt) {
       BytesRef& bytes_ref = *opt;
-      ASSERT_EQ(3 * sizeof(double), bytes_ref.length);
+      ASSERT_EQ(3 * sizeof(double), bytes_ref.Length());
 
-      double got = DoublePoint::DecodeDimension(bytes_ref.bytes.get(), 0);
+      double got = DoublePoint::DecodeDimension(bytes_ref.Bytes(), 0);
       ASSERT_EQ(11.11D, got);
     } else {
       FAIL();
@@ -194,9 +194,9 @@ TEST(FIELD__TESTS, FLOAT__POINT__TEST) {
     auto opt = fp.BinaryValue();
     if (opt) {
       BytesRef& bytes_ref = *opt;
-      ASSERT_EQ(3 * sizeof(float), bytes_ref.length);
+      ASSERT_EQ(3 * sizeof(float), bytes_ref.Length());
 
-      float got = FloatPoint::DecodeDimension(bytes_ref.bytes.get(),
+      float got = FloatPoint::DecodeDimension(bytes_ref.Bytes(),
                                               1 * sizeof(float));
       ASSERT_EQ(45.123F, got);
     } else {
@@ -227,11 +227,11 @@ TEST(FIELD__TESTS, INT__POINT__TEST) {
     auto opt = ip.BinaryValue();
     if (opt) {
       BytesRef& bytes_ref = *opt;
-      ASSERT_EQ(bytes_ref.length, 3 * sizeof(int32_t));
+      ASSERT_EQ(bytes_ref.Length(), 3 * sizeof(int32_t));
 
       for (uint32_t i = 0 ; i < 3 ; ++i) {
         int32_t point =
-        IntPoint::DecodeDimension(bytes_ref.bytes.get(), i * sizeof(int32_t));
+        IntPoint::DecodeDimension(bytes_ref.Bytes(), i * sizeof(int32_t));
         ASSERT_EQ(points[i], point);
       }
     } else {
@@ -280,11 +280,11 @@ TEST(FIELD__TESTS, LONG__POINT__TEST) {
     auto opt = lp.BinaryValue();
     if (opt) {
       BytesRef& bytes_ref = *opt;
-      ASSERT_EQ(bytes_ref.length, 3 * sizeof(int64_t));
+      ASSERT_EQ(bytes_ref.Length(), 3 * sizeof(int64_t));
 
       for (uint32_t i = 0 ; i < 3 ; ++i) {
         int64_t point =
-        LongPoint::DecodeDimension(bytes_ref.bytes.get(), i * sizeof(int64_t));
+        LongPoint::DecodeDimension(bytes_ref.Bytes(), i * sizeof(int64_t));
         ASSERT_EQ(points[i], point);
       }
     } else {

@@ -37,9 +37,9 @@ class UnicodeUtil {
  public:
   static int32_t UTF8toUTF32(const BytesRef& utf8, int32_t*& ints) {
     uint32_t utf32_count = 0;    
-    uint32_t utf8_upto = utf8.offset; 
-    const char* bytes = utf8.bytes.get();
-    uint32_t utf8_limit = (utf8.offset + utf8.length);
+    uint32_t utf8_upto = utf8.Offset(); 
+    const char* bytes = utf8.Bytes();
+    uint32_t utf8_limit = (utf8.Offset() + utf8.Length());
 
     while (utf8_upto < utf8_limit) {
       const int32_t num_bytes = UTF8_CODE_LENGTH[bytes[utf8_upto] & 0xFF];

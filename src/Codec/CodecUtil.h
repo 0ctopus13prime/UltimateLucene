@@ -132,9 +132,10 @@ class CodecUtil {
   static void WriteHeader(lucene::core::store::DataOutput* out,
                           const std::string& codec,
                           const uint32_t version) {
-    lucene::core::util::BytesRef bytes(codec.c_str(), 0, codec.size());
-    if (bytes.length != codec.size() ||
-        bytes.length >= 128) {
+    lucene::core::util::BytesRef
+      bytes(codec.c_str(), 0, codec.size(), codec.size());
+    if (bytes.Length() != codec.size() ||
+        bytes.Length() >= 128) {
       throw lucene::core::util::IllegalArgumentException(
       "Codec must be simple ASCII, less than 128 characters in length [got" +
       codec + "]");

@@ -33,46 +33,13 @@ using lucene::core::util::UnicodeUtil;
 /*
  * BytesRef
  */
-
 char* BytesRef::DEFAULT_BYTES = new char[1];
 
-uint32_t BytesRef::CompareTo(const BytesRef& other) const {
-  if (IsValid() && other.IsValid()) {
-    if (bytes == other.bytes
-          && offset == other.offset
-          && length == other.length) {
-      return 0;
-    }
-
-    uint32_t my_len = length - offset;
-    uint32_t his_len = other.length - other.offset;
-    uint32_t len = (my_len < his_len ? my_len : his_len);
-    char* my_bytes_ptr = bytes.get();
-    char* his_bytes_ptr = other.bytes.get();
-
-    for (uint32_t i = 0 ; i < len ; ++i) {
-      char mine = my_bytes_ptr[i];
-      char his = his_bytes_ptr[i];
-      char diff = (mine - his);
-      if (diff != 0) {
-        return diff;
-      }
-    }
-
-    // One is a prefix of another, or, they are equal.
-    return (my_len - his_len);
-  }
-
-  throw IllegalStateException(
-                "This BytesRef is not valid or"
-                "other BytesRef is not valid during CompareTo");
-}
 
 /**
  *  IntsRefBuilder 
  */
-
 void IntsRefBuilder::CopyUTF8Bytes(const BytesRef& bytes) {
-  Grow(bytes.length);
+  Grow(bytes.Length());
   ref.length = UnicodeUtil::UTF8toUTF32(bytes, ref.ints);
 }

@@ -1,5 +1,5 @@
-add_executable(BytesRefTests BytesRefTests.cpp)
-target_link_libraries(BytesRefTests DoochiCore gtest pthread)
+#add_executable(BytesRefTests BytesRefTests.cpp)
+#target_link_libraries(BytesRefTests DoochiCore gtest pthread)
 
 add_executable(ArrayUtilTests ArrayUtilTests.cpp)
 target_link_libraries(ArrayUtilTests DoochiCore gtest pthread)
@@ -22,5 +22,5 @@ target_link_libraries(NumericTests DoochiCore gtest pthread)
 add_executable(FileUtilTests FileUtilTests.cpp)
 target_link_libraries(FileUtilTests DoochiCore gtest pthread)
 
-add_executable(FstTests FstTests.cpp)
-target_link_libraries(FstTests DoochiCore gtest pthread)
+#add_executable(FstTests FstTests.cpp)
+#target_link_libraries(FstTests DoochiCore gtest pthread)

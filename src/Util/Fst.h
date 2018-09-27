@@ -543,32 +543,38 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
 
  public:
   IntsRef Common(const IntsRef& output1, const IntsRef& output2) {
-    uint32_t pos1 = output1.offset;  
-    uint32_t pos2 = output2.offset;
-    uint32_t stop_at_1 = (pos1 + std::min(output1.length, output2.length));
+  /*
+    uint32_t pos1 = output1.Offset();  
+    uint32_t pos2 = output2.Offset();
+    uint32_t stop_at_1 = (pos1 + std::min(output1.Length(), output2.Length()));
   
     while ((pos1 < stop_at_1) &&
-           (output1.ints[pos1++] == output2.ints[pos2++]));
+           (output1.Ints()[pos1++] == output2.Ints()[pos2++]));
 
-    if (pos1 == output1.offset) {
+    if (pos1 == output1.Offset()) {
       // No common prefix
       return NO_OUTPUT;
-    } else if (pos1 == output1.offset + output1.length) {
+    } else if (pos1 == output1.Offset() + output1.Length()) {
       // Output1 is a prefix of output2
       return output1;
-    } else if (pos2 == output2.offset + output2.length) {
+    } else if (pos2 == output2.Offset() + output2.Length()) {
       // Output2 is a prefix of output1
       return output2;
     } else {
       // Return a common prefix between output1 and output2
-      return IntsRef(output1.ints,
-                     output1.capacity,
-                     output1.offset,
-                     pos1 - output1.offset);
+      return IntsRef(output1.Ints(),
+                     output1.Capacity(),
+                     output1.Offset(),
+                     pos1 - output1.Offset());
     }
+  */
+
+    // TODO(Octopus13prime): IT
+    return IntsRef();
   }
 
   IntsRef Subtract(const IntsRef& output, const IntsRef& inc) {
+  /*
     if (inc == NO_OUTPUT) {
       // No prefix removed
       return output;
@@ -582,9 +588,14 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
                      output.offset + inc.length,
                      output.length - inc.length);
     }
+  */
+
+    // TODO(Octopus13prime): IT
+    return IntsRef();
   }
 
   IntsRef Add(const IntsRef& prefix, const IntsRef& output) {
+  /*
     if (prefix == NO_OUTPUT) {
       return output;
     } else if (output == NO_OUTPUT) {
@@ -601,16 +612,24 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
       result.length = (prefix.length + output.length);
       return result;
     }
+  */
+    // TODO(Octopus13prime): IT
+    return IntsRef();
   }
 
   void Write(const IntsRef& prefix, lucene::core::store::DataOutput* out) {
+  /*
     out->WriteVInt32(prefix.length);
     for (uint32_t idx = 0 ; idx < prefix.length ; ++idx) {
       out->WriteVInt32(prefix.ints[prefix.offset + idx]);
     }
+  */
+    // TODO(Octopus13prime): IT
+    return;
   }
 
   IntsRef Read(lucene::core::store::DataInput* in) {
+  /*
     const int32_t len = in->ReadVInt32();
     if (len == 0) {
       return NO_OUTPUT;
@@ -622,9 +641,14 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
       output.length = len;
       return output;
     }
+  */
+
+    // TODO(Octopus13prime): IT
+    return IntsRef();
   }
 
   void SkipOutput(lucene::core::store::DataInput* in) {
+  /*
     const int32_t len = in->ReadVInt32();
     if (len == 0) {
       return;
@@ -633,6 +657,10 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
     for (uint32_t idx = 0 ; idx < len ; ++idx) {
       in->ReadVInt32();
     }
+  */
+
+    // TODO(Octopus13prime): IT
+    return;
   }
 
   IntsRef& GetNoOutput() {
@@ -651,6 +679,7 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
 
  public:
   BytesRef Common(const BytesRef& output1, const BytesRef& output2) {
+  /*
     uint32_t pos1 = output1.offset;
     uint32_t pos2 = output2.offset;
     uint32_t stop_at_1 = (pos1 + std::min(output1.length, output2.length));
@@ -672,9 +701,13 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
                       output1.offset,
                       pos1 - output1.offset);
     }
+  */
+    // TODO(0ctopus13prime): IT
+    return BytesRef();
   }
 
   BytesRef Subtract(const BytesRef& output, const BytesRef& inc) {
+  /*
     if (inc == NO_OUTPUT) {
       // No prefix removed
       return output;
@@ -688,9 +721,13 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
                         output.length - inc.length);
       }
     }
+  */
+    // TODO(0ctopus13prime): IT
+    return BytesRef();
   }
 
   BytesRef Add(const BytesRef& prefix, const BytesRef& output) {
+  /*
     if (prefix == NO_OUTPUT) {
       return NO_OUTPUT;
     } else if (output == NO_OUTPUT) {
@@ -706,14 +743,22 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
       result.length = (prefix.length + output.length);
       return result;
     }
+  */
+    // TODO(0ctopus13prime): IT
+    return BytesRef();
   }
 
   void Write(const BytesRef& prefix, lucene::core::store::DataOutput* out) {
+  /*
     out->WriteVInt32(prefix.length);
     out->WriteBytes(prefix.bytes.get(), prefix.offset, prefix.length);
+  */
+    // TODO(0ctopus13prime): IT
+    return;
   }
 
   BytesRef Read(lucene::core::store::DataInput* in) {
+  /*
     const int32_t len = in->ReadVInt32();
     if (len != 0) {
       BytesRef output(len); 
@@ -723,13 +768,20 @@ class ByteSequenceOutputs: public Outputs<BytesRef> {
     } else {
       return NO_OUTPUT;
     }
+  */
+    // TODO(0ctopus13prime): IT
+    return BytesRef();
   }
 
   void SkipOutput(lucene::core::store::DataInput* in) {
+  /*
     const int32_t len = in->ReadVInt32();
     if (len != 0) {
       in->SkipBytes(len);
     }
+  */
+    // TODO(0ctopus13prime): IT
+    return;
   }
 
   std::string OutputToString(const BytesRef& output) {

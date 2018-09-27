@@ -1025,7 +1025,7 @@ class DoublePoint : public Field {
     std::get<lucene::core::util::BytesRef>(fields_data);
 
     return lucene::core::util::numeric::Number(
-      DoublePoint::DecodeDimension(bytes_ref.bytes.get(), bytes_ref.offset));
+      DoublePoint::DecodeDimension(bytes_ref.Bytes(), bytes_ref.Offset()));
   }
 
   DoublePoint(const std::string& name,
@@ -1152,17 +1152,17 @@ class DoubleRange : public Field {
 
     const uint32_t required_min_capacity = sizeof(double) * 2 * length;
 
-    if (bytes_ref.capacity >= required_min_capacity) {
+    if (bytes_ref.Capacity() >= required_min_capacity) {
       DoubleRange::VerifyAndEncode(min,
                                    max,
                                    length,
-                                   bytes_ref.bytes.get());
+                                   bytes_ref.Bytes());
     } else {
       bytes_ref = lucene::core::util::BytesRef(required_min_capacity);
       DoubleRange::VerifyAndEncode(min,
                                    max,
                                    length,
-                                   bytes_ref.bytes.get());
+                                   bytes_ref.Bytes());
     }
   }
 
@@ -1173,7 +1173,7 @@ class DoubleRange : public Field {
     lucene::core::util::BytesRef& bytes_ref =
       std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return DoubleRange::DecodeMin(bytes_ref.bytes.get(),
+    return DoubleRange::DecodeMin(bytes_ref.Bytes(),
                                   dimension);
   }
 
@@ -1183,8 +1183,8 @@ class DoubleRange : public Field {
     lucene::core::util::BytesRef& bytes_ref =
       std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return DoubleRange::DecodeMax(bytes_ref.bytes.get(),
-                                  bytes_ref.length,
+    return DoubleRange::DecodeMax(bytes_ref.Bytes(),
+                                  bytes_ref.Length(),
                                   dimension);
   }
 };
@@ -1289,8 +1289,8 @@ class FloatPoint : public Field {
     std::get<lucene::core::util::BytesRef>(fields_data);
 
     lucene::core::util::numeric::Number number(FloatPoint::DecodeDimension(
-                                              bytes.bytes.get(),
-                                              bytes.offset));
+                                              bytes.Bytes(),
+                                              bytes.Offset()));
     return number;
   }
 };
@@ -1400,11 +1400,11 @@ class FloatRange : public Field {
 
       const uint32_t required_min_capacity = sizeof(float) * 2 * length;
 
-      if (bytes_ref.capacity >= required_min_capacity) {
-        FloatRange::VerifyAndEncode(min, max, length, bytes_ref.bytes.get());
+      if (bytes_ref.Capacity() >= required_min_capacity) {
+        FloatRange::VerifyAndEncode(min, max, length, bytes_ref.Bytes());
       } else {
         bytes_ref = lucene::core::util::BytesRef(required_min_capacity);
-        FloatRange::VerifyAndEncode(min, max, length, bytes_ref.bytes.get());
+        FloatRange::VerifyAndEncode(min, max, length, bytes_ref.Bytes());
       }
     } else {
       throw std::invalid_argument(std::string("Field (name=")
@@ -1423,7 +1423,7 @@ class FloatRange : public Field {
     lucene::core::util::BytesRef& bytes_ref =
       std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return FloatRange::DecodeMin(bytes_ref.bytes.get(), dimension);
+    return FloatRange::DecodeMin(bytes_ref.Bytes(), dimension);
   }
 
   float GetMax(const uint32_t dimension) {
@@ -1433,8 +1433,8 @@ class FloatRange : public Field {
     lucene::core::util::BytesRef& bytes_ref =
       std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return FloatRange::DecodeMax(bytes_ref.bytes.get(),
-                                 bytes_ref.length,
+    return FloatRange::DecodeMax(bytes_ref.Bytes(),
+                                 bytes_ref.Length(),
                                  dimension);
   }
 
@@ -1517,7 +1517,7 @@ class IntPoint : public Field {
     std::get<lucene::core::util::BytesRef>(fields_data);
 
     return lucene::core::util::numeric::Number(
-    IntPoint::DecodeDimension(bytesref.bytes.get(), bytesref.offset));
+      IntPoint::DecodeDimension(bytesref.Bytes(), bytesref.Offset()));
   }
 };
 
@@ -1638,11 +1638,11 @@ class IntRange : public Field {
 
     const uint32_t minimum_required = length * 2 * sizeof(int32_t);
 
-    if (bytes_ref.capacity < minimum_required) {
+    if (bytes_ref.Capacity() < minimum_required) {
       bytes_ref = lucene::core::util::BytesRef(minimum_required);
     }
 
-    IntRange::VerifyAndEncode(min, max, length, bytes_ref.bytes.get());
+    IntRange::VerifyAndEncode(min, max, length, bytes_ref.Bytes());
   }
 
   int32_t GetMin(const uint32_t dimension) noexcept {
@@ -1651,7 +1651,7 @@ class IntRange : public Field {
     lucene::core::util::BytesRef& bytes_ref =
     std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return IntRange::DecodeMin(bytes_ref.bytes.get(), dimension);
+    return IntRange::DecodeMin(bytes_ref.Bytes(), dimension);
   }
 
   int32_t GetMax(const uint32_t dimension) noexcept {
@@ -1660,8 +1660,8 @@ class IntRange : public Field {
     lucene::core::util::BytesRef& bytes_ref =
     std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return IntRange::DecodeMax(bytes_ref.bytes.get(),
-                               bytes_ref.length,
+    return IntRange::DecodeMax(bytes_ref.Bytes(),
+                               bytes_ref.Length(),
                                dimension);
   }
 
@@ -1743,7 +1743,7 @@ class LongPoint : public Field {
     std::get<lucene::core::util::BytesRef>(fields_data);
 
     return lucene::core::util::numeric::Number(
-    LongPoint::DecodeDimension(bytesref.bytes.get(), bytesref.offset));
+    LongPoint::DecodeDimension(bytesref.Bytes(), bytesref.Offset()));
   }
 
   // TODO(0ctopus13prime): Other Query stuffs are need to be implemented.
@@ -1851,11 +1851,11 @@ class LongRange : public Field {
       std::get<lucene::core::util::BytesRef>(fields_data);
 
       const uint32_t minimum_required = length * 2 * sizeof(int64_t);
-      if (bytes_ref.capacity < minimum_required) {
+      if (bytes_ref.Capacity() < minimum_required) {
         bytes_ref = lucene::core::util::BytesRef(minimum_required);
       }
 
-      LongRange::VerifyAndEncode(min, max, length, bytes_ref.bytes.get());
+      LongRange::VerifyAndEncode(min, max, length, bytes_ref.Bytes());
     } else {
       throw std::invalid_argument(std::string("Field (name=")
                                 + *name + ") uses "
@@ -1872,7 +1872,7 @@ class LongRange : public Field {
     lucene::core::util::BytesRef& bytes_ref =
     std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return LongRange::DecodeMin(bytes_ref.bytes.get(), dimension);
+    return LongRange::DecodeMin(bytes_ref.Bytes(), dimension);
   }
 
   int64_t GetMax(const uint32_t dimension) noexcept {
@@ -1881,8 +1881,8 @@ class LongRange : public Field {
     lucene::core::util::BytesRef& bytes_ref =
     std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return LongRange::DecodeMax(bytes_ref.bytes.get(),
-                                bytes_ref.length,
+    return LongRange::DecodeMax(bytes_ref.Bytes(),
+                                bytes_ref.Length(),
                                 dimension);
   }
 
