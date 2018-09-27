@@ -23,7 +23,9 @@
 #include <Util/Numeric.h>
 #include <Store/Context.h>
 #include <Store/Exception.h>
+#include <fcntl.h>
 #include <sys/mman.h>
+#include <sys/stat.h>
 #include <algorithm>
 #include <map>
 #include <memory>
@@ -1360,9 +1362,99 @@ class ByteBufferIndexInput: public IndexInput, public RandomAccessInput {
   }
 };
 
-class InputStreamDataInput: public DataInput {
-// TODO(0ctopus13prime): Implement it.
-};
+class BufferedFileInputStreamDataInput: public DataInput {
+ private:
+  static const uint32_t BUFFER_SIZE = 8 * 1024;
+
+  std::string path;
+  int32_t fd;
+  uint32_t idx;
+  uint32_t limit;
+  char buffer[BUFFER_SIZE];
+
+ private:
+  void FillBufferIf() {
+    if (idx >= limit) {
+      size_t read_size = read(fd, buffer, BUFFER_SIZE);
+      if (read_size == -1) {
+        throw lucene::core::util::EOFException(); 
+      }
+
+      limit = static_cast<uint32_t>(read_size);
+      idx = 0;
+    }
+  }
+
+  void EnsureNotClosed() const {
+    if (fd == -1) {
+      throw lucene::core::util::IOException("Already closed()");
+    }
+  }
+
+ public:
+  explicit BufferedFileInputStreamDataInput(const std::string& path)
+    : path(path),
+      fd(-1),
+      idx(0),
+      limit(0) {
+    fd = open(path.c_str(), O_RDONLY);
+    if (fd == -1) {
+      throw lucene::core::util::IOException (
+              "Open file failed. Path -> " +
+              path + ", Error -> " + std::strerror(errno));
+    }
+  }
+  
+  BufferedFileInputStreamDataInput
+  (const BufferedFileInputStreamDataInput&) = delete;
+
+  BufferedFileInputStreamDataInput&
+  operator=(const BufferedFileInputStreamDataInput&) = delete;
+
+  ~BufferedFileInputStreamDataInput() {
+    Close();
+  }
+
+  char ReadByte() {
+    EnsureNotClosed();
+    FillBufferIf();  
+    return buffer[idx++];
+  }
+
+  void ReadBytes(char bytes[],
+                 const uint32_t offset,
+                 const uint32_t len) {
+    EnsureNotClosed();
+    uint32_t left_len = len;
+    uint32_t actual_offset = offset;
+
+    // Read from own buffer
+    if (idx < limit) {
+      const uint32_t read_len = std::min(limit - idx, len);
+      std::memcpy(bytes + offset, buffer + idx, read_len);
+      left_len -= read_len;
+      idx += read_len;
+      actual_offset += read_len;
+    }
+
+    // Read from file
+    while (left_len > 0) {
+      const uint32_t cnt = read(fd, bytes + actual_offset, left_len);
+      if (cnt < 0) {
+        throw lucene::core::util::EOFException();
+      }
+      left_len -= cnt;
+      actual_offset += cnt;
+    }
+  }
+
+  void Close() {
+    if (fd != -1) {
+      close(fd);
+      fd = -1;
+    }
+  }
+}; // BufferedFileInputStreamDataInput
 
 
 }  // namespace store

@@ -22,7 +22,7 @@
 #include <Analysis/Reader.h>
 #include <Analysis/TokenStream.h>
 #include <Index/DocValue.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <Util/Numeric.h>
 #include <optional>
 #include <string>

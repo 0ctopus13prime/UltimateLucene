@@ -21,7 +21,7 @@
 #include <Index/Exception.h>
 #include <Store/DataInput.h>
 #include <Store/DataOutput.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <Util/Exception.h>
 #include <string>
 

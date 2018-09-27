@@ -19,7 +19,7 @@
 #define SRC_UTIL_UNICODE_H_
 
 #include <limits>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <Util/Exception.h>
 
 namespace lucene {
@@ -35,11 +35,11 @@ class UnicodeUtil {
   UnicodeUtil() = default;
 
  public:
-  static int32_t UTF8toUTF32(BytesRef& utf8, int32_t*& ints) {
+  static int32_t UTF8toUTF32(const BytesRef& utf8, int32_t*& ints) {
     uint32_t utf32_count = 0;    
     uint32_t utf8_upto = utf8.offset; 
-    char* bytes = utf8.bytes.get();
-    uint32_t utf8_limit = utf8.offset + utf8.length;
+    const char* bytes = utf8.bytes.get();
+    uint32_t utf8_limit = (utf8.offset + utf8.length);
 
     while (utf8_upto < utf8_limit) {
       const int32_t num_bytes = UTF8_CODE_LENGTH[bytes[utf8_upto] & 0xFF];

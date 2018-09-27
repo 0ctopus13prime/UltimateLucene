@@ -26,7 +26,7 @@
 #include <Store/DataInput.h>
 #include <Store/DataOutput.h>
 #include <Util/ArrayUtil.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <Util/Etc.h>
 #include <Util/Exception.h>
 #include <Util/Pack/Paged.h>
@@ -802,6 +802,41 @@ class FST {
   }
 
  public:
+  FST(const FST&) = delete;
+  FST& operator=(const FST&) = delete;
+
+  FST(FST&& other)
+    : input_type(other.input_type),
+      empty_output(other.empty_output),
+      is_empty_output_empty(other.is_empty_output_empty),
+      bytes(std::move(other.bytes)),
+      is_bytes_empty(other.is_bytes_empty),
+      bytes_array(std::move(other.bytes_array)),
+      bytes_array_size(other.bytes_array_size),
+      start_node(other.start_node),
+      outputs(std::move(outputs)),
+      cached_root_arcs(std::move(other.cached_root_arcs)),
+      version(other.version) {
+  }
+
+  FST& operator=(FST&& other) {
+      if (this != &other) {
+        input_type = other.input_type;
+        empty_output = other.empty_output;
+        is_empty_output_empty = other.is_empty_output_empty;
+        bytes = std::move(other.bytes);
+        is_bytes_empty = other.is_bytes_empty;
+        bytes_array = std::move(other.bytes_array);
+        bytes_array_size = other.bytes_array_size;
+        start_node = other.start_node;
+        outputs = std::move(outputs);
+        cached_root_arcs = std::move(other.cached_root_arcs);
+        version = other.version;
+      }
+
+      return *this;
+  }
+
   FST(lucene::core::store::DataInput* in,
       std::unique_ptr<Outputs<T>>&& outputs)
     : FST(in, std::forward<Outputs<T>>(outputs), MAX_BLOCK_BITS) {
@@ -921,15 +956,22 @@ class FST {
                                                 FILE_FORMAT_NAME,
                                                 VERSION_CURRENT);
     if (!is_empty_output_empty) {
+      // Accept empty string
       out->WriteByte(static_cast<char>(1));
-      // TODO(0ctopus13prime): Implement RAMOutputStream
-      /*
-      lucene::core::store::RAMOutputStream ros;
-      outputs->WriteFinalOutput(empty_output, &ros);
 
-      const uint32_t empty_output_bytes_size = ros.GetFilePointer();
-      char empty_output_bytes[empty_output_bytes_size];
-      ros.WriteTo(empty_output_bytes, 0);
+      // Serialize empty-string output
+      lucene::core::store::GrowableByteArrayOutputStream bos;
+      outputs->WriteFinalOutput(empty_output, &bos);
+
+      const uint32_t empty_output_bytes_size = bos.Size();
+      // Avoid overflow stack limit
+      std::unique_ptr<char[]> empty_output_bytes = 
+        std::make_unique<char[]>(empty_output_bytes_size);
+
+      bos.WriteTo(empty_output_bytes.get());
+
+      // Free space
+      bos.~GrowableByteArrayOutputStream();
 
       // Reverse
       const uint32_t stop_at = (empty_output_bytes_size >> 1);
@@ -941,10 +983,9 @@ class FST {
       }
 
       out->WriteVInt32(empty_output_bytes_size);
-      out->WriteBytes(empty_output_bytes, 0, empty_output_bytes_size);
-      */
+      out->WriteBytes(empty_output_bytes.get(), 0, empty_output_bytes_size);
     } else {
-      out->WriteByte(static_cast<char>(0));
+      out->WriteByte(0);
     }
 
     switch (input_type) {
@@ -971,7 +1012,8 @@ class FST {
   }
 
   void Save(const std::string& path) {
-    // TODO(0ctopus13prime): IT
+    lucene::core::store::BufferedFileOutputStream out(path);
+    Save(&out);
   }
 
   Arc GetFirstArc(Arc& arc) {
@@ -984,7 +1026,7 @@ class FST {
         arc.flags |= BIT_ARC_HAS_FINAL_OUTPUT; 
       }
     } else {
-      arc.floags = BIT_LAST_ARC;
+      arc.flags = BIT_LAST_ARC;
       arc.next_final_output = NO_OUTPUT;
     }
     arc.output = NO_OUTPUT;
@@ -998,7 +1040,7 @@ class FST {
 
   Arc ReadLastTargetArc(Arc& follow,
                         Arc& arc,
-                        FSTBytesReader& in) {
+                        FSTBytesReader* in) {
     if (!TargetHasArcs(follow)) {
       assert(follow.IsFinal());
       arc.label = END_LABEL;
@@ -1028,10 +1070,10 @@ class FST {
           // Skip this arc:
           ReadLabel(in);
           if (arc.Flag(BIT_ARC_HAS_OUTPUT)) {
-            outputs.SkipOutput(in);
+            outputs->SkipOutput(in);
           }
           if (arc.Flag(BIT_ARC_HAS_FINAL_OUTPUT)) {
-            outputs.SkipFinalOutput(in);
+            outputs->SkipFinalOutput(in);
           }
           if (!arc.Flag(BIT_STOP_NODE) && !arc.Flag(BIT_TARGET_NEXT)) {
             ReadUnpackedNodeTarget(in);
@@ -1041,7 +1083,7 @@ class FST {
         }
 
         // Undo the byte flags we read:
-        in.SkipBytes(-1);
+        in->SkipBytes(-1);
         arc.next_arc = in->GetPosition();
       }
 
@@ -1062,7 +1104,7 @@ class FST {
         arc.next_arc = follow.target;
       }
 
-      arc.target = FINAL_END_NODES;
+      arc.target = FINAL_END_NODE;
       return arc;
     } else {
       return ReadFirstRealTargetArc(follow.target, arc, in);
@@ -1072,7 +1114,7 @@ class FST {
   Arc ReadFirstRealTargetArc(const int64_t node,
                              Arc& arc,
                              FSTBytesReader* in) {
-    const int64_t addresss = node;
+    const int64_t address = node;
     in->SetPosition(address);
 
     if (in->ReadByte() == ARCS_AS_FIXED_ARRAY) {
@@ -1120,9 +1162,9 @@ class FST {
 
         // Skip bytes_per_arc
         if (version >= VERSION_VINT_TARGET) {
-          in->ReadVInt();
+          in->ReadVInt32();
         } else {
-          in->ReadInt();
+          in->ReadInt32();
         }
       } else {
         in->SetPosition(pos);
@@ -1158,15 +1200,15 @@ class FST {
     arc.label = ReadLabel(in);
 
     if (arc.Flag(BIT_ARC_HAS_OUTPUT)) {
-      arc.output = oiutputs.Read(in);
+      arc.output = outputs->Read(in);
     } else {
-      arc.output = outputs.GetNoOutput();
+      arc.output = outputs->GetNoOutput();
     }
 
     if (arc.Flag(BIT_ARC_HAS_FINAL_OUTPUT)) {
-      arc.next_final_output = outputs.ReadFinalOutput(in);
+      arc.next_final_output = outputs->ReadFinalOutput(in);
     } else {
-      arc.next_final_output = outputs.GetNoOutput();
+      arc.next_final_output = outputs->GetNoOutput();
     }
 
     if (arc.Flag(BIT_STOP_NODE)) {
@@ -1236,7 +1278,8 @@ class FST {
     }
 
     if (!TargetHasArcs(follow)) {
-      return null;
+      // return null;
+      return Arc();
     }
 
     in->SetPosition(follow.target);
@@ -1254,7 +1297,7 @@ class FST {
       uint32_t low = 0;
       uint32_t high = (arc.num_arcs - 1);
       while (low <= high) {
-        const uint32_t mid = (low + hight) >> 1;
+        const uint32_t mid = (low + high) >> 1;
         in->SetPosition(arc.pos_arcs_start);
         in->SkipBytes(arc.bytes_per_arc * mid + 1);
         int32_t mid_label = ReadLabel(in);
@@ -1303,8 +1346,8 @@ class FST {
  public:
   static FST<T> Read(const std::string& path,
                      std::unique_ptr<Outputs<T>> outputs) {
-    // TODO(0ctopus13prime): IT
-    return FST<T>(nullptr, std::unique_ptr<Outputs<T>>());
+    return FST<T>(lucene::core::store::BufferedFileInputStreamDataInput(path),
+                  std::move(outputs));
   }
 
   static bool TargetHasArcs(Arc& arc) {
@@ -1317,12 +1360,12 @@ class FST {
       const uint32_t flags = (in->ReadByte() & 0xFF);
       ReadLabel(in);
 
-      if (Flag(flags, BIT_ARC_HAS_OUTPU)) {
-        outputs.SkipOutput(in);
+      if (Flag(flags, BIT_ARC_HAS_OUTPUT)) {
+        outputs->SkipOutput(in);
       }
 
       if (Flag(flags, BIT_ARC_HAS_FINAL_OUTPUT)) {
-        outputs.SkipFinalOutput(in);
+        outputs->SkipFinalOutput(in);
       }
 
       if (!Flag(flags, BIT_STOP_NODE) && !Flag(flags, BIT_TARGET_NEXT)) {
@@ -1356,7 +1399,7 @@ class FST {
   }
 
   int64_t ReadUnpackedNodeTarget(FSTBytesReader* in) {
-    if (versino < VERSINO_VINT_TARGET) {
+    if (version < VERSION_VINT_TARGET) {
       return static_cast<int64_t>(in->ReadInt32());
     } else {
       return in->ReadVInt64();
@@ -1379,7 +1422,7 @@ class FST {
   int32_t ReadLabel(lucene::core::store::DataInput* in) {
     if (input_type == FST_INPUT_TYPE::BYTE1) {
       return (in->ReadByte() & 0xFF);
-    } else if (input_TYPE == FST_INPUT_TYPE::BYTE2) {
+    } else if (input_type == FST_INPUT_TYPE::BYTE2) {
       return (in->ReadInt16() & 0xFFFF);
     } else {
       return in->ReadInt32();
@@ -1432,10 +1475,11 @@ class FST {
     }
 
     if (new_start_node == FINAL_END_NODE && !is_empty_output_empty) {
-      new_start_node = 0;
+      start_node = 0;
+    } else {
+      start_node = new_start_node;
     }
 
-    start_node = new_start_node;
     bytes.Finish();
     CacheRootArcs();
   }

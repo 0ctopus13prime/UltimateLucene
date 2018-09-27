@@ -23,7 +23,7 @@
 #include <Index/DocValue.h>
 #include <Index/Field.h>
 #include <Util/ArrayUtil.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <Util/Numeric.h>
 #include <optional>
 #include <variant>
@@ -1167,7 +1167,7 @@ class DoubleRange : public Field {
   }
 
   double GetMin(const uint32_t dimension) noexcept {
-    lucene::core::util::arrayutil::CheckIndex(dimension,
+    lucene::core::util::ArrayUtil::CheckIndex(dimension,
                                               type.dimension_count / 2);
 
     lucene::core::util::BytesRef& bytes_ref =
@@ -1178,7 +1178,7 @@ class DoubleRange : public Field {
   }
 
   double GetMax(const uint32_t dimension) noexcept {
-    lucene::core::util::arrayutil::CheckIndex(dimension,
+    lucene::core::util::ArrayUtil::CheckIndex(dimension,
                                               type.dimension_count / 2);
     lucene::core::util::BytesRef& bytes_ref =
       std::get<lucene::core::util::BytesRef>(fields_data);
@@ -1417,7 +1417,7 @@ class FloatRange : public Field {
   }
 
   float GetMin(const uint32_t dimension) {
-    lucene::core::util::arrayutil::CheckIndex(dimension,
+    lucene::core::util::ArrayUtil::CheckIndex(dimension,
                                               type.dimension_count / 2);
 
     lucene::core::util::BytesRef& bytes_ref =
@@ -1427,7 +1427,7 @@ class FloatRange : public Field {
   }
 
   float GetMax(const uint32_t dimension) {
-    lucene::core::util::arrayutil::CheckIndex(dimension,
+    lucene::core::util::ArrayUtil::CheckIndex(dimension,
                                               type.dimension_count / 2);
 
     lucene::core::util::BytesRef& bytes_ref =
@@ -1646,7 +1646,7 @@ class IntRange : public Field {
   }
 
   int32_t GetMin(const uint32_t dimension) noexcept {
-    lucene::core::util::arrayutil::CheckIndex(dimension,
+    lucene::core::util::ArrayUtil::CheckIndex(dimension,
                                               type.dimension_count / 2);
     lucene::core::util::BytesRef& bytes_ref =
     std::get<lucene::core::util::BytesRef>(fields_data);
@@ -1655,7 +1655,7 @@ class IntRange : public Field {
   }
 
   int32_t GetMax(const uint32_t dimension) noexcept {
-    lucene::core::util::arrayutil::CheckIndex(dimension,
+    lucene::core::util::ArrayUtil::CheckIndex(dimension,
                                               type.dimension_count / 2);
     lucene::core::util::BytesRef& bytes_ref =
     std::get<lucene::core::util::BytesRef>(fields_data);
@@ -1867,7 +1867,7 @@ class LongRange : public Field {
   }
 
   int64_t GetMin(const uint32_t dimension) noexcept {
-    lucene::core::util::arrayutil::CheckIndex(dimension,
+    lucene::core::util::ArrayUtil::CheckIndex(dimension,
                                               type.dimension_count / 2);
     lucene::core::util::BytesRef& bytes_ref =
     std::get<lucene::core::util::BytesRef>(fields_data);
@@ -1876,7 +1876,7 @@ class LongRange : public Field {
   }
 
   int64_t GetMax(const uint32_t dimension) noexcept {
-    lucene::core::util::arrayutil::CheckIndex(dimension,
+    lucene::core::util::ArrayUtil::CheckIndex(dimension,
                                               type.dimension_count / 2);
     lucene::core::util::BytesRef& bytes_ref =
     std::get<lucene::core::util::BytesRef>(fields_data);

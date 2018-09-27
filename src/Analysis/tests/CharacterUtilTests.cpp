@@ -33,6 +33,7 @@ using lucene::core::analysis::characterutil::Split;
 using lucene::core::analysis::characterutil::SplitRegex;
 using lucene::core::analysis::characterutil::ToLowerCase;
 using lucene::core::analysis::characterutil::Trim;
+using lucene::core::util::ArrayUtil;
 
 TEST(CHARACTER__UTILS, FUNCTIONS) {
   {
@@ -134,9 +135,9 @@ TEST(CHARACTER__UTILS, FUNCTIONS) {
 
     std::string str1("Doochi! Nice meet you!");
     CharPtrRangeInfo
-    tmp_upper_case_info(lucene::core::util::arrayutil::CopyOfRange(str1.c_str(),
-                                                                   0,
-                                                                   str1.size()),
+    tmp_upper_case_info(ArrayUtil::CopyOfRange(str1.c_str(),
+                                               0,
+                                               str1.size()),
                         0,
                         str1.size());
     CharPtrRangeInfo tmp_upper_case_info1(str1.c_str(), 0, str1.size());

@@ -17,7 +17,7 @@
 
 #include <Analysis/AttributeImpl.h>
 #include <gtest/gtest.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <cstring>
 #include <memory>
 

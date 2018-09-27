@@ -19,7 +19,7 @@
 #define SRC_ANALYSIS_ATTRIBUTE_H_
 
 #include <Util/Attribute.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <sstream>
 #include <string>
 

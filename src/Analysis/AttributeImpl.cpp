@@ -26,12 +26,7 @@
 using lucene::core::util::BytesRef;
 using lucene::core::util::AttributeImpl;
 using lucene::core::util::AttributeReflector;
-using lucene::core::util::arrayutil::CopyOfRange;
-using lucene::core::util::arrayutil::Oversize;
-using lucene::core::util::arrayutil::Grow;
-using lucene::core::util::arrayutil::CheckFromToIndex;
-using lucene::core::util::arrayutil::CheckIndex;
-using lucene::core::util::arrayutil::CheckFromIndexSize;
+using lucene::core::util::ArrayUtil;
 using lucene::core::analysis::tokenattributes::BytesTermAttributeImpl;
 using lucene::core::analysis::tokenattributes::BytesTermAttribute;
 using lucene::core::analysis::tokenattributes::PackedTokenAttributeImpl;
@@ -748,7 +743,7 @@ CharTermAttributeImpl::CharTermAttributeImpl()
 }
 
 CharTermAttributeImpl::CharTermAttributeImpl(const CharTermAttributeImpl& other)
-  : term_buffer(CopyOfRange(other.term_buffer.get(),
+  : term_buffer(ArrayUtil::CopyOfRange(other.term_buffer.get(),
                                        0,
                                        other.term_capacity),
                 std::default_delete<char>()),
@@ -763,7 +758,7 @@ void CharTermAttributeImpl::GrowTermBuffer(const uint32_t new_size) {
   if (term_capacity < new_size) {
       // Not big enough; create a new array with slight
       // Over allocation:
-      term_capacity = Oversize<const uint32_t>(new_size);
+      term_capacity = ArrayUtil::Oversize<const uint32_t>(new_size);
       term_buffer.reset(new char[term_capacity]);
   }
 }
@@ -792,7 +787,7 @@ char* CharTermAttributeImpl::Buffer() const {
 char* CharTermAttributeImpl::ResizeBuffer(const uint32_t new_capacity) {
   if (term_capacity < new_capacity) {
     std::pair<char*, uint32_t> new_term_buffer_info
-      = Grow(term_buffer.get(), term_capacity, new_capacity);
+      = ArrayUtil::Grow(term_buffer.get(), term_capacity, new_capacity);
     if (new_term_buffer_info.first != term_buffer.get()) {
       term_buffer.reset(new_term_buffer_info.first);
       term_capacity = new_term_buffer_info.second;
@@ -808,14 +803,14 @@ uint32_t CharTermAttributeImpl::Length() const {
 
 std::string CharTermAttributeImpl::SubSequence(const uint32_t inclusive_start,
                                                const uint32_t exclusive_end) {
-  CheckFromToIndex(inclusive_start, exclusive_end, term_length);
+  ArrayUtil::CheckFromToIndex(inclusive_start, exclusive_end, term_length);
   return std::string(term_buffer.get(),
                      inclusive_start,
                      exclusive_end - inclusive_start);
 }
 
 CharTermAttributeImpl& CharTermAttributeImpl::SetLength(const uint32_t length) {
-  CheckFromIndexSize(0, length, term_capacity);
+  ArrayUtil::CheckFromIndexSize(0, length, term_capacity);
   term_length = length;
   return *this;
 }
@@ -832,7 +827,7 @@ CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq) {
 CharTermAttribute& CharTermAttributeImpl::Append(const std::string& csq,
                                                  const uint32_t inclusive_start,
                                                  const uint32_t exclusive_end) {
-  CheckFromToIndex(inclusive_start, exclusive_end, csq.size());
+  ArrayUtil::CheckFromToIndex(inclusive_start, exclusive_end, csq.size());
   uint32_t len = (exclusive_end - inclusive_start);
   if (len == 0) return *this;
   ResizeBuffer(term_length + len);
@@ -867,7 +862,7 @@ void CharTermAttributeImpl::ReflectWith(AttributeReflector& reflector) {
 }
 
 char& CharTermAttributeImpl::operator[](const uint32_t index) {
-  CheckIndex(index, term_length);
+  ArrayUtil::CheckIndex(index, term_length);
   return term_buffer.get()[index];
 }
 

@@ -397,7 +397,7 @@ class Builder {
 
   Builder(const FST_INPUT_TYPE input_type,
           const uint32_t min_suffix_count1,
-          const uint32_t max_suffix_count2,
+          const uint32_t min_suffix_count2,
           const bool do_share_suffix,
           const bool do_share_non_singleton_nodes,
           const uint32_t share_max_tail_length,
@@ -422,6 +422,11 @@ class Builder {
       node_count(0),
       do_share_non_singleton_nodes(do_share_non_singleton_nodes),
       allow_array_arcs(allow_array_arcs) {
+    std::cout << "Builder() ===================" << std::endl;
+    std::cout << "min_suffix_count1 -> " << this->min_suffix_count1 << std::endl;
+    std::cout << "min_suffix_count2 -> " << this->min_suffix_count2 << std::endl;
+    std::cout << "Builder() ===================" << std::endl;
+
     if (do_share_suffix) {
       dedup_hash =
         std::make_unique<NodeHash<T>>(&fst,
@@ -539,8 +544,7 @@ class Builder {
         parent_node.GetLastOutput(input.ints[input.offset + idx - 1]);
       // assert(ValidOutput(last_output));
 
-
-      if (&last_output != &NO_OUTPUT) {
+      if (last_output != NO_OUTPUT) {
         std::cout << "22222222222" << std::endl;
         common_prefix = 
           fst.outputs->Common(output,
@@ -582,7 +586,12 @@ class Builder {
     }
 
     // Save last input
-    last_input.InitInts(std::move(input));
+    last_input.CopyInts(input);
+
+    std::cout << "&common_prefix -> " << &common_prefix << std::endl;
+    std::cout << "&word_suffix -> " << &word_suffix << std::endl;
+    std::cout << "&input -> " << &input << std::endl;
+    std::cout << "Add done" << std::endl;
   }
 
   FST<T>* Finish() {
@@ -591,6 +600,15 @@ class Builder {
     if (root.input_count < min_suffix_count1 ||
         root.input_count < min_suffix_count2 ||
         root.num_arcs == 0) {
+      std::cout << "[Finish] ====================================" << std::endl;
+      std::cout << "root.input_count -> " << root.input_count << std::endl;
+      std::cout << "root.num_arcs -> " << root.num_arcs << std::endl;
+      std::cout << "min_suffix_count1 -> " << min_suffix_count1 << std::endl;
+      std::cout << "min_suffix_count2 -> " << min_suffix_count2 << std::endl;
+      std::cout << "fst.AcceptEmptyOutput -> " << std::boolalpha << fst.AcceptEmptyOutput()
+                << std::endl;
+      std::cout << "[Finish] ====================================" << std::endl;
+               
       if (!fst.AcceptEmptyOutput() ||
           (min_suffix_count1 > 0 || min_suffix_count2 > 0)) {
         return nullptr;
@@ -671,9 +689,9 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
   void GrowIf() {
     if (num_arcs == arcs_size) {
       std::pair<Arc*, uint32_t> pair =
-        lucene::core::util::arrayutil::Grow(arcs.get(),
-                                            arcs_size,
-                                            arcs_size + 1);
+        ArrayUtil::Grow(arcs.get(),
+                        arcs_size,
+                        arcs_size + 1);
       
       arcs.reset(pair.first);
       arcs_size = pair.second;

@@ -28,6 +28,7 @@ using lucene::core::analysis::characterutil::CharPtrRangeInfoEqual;
 using lucene::core::analysis::characterutil::CharPtrRangeInfoHasher;
 using lucene::core::analysis::characterutil::CharSet;
 using lucene::core::analysis::characterutil::INTERNAL_SET;
+using lucene::core::util::ArrayUtil;
 
 void
 lucene::core::analysis::characterutil::ToLowerCase(char* buffer,
@@ -71,9 +72,9 @@ CharPtrRangeInfo::CharPtrRangeInfo(const char* str,
                                    const uint32_t length,
                                    bool is_tmp)
   : is_tmp(is_tmp),
-    str(is_tmp ? str : lucene::core::util::arrayutil::CopyOfRange(str,
-                                                                  offset,
-                                                                  length)),
+    str(is_tmp ? str : ArrayUtil::CopyOfRange(str,
+                                              offset,
+                                              length)),
     offset(offset),
     length(length) {
 }
@@ -81,10 +82,10 @@ CharPtrRangeInfo::CharPtrRangeInfo(const char* str,
 CharPtrRangeInfo::CharPtrRangeInfo(const CharPtrRangeInfo& other)
   : is_tmp(other.is_tmp),
     str(other.is_tmp ?
-          other.str :
-          lucene::core::util::arrayutil::CopyOfRange(other.str,
-                                                     other.offset,
-                                                     other.length)),
+        other.str :
+        ArrayUtil::CopyOfRange(other.str,
+                               other.offset,
+                               other.length)),
     offset(other.offset),
     length(other.length) {
 }
@@ -247,7 +248,7 @@ bool CharSet::Contains(const char* str, uint32_t offset, uint32_t length) {
 
 bool CharSet::Add(const char* str, uint32_t offset, uint32_t length) {
   CharPtrRangeInfo
-  info(lucene::core::util::arrayutil::CopyOfRange(str, offset, length),
+  info(ArrayUtil::CopyOfRange(str, offset, length),
        offset,
        length);
   auto pair = internal_set.insert(std::move(info));
@@ -256,7 +257,7 @@ bool CharSet::Add(const char* str, uint32_t offset, uint32_t length) {
 
 bool CharSet::Add(const std::string& str) {
   CharPtrRangeInfo
-  info(lucene::core::util::arrayutil::CopyOfRange(str.c_str(), 0, str.size()),
+  info(ArrayUtil::CopyOfRange(str.c_str(), 0, str.size()),
        0,
        str.size());
   auto pair = internal_set.insert(std::move(info));

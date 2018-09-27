@@ -17,7 +17,7 @@
 
 #include <Analysis/Reader.h>
 #include <Document/Field.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <Util/Numeric.h>
 #include <gtest/gtest.h>
 #include <memory>

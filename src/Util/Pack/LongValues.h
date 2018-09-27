@@ -298,7 +298,7 @@ class PackedLongValues::Builder {
       // Check size
       if (values_size == values_off) {
         const uint32_t new_length =
-          lucene::core::util::arrayutil::Oversize<uint32_t>(values_off);
+          ArrayUtil::Oversize<uint32_t>(values_off);
         Grow(new_length);
       }
 

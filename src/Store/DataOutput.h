@@ -24,12 +24,13 @@
 #include <Store/DataInput.h>
 #include <Util/ArrayUtil.h>
 #include <Util/Bits.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <Util/Etc.h>
 #include <Util/Exception.h>
 #include <Util/Numeric.h>
 #include <cstring>
 #include <fstream>
+#include <list>
 #include <stdexcept>
 #include <map>
 #include <memory>
@@ -69,7 +70,7 @@ class DataOutput {
     : copy_buffer() {
   }
 
-  virtual ~DataOutput() { }
+  virtual ~DataOutput() = default;
 
   virtual void WriteByte(const char b) = 0;
 
@@ -288,7 +289,7 @@ class GrowableByteArrayDataOutput: public DataOutput {
   void WriteByte(const char b) {
     if (length >= bytes_len) {
       std::pair<char*, uint32_t> result =
-        lucene::core::util::arrayutil::Grow(bytes.get(), bytes_len);
+        lucene::core::util::ArrayUtil::Grow(bytes.get(), bytes_len);
       if (result.first != bytes.get()) {
         bytes.reset(result.first);
         bytes_len = result.second;
@@ -304,7 +305,7 @@ class GrowableByteArrayDataOutput: public DataOutput {
     const uint32_t new_length = length + in_length;
     if (new_length >=  bytes_len) {
       std::pair<char*, uint32_t> result =
-        lucene::core::util::arrayutil::Grow(bytes.get(), new_length);
+        lucene::core::util::ArrayUtil::Grow(bytes.get(), new_length);
       if (result.first != bytes.get()) {
         bytes.reset(result.first);
         bytes_len = result.second;
@@ -347,10 +348,12 @@ class FileIndexOutput: public IndexOutput {
   char buffer[BUF_SIZE];
 
  private:
-  void flush() {
-    if (buf_idx > 0) {
-      write(fd, buffer, buf_idx);
-      buf_idx = 0;
+  void Flush() {
+    char* base = buffer;
+    while (buf_idx > 0) {
+      const uint32_t wrote = write(fd, base, buf_idx);
+      buf_idx -= wrote;
+      base += wrote;
     }
   }
 
@@ -386,7 +389,7 @@ class FileIndexOutput: public IndexOutput {
     bytes_written++;
 
     if (buf_idx >= BUF_SIZE) {
-      flush();
+      Flush();
     }
   }
 
@@ -397,13 +400,13 @@ class FileIndexOutput: public IndexOutput {
     crc.Update(bytes, offset, length);
 
     if (length > BUF_SIZE) {
-      flush();
+      Flush();
       write(fd, bytes + offset, length);
       return;
     }
 
     if (length + buf_idx > BUF_SIZE) {
-      flush();
+      Flush();
     }
 
     std::memcpy(buffer + buf_idx, bytes + offset, length);
@@ -413,7 +416,7 @@ class FileIndexOutput: public IndexOutput {
   void Close() {
     if (!flushed_on_close) {
       flushed_on_close = true;
-      flush();
+      Flush();
 
       const int result = close(fd);
       if (result < 0) {
@@ -443,6 +446,166 @@ class RateLimitedIndexOutput: public IndexOutput {
 
   // TODO(0ctopus13prime): Implement it
 };
+
+class BufferedFileOutputStream {
+ private:
+  static const uint32_t BUFFER_SIZE = 8 * 1024;
+
+  std::string path;
+  int32_t fd;
+  uint32_t idx;
+  char buffer[BUFFER_SIZE];
+ 
+ private:
+  void EnsureNotClosed() {
+    if (fd == -1) {
+      throw lucene::core::util::IOException("Already closed()");
+    }
+  }
+
+  void Close() {
+    if (fd != -1) {
+      close(fd); 
+      fd = -1;
+    }
+  }
+
+  void FlushIf(const uint32_t length_cond) {
+    if (idx >= length_cond) {
+      uint32_t left = length_cond;
+      char* base = buffer;
+      while (left > 0) {
+        const uint32_t wrote = write(fd, base, left);
+        left -= wrote;
+        base += wrote;
+      }
+
+      idx = 0;
+    }
+  }
+
+ public:
+  BufferedFileOutputStream(const std::string& path)
+    : path(path),
+      fd(open(path.c_str(),
+              O_CREAT | O_WRONLY | O_EXCL,
+              S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)),
+      idx(BUFFER_SIZE) {
+    if (fd == -1) {
+      throw lucene::core::util::IOException("Cannot open file(" +
+                                            path + " for writing");
+    }
+  }
+
+  BufferedFileOutputStream(const BufferedFileOutputStream&) = delete;
+
+  BufferedFileOutputStream& operator=(const BufferedFileOutputStream&) = delete;
+
+  ~BufferedFileOutputStream() {
+    FlushIf(1U);
+    Close();
+  }
+
+  void WriteByte(const char b) {
+    EnsureNotClosed();
+    FlushIf(BUFFER_SIZE);
+    buffer[idx++] = b; 
+  }
+
+  void WriteBytes(const char bytes[],
+                  const uint32_t offset,
+                  const uint32_t length) {
+    EnsureNotClosed();
+    // First flush buffer
+    FlushIf(1U);
+
+    // Write byets to the file
+    uint32_t left = length;
+    uint32_t actual_offset = offset;
+    while (left > 0) {
+      const uint32_t written = write(fd, bytes + actual_offset, left);
+
+      left -= written;
+      actual_offset = written;
+    }
+  }
+};  // BufferedFileOutputStream
+
+class GrowableByteArrayOutputStream: public DataOutput {
+ private:
+  static const uint32_t BUCKET_SIZE = 1024;
+
+  std::list<char*> bucket_list;
+  char* bucket;
+  uint32_t idx;
+
+ private:
+  void AllocateBucket() {
+    bucket = new char[BUCKET_SIZE];
+    bucket_list.push_back(bucket);
+    idx = 0;
+  }
+
+  void NewBucketIf() {
+    if (idx >= BUCKET_SIZE) {
+      AllocateBucket();    
+    }
+  }
+
+ public:
+  GrowableByteArrayOutputStream()
+    : bucket_list(),
+      bucket(nullptr),
+      idx(0) {
+    AllocateBucket(); 
+  }
+
+  ~GrowableByteArrayOutputStream() {
+    for (char* b : bucket_list) {
+      delete[] b;
+    }
+  }
+
+  void WriteByte(const char b) {
+    NewBucketIf();
+    bucket[idx++] = b;
+  }
+
+  void WriteBytes(const char bytes[],
+                  const uint32_t offset,
+                  const uint32_t length) {
+    uint32_t left = length;
+    uint32_t actual_offset = offset;
+
+    while (left > 0) {
+      NewBucketIf();
+      const uint32_t len = std::min(left, BUCKET_SIZE - idx);
+      std::memcpy(bucket, bytes + actual_offset, len);
+
+      left -= len;
+      actual_offset += len;
+      idx += len;
+    }
+  }
+
+  uint64_t Size() const noexcept {
+    return (bucket_list.size() - 1) * BUCKET_SIZE + idx;
+  }
+
+  void WriteTo(char bytes[]) {
+    char* target = bytes;
+    for(char* b : bucket_list) {
+      if (b != bucket) {
+        // Old buckets
+        std::memcpy(target, b, BUCKET_SIZE); 
+        target += BUCKET_SIZE;
+      } else if (idx > 0) {
+        // Current bucket
+        std::memcpy(target, b, idx); 
+      }
+    }
+  }
+};  // GrowableByteArrayOutputStream
 
 }  // namespace store
 }  // namespace core

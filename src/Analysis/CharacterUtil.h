@@ -177,7 +177,7 @@ class CharMap {
   }
 
   bool Put(const char* str, uint32_t offset, uint32_t length, VALUE& value) {
-    CharPtrRangeInfo info(lucene::core::util::arrayutil::CopyOfRange(str,
+    CharPtrRangeInfo info(lucene::core::util::ArrayUtil::CopyOfRange(str,
                                                                      offset,
                                                                      length),
                           offset,
@@ -187,7 +187,7 @@ class CharMap {
   }
 
   bool Put(const char* str, uint32_t offset, uint32_t length, VALUE&& value) {
-    CharPtrRangeInfo info(lucene::core::util::arrayutil::CopyOfRange(str,
+    CharPtrRangeInfo info(lucene::core::util::ArrayUtil::CopyOfRange(str,
                                                                      offset,
                                                                      length),
                           offset,
@@ -199,7 +199,7 @@ class CharMap {
 
   bool Put(const std::string& str, VALUE& value) {
     CharPtrRangeInfo
-    info(lucene::core::util::arrayutil::CopyOfRange(str.c_str(),
+    info(lucene::core::util::ArrayUtil::CopyOfRange(str.c_str(),
                                                     0,
                                                     str.size()),
          0,
@@ -210,7 +210,7 @@ class CharMap {
 
   bool Put(const std::string& str, VALUE&& value) {
     CharPtrRangeInfo
-    info(lucene::core::util::arrayutil::CopyOfRange(str.c_str(),
+    info(lucene::core::util::ArrayUtil::CopyOfRange(str.c_str(),
                                                     0,
                                                     str.size()),
          0,

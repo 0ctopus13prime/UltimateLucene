@@ -18,11 +18,22 @@
 #ifndef SRC_UTIL_FSTUTIL_H_
 #define SRC_UTIL_FSTUTIL_H_
 
+#include <Util/Ref.h>
+#include <Util/Fst.h>
+
 namespace lucene {
 namespace core {
 namespace util {
 
-class FstUtil {
+class FSTUtil {
+ private:
+  FSTUtil() = default;
+
+ public:
+  template <typename T>
+  static T Get(FST<T>& fst, BytesRef& input) {
+    return T();
+  }
 };
 
 }  // util

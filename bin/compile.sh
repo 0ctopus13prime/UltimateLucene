@@ -53,7 +53,12 @@ main() {
   # Do a make
   # cmake --build .
   # export VERBOSE=4
+
   make
+  retCode=$?
+  if [ $retCode -ne 0 ]; then
+    exit $retCode
+  fi
 
   # Tests if have to
   if [ "$TESTS" = "true" ]; then

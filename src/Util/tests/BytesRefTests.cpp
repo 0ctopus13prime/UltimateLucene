@@ -17,7 +17,7 @@
 
 #include <assert.h>
 #include <gtest/gtest.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
 #include <iostream>
 
 using lucene::core::util::BytesRef;

@@ -17,7 +17,8 @@
 
 #include <assert.h>
 #include <Util/ArrayUtil.h>
-#include <Util/Bytes.h>
+#include <Util/Ref.h>
+#include <Util/Unicode.h>
 #include <cstring>
 #include <memory>
 #include <utility>
@@ -26,6 +27,8 @@
 
 using lucene::core::util::BytesRef;
 using lucene::core::util::BytesRefBuilder;
+using lucene::core::util::IntsRefBuilder;
+using lucene::core::util::UnicodeUtil;
 
 /*
  * BytesRef
@@ -76,7 +79,7 @@ BytesRef::BytesRef(const char* new_bytes,
 
   if (length > 0) {
     char* new_byte_arr =
-      arrayutil::CopyOfRange(new_bytes, offset, offset + length);
+      ArrayUtil::CopyOfRange(new_bytes, offset, offset + length);
     bytes.reset(new_byte_arr);
   }
 
@@ -161,7 +164,7 @@ BytesRef& BytesRef::operator=(const BytesRef& source) {
 
     if (length > 0) {
       char* new_byte_arr =
-        arrayutil::CopyOfRange(source.bytes.get(), offset, offset + length);
+        ArrayUtil::CopyOfRange(source.bytes.get(), offset, offset + length);
       bytes.reset(new_byte_arr);
     }
   }
@@ -259,7 +262,7 @@ char& BytesRefBuilder::operator[](const uint32_t idx) {
 void BytesRefBuilder::Grow(uint32_t new_capacity) {
   char* bytes = ref.bytes.get();
   std::pair<char*, uint32_t> new_bytes_pair =
-    arrayutil::Grow(bytes, ref.capacity, new_capacity);
+    ArrayUtil::Grow(bytes, ref.capacity, new_capacity);
   if (new_bytes_pair.first != bytes) {
     ref.bytes.reset(new_bytes_pair.first);
     ref.capacity = new_bytes_pair.second;
@@ -327,4 +330,13 @@ BytesRef& BytesRefBuilder::Get() {
 
 BytesRef BytesRefBuilder::ToBytesRef() const {
   return BytesRef(ref);
+}
+
+/**
+ *  IntsRefBuilder 
+ */
+
+void IntsRefBuilder::CopyUTF8Bytes(const BytesRef& bytes) {
+  Grow(bytes.length);
+  ref.length = UnicodeUtil::UTF8toUTF32(bytes, ref.ints);
 }
