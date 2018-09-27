@@ -25,6 +25,8 @@
 #include <Util/ArrayUtil.h>
 #include <Util/Exception.h>
 #include <cassert>
+#include <cstring>
+#include <algorithm>
 #include <string>
 #include <memory>
 
@@ -73,36 +75,27 @@ class BytesRef {
     return *this;
   }
 
-  uint32_t CompareTo(const BytesRef& other) const {
-    if (IsValid() && other.IsValid()) {
-      if (bytes == other.bytes
-            && offset == other.offset
-            && length == other.length) {
-        return 0;
-      }
-
-      uint32_t my_len = length - offset;
-      uint32_t his_len = other.length - other.offset;
-      uint32_t len = (my_len < his_len ? my_len : his_len);
-      char* my_bytes_ptr = bytes;
-      char* his_bytes_ptr = other.bytes;
-
-      for (uint32_t i = 0 ; i < len ; ++i) {
-        char mine = my_bytes_ptr[i];
-        char his = his_bytes_ptr[i];
-        char diff = (mine - his);
-        if (diff != 0) {
-          return diff;
-        }
-      }
-
-      // One is a prefix of another, or, they are equal.
-      return (my_len - his_len);
+  int32_t CompareTo(const BytesRef& other) const {
+    if (Bytes() == other.Bytes()
+        && Offset() == other.Offset()
+        && Length() == other.Length()) {
+      return 0;
     }
 
-    throw IllegalStateException(
-                  "This BytesRef is not valid or"
-                  "other BytesRef is not valid during CompareTo");
+    const int32_t my_len = (Length() - Offset());
+    const int32_t his_len = (other.Length() - other.Offset());
+    const int32_t len = std::min(my_len, his_len);
+
+    const int32_t result = std::memcmp(Bytes() + Offset(),
+                                        other.Bytes() + Offset(),
+                                        len);
+
+    if (result != 0) {
+      return result;
+    }
+
+    // One is either a prefix of another or equivalent bytes
+    return (my_len - his_len);
   }
 
  public:
@@ -140,7 +133,6 @@ class BytesRef {
       offset(offset),
       length(length),
       capacity(capacity) {
-    assert(IsValid());
   }
 
   // Referencing
@@ -165,8 +157,6 @@ class BytesRef {
 
   // Copy bytes from the given text
   BytesRef(const std::string& text) {
-    SafeDeleteBytes(); 
-
     if (text.empty()) {
       bytes = DEFAULT_BYTES;
       offset = length = 0;
@@ -240,50 +230,31 @@ class BytesRef {
   }
 
   bool operator==(const BytesRef& other) const {
-    return CompareTo(other) == 0;
+    return (CompareTo(other) == 0);
   }
 
   bool operator!=(const BytesRef& other) const {
-    return !operator==(other);
+    return (!operator==(other));
   }
 
   bool operator<(const BytesRef& other) const {
-    return CompareTo(other) < 0;
+    return (CompareTo(other) < 0);
   }
 
   bool operator<=(const BytesRef& other) const {
-    return CompareTo(other) <= 0;
+    return (CompareTo(other) <= 0);
   }
 
   bool operator>(const BytesRef& other) const {
-    return CompareTo(other) > 0;
+    return (CompareTo(other) > 0);
   }
 
   bool operator>=(const BytesRef& other) const {
-    return CompareTo(other) >= 0;
+    return (CompareTo(other) >= 0);
   }
 
   std::string UTF8ToString() const {
-    return std::string(bytes, offset, length);
-  }
-
-  bool IsValid() const {
-    // C++ BytesRef allows null bytes
-    if (bytes != nullptr && (offset != 0 || length != 0) && capacity > 1) {
-      throw std::runtime_error("bytes is nullptr, offset="
-                                + std::to_string(offset)
-                                + ", length="
-                                + std::to_string(length)
-                                + ", capacity=" + std::to_string(capacity));
-    }
-
-    if (offset > length) {
-      throw std::overflow_error("Offset out of bounds: "
-                                + std::to_string(offset)
-                                + ", length=" + std::to_string(length));
-    }
-
-    return true;
+    return std::string(bytes, offset, Length());
   }
 
   uint32_t Length() const noexcept {
