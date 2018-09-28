@@ -36,8 +36,8 @@ class ArrayUtil {
  public:
   template <typename T>
   static T* CopyOf(const T* original,
-            const uint32_t original_length,
-            const uint32_t new_length) {
+                   const uint32_t original_length,
+                   const uint32_t new_length) {
     T* copy = new T[new_length];
     std::memcpy(copy,
                 original,
@@ -55,21 +55,15 @@ class ArrayUtil {
   // TODO(0ctopus13prime): Remove template
   template <typename T>
   static uint32_t Oversize(const uint32_t min_target_size) {
-    uint32_t extra = (min_target_size >> 3);  // extra <- min_target_size / 8
-    if (extra < 3) {
-      extra = 3;
-    }
-
-    uint32_t new_size = (min_target_size + extra);
-    return new_size;
+    return static_cast<uint32_t>(min_target_size * 1.5);
   }
 
   template <typename T>
   static std::pair<T*, uint32_t> Grow(T* array,
-                               const uint32_t length,
-                               const uint32_t min_size) {
+                                      const uint32_t length,
+                                      const uint32_t min_size) {
     if (length < min_size) {
-      uint32_t new_length = Oversize<T>(min_size);
+      const uint32_t new_length = Oversize<T>(min_size);
       T* new_array = CopyOf(array, length, new_length);
       return std::pair<T*, uint32_t>(new_array, new_length);
     }

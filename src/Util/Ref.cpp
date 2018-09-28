@@ -30,16 +30,11 @@ using lucene::core::util::BytesRefBuilder;
 using lucene::core::util::IntsRefBuilder;
 using lucene::core::util::UnicodeUtil;
 
-/*
- * BytesRef
- */
-char* BytesRef::DEFAULT_BYTES = new char[1];
-
 
 /**
  *  IntsRefBuilder 
  */
 void IntsRefBuilder::CopyUTF8Bytes(const BytesRef& bytes) {
   Grow(bytes.Length());
-  ref.length = UnicodeUtil::UTF8toUTF32(bytes, ref.ints);
+  ref.SetLength(UnicodeUtil::UTF8toUTF32(bytes, ref.ints));
 }

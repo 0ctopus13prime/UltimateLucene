@@ -739,7 +739,6 @@ class PackedReaderIterator: public PackedInts::ReaderIteratorImpl {
 
   LongsRef& Next(uint32_t count) {
     assert(next_values.Length() >= 0); 
-    assert(next_values.IsValid());
 
     next_values.IncOffset(next_values.Length());
 

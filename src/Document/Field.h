@@ -183,8 +183,8 @@ class FieldTypeBuilder {
 
 /**
  * Field class is only movable, not assignable.
- * Thus if you assign field to another, use move assignment
- * 1. Field(std::move(original_field)
+ * Thus if you want to assign one field to another, use move assignment
+ * 1. Field(std::move(original_field))
  * 2. field = std::move(original_field)
  */
 class Field {
@@ -1848,7 +1848,7 @@ class LongRange : public Field {
 
     if (length * 2  == type.dimension_count) {
       lucene::core::util::BytesRef& bytes_ref =
-      std::get<lucene::core::util::BytesRef>(fields_data);
+        std::get<lucene::core::util::BytesRef>(fields_data);
 
       const uint32_t minimum_required = length * 2 * sizeof(int64_t);
       if (bytes_ref.Capacity() < minimum_required) {

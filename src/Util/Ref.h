@@ -39,9 +39,6 @@ class BytesRefBuilder;
 class BytesRef {
  friend class BytesRefBuilder;
 
- private:
-  static char* DEFAULT_BYTES;
-
   char* bytes;
   uint32_t offset;
   uint32_t length;
@@ -55,9 +52,7 @@ class BytesRef {
   void SafeDeleteBytes() {
     if (IsOwning() && (bytes != nullptr)) {
       delete[] bytes; 
-      offset = length = 0;
-      capacity = 1;
-      bytes = DEFAULT_BYTES;
+      bytes = nullptr;
     }
   }
 
@@ -76,26 +71,18 @@ class BytesRef {
   }
 
   int32_t CompareTo(const BytesRef& other) const {
-    if (Bytes() == other.Bytes()
-        && Offset() == other.Offset()
-        && Length() == other.Length()) {
-      return 0;
-    }
-
-    const int32_t my_len = (Length() - Offset());
-    const int32_t his_len = (other.Length() - other.Offset());
-    const int32_t len = std::min(my_len, his_len);
+    const int32_t len = std::min(Length(), other.Length());
 
     const int32_t result = std::memcmp(Bytes() + Offset(),
-                                        other.Bytes() + Offset(),
-                                        len);
+                                       other.Bytes() + other.Offset(),
+                                       len);
 
     if (result != 0) {
       return result;
     }
 
     // One is either a prefix of another or equivalent bytes
-    return (my_len - his_len);
+    return (Length() - other.Length());
   }
 
  public:
@@ -118,14 +105,14 @@ class BytesRef {
  public:
   // Referencing
   BytesRef()
-    : bytes(DEFAULT_BYTES),
+    : bytes(nullptr),
       offset(0),
       length(0),
-      capacity(1) {
+      capacity(0) {
   }
 
   // Referencing
-  BytesRef(const char* bytes,
+  BytesRef(const char bytes[],
            const uint32_t offset,
            const uint32_t length,
            const uint32_t capacity)
@@ -138,8 +125,8 @@ class BytesRef {
   // Referencing
   BytesRef(const char* bytes,
            const uint32_t offset,
-           const uint32_t length)
-    : BytesRef(const_cast<char*>(bytes), offset, length, offset + length) {
+           const uint32_t capacity)
+    : BytesRef(const_cast<char*>(bytes), offset, capacity, offset + capacity) {
   }
 
   // Referencing
@@ -147,7 +134,7 @@ class BytesRef {
     : BytesRef(const_cast<char*>(bytes), 0, capacity, capacity) {
   }
 
-  // Ownning
+  // Owning
   BytesRef(const uint32_t capacity)
     : bytes(new char[capacity]),
       offset(0),
@@ -158,9 +145,8 @@ class BytesRef {
   // Copy bytes from the given text
   BytesRef(const std::string& text) {
     if (text.empty()) {
-      bytes = DEFAULT_BYTES;
-      offset = length = 0;
-      capacity = 1;
+      bytes = nullptr;
+      capacity = offset = length = 0;
     } else {
       capacity = length = text.size();
       offset = 0;
@@ -261,6 +247,11 @@ class BytesRef {
     return (length & LENGTH_MASK);
   }
 
+  BytesRef& SetLength(const uint32_t new_length) noexcept {
+    length = ((length & IS_OWNING_MASK) | new_length);
+    return *this;
+  }
+
   char* Bytes() const noexcept {
     return bytes;
   }
@@ -281,6 +272,7 @@ class BytesRefBuilder {
  public:
   BytesRefBuilder()
     : ref() {
+    ref.SetOwning();
   }
 
   char* Bytes() const noexcept {
@@ -292,10 +284,10 @@ class BytesRefBuilder {
   }
 
   void SetLength(const uint32_t new_length) {
-    ref.length = new_length;
+    ref.SetLength(new_length);
   }
 
-  char& operator[](const uint32_t idx) {
+  char& operator[](const uint32_t idx) const noexcept {
     return ref.bytes[idx];
   }
 
@@ -303,18 +295,18 @@ class BytesRefBuilder {
     std::pair<char*, uint32_t> new_bytes_pair =
       ArrayUtil::Grow(ref.bytes, ref.capacity, new_capacity);
 
-    if (new_bytes_pair.first) {
+    if (new_bytes_pair.first != ref.bytes) {
       ref.SafeDeleteBytes();
       ref.bytes = new_bytes_pair.first;
-      ref.length = ref.capacity = new_bytes_pair.second;
+      ref.capacity = new_bytes_pair.second;
       ref.offset = 0;
-      ref.SetOwning(); 
     }
   }
 
   void Append(const char c) {
-    Grow(ref.length + 1);
-    ref.bytes[ref.length++] = c;
+    Grow(ref.Length() + 1);
+    ref.bytes[ref.Length()] = c;
+    ref.length++;
   }
 
   void Append(const char* bytes,
@@ -325,8 +317,12 @@ class BytesRefBuilder {
     ref.length += len;
   }
 
+  void Append(const std::string& str) {
+    Append(str.c_str(), 0, str.size());
+  }
+
   void Append(BytesRef& ref) {
-    Append(ref.bytes, ref.offset, ref.length);
+    Append(ref.bytes, ref.offset, ref.Length());
   }
 
   void Append(BytesRefBuilder& builder) {
@@ -351,27 +347,19 @@ class BytesRefBuilder {
 
   void CopyBytes(BytesRefBuilder& builder) {
     Clear();
-    Append(builder);
+    Append(builder.ref);
   }
 
-  void CopyChars(const std::string& text) {
-    CopyChars(text, 0, text.size());
-  }
-
-  void CopyChars(const std::string& text,
-                 const uint32_t off,
-                 const uint32_t len) {
-    Grow(len);
-    std::memcpy(ref.bytes, text.c_str() + off, len);
-    ref.length = len;
-    ref.SetOwning();
+  void CopyBytes(const std::string& str) {
+    Clear();
+    Append(str.c_str(), 0, str.size());
   }
 
   BytesRef& Get() {
     return ref;
   }
 
-  BytesRef ToBytesRef() const {
+  BytesRef DupBytesRef() const {
     return BytesRef(ref);
   }
 };  // BytesRefBuilder
@@ -395,7 +383,6 @@ class IntsRef {
     if (IsOwning() && (ints != nullptr)) {
       delete[] ints; 
       ints = nullptr;
-      length = offset = capacity = 0;
     }
   }
 
@@ -411,6 +398,22 @@ class IntsRef {
   IntsRef& SetReference() noexcept {
     length &= LENGTH_MASK;
     return *this;
+  }
+
+  int32_t CompareTo(const IntsRef& other) const {
+    uint32_t len = std::min(Length(), other.Length());
+    const int32_t* s1 = static_cast<const int32_t*>(Ints() + Offset());
+    const int32_t* s2 = static_cast<const int32_t*>(other.Ints() +
+                                                    other.Offset());
+
+    while (len-- > 0) {
+      if (*s1++ != *s2++) {
+        return (s1[-1] < s2[-1] ? -1 : 1);
+      }
+    }
+
+    // One is either a prefix of another or equivalent ints
+    return (Length() - other.Length());
   }
 
  public:
@@ -448,36 +451,49 @@ class IntsRef {
   }
   
   // Referencing ints
-  IntsRef(int32_t ints[],
-          const uint32_t capacity,
+  IntsRef(const int32_t ints[],
           const uint32_t offset,
-          const uint32_t length)
-    : ints(ints),
+          const uint32_t length,
+          const uint32_t capacity)
+    : ints(const_cast<int*>(ints)),
       capacity(capacity),
       offset(offset),
-      length(length & LENGTH_MASK) {
+      length(length) {
+  }
+
+  // Referencing ints
+  IntsRef(const int32_t ints[],
+          const uint32_t capacity)
+    : IntsRef(ints, 0, capacity, capacity) {
+  }
+
+  // Referencing ints
+  IntsRef(const int32_t ints[],
+          const uint32_t offset,
+          const uint32_t capacity)
+    : IntsRef(ints, offset, capacity, capacity) {
   }
 
   // Copying ints
   // If `other` is referencing, then this will reference same address.
   // This will copy only if `other` is having own `ints`
   IntsRef(const IntsRef& other)
-    : ints(other.ints),
-      capacity(other.capacity),
-      offset(other.offset),
-      length(other.length) {
+    : IntsRef(other.ints,
+              other.offset,
+              other.length,
+              other.capacity) {
     // Copy if `ints` is not the reference
     if (other.IsOwning()) {
-      ints = ArrayUtil::CopyOf<int32_t>(other.ints, capacity);
+      ints = ArrayUtil::CopyOf<int32_t>(other.ints, other.capacity);
     }
   }
 
   // Move ctor
   IntsRef(IntsRef&& other)
-    : ints(other.ints),
-      capacity(other.capacity),
-      offset(other.offset),
-      length(other.length) {
+    : IntsRef(other.ints,
+              other.offset,
+              other.length,
+              other.capacity) {
     // Prevent double memory release
     other.SetReference();
   }
@@ -519,40 +535,28 @@ class IntsRef {
     SafeDeleteInts();
   }
 
-  bool operator<(const IntsRef& other) const {
-    if (this != &other) {
-      const uint32_t len = std::min(length, other.length);
-      int32_t* my_base = (ints + offset);
-      int32_t* other_base = (other.ints + other.offset);
-      for (uint32_t i = 0 ; i < len ; ++i) {
-        if (my_base[i] > other_base[i]) {
-          return false;
-        }
-      }
-
-      return (length < other.length);
-    }
-
-    return false;
-  }
-
   bool operator==(const IntsRef& other) const {
-    if (this != &other && length == other.length) {
-      int32_t* my_base = (ints + offset);
-      int32_t* other_base = (other.ints + other.offset);
-      uint32_t idx = 0;  
-      while (idx < length && (my_base[idx] == other_base[idx])) {
-        ++idx;
-      }
-
-      return (idx == length);
-    }
-
-    return (length == other.length);
+    return (CompareTo(other) == 0);
   }
 
   bool operator!=(const IntsRef& other) const {
     return !(operator==(other));
+  }
+
+  bool operator<(const IntsRef& other) const {
+    return (CompareTo(other) < 0);
+  }
+
+  bool operator<=(const IntsRef& other) const {
+    return (CompareTo(other) <= 0);
+  }
+
+  bool operator>(const IntsRef& other) const {
+    return (CompareTo(other) > 0);
+  }
+
+  bool operator>=(const IntsRef& other) const {
+    return (CompareTo(other) >= 0);
   }
 
   int32_t HashCode() {
@@ -567,7 +571,12 @@ class IntsRef {
   }
 
   uint32_t Length() const noexcept {
-    return length;
+    return (length & LENGTH_MASK);
+  }
+
+  IntsRef& SetLength(const uint32_t new_length) noexcept {
+    length = ((length & IS_OWNING_MASK) | new_length);
+    return *this;
   }
 
   uint32_t Offset() const noexcept {
@@ -578,7 +587,7 @@ class IntsRef {
     return capacity;
   }
 
-  int32_t* Ints() {
+  int32_t* Ints() const noexcept {
     return ints;
   }
 };  // IntsRef
@@ -594,67 +603,92 @@ class IntsRefBuilder {
   }
 
   int32_t* Ints() const noexcept {
-    return ref.ints;
+    return ref.Ints();
   }
 
   uint32_t Length() const noexcept {
-    return ref.length;
+    return ref.Length();
   }
 
   void SetLength(const uint32_t length) noexcept {
-    ref.length = length;
+    ref.SetLength(length);
   }
 
   void Clear() noexcept {
     SetLength(0);
   }
 
-  int32_t IntAt(const uint32_t offset) const noexcept {
-    return ref.ints[offset];
-  }
-
-  void SetIntAt(const uint32_t offset, const int32_t i) noexcept {
-    ref.ints[offset] = i;
+  int32_t& operator[](const uint32_t idx) const noexcept {
+    return ref.ints[idx];
   }
 
   void Append(const int32_t i) {
-    Grow(ref.capacity + 1);
-    ref.ints[ref.length++] = i;
+    Grow(ref.Length() + 1);
+    ref.ints[ref.Length()] = i;
+    ref.length++;
   }
 
-  void Grow(const uint32_t new_length) {
+  void Append(const int32_t* ints,
+              const uint32_t off,
+              const uint32_t len) {
+    Grow(ref.Length() + len);
+    std::memcpy(ref.ints + ref.Length(), ints + off, sizeof(int32_t) * len);
+    ref.length += len;
+  }
+
+  void Append(IntsRef& ref) {
+    Append(ref.ints, ref.offset, ref.Length());
+  }
+
+  void Append(IntsRefBuilder& builder) {
+    Append(builder.ref);
+  }
+
+  void Grow(const uint32_t new_capacity) {
     std::pair<int32_t*, uint32_t> pair =
-      ArrayUtil::Grow(ref.ints, ref.capacity, new_length);
+      ArrayUtil::Grow(ref.ints, ref.capacity, new_capacity);
 
     if (pair.first != ref.ints) {
-      delete[] ref.ints;
+      ref.SafeDeleteInts();
       ref.ints = pair.first;
       ref.capacity = pair.second;
-
-      std::cout << "IntsRefBuilder::Grow, ints -> " << ref.ints << std::endl;
+      ref.offset = 0;
     }
   }
 
+  // `source` must be an owner!
+  // Reference type is not allowd
   void InitInts(IntsRef&& source) {
+    assert(source.IsOwning());
     ref = std::forward<IntsRef>(source); 
+    source.SetReference();
   }
 
-  void CopyInts(const int32_t other_ints[],
-                const uint32_t other_offset,
-                const uint32_t other_length) {
-    Grow(other_length);
-    std::memcpy(ref.ints, other_ints + other_offset, other_length);
-    ref.length = other_length;
+  void CopyInts(const int32_t ints[],
+                const uint32_t offset,
+                const uint32_t length) {
+    Clear();
+    Append(ints, offset, length);
   }
 
-  void CopyInts(IntsRef& ints) {
-    CopyInts(ints.ints, ints.offset, ints.length);
+  void CopyInts(IntsRef& ref) {
+    Clear();
+    Append(ref);
   }
 
- void CopyUTF8Bytes(const BytesRef& bytes);
+  void CopyInts(IntsRefBuilder& builder) {
+    Clear();
+    Append(builder.ref);
+  }
+
+  void CopyUTF8Bytes(const BytesRef& bytes);
 
   IntsRef& Get() noexcept {
     return ref;
+  }
+
+  IntsRef DupIntsRef() const {
+    return IntsRef(ref);
   }
 };  // IntsRefBuilder
 
@@ -674,18 +708,35 @@ class LongsRef {
     return (length & IS_OWNING_MASK) != 0;
   }
 
-  void ClearIf() {
+  void SafeDeleteLongs() {
     if (IsOwning()) {
       delete[] longs;
     }
   }
 
-  void SetOwning() noexcept {
+  LongsRef& SetOwning() noexcept {
     length |= IS_OWNING_MASK;
   }
 
-  void SetReference() noexcept {
+  LongsRef& SetReference() noexcept {
     length &= LENGTH_MASK;
+  }
+
+  int32_t CompareTo(const LongsRef& other) const {
+    uint32_t len = std::min(Length(), other.Length());
+    const int64_t* s1 =
+      static_cast<const int64_t*>(Longs() + Offset());
+    const int64_t* s2 =
+      static_cast<const int64_t*>(other.Longs() + other.Offset());
+
+    while (len-- > 0) {
+      if (*s1++ != *s2++) {
+        return (s1[-1] < s2[-1] ? -1 : 1);
+      }
+    }
+
+    // One is either a prefix of another or equivalent ints
+    return (Length() - other.Length());
   }
 
  public:
@@ -713,45 +764,73 @@ class LongsRef {
       length(0) {
   }
 
+  // Owning
   LongsRef(const uint32_t capacity)
     : capacity(capacity),
       longs(new int64_t[capacity]),
       offset(0),
       length(capacity) {
-    SetOwning();
   }
 
-  LongsRef(int64_t* longs,
-           const uint32_t capacity,
+  // Reference
+  LongsRef(const int64_t longs[],
            const uint32_t offset,
-           const uint32_t length)
-    : longs(longs),
+           const uint32_t length,
+           const uint32_t capacity)
+    : longs(const_cast<int64_t*>(longs)),
       capacity(capacity),
       offset(offset),
       length(length) {
-    assert(IsValid());
-    SetReference();
   }
 
-  LongsRef(const LongsRef& other) {
-    operator=(other);
+  // Reference
+  LongsRef(const int64_t* longs,
+           const uint32_t capacity)
+    : LongsRef(longs, 0, capacity, capacity) {
   }
 
-  LongsRef(LongsRef&& other) {
-    operator=(std::forward<LongsRef>(other));
+  // Reference
+  LongsRef(const int64_t* longs,
+           const uint32_t offset,
+           const uint32_t capacity)
+    : LongsRef(longs, offset, capacity, capacity) {
+  }
+
+  // If given other is owner, then this instance will copy longs from other
+  // Otherwise this will just reference same address of other's longs
+  LongsRef(const LongsRef& other)
+    : LongsRef(other.longs,
+               other.offset,
+               other.length,
+               other.capacity) {
+    if (other.IsOwning()) {
+      longs = ArrayUtil::CopyOf<int64_t>(other.longs,
+                                         other.capacity);
+    }
+  }
+
+  // Move ctor
+  LongsRef(LongsRef&& other)
+    : LongsRef(other.longs,
+               other.offset,
+               other.length,
+               other.capacity) {
+    // Prevent double release
+    other.SetReference();
   }
 
   LongsRef& operator=(const LongsRef& other) {
     if (this != &other) {
+      SafeDeleteLongs();
+
       longs = other.longs;
       capacity = other.capacity;
       offset = other.offset;
       length = other.length;
 
       if (other.IsOwning()) {
-        longs = ArrayUtil::CopyOfRange(other.longs,
-                                       other.offset,
-                                       other.offset + other.length);
+        longs = ArrayUtil::CopyOf<int64_t>(other.longs,
+                                           other.capacity);
       }
     }
 
@@ -759,73 +838,79 @@ class LongsRef {
   }
 
   LongsRef& operator=(LongsRef&& other) {
-    longs = other.longs;
-    capacity = other.capacity;
-    offset = other.offset;
-    length = other.length;
+    if (this != &other) {
+      SafeDeleteLongs();
 
-    other.SetReference();
+      longs = other.longs;
+      capacity = other.capacity;
+      offset = other.offset;
+      length = other.length;
+
+      // Prevent double release
+      other.SetReference();
+    }
+
+    return *this;
   }
 
   ~LongsRef() {
-    ClearIf();
+    SafeDeleteLongs();
+  }
+
+  LongsRef& SetLength(const uint32_t new_length) noexcept {
+    length = ((length & IS_OWNING_MASK) | new_length);
+    return *this;
+  }
+
+  bool operator==(const LongsRef& other) const {
+    return (CompareTo(other) == 0);
+  }
+
+  bool operator!=(const LongsRef& other) const {
+    return !(operator==(other));
+  }
+
+  bool operator<(const LongsRef& other) const {
+    return (CompareTo(other) < 0);
+  }
+
+  bool operator<=(const LongsRef& other) const {
+    return (CompareTo(other) <= 0);
+  }
+
+  bool operator>(const LongsRef& other) const {
+    return (CompareTo(other) > 0);
+  }
+
+  bool operator>=(const LongsRef& other) const {
+    return (CompareTo(other) >= 0);
   }
 
   uint32_t Offset() const noexcept {
     return offset; 
   }
 
-  LongsRef& DecOffset() noexcept {
-    --offset; 
-    return *this; 
-  }
-
-  LongsRef& DecOffset(const uint32_t delta) noexcept {
-    offset -= delta; 
-    return *this; 
-  }
-
-  LongsRef& IncOffset() noexcept {
-    offset++;
-    return *this; 
-  }
-
-  LongsRef& IncOffset(const uint32_t delta) noexcept {
-    offset += delta;
-    return *this; 
-  }
-
   LongsRef& Offset(const uint32_t new_offset) noexcept {
     offset = new_offset;
-    return *this; 
+    return *this;
+  }
+
+  LongsRef& IncOffset(const uint32_t delta = 1) noexcept {
+    offset += delta;
+    return *this;
   }
 
   uint32_t Length() const noexcept {
     return (length & LENGTH_MASK); 
   }
 
-  LongsRef& DecLength() noexcept {
-    --length;
+  LongsRef& Length(const uint32_t new_length) {
+    length = ((length & IS_OWNING_MASK) | new_length);
     return *this;
   }
 
-  LongsRef& DecLength(const uint32_t delta) noexcept {
+  LongsRef& DecLength(const uint32_t delta = 1) noexcept {
     length -= delta;
-    return *this;
-  }
-
-  LongsRef& IncLength() noexcept {
-    ++length;
-    return *this;
-  }
-
-  LongsRef& IncLength(const uint32_t delta) noexcept {
-    length += delta;
-    return *this;
-  }
-
-  LongsRef& Length(const uint32_t new_length) noexcept {
-    length = (length & IS_OWNING_MASK) | new_length;
     return *this;
   }
 
@@ -835,35 +920,6 @@ class LongsRef {
 
   int64_t* Longs() const noexcept {
     return longs;
-  }
-
-  bool IsValid() {
-    if (longs == nullptr) {
-      throw IllegalStateException("`longs` is null"); 
-    }
-
-    if (length > capacity) {
-      throw IllegalStateException("Length is out of bounds " +
-                                  std::to_string(length) +
-                                  ",capacity=" +
-                                  std::to_string(capacity));
-    }
-
-    if (offset > capacity) {
-      throw IllegalStateException("Length is out of bounds " +
-                                  std::to_string(offset) +
-                                  ",capacity=" +
-                                  std::to_string(capacity));
-    }
-
-    if (offset + length > capacity) {
-      throw IllegalStateException("offset+length out of bounds: offset=" +
-                                  std::to_string(offset) +
-                                  ",length=" +
-                                  std::to_string(length) +
-                                  ",capacity=" +
-                                  std::to_string(capacity));
-    }
   }
 }; // LongsRef
 

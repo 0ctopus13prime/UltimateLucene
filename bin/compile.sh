@@ -54,7 +54,7 @@ main() {
   # cmake --build .
   # export VERBOSE=4
 
-  make
+  make -j
   retCode=$?
   if [ $retCode -ne 0 ]; then
     exit $retCode
