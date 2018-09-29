@@ -34,7 +34,7 @@ using lucene::core::analysis::TokenStream;
 using lucene::core::index::IndexOptions;
 using lucene::core::index::DocValuesType;
 using lucene::core::util::BytesRef;
-using lucene::core::util::numeric::Number;
+using lucene::core::util::Number;
 
 /**
  *  Field

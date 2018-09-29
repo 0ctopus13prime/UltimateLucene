@@ -503,7 +503,7 @@ class PackedInts {
                                      std::to_string(block_size));
     }
 
-    return lucene::core::util::numeric::NumericUtils
+    return lucene::core::util::NumericUtils
            ::NumberOfTrailingZeros(block_size);
   }
 
@@ -658,7 +658,7 @@ class PackedInts {
   }
 
   static const uint32_t UnsignedBitsRequired(const int64_t bits) {
-    return std::max(1U, 64 - lucene::core::util::numeric
+    return std::max(1U, 64 - lucene::core::util
                             ::NumericUtils::NumberOfLeadingZeros(bits));
   }
 };

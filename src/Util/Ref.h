@@ -86,20 +86,39 @@ class BytesRef {
   }
 
  public:
-  static void MakeReference(BytesRef& target, const BytesRef& other) {
-    target.bytes = other.bytes;
-    target.offset = other.offset;
-    target.length = other.length;
-    target.capacity = other.capacity;
-    target.SetReference();
+  static BytesRef MakeReference(const BytesRef& other) {
+    return BytesRef(other.bytes,
+                    other.offset,
+                    other.length & LENGTH_MASK,
+                    other.capacity);
   }
 
-  static void MakeOwner(BytesRef& target, const BytesRef& other) {
-    target.offset = other.offset;
-    target.length = other.length;
-    target.capacity = other.capacity;
-    target.bytes = ArrayUtil::CopyOf<char>(other.bytes, other.capacity);
-    target.SetOwning();
+  static BytesRef MakeOwner(const BytesRef& other) {
+    return BytesRef(ArrayUtil::CopyOf<char>(other.bytes, other.capacity),
+                    other.offset,
+                    other.length | IS_OWNING_MASK,
+                    other.capacity);
+  }
+
+  static BytesRef MakeOwner(const std::string& text) {
+    if (text.empty()) {
+      return BytesRef(nullptr,
+                      0,
+                      IS_OWNING_MASK,
+                      0);
+    } else {
+      return BytesRef(ArrayUtil::CopyOf<char>(text.c_str(), text.size()),
+                      0,
+                      text.size() | IS_OWNING_MASK,
+                      text.size());
+    }
+  }
+
+  static BytesRef MakeOwner(const uint32_t capacity) {
+    return BytesRef(new char[capacity],
+                    0,
+                    IS_OWNING_MASK,
+                    capacity);
   }
 
  public:
@@ -132,28 +151,6 @@ class BytesRef {
   // Referencing
   BytesRef(const char* bytes, const uint32_t capacity)
     : BytesRef(const_cast<char*>(bytes), 0, capacity, capacity) {
-  }
-
-  // Owning
-  BytesRef(const uint32_t capacity)
-    : bytes(new char[capacity]),
-      offset(0),
-      length(IS_OWNING_MASK),
-      capacity(capacity) {
-  }
-
-  // Copy bytes from the given text
-  BytesRef(const std::string& text) {
-    if (text.empty()) {
-      bytes = nullptr;
-      capacity = offset = length = 0;
-    } else {
-      capacity = length = text.size();
-      offset = 0;
-      SetOwning();
-      bytes = new char[capacity];
-      std::memcpy(bytes, text.c_str(), capacity);
-    }
   }
 
   // Copy ctor if copy = true,
@@ -240,7 +237,7 @@ class BytesRef {
   }
 
   std::string UTF8ToString() const {
-    return std::string(bytes, offset, Length());
+    return (bytes != nullptr ? std::string(bytes, offset, Length()) : std::string());
   }
 
   uint32_t Length() const noexcept {
@@ -417,20 +414,28 @@ class IntsRef {
   }
 
  public:
-  static void MakeReference(IntsRef& target, const IntsRef& other) {
-    target.ints = other.ints;
-    target.offset = other.offset;
-    target.length = other.length;
-    target.capacity = other.capacity;
-    target.SetReference();
+  static IntsRef MakeReference(const IntsRef& other) {
+    return IntsRef(other.ints,
+                   other.offset,
+                   other.length & LENGTH_MASK,
+                   other.capacity);
   }
 
-  static void MakeOwner(IntsRef& target, const IntsRef& other) {
-    target.offset = other.offset;
-    target.length = other.length;
-    target.capacity = other.capacity;
-    target.ints = ArrayUtil::CopyOf<int32_t>(other.ints, other.capacity);
-    target.SetOwning();
+  static IntsRef MakeOwner(const IntsRef& other) {
+    return IntsRef(ArrayUtil::CopyOf<int32_t>(other.ints, other.capacity),
+                   other.offset,
+                   other.length | IS_OWNING_MASK,
+                   other.capacity);
+  }
+
+  static IntsRef MakeOwner(const int32_t ints[],
+                           const uint32_t offset,
+                           const uint32_t length,
+                           const uint32_t capacity) {
+    return IntsRef(ArrayUtil::CopyOf<int32_t>(ints, capacity),
+                   offset,
+                   length | IS_OWNING_MASK,
+                   capacity);
   }
 
  public:
@@ -740,20 +745,18 @@ class LongsRef {
   }
 
  public:
-  static void MakeReference(LongsRef& target, const LongsRef& other) {
-    target.longs = other.longs;
-    target.offset = other.offset;
-    target.length = other.length;
-    target.capacity = other.capacity;
-    target.SetReference();
+  static LongsRef MakeReference(const LongsRef& other) {
+    return LongsRef(other.longs,
+                    other.offset,
+                    other.length & LENGTH_MASK,
+                    other.capacity);
   }
 
-  static void MakeOwner(LongsRef& target, const LongsRef& other) {
-    target.offset = other.offset;
-    target.length = other.length;
-    target.capacity = other.capacity;
-    target.longs = ArrayUtil::CopyOf<int64_t>(other.longs, other.capacity);
-    target.SetOwning();
+  static LongsRef MakeOwner(const LongsRef& other) {
+    return LongsRef(ArrayUtil::CopyOf<int64_t>(other.longs, other.capacity),
+                    other.offset,
+                    other.length | IS_OWNING_MASK,
+                    other.capacity);
   }
 
  public:

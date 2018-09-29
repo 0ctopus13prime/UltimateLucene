@@ -807,7 +807,7 @@ class MonotonicBlockPackedReader: public Int64Values {
     for (uint32_t i = 0 ; i < num_blocks ; ++i) {
       min_values[i] = in->ReadZInt64();
       averages[i] =
-        lucene::core::util::numeric::Float::IntBitsToFloat(in->ReadInt32());
+        lucene::core::util::Float::IntBitsToFloat(in->ReadInt32());
       uint32_t bpv = static_cast<uint32_t>(in->ReadVInt32());
       sum_bpv_tmp += bpv;
       if (bpv > 64) {
@@ -956,7 +956,7 @@ class DirectMonotonicReader {
     for (uint32_t i = 0 ; i < meta.num_blocks ; ++i) {
       meta.mins[i] = meta_in->ReadInt64();
       meta.avgs[i] =
-        lucene::core::util::numeric::Float::IntBitsToFloat
+        lucene::core::util::Float::IntBitsToFloat
         (meta_in->ReadInt32());
       meta.offsets[i] = meta_in->ReadInt64();
       meta.bpvs[i] = meta_in->ReadByte();

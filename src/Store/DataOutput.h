@@ -83,7 +83,7 @@ class DataOutput {
   }
 
   void WriteInt32(const int32_t i) {
-    lucene::core::util::numeric::Int32AndBytes iab;
+    lucene::core::util::Int32AndBytes iab;
     iab.int32 = i;
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
@@ -100,7 +100,7 @@ class DataOutput {
   }
 
   void WriteInt16(const int16_t i) {
-    lucene::core::util::numeric::Int16AndBytes iab;
+    lucene::core::util::Int16AndBytes iab;
     iab.int16 = i;
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
@@ -128,7 +128,7 @@ class DataOutput {
   }
 
   void WriteInt64(const int64_t i) {
-    lucene::core::util::numeric::Int64AndBytes iab;
+    lucene::core::util::Int64AndBytes iab;
     iab.int64 = i;
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__

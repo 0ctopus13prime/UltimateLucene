@@ -18,6 +18,10 @@
 #ifndef SRC_DOCUMENT_FIELD_H_
 #define SRC_DOCUMENT_FIELD_H_
 
+// TEST
+#include <iostream>
+// TEST
+
 #include <Analysis/Attribute.h>
 #include <Analysis/TokenStream.h>
 #include <Index/DocValue.h>
@@ -195,7 +199,7 @@ class Field {
   std::variant<lucene::core::util::BytesRef,
                std::string,
                std::unique_ptr<lucene::core::analysis::Reader>,
-               lucene::core::util::numeric::Number> fields_data;
+               lucene::core::util::Number> fields_data;
   std::unique_ptr<lucene::core::analysis::TokenStream> tokenstream;
 
  protected:
@@ -238,6 +242,7 @@ class Field {
       tokenstream(tokenstream) {
   }
 
+  // Reference
   Field(const std::string& name,
         const char* value,
         const uint32_t length,
@@ -245,7 +250,7 @@ class Field {
     : Field(name, value, 0, length, type) {
   }
 
-
+  // Reference
   Field(const std::string& name,
         const char value[],
         const uint32_t offset,
@@ -344,6 +349,7 @@ class Field {
     throw std::runtime_error("Field data can not be assigned from Reader");
   }
 
+  // Reference
   virtual void SetBytesValue(const char value[], const uint32_t length) {
     SetBytesValue(lucene::core::util::BytesRef(value, 0, length));
   }
@@ -370,7 +376,7 @@ class Field {
 
   virtual void SetShortValue(const int16_t value) {
     if (auto org_value =
-          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -381,7 +387,7 @@ class Field {
 
   virtual void SetIntValue(const int32_t value) {
     if (auto org_value =
-          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -392,7 +398,7 @@ class Field {
 
   virtual void SetLongValue(const int64_t value) {
     if (auto org_value =
-        std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
+        std::get_if<lucene::core::util::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -403,7 +409,7 @@ class Field {
 
   virtual void SetFloatValue(const float value) {
     if (auto org_value =
-          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -414,7 +420,7 @@ class Field {
 
   virtual void SetDoubleValue(const double value) {
     if (auto org_value =
-          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::Number>(&fields_data)) {
       *org_value = value;
       return;
     }
@@ -452,10 +458,10 @@ class Field {
     return {};
   }
 
-  virtual std::optional<lucene::core::util::numeric::Number>
+  virtual std::optional<lucene::core::util::Number>
   NumericValue() {
     if (auto number =
-          std::get_if<lucene::core::util::numeric::Number>(&fields_data)) {
+          std::get_if<lucene::core::util::Number>(&fields_data)) {
       return *number;
     }
 
@@ -719,22 +725,22 @@ class StoredField : public Field {
 
   StoredField(const std::string& name, const int32_t value)
     : Field(name, TYPE) {
-      fields_data = lucene::core::util::numeric::Number(value);
+      fields_data = lucene::core::util::Number(value);
   }
 
   StoredField(const std::string& name, const int64_t value)
     : Field(name, TYPE) {
-      fields_data = lucene::core::util::numeric::Number(value);
+      fields_data = lucene::core::util::Number(value);
   }
 
   StoredField(const std::string& name, const float value)
     : Field(name, TYPE) {
-      fields_data = lucene::core::util::numeric::Number(value);
+      fields_data = lucene::core::util::Number(value);
   }
 
   StoredField(const std::string& name, const double value)
     : Field(name, TYPE) {
-      fields_data = lucene::core::util::numeric::Number(value);
+      fields_data = lucene::core::util::Number(value);
   }
 
   virtual ~StoredField() { }
@@ -746,7 +752,7 @@ class NumericDocValuesField : public Field {
 
   NumericDocValuesField(const std::string& name, const int64_t value)
     : Field(name, TYPE) {
-    fields_data = lucene::core::util::numeric::Number(value);
+    fields_data = lucene::core::util::Number(value);
   }
 
   virtual ~NumericDocValuesField() { }
@@ -760,14 +766,14 @@ class FloatDocValuesField : public NumericDocValuesField {
   FloatDocValuesField(const std::string& name, const float value)
     : NumericDocValuesField(
                 name,
-                lucene::core::util::numeric::Float::FloatToRawIntBits(value)) {
+                lucene::core::util::Float::FloatToRawIntBits(value)) {
   }
 
   virtual ~FloatDocValuesField() { }
 
   void SetFloatValue(const float value) {
     NumericDocValuesField::SetLongValue(
-                  lucene::core::util::numeric::Float::FloatToRawIntBits(value));
+                  lucene::core::util::Float::FloatToRawIntBits(value));
   }
 
   void SetLongValue(const int64_t) {
@@ -781,14 +787,14 @@ class DoubleDocValuesField : public NumericDocValuesField {
   DoubleDocValuesField(const std::string& name, const double value)
     : NumericDocValuesField(
               name,
-              lucene::core::util::numeric::Double::DoubleToRawLongBits(value)) {
+              lucene::core::util::Double::DoubleToRawLongBits(value)) {
   }
 
   virtual ~DoubleDocValuesField() { }
 
   void SetDoubleValue(const double value) {
     NumericDocValuesField::SetLongValue(
-      lucene::core::util::numeric::Double::DoubleToRawLongBits(value));
+      lucene::core::util::Double::DoubleToRawLongBits(value));
   }
 
   void SetLongValue(const int64_t) {
@@ -850,7 +856,7 @@ class SortedNumericDocValuesField : public Field {
  public:
   SortedNumericDocValuesField(const std::string& name, const int64_t value)
     : Field(name, TYPE) {
-    fields_data = lucene::core::util::numeric::Number(value);
+    fields_data = lucene::core::util::Number(value);
   }
 
   virtual ~SortedNumericDocValuesField() { }
@@ -906,7 +912,11 @@ class BinaryPoint : public Field {
        const uint32_t points_length,
        const uint32_t bytes_per_dim) {
     const uint32_t size = bytes_per_dim * points_length;
-    return lucene::core::util::BytesRef(points, 0, size);
+    lucene::core::util::BytesRef bytes_ref(
+      lucene::core::util::BytesRef::MakeOwner(size));
+    std::memcpy(bytes_ref.Bytes(), points, size); 
+    bytes_ref.SetLength(size);
+    return bytes_ref;
   }
 
  public:
@@ -954,7 +964,9 @@ class DoublePoint : public Field {
   Pack(const std::initializer_list<const double>& point) {
     const uint32_t size = point.size();
     const uint32_t packed_size = size * sizeof(double);
-    char packed[packed_size];
+    lucene::core::util::BytesRef
+      bytes_ref(lucene::core::util::BytesRef::MakeOwner(packed_size));
+    char* packed = bytes_ref.Bytes();
 
     uint32_t offset = 0;
     for (const double p : point) {
@@ -962,39 +974,40 @@ class DoublePoint : public Field {
       offset += sizeof(double);
     }
 
-    return lucene::core::util::BytesRef(packed, 0, packed_size);
+    bytes_ref.SetLength(packed_size);
+    return bytes_ref;
   }
 
  public:
   static void EncodeDimension(const double value,
                               char dest[],
                               const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::LongToSortableBytes(
-      lucene::core::util::numeric::NumericUtils::DoubleToSortableLong(value),
+    lucene::core::util::NumericUtils::LongToSortableBytes(
+      lucene::core::util::NumericUtils::DoubleToSortableLong(value),
       dest,
       offset);
   }
 
   static double DecodeDimension(const char value[],
                                 const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::SortableLongToDouble(
-      lucene::core::util::numeric::NumericUtils::SortableBytesToLong(value,
+    lucene::core::util::NumericUtils::SortableLongToDouble(
+      lucene::core::util::NumericUtils::SortableBytesToLong(value,
                                                                      offset));
   }
 
   static double NextUp(const double d) noexcept {
-    if (lucene::core::util::numeric::Double::DoubleToRawLongBits(d)
+    if (lucene::core::util::Double::DoubleToRawLongBits(d)
         != 0x8000000000000000 /*-0.0D*/) {
-      return lucene::core::util::numeric::NumericUtils::DoubleNextUp(d);
+      return lucene::core::util::NumericUtils::DoubleNextUp(d);
     } else {
       return +0.0D;
     }
   }
 
   static double NextDown(const double d) noexcept {
-    if (lucene::core::util::numeric::Double::DoubleToRawLongBits(d)
+    if (lucene::core::util::Double::DoubleToRawLongBits(d)
         != 0.0D) {
-      return lucene::core::util::numeric::NumericUtils::DoubleNextDown(d);
+      return lucene::core::util::NumericUtils::DoubleNextDown(d);
     } else {
       return -0.0D;
     }
@@ -1020,11 +1033,11 @@ class DoublePoint : public Field {
     std::invalid_argument("Cannot change value type from double to BytesRef");
   }
 
-  std::optional<lucene::core::util::numeric::Number> NumericValue() {
+  std::optional<lucene::core::util::Number> NumericValue() {
     lucene::core::util::BytesRef& bytes_ref =
     std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return lucene::core::util::numeric::Number(
+    return lucene::core::util::Number(
       DoublePoint::DecodeDimension(bytes_ref.Bytes(), bytes_ref.Offset()));
   }
 
@@ -1069,8 +1082,8 @@ class DoubleRange : public Field {
 
   static void
   Encode(const double val, char bytes[], const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::LongToSortableBytes(
-      lucene::core::util::numeric::NumericUtils::DoubleToSortableLong(val),
+    lucene::core::util::NumericUtils::LongToSortableBytes(
+      lucene::core::util::NumericUtils::DoubleToSortableLong(val),
       bytes,
       offset);
   }
@@ -1082,14 +1095,14 @@ class DoubleRange : public Field {
     for (uint32_t d = 0, i = 0, j = length * sizeof(double)
          ; d < length
          ; ++d, i += sizeof(double), j += sizeof(double)) {
-      if (lucene::core::util::numeric::Double::IsNaN(min[d])) {
+      if (lucene::core::util::Double::IsNaN(min[d])) {
         throw std::invalid_argument(std::string("Invalid min value(")
-                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + std::to_string(lucene::core::util::DoubleConsts::NaN)
                 + ") in DoubleRange");
       }
-      if (lucene::core::util::numeric::Double::IsNaN(max[d])) {
+      if (lucene::core::util::Double::IsNaN(max[d])) {
         throw std::invalid_argument(std::string("Invalid max value(")
-                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + std::to_string(lucene::core::util::DoubleConsts::NaN)
                 + ") in DoubleRange");
       }
       if (min[d] > max[d]) {
@@ -1113,20 +1126,18 @@ class DoubleRange : public Field {
   DecodeMin(const char bytes[], const uint32_t dimension) noexcept {
     const uint32_t offset = dimension * sizeof(double);
 
-    return lucene::core::util::numeric::NumericUtils::SortableLongToDouble(
-    lucene::core::util::numeric::NumericUtils::SortableBytesToLong(bytes,
-                                                                   offset));
+    return lucene::core::util::NumericUtils::SortableLongToDouble(
+    lucene::core::util::NumericUtils::SortableBytesToLong(bytes, offset));
   }
 
   static double DecodeMax(const char bytes[],
                           const uint32_t bytes_length,
                           const uint32_t dimension) noexcept {
     const uint32_t offset =
-    (bytes_length >> 1) + dimension * sizeof(double);
+      (bytes_length >> 1) + dimension * sizeof(double);
 
-    return lucene::core::util::numeric::NumericUtils::SortableLongToDouble(
-    lucene::core::util::numeric::NumericUtils::SortableBytesToLong(bytes,
-                                                                   offset));
+    return lucene::core::util::NumericUtils::SortableLongToDouble(
+    lucene::core::util::NumericUtils::SortableBytesToLong(bytes, offset));
   }
 
   // TODO(0ctopus13prime): Implement Query stuffs
@@ -1150,20 +1161,18 @@ class DoubleRange : public Field {
     lucene::core::util::BytesRef& bytes_ref =
       std::get<lucene::core::util::BytesRef>(fields_data);
 
-    const uint32_t required_min_capacity = sizeof(double) * 2 * length;
+    const uint32_t required_min_capacity = (sizeof(double) * 2 * length);
 
-    if (bytes_ref.Capacity() >= required_min_capacity) {
-      DoubleRange::VerifyAndEncode(min,
-                                   max,
-                                   length,
-                                   bytes_ref.Bytes());
-    } else {
-      bytes_ref = lucene::core::util::BytesRef(required_min_capacity);
-      DoubleRange::VerifyAndEncode(min,
-                                   max,
-                                   length,
-                                   bytes_ref.Bytes());
+    if (bytes_ref.Capacity() < required_min_capacity) {
+      bytes_ref = 
+        lucene::core::util::BytesRef::MakeOwner(required_min_capacity);
     }
+
+    DoubleRange::VerifyAndEncode(min,
+                                 max,
+                                 length,
+                                 bytes_ref.Bytes());
+    bytes_ref.SetLength(required_min_capacity);
   }
 
   double GetMin(const uint32_t dimension) noexcept {
@@ -1192,18 +1201,18 @@ class DoubleRange : public Field {
 class FloatPoint : public Field {
  public:
   static float NextUp(const float f) noexcept {
-    if (lucene::core::util::numeric::Float::FloatToIntBits(f)
+    if (lucene::core::util::Float::FloatToIntBits(f)
         != 0x80000000) {
-      return lucene::core::util::numeric::NumericUtils::FloatNextUp(f);
+      return lucene::core::util::NumericUtils::FloatNextUp(f);
     } else {
       return +0.0F;
     }
   }
 
   static float NextDown(const float f) noexcept {
-    if (lucene::core::util::numeric::Float::FloatToIntBits(f)
+    if (lucene::core::util::Float::FloatToIntBits(f)
         != 0) {
-      return lucene::core::util::numeric::NumericUtils::FloatNextDown(f);
+      return lucene::core::util::NumericUtils::FloatNextDown(f);
     } else {
       return -0.0F;
     }
@@ -1212,15 +1221,15 @@ class FloatPoint : public Field {
   static void EncodeDimension(const float value,
                               char dest[],
                               const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::IntToSortableBytes(
-      lucene::core::util::numeric::NumericUtils::FloatToSortableInt(value),
+    lucene::core::util::NumericUtils::IntToSortableBytes(
+      lucene::core::util::NumericUtils::FloatToSortableInt(value),
       dest, offset);
   }
 
   static float DecodeDimension(const char value[],
                                const uint32_t offset) noexcept {
-    return lucene::core::util::numeric::NumericUtils::SortableIntToFloat(
-      lucene::core::util::numeric::NumericUtils::SortableBytesToInt(value,
+    return lucene::core::util::NumericUtils::SortableIntToFloat(
+      lucene::core::util::NumericUtils::SortableBytesToInt(value,
                                                                     offset));
   }
 
@@ -1241,13 +1250,16 @@ class FloatPoint : public Field {
     }
 
     const uint32_t packed_size = length * sizeof(float);
-    char packed[packed_size];
+    lucene::core::util::BytesRef bytes_ref(
+      lucene::core::util::BytesRef::MakeOwner(packed_size));
+    char* packed = bytes_ref.Bytes();
 
     for (uint32_t dim = 0 ; dim < length ; ++dim) {
       FloatPoint::EncodeDimension(points[dim], packed, dim * sizeof(float));
     }
 
-    return lucene::core::util::BytesRef(packed, packed_size);
+    bytes_ref.SetLength(packed_size);
+    return bytes_ref;
   }
 
  public:
@@ -1284,11 +1296,11 @@ class FloatPoint : public Field {
                                 "from float to BytesRef");
   }
 
-  std::optional<lucene::core::util::numeric::Number> NumericValue() {
+  std::optional<lucene::core::util::Number> NumericValue() {
     lucene::core::util::BytesRef& bytes =
     std::get<lucene::core::util::BytesRef>(fields_data);
 
-    lucene::core::util::numeric::Number number(FloatPoint::DecodeDimension(
+    lucene::core::util::Number number(FloatPoint::DecodeDimension(
                                               bytes.Bytes(),
                                               bytes.Offset()));
     return number;
@@ -1322,8 +1334,8 @@ class FloatRange : public Field {
   static float
   DecodeMin(const char bytes[], const uint32_t dimension) noexcept {
     const uint32_t offset = dimension * sizeof(float);
-    return lucene::core::util::numeric::NumericUtils::SortableIntToFloat(
-    lucene::core::util::numeric::NumericUtils::SortableBytesToInt(bytes,
+    return lucene::core::util::NumericUtils::SortableIntToFloat(
+    lucene::core::util::NumericUtils::SortableBytesToInt(bytes,
                                                                   offset));
   }
 
@@ -1332,15 +1344,15 @@ class FloatRange : public Field {
             const uint32_t bytes_length,
             const uint32_t dimension) noexcept {
     const uint32_t offset = (bytes_length >> 1) + dimension * sizeof(float);
-    return lucene::core::util::numeric::NumericUtils::SortableIntToFloat(
-    lucene::core::util::numeric::NumericUtils::SortableBytesToInt(bytes,
+    return lucene::core::util::NumericUtils::SortableIntToFloat(
+    lucene::core::util::NumericUtils::SortableBytesToInt(bytes,
                                                                   offset));
   }
 
   static void
   Encode(const float val, char bytes[], const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::IntToSortableBytes(
-      lucene::core::util::numeric::NumericUtils::FloatToSortableInt(val),
+    lucene::core::util::NumericUtils::IntToSortableBytes(
+      lucene::core::util::NumericUtils::FloatToSortableInt(val),
       bytes,
       offset);
   }
@@ -1352,14 +1364,14 @@ class FloatRange : public Field {
     for (uint32_t d = 0, i = 0, j = length * sizeof(float)
          ; d < length
          ; ++d, i += sizeof(float), j += sizeof(float)) {
-      if (lucene::core::util::numeric::Double::IsNaN(min[d])) {
+      if (lucene::core::util::Double::IsNaN(min[d])) {
         throw std::invalid_argument(std::string("Invalid min value (")
-                + std::to_string(lucene::core::util::numeric::FloatConsts::NaN)
+                + std::to_string(lucene::core::util::FloatConsts::NaN)
                 + ") in FloatRange");
       }
-      if (lucene::core::util::numeric::Double::IsNaN(max[d])) {
+      if (lucene::core::util::Double::IsNaN(max[d])) {
         throw std::invalid_argument(std::string("Invalid max value (")
-                + std::to_string(lucene::core::util::numeric::FloatConsts::NaN)
+                + std::to_string(lucene::core::util::FloatConsts::NaN)
                 + ") in FloatRange");
       }
       if (min[d] > max[d]) {
@@ -1396,16 +1408,17 @@ class FloatRange : public Field {
     FloatRange::CheckArgs(min, max, length);
     if (length * 2 == type.dimension_count) {
       lucene::core::util::BytesRef& bytes_ref =
-      std::get<lucene::core::util::BytesRef>(fields_data);
+        std::get<lucene::core::util::BytesRef>(fields_data);
 
       const uint32_t required_min_capacity = sizeof(float) * 2 * length;
 
-      if (bytes_ref.Capacity() >= required_min_capacity) {
-        FloatRange::VerifyAndEncode(min, max, length, bytes_ref.Bytes());
-      } else {
-        bytes_ref = lucene::core::util::BytesRef(required_min_capacity);
-        FloatRange::VerifyAndEncode(min, max, length, bytes_ref.Bytes());
+      if (bytes_ref.Capacity() < required_min_capacity) {
+        bytes_ref =
+          lucene::core::util::BytesRef::MakeOwner(required_min_capacity);
       }
+
+      FloatRange::VerifyAndEncode(min, max, length, bytes_ref.Bytes());
+      bytes_ref.SetLength(required_min_capacity);
     } else {
       throw std::invalid_argument(std::string("Field (name=")
                                 + *name + ") uses"
@@ -1457,29 +1470,32 @@ class IntPoint : public Field {
     }
 
     const uint32_t packed_size = length * sizeof(int32_t);
-    char packed[packed_size];
+    lucene::core::util::BytesRef bytes_ref(
+      lucene::core::util::BytesRef::MakeOwner(packed_size));
+    char* packed = bytes_ref.Bytes();
 
     for (uint32_t dim = 0 ; dim < length ; ++dim) {
       IntPoint::EncodeDimension(points[dim], packed, dim * sizeof(int32_t));
     }
 
-    return lucene::core::util::BytesRef(packed, packed_size);
+    bytes_ref.SetLength(packed_size);
+    return bytes_ref;
   }
 
  public:
   static void EncodeDimension(const int32_t value,
                               char dest[],
                               const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::IntToSortableBytes(value,
-                                                                  dest,
-                                                                  offset);
+    lucene::core::util::NumericUtils::IntToSortableBytes(value,
+                                                         dest,
+                                                         offset);
   }
 
   static int32_t
   DecodeDimension(const char value[], const uint32_t offset) noexcept {
     return
-    lucene::core::util::numeric::NumericUtils::SortableBytesToInt(value,
-                                                                  offset);
+    lucene::core::util::NumericUtils::SortableBytesToInt(value,
+                                                         offset);
   }
 
  public:
@@ -1512,11 +1528,11 @@ class IntPoint : public Field {
     std::invalid_argument("Cannot change value type from int to BtyesRef");
   }
 
-  std::optional<lucene::core::util::numeric::Number> NumericValue() {
+  std::optional<lucene::core::util::Number> NumericValue() {
     lucene::core::util::BytesRef& bytesref =
     std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return lucene::core::util::numeric::Number(
+    return lucene::core::util::Number(
       IntPoint::DecodeDimension(bytesref.Bytes(), bytesref.Offset()));
   }
 };
@@ -1557,14 +1573,14 @@ class IntRange : public Field {
     for (uint32_t d = 0, i = 0, j = length * sizeof(int32_t)
          ; d < length
          ; ++d, i += sizeof(int32_t), j += sizeof(int32_t)) {
-      if (lucene::core::util::numeric::Double::IsNaN(min[d])) {
+      if (lucene::core::util::Double::IsNaN(min[d])) {
         throw std::invalid_argument(std::string("Invalid min value (")
-                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + std::to_string(lucene::core::util::DoubleConsts::NaN)
                 + ") in IntRange");
       }
-      if (lucene::core::util::numeric::Double::IsNaN(max[d])) {
+      if (lucene::core::util::Double::IsNaN(max[d])) {
         throw std::invalid_argument(std::string("Invalid max value (")
-                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + std::to_string(lucene::core::util::DoubleConsts::NaN)
                 + ") in IntRange");
       }
       if (min[d] > max[d]) {
@@ -1586,7 +1602,7 @@ class IntRange : public Field {
 
   static void
   Encode(const int32_t val, char bytes[], const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::IntToSortableBytes(val,
+    lucene::core::util::NumericUtils::IntToSortableBytes(val,
                                                                   bytes,
                                                                   offset);
   }
@@ -1595,7 +1611,7 @@ class IntRange : public Field {
                            const uint32_t dimension) noexcept {
     const uint32_t offset = dimension * sizeof(int32_t);
     return
-    lucene::core::util::numeric::NumericUtils::SortableBytesToInt(bytes,
+    lucene::core::util::NumericUtils::SortableBytesToInt(bytes,
                                                                   offset);
   }
 
@@ -1604,7 +1620,7 @@ class IntRange : public Field {
                            const uint32_t dimension) noexcept {
     const uint32_t offset = (bytes_length >> 1) + dimension * sizeof(int32_t);
     return
-    lucene::core::util::numeric::NumericUtils::SortableBytesToInt(bytes,
+    lucene::core::util::NumericUtils::SortableBytesToInt(bytes,
                                                                   offset);
   }
 
@@ -1639,10 +1655,11 @@ class IntRange : public Field {
     const uint32_t minimum_required = length * 2 * sizeof(int32_t);
 
     if (bytes_ref.Capacity() < minimum_required) {
-      bytes_ref = lucene::core::util::BytesRef(minimum_required);
+      bytes_ref = lucene::core::util::BytesRef::MakeOwner(minimum_required);
     }
 
     IntRange::VerifyAndEncode(min, max, length, bytes_ref.Bytes());
+    bytes_ref.SetLength(minimum_required);
   }
 
   int32_t GetMin(const uint32_t dimension) noexcept {
@@ -1683,27 +1700,30 @@ class LongPoint : public Field {
     }
 
     const uint32_t packed_size = length * sizeof(int64_t);
-    char packed[packed_size];
+    lucene::core::util::BytesRef bytes_ref(
+      lucene::core::util::BytesRef::MakeOwner(packed_size));
+    char* packed = bytes_ref.Bytes();
 
     for (int32_t dim = 0 ; dim < length ; dim++) {
       LongPoint::EncodeDimension(points[dim], packed, dim * sizeof(int64_t));
     }
 
-    return lucene::core::util::BytesRef(packed, packed_size);
+    bytes_ref.SetLength(packed_size);
+    return bytes_ref;
   }
 
  public:
   static void EncodeDimension(const int64_t value,
                               char dest[],
                               const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::LongToSortableBytes(value,
+    lucene::core::util::NumericUtils::LongToSortableBytes(value,
                                                                    dest,
                                                                    offset);
   }
 
   static int64_t
   DecodeDimension(const char value[], const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::SortableBytesToLong(value,
+    lucene::core::util::NumericUtils::SortableBytesToLong(value,
                                                                    offset);
   }
 
@@ -1738,11 +1758,11 @@ class LongPoint : public Field {
                                 "long to BytesRef");
   }
 
-  std::optional<lucene::core::util::numeric::Number> NumericValue() {
+  std::optional<lucene::core::util::Number> NumericValue() {
     lucene::core::util::BytesRef& bytesref =
     std::get<lucene::core::util::BytesRef>(fields_data);
 
-    return lucene::core::util::numeric::Number(
+    return lucene::core::util::Number(
     LongPoint::DecodeDimension(bytesref.Bytes(), bytesref.Offset()));
   }
 
@@ -1776,24 +1796,20 @@ class LongRange : public Field {
   static void Encode(const int64_t val,
                      char bytes[],
                      const uint32_t offset) noexcept {
-    lucene::core::util::numeric::NumericUtils::LongToSortableBytes(val,
-                                                                   bytes,
-                                                                   offset);
+    lucene::core::util::NumericUtils::LongToSortableBytes(val, bytes, offset);
   }
 
   static int64_t
   DecodeMin(const char bytes[], const uint32_t dimension) noexcept {
     const uint32_t offset = dimension * sizeof(int64_t);
-    lucene::core::util::numeric::NumericUtils::SortableBytesToLong(bytes,
-                                                                   offset);
+    lucene::core::util::NumericUtils::SortableBytesToLong(bytes, offset);
   }
 
   static int64_t DecodeMax(const char bytes[],
                            const uint32_t bytes_length,
                            const uint32_t dimension) noexcept {
     const uint32_t offset = (bytes_length >> 1) + dimension * sizeof(int64_t);
-    lucene::core::util::numeric::NumericUtils::SortableBytesToLong(bytes,
-                                                                   offset);
+    lucene::core::util::NumericUtils::SortableBytesToLong(bytes, offset);
   }
 
   static void VerifyAndEncode(const int64_t min[],
@@ -1803,14 +1819,14 @@ class LongRange : public Field {
     for (uint32_t d = 0, i = 0, j = length * sizeof(int64_t)
          ; d < length
          ; ++d, i += sizeof(int64_t), j += sizeof(int64_t)) {
-      if (lucene::core::util::numeric::Double::IsNaN(min[d])) {
+      if (lucene::core::util::Double::IsNaN(min[d])) {
         throw std::invalid_argument(std::string("Invalid min value (")
-                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + std::to_string(lucene::core::util::DoubleConsts::NaN)
                 + ") in LongRange");
       }
-      if (lucene::core::util::numeric::Double::IsNaN(max[d])) {
+      if (lucene::core::util::Double::IsNaN(max[d])) {
         throw std::invalid_argument(std::string("Invalid max value (")
-                + std::to_string(lucene::core::util::numeric::DoubleConsts::NaN)
+                + std::to_string(lucene::core::util::DoubleConsts::NaN)
                 + ") in LongRange");
       }
       if (min[d] > max[d]) {
@@ -1852,10 +1868,11 @@ class LongRange : public Field {
 
       const uint32_t minimum_required = length * 2 * sizeof(int64_t);
       if (bytes_ref.Capacity() < minimum_required) {
-        bytes_ref = lucene::core::util::BytesRef(minimum_required);
+        bytes_ref = lucene::core::util::BytesRef::MakeOwner(minimum_required);
       }
 
       LongRange::VerifyAndEncode(min, max, length, bytes_ref.Bytes());
+      bytes_ref.SetLength(minimum_required);
     } else {
       throw std::invalid_argument(std::string("Field (name=")
                                 + *name + ") uses "

@@ -537,7 +537,7 @@ class MonotonicBlockPackedWriter: public AbstractBlockPackedWriter {
     }
 
     out->WriteZInt64(min);
-    out->WriteInt32(lucene::core::util::numeric::Float::FloatToIntBits(avg));
+    out->WriteInt32(lucene::core::util::Float::FloatToIntBits(avg));
     if (max_delta == 0) {
       out->WriteVInt32(0);
     } else {
@@ -592,7 +592,7 @@ class DirectMonotonicWriter {
       });
 
     meta->WriteInt64(min);
-    meta->WriteInt32(lucene::core::util::numeric::
+    meta->WriteInt32(lucene::core::util::
                      Float::FloatToIntBits(avg_inc));
     meta->WriteInt64(data->GetFilePointer() - base_data_pointer);
     if (max_delta == 0) {

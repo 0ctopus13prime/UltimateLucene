@@ -156,7 +156,7 @@ TEST(ATTRIBUTES__IMPL__TESTS, PositionIncrementAttributeImpl) {
 TEST(ATTRIBUTES__IMPL__TESTS, PayloadAttributeImpl) {
   // Basic
   PayloadAttributeImpl payload_attr_impl1;
-  BytesRef bref("Doochi's bytesref!");
+  BytesRef bref(BytesRef::MakeOwner("Doochi's bytesref!"));
   payload_attr_impl1.SetPayload(bref);
   BytesRef got_bref = payload_attr_impl1.GetPayload();
   EXPECT_EQ(bref, got_bref);
@@ -240,10 +240,10 @@ TEST(ATTRIBUTES__IMPL__TESTS, KeywordAttributeImpl) {
 TEST(ATTRIBUTES__IMPL__TESTS, BytesTermAttributeImpl) {
   // Basic
   BytesTermAttributeImpl bytes_term_attr_impl1;
-  BytesRef bref("Doochi's bytes ref!");
+  BytesRef bref(BytesRef::MakeOwner("Doochi's bytes ref!"));
   bytes_term_attr_impl1.SetBytesRef(bref);
-  BytesRef& got = bytes_term_attr_impl1.GetBytesRef();
-  EXPECT_EQ(bref, got);
+  BytesRef& got1 = bytes_term_attr_impl1.GetBytesRef();
+  EXPECT_EQ(bref, got1);
 
   // Cloned
   BytesTermAttributeImpl* cloned =
@@ -255,20 +255,20 @@ TEST(ATTRIBUTES__IMPL__TESTS, BytesTermAttributeImpl) {
   // Shallow copied
   BytesTermAttributeImpl shallow_copied;
   bytes_term_attr_impl1.ShallowCopyTo(shallow_copied);
-  got = shallow_copied.GetBytesRef();
-  EXPECT_EQ(bref, got);
+  BytesRef& got2 = shallow_copied.GetBytesRef();
+  EXPECT_EQ(bref, got2);
   EXPECT_EQ(bytes_term_attr_impl1, shallow_copied);
 
   // Copy constructor
   BytesTermAttributeImpl bytes_term_attr_impl2(bytes_term_attr_impl1);
-  got = bytes_term_attr_impl2.GetBytesRef();
-  EXPECT_EQ(bref, got);
+  BytesRef& got3 = bytes_term_attr_impl2.GetBytesRef();
+  EXPECT_EQ(bref, got3);
   EXPECT_EQ(bytes_term_attr_impl1, bytes_term_attr_impl2);
 
   // Copy assignment
   BytesTermAttributeImpl bytes_term_attr_impl3 = bytes_term_attr_impl2;
-  got = bytes_term_attr_impl3.GetBytesRef();
-  EXPECT_EQ(bref, got);
+  BytesRef& got4 = bytes_term_attr_impl3.GetBytesRef();
+  EXPECT_EQ(bref, got4);
   EXPECT_EQ(bytes_term_attr_impl2, bytes_term_attr_impl3);
 }
 
@@ -343,7 +343,7 @@ TEST(ATTRIBUTES__IMPL__TESTS, CharTermAttributeImpl__BASIC) {
 
   // GetBytesRef, Clear
   BytesRef& got_bref = ct_attr_impl.GetBytesRef();
-  EXPECT_EQ(BytesRef(all), got_bref);
+  EXPECT_EQ(BytesRef::MakeOwner(all), got_bref);
 
   ct_attr_impl.Clear();
   EXPECT_EQ(0, ct_attr_impl.Length());

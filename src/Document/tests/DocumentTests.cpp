@@ -172,7 +172,7 @@ TEST(DOCUMENT__TESTS, DOC__OPERATION__TEST) {
 
   // SortedSetDocValuesField
   std::string sorted_set_dv_f("sorted_set_dv");
-  BytesRef sorted_set_dv_val("foo");
+  BytesRef sorted_set_dv_val(BytesRef::MakeOwner("foo"));
   document.Add(SortedSetDocValuesField(sorted_set_dv_f, sorted_set_dv_val));
 
   // BinaryPoint

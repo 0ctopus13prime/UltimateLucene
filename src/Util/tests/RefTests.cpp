@@ -31,7 +31,7 @@ TEST(BYTESREF__TESTS, BASIC__TEST) {
   std::string name = "doochi";
   
   // Copy name
-  BytesRef bytes_ref(name);
+  BytesRef bytes_ref(BytesRef::MakeOwner(name));
 
   ASSERT_EQ(0, bytes_ref.Offset());
   ASSERT_EQ(6, bytes_ref.Length());
@@ -43,13 +43,13 @@ TEST(BYTESREF__TESTS, BASIC__TEST) {
 TEST(BYTESREF__TESTS, SHALLOW__COPY__DEEP__COPY__FOR__EMPTY__INSTANCE) {
   // Shallow copy
   std::string data = "doochi";
-  BytesRef bytes_ref1(data); // Owning
+  BytesRef bytes_ref1(BytesRef::MakeOwner(data)); // Owning
   ASSERT_EQ(bytes_ref1.Offset(), 0);
   ASSERT_EQ(bytes_ref1.Length(), data.size());
   ASSERT_EQ(bytes_ref1.Capacity(), data.size());
 
-  BytesRef shared_bytes_ref2; // Reference
-  BytesRef::MakeReference(shared_bytes_ref2, bytes_ref1); // Shallow copy
+  // Reference
+  BytesRef shared_bytes_ref2(BytesRef::MakeReference(bytes_ref1));
   ASSERT_EQ(shared_bytes_ref2.Offset(), 0);
   ASSERT_EQ(shared_bytes_ref2.Length(), data.size());
   ASSERT_EQ(shared_bytes_ref2.Capacity(), data.size());
@@ -67,9 +67,9 @@ TEST(BYTESREF__TESTS, SHALLOW__COPY__DEEP__COPY__FOR__EMPTY__INSTANCE) {
 TEST(BYTESREF__TESTS, SHALLOW__COPY__DEEP__COPY) {
   // Shallow copy
   std::string str = "doochi";
-  BytesRef bytes_ref1(str); // Owning
-  BytesRef shared_bytes_ref2;
-  BytesRef::MakeReference(shared_bytes_ref2, bytes_ref1); // Shallow copy
+  BytesRef bytes_ref1(BytesRef::MakeOwner(str)); // Owning
+  // Shallow copy
+  BytesRef shared_bytes_ref2(BytesRef::MakeReference(bytes_ref1));
 
   // Shallow case, Change single character at 0 index
   bytes_ref1.Bytes()[0] = 'x';
@@ -85,8 +85,8 @@ TEST(BYTESREF__TESTS, SHALLOW__COPY__DEEP__COPY) {
   BytesRef bytes_ref3 = bytes_ref2;  // Deep copy
   ASSERT_EQ(bytes_ref3, bytes_ref2);
 
-  BytesRef shared_bytes_ref3;
-  BytesRef::MakeReference(shared_bytes_ref3, bytes_ref3); // Shallow copy
+  // Shallow copy
+  BytesRef shared_bytes_ref3(BytesRef::MakeReference(bytes_ref3));
 
   ASSERT_EQ(shared_bytes_ref3, bytes_ref2);
 }
@@ -95,17 +95,18 @@ TEST(BYTESREF__TESTS, EQ__COMPARE) {
   // Compare tests
   std::string str1 = "doochi stupid";
 
-  BytesRef bytes_ref1(str1);  // Owning
-  BytesRef shared_bytes_ref1;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref1, bytes_ref1); // Shallow copy
-  BytesRef bytes_ref1_cp;
-  BytesRef::MakeOwner(bytes_ref1_cp, bytes_ref1);  // Owning
+  // Owning
+  BytesRef bytes_ref1(BytesRef::MakeOwner(str1));
+  // Shallow copy
+  BytesRef shared_bytes_ref1(BytesRef::MakeReference(bytes_ref1));
+  // Owning
+  BytesRef bytes_ref1_cp(BytesRef::MakeOwner(bytes_ref1));
 
-  BytesRef bytes_ref2(str1); // Owning
-  BytesRef shared_bytes_ref2;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref2, bytes_ref2); // Shallow copy
-  BytesRef bytes_ref2_cp;
-  BytesRef::MakeOwner(bytes_ref2_cp, bytes_ref2);  // Owning
+  BytesRef bytes_ref2(BytesRef::MakeOwner(str1)); // Owning
+  // Shallow copy
+  BytesRef shared_bytes_ref2(BytesRef::MakeReference(bytes_ref2));
+  // Owning
+  BytesRef bytes_ref2_cp(BytesRef::MakeOwner(bytes_ref2));
 
   ASSERT_EQ(bytes_ref1, bytes_ref1);
   ASSERT_EQ(bytes_ref1, bytes_ref2);
@@ -127,13 +128,13 @@ TEST(BYTESREF__TESTS, NOT__EQ__TEST) {
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
 
-  BytesRef bytes_ref1(str1);  // Owning
-  BytesRef shared_bytes_ref1; // Reference
-  BytesRef::MakeReference(shared_bytes_ref1, bytes_ref1); // Shallow copy
+  BytesRef bytes_ref1(BytesRef::MakeOwner(str1));  // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref1(BytesRef::MakeReference(bytes_ref1)); 
 
-  BytesRef bytes_ref2(str2);  // Owning
-  BytesRef shared_bytes_ref2;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref2, bytes_ref2); // Shallow copy
+  BytesRef bytes_ref2(BytesRef::MakeOwner(str2));  // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref2(BytesRef::MakeReference(bytes_ref2)); 
 
   ASSERT_NE(bytes_ref1, bytes_ref2);
   ASSERT_NE(bytes_ref1, shared_bytes_ref2);
@@ -146,22 +147,22 @@ TEST(BYTESREF__TESTS, LESS__THEN__TEST) {
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
 
-  BytesRef bytes_ref1(str1);  // Owning
-  BytesRef shared_bytes_ref1;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref1, bytes_ref1); // Shallow copy
+  BytesRef bytes_ref1(BytesRef::MakeOwner(str1));  // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref1(BytesRef::MakeReference(bytes_ref1)); 
 
-  BytesRef bytes_ref2(str2);  // Owning
-  BytesRef shared_bytes_ref2;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref2, bytes_ref2); // Shallow copy
+  BytesRef bytes_ref2(BytesRef::MakeOwner(str2));  // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref2(BytesRef::MakeReference(bytes_ref2));
 
   ASSERT_LT(bytes_ref1, bytes_ref2);
   ASSERT_LT(bytes_ref1, shared_bytes_ref2);
   ASSERT_LT(shared_bytes_ref1, bytes_ref2);
   ASSERT_LT(shared_bytes_ref1, shared_bytes_ref2);
 
-  BytesRef bytes_ref3(str3);  // Owning
-  BytesRef shared_bytes_ref3;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref3, bytes_ref3); // Shallow copy
+  BytesRef bytes_ref3(BytesRef::MakeOwner(str3));  // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref3(BytesRef::MakeReference(bytes_ref3));
 
   ASSERT_LT(bytes_ref1, bytes_ref3);
   ASSERT_LT(bytes_ref1, shared_bytes_ref3);
@@ -174,22 +175,22 @@ TEST(BYTESREF__TESTS, LESS__OR__EQ__TEST) {
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
 
-  BytesRef bytes_ref1(str1); // Owning
-  BytesRef shared_bytes_ref1; // Reference
-  BytesRef::MakeReference(shared_bytes_ref1, bytes_ref1); // Shallow copy
+  BytesRef bytes_ref1(BytesRef::MakeOwner(str1)); // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref1(BytesRef::MakeReference(bytes_ref1));
 
-  BytesRef bytes_ref2(str2);  // Owning
-  BytesRef shared_bytes_ref2;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref2, bytes_ref2); // Shallow copy
+  BytesRef bytes_ref2(BytesRef::MakeOwner(str2));  // Owning
+  // Reference
+  BytesRef shared_bytes_ref2(BytesRef::MakeReference(bytes_ref2));
 
   ASSERT_LE(bytes_ref1, bytes_ref2);
   ASSERT_LE(bytes_ref1, shared_bytes_ref2);
   ASSERT_LE(shared_bytes_ref1, bytes_ref2);
   ASSERT_LE(shared_bytes_ref1, shared_bytes_ref2);
 
-  BytesRef bytes_ref3(str3);  // Owning
-  BytesRef shared_bytes_ref3;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref3, bytes_ref3); // Shallow copy
+  BytesRef bytes_ref3(BytesRef::MakeOwner(str3));  // Owning
+  // Reference
+  BytesRef shared_bytes_ref3(BytesRef::MakeReference(bytes_ref3));
   ASSERT_LE(bytes_ref1, bytes_ref3);
   ASSERT_LE(bytes_ref1, shared_bytes_ref3);
   ASSERT_LE(shared_bytes_ref1, bytes_ref3);
@@ -201,22 +202,22 @@ TEST(BYTESREF__TESTS, GREATER__THEN__TEST) {
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
 
-  BytesRef bytes_ref1(str1);  // Owning
-  BytesRef shared_bytes_ref1;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref1, bytes_ref1); // Shallow copy
+  BytesRef bytes_ref1(BytesRef::MakeOwner(str1));  // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref1(BytesRef::MakeReference(bytes_ref1));
 
-  BytesRef bytes_ref2(str2);  // Owning
-  BytesRef shared_bytes_ref2;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref2, bytes_ref2); // Shallow copy
+  BytesRef bytes_ref2(BytesRef::MakeOwner(str2));  // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref2(BytesRef::MakeReference(bytes_ref2));
 
   ASSERT_GT(bytes_ref2, bytes_ref1);
   ASSERT_GT(bytes_ref2, shared_bytes_ref1);
   ASSERT_GT(shared_bytes_ref2, bytes_ref1);
   ASSERT_GT(shared_bytes_ref2, shared_bytes_ref1);
 
-  BytesRef bytes_ref3(str3);  // Owning
-  BytesRef shared_bytes_ref3;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref3, bytes_ref3); // Shallow copy
+  BytesRef bytes_ref3(BytesRef::MakeOwner(str3));  // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref3(BytesRef::MakeReference(bytes_ref3));
 
   ASSERT_GT(bytes_ref3, bytes_ref1);
   ASSERT_GT(bytes_ref3, shared_bytes_ref1);
@@ -229,22 +230,22 @@ TEST(BYTESREF__TESTS, GREATER__OR__EQ__TEST) {
   std::string str2 = str1 + " suffix";
   std::string str3 = "ugly doochi";
 
-  BytesRef bytes_ref1(str1); // Owning
-  BytesRef shared_bytes_ref1;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref1, bytes_ref1); // Shallow copy
+  BytesRef bytes_ref1(BytesRef::MakeOwner(str1)); // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref1(BytesRef::MakeReference(bytes_ref1));
 
-  BytesRef bytes_ref2(str2); // Owngin
-  BytesRef shared_bytes_ref2;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref2, bytes_ref2); // Shallow copy
+  BytesRef bytes_ref2(BytesRef::MakeOwner(str2)); // Owngin
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref2(BytesRef::MakeReference(bytes_ref2));
 
   ASSERT_GE(bytes_ref2, bytes_ref1);
   ASSERT_GE(bytes_ref2, shared_bytes_ref1);
   ASSERT_GE(shared_bytes_ref2, bytes_ref1);
   ASSERT_GE(shared_bytes_ref2, shared_bytes_ref1);
 
-  BytesRef bytes_ref3(str3);  // Owning
-  BytesRef shared_bytes_ref3;  // Reference
-  BytesRef::MakeReference(shared_bytes_ref3, bytes_ref3); // Shallow copy
+  BytesRef bytes_ref3(BytesRef::MakeOwner(str3));  // Owning
+  // Reference, Shallow copy
+  BytesRef shared_bytes_ref3(BytesRef::MakeReference(bytes_ref3)); 
 
   ASSERT_GE(bytes_ref3, bytes_ref1);
   ASSERT_GE(bytes_ref3, shared_bytes_ref1);
@@ -257,7 +258,7 @@ TEST(BYTESREF__TESTS, RELATION__TEST) {
 
   // Move ctor, ownership transfer
   {
-    BytesRef bytes_ref1(str);  // Owning
+    BytesRef bytes_ref1(BytesRef::MakeOwner(str));  // Owning
     BytesRef bytes_ref2(std::move(bytes_ref1));  // Move, Owning
     BytesRef bytes_ref3(std::move(bytes_ref2));  // Move, Owning
 
@@ -271,7 +272,7 @@ TEST(BYTESREF__TESTS, RELATION__TEST) {
 
   // Copy ctor, dual ownership
   {
-    BytesRef bytes_ref1(str);  // Owning
+    BytesRef bytes_ref1(BytesRef::MakeOwner(str));  // Owning
     BytesRef bytes_ref2(bytes_ref1);  // Owning
     BytesRef bytes_ref3(bytes_ref2);  // Owning
 
@@ -288,7 +289,7 @@ TEST(BYTESREF__TESTS, RELATION__TEST) {
     BytesRef bytes_ref1(str.c_str(), 0, str.size(), str.size());  // Reference
     BytesRef bytes_ref2(str.c_str(), 0, str.size());  // Reference
     BytesRef bytes_ref3(str.c_str(), str.size());  // Reference
-    BytesRef bytes_ref4(str);  // Owning
+    BytesRef bytes_ref4(BytesRef::MakeOwner(str));  // Owning
 
     ASSERT_EQ(bytes_ref1, bytes_ref2);
     ASSERT_EQ(bytes_ref1, bytes_ref3);
@@ -298,7 +299,7 @@ TEST(BYTESREF__TESTS, RELATION__TEST) {
     ASSERT_EQ(bytes_ref3, bytes_ref4);
 
     const uint32_t capacity = str.size();
-    BytesRef bytes_ref5(capacity);  // Owning
+    BytesRef bytes_ref5(BytesRef::MakeOwner(capacity));  // Owning
 
     ASSERT_EQ(str.size(), bytes_ref5.Capacity());
     ASSERT_EQ(0, bytes_ref5.Offset());
@@ -306,7 +307,7 @@ TEST(BYTESREF__TESTS, RELATION__TEST) {
 
   // operator = copy
   {
-    BytesRef bytes_ref1(str);  // Owning
+    BytesRef bytes_ref1(BytesRef::MakeOwner(str));  // Owning
     BytesRef bytes_ref2 = bytes_ref1;  // Owning
     ASSERT_EQ(bytes_ref1, bytes_ref2);
     ASSERT_EQ(bytes_ref2.Length(), bytes_ref1.Length());
@@ -317,7 +318,7 @@ TEST(BYTESREF__TESTS, RELATION__TEST) {
 
   // operator = move
   {
-    BytesRef bytes_ref1(str);  // Owning
+    BytesRef bytes_ref1(BytesRef::MakeOwner(str));  // Owning
     // Ownership transfer bytes_ref1 -> bytes_ref2
     BytesRef bytes_ref2 = std::move(bytes_ref1);  
     ASSERT_EQ(bytes_ref1, bytes_ref2);
@@ -348,8 +349,7 @@ TEST(INTSREF__TESTS, BASIC__TEST1) {
   ASSERT_EQ(ints_ref1, ints_ref2);
 
   // Reference, by move ctor
-  IntsRef ints_ref3;
-  IntsRef::MakeReference(ints_ref3, ints_ref2);
+  IntsRef ints_ref3(IntsRef::MakeReference(ints_ref2));
   ASSERT_EQ(ints_ref2.Ints(), ints_ref3.Ints());
   ASSERT_EQ(0, ints_ref3.Offset());
   ASSERT_EQ(10, ints_ref3.Length());
@@ -357,8 +357,7 @@ TEST(INTSREF__TESTS, BASIC__TEST1) {
   ASSERT_EQ(ints_ref2, ints_ref3);
 
   // Owning, by static helper method
-  IntsRef ints_ref4;
-  IntsRef::MakeOwner(ints_ref4, ints_ref3);
+  IntsRef ints_ref4(IntsRef::MakeOwner(ints_ref3));
   ASSERT_NE(ints_ref3.Ints(), ints_ref4.Ints());
   ASSERT_EQ(0, ints_ref4.Offset());
   ASSERT_EQ(10, ints_ref4.Length());
@@ -366,8 +365,7 @@ TEST(INTSREF__TESTS, BASIC__TEST1) {
   ASSERT_EQ(ints_ref3, ints_ref4);
 
   // Owning, by copy ctor
-  IntsRef ints_ref5;
-  IntsRef::MakeOwner(ints_ref5, ints_ref4);
+  IntsRef ints_ref5(IntsRef::MakeOwner(ints_ref4));
   ASSERT_NE(ints_ref4.Ints(), ints_ref5.Ints());
   ASSERT_EQ(0, ints_ref5.Offset());
   ASSERT_EQ(10, ints_ref5.Length());
@@ -392,8 +390,7 @@ TEST(INTSREF__TESTS, BASIC__TEST2) {
   ASSERT_EQ(ints_ref1, ints_ref2);
 
   // Owning, by helper method
-  IntsRef ints_ref3;
-  IntsRef::MakeOwner(ints_ref3, ints_ref2);
+  IntsRef ints_ref3(IntsRef::MakeOwner(ints_ref2));
 
   // Reference, ints_ref2 is a reference
   IntsRef ints_ref4(ints_ref2);
@@ -474,8 +471,7 @@ TEST(LONGSREF__TESTS, BASIC__TEST1) {
   ASSERT_EQ(longs_ref1, longs_ref2);
 
   // Reference, by move ctor
-  LongsRef longs_ref3;
-  LongsRef::MakeReference(longs_ref3, longs_ref2);
+  LongsRef longs_ref3(LongsRef::MakeReference(longs_ref2));
   ASSERT_EQ(longs_ref2.Longs(), longs_ref3.Longs());
   ASSERT_EQ(0, longs_ref3.Offset());
   ASSERT_EQ(10, longs_ref3.Length());
@@ -483,8 +479,7 @@ TEST(LONGSREF__TESTS, BASIC__TEST1) {
   ASSERT_EQ(longs_ref2, longs_ref3);
 
   // Owning, by static helper method
-  LongsRef longs_ref4;
-  LongsRef::MakeOwner(longs_ref4, longs_ref3);
+  LongsRef longs_ref4(LongsRef::MakeOwner(longs_ref3));
   ASSERT_NE(longs_ref3.Longs(), longs_ref4.Longs());
   ASSERT_EQ(0, longs_ref4.Offset());
   ASSERT_EQ(10, longs_ref4.Length());
@@ -492,8 +487,7 @@ TEST(LONGSREF__TESTS, BASIC__TEST1) {
   ASSERT_EQ(longs_ref3, longs_ref4);
 
   // Owning, by copy ctor
-  LongsRef longs_ref5;
-  LongsRef::MakeOwner(longs_ref5, longs_ref4);
+  LongsRef longs_ref5(LongsRef::MakeOwner(longs_ref4));
   ASSERT_NE(longs_ref4.Longs(), longs_ref5.Longs());
   ASSERT_EQ(0, longs_ref5.Offset());
   ASSERT_EQ(10, longs_ref5.Length());
@@ -518,8 +512,7 @@ TEST(LONGSREF__TESTS, BASIC__TEST2) {
   ASSERT_EQ(longs_ref1, longs_ref2);
 
   // Owning, by helper method
-  LongsRef longs_ref3;
-  LongsRef::MakeOwner(longs_ref3, longs_ref2);
+  LongsRef longs_ref3(LongsRef::MakeOwner(longs_ref2));
 
   // Reference, longs_ref2 is a reference
   LongsRef longs_ref4(longs_ref2);
@@ -619,7 +612,7 @@ TEST(BYTES__BUILDER__TEST, BASIC__TESTS) {
 
 TEST(INTS__BUILDER__TEST, BASIC__TESTS) {
   std::string data("doochi BytesRefBuilder");
-  BytesRef bytes_ref1(data);
+  BytesRef bytes_ref1(BytesRef::MakeOwner(data));
   IntsRefBuilder builder; 
   builder.CopyUTF8Bytes(bytes_ref1);
   // Ascii. Size must be equal

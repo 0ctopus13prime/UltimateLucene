@@ -19,12 +19,12 @@
 #include <gtest/gtest.h>
 #include <iostream>
 
-using lucene::core::util::numeric::Float;
-using lucene::core::util::numeric::FloatConsts;
-using lucene::core::util::numeric::Double;
-using lucene::core::util::numeric::DoubleConsts;
-using lucene::core::util::numeric::Number;
-using lucene::core::util::numeric::NumericUtils;
+using lucene::core::util::Float;
+using lucene::core::util::FloatConsts;
+using lucene::core::util::Double;
+using lucene::core::util::DoubleConsts;
+using lucene::core::util::Number;
+using lucene::core::util::NumericUtils;
 
 TEST(NUMERIC__TESTS, FLOAT__TESTS) {
   float nan = 0.0F / 0.0F;

@@ -100,7 +100,7 @@ void BytesTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
   try {
     BytesTermAttributeImpl& other =
       dynamic_cast<BytesTermAttributeImpl&>(attr_impl);
-    BytesRef::MakeReference(bytes, other.bytes);
+    other.bytes = BytesRef::MakeReference(bytes);
   } catch(std::bad_cast& e) {
     throw std::invalid_argument("Shallow copy failed. "
                                 + std::string(typeid(*this).name())
@@ -392,7 +392,7 @@ void PayloadAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     PayloadAttributeImpl& other =
       dynamic_cast<PayloadAttributeImpl&>(attr_impl);
     
-    BytesRef::MakeReference(other.payload, payload);
+    other.payload = BytesRef::MakeReference(payload);
   } catch(std::bad_cast& e) {
     throw std::invalid_argument("Shallow copy failed. "
                                 + std::string(typeid(*this).name())
@@ -889,7 +889,9 @@ void CharTermAttributeImpl::ShallowCopyTo(AttributeImpl& attr_impl) {
     other.term_buffer = term_buffer;
     other.term_capacity = term_capacity;
     other.term_length = term_length;
-    BytesRef::MakeReference(other.builder.Get(), builder.Get());
+
+    BytesRef& other_bytes_ref = other.builder.Get();
+    other_bytes_ref = BytesRef::MakeReference(builder.Get());
   } catch(std::bad_cast& e) {
     throw std::invalid_argument("Shallow copy failed. "
                                 + std::string(typeid(*this).name())

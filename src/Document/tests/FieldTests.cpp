@@ -26,7 +26,7 @@
 
 using lucene::core::analysis::StringReader;
 using lucene::core::util::BytesRef;
-using lucene::core::util::numeric::Number;
+using lucene::core::util::Number;
 using lucene::core::document::Field;
 using lucene::core::document::FieldType;
 using lucene::core::document::FieldTypeBuilder;
@@ -231,7 +231,7 @@ TEST(FIELD__TESTS, INT__POINT__TEST) {
 
       for (uint32_t i = 0 ; i < 3 ; ++i) {
         int32_t point =
-        IntPoint::DecodeDimension(bytes_ref.Bytes(), i * sizeof(int32_t));
+          IntPoint::DecodeDimension(bytes_ref.Bytes(), i * sizeof(int32_t));
         ASSERT_EQ(points[i], point);
       }
     } else {

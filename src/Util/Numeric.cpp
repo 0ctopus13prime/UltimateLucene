@@ -17,8 +17,8 @@
 
 #include <Util/Numeric.h>
 
-using lucene::core::util::numeric::FloatConsts;
-using lucene::core::util::numeric::DoubleConsts;
+using lucene::core::util::FloatConsts;
+using lucene::core::util::DoubleConsts;
 
 const float FloatConsts::POSITIVE_INFINITY =
 std::numeric_limits<float>::infinity();
