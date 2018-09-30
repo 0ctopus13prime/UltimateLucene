@@ -255,12 +255,27 @@ class BytesRef {
     return bytes;
   }
 
+  BytesRef& SetBytes(char* new_bytes) noexcept {
+    bytes = new_bytes;
+    return *this;
+  }
+
   uint32_t Offset() const noexcept {
     return offset;
   }
 
+  BytesRef& SetOffset(const uint32_t new_offset) noexcept {
+    offset = new_offset;
+    return *this;
+  }
+
   uint32_t Capacity() const noexcept {
     return capacity;
+  }
+
+  BytesRef& SetCapacity(const uint32_t new_capacity) noexcept {
+    capacity = new_capacity;
+    return *this;
   }
 };  // BytesRef
 
@@ -282,78 +297,93 @@ class BytesRefBuilder {
     return ref.Length();
   }
 
-  void SetLength(const uint32_t new_length) {
-    ref.SetLength(new_length);
+  uint32_t Offset() const noexcept {
+    return ref.Offset();
   }
 
-  void Clear() {
-    ref.offset = 0;
-    SetLength(0);
+  uint32_t Capacity() const noexcept {
+    return ref.Capacity();
+  }
+
+  BytesRefBuilder& SetLength(const uint32_t new_length) {
+    ref.SetLength(new_length);
+    return *this;
+  }
+
+  BytesRefBuilder& Clear() {
+    ref.SetOffset(0);
+    ref.SetLength(0);
+    return *this;
   }
 
   char& operator[](const uint32_t idx) const noexcept {
     return ref.bytes[ref.Offset() + idx];
   }
 
-  void Append(const char c) {
+  BytesRefBuilder& Append(const char c) {
     Grow(ref.Offset() + ref.Length() + 1);
     ref.bytes[ref.Offset() + ref.Length()] = c;
     ref.length++;
+    return *this;
   }
 
-  void Append(const char* bytes,
-              const uint32_t off,
-              const uint32_t len) {
+  BytesRefBuilder& Append(const char* bytes,
+                   const uint32_t off,
+                   const uint32_t len) {
     Grow(ref.Offset() + ref.Length() + len);
     std::memcpy(ref.Bytes() + ref.Offset() + ref.Length(),
                 bytes + off,
                 len);
     ref.length += len;
+    return *this;
   }
 
-  void Append(const std::string& str) {
-    Append(str.c_str(), 0, str.size());
+  BytesRefBuilder& Append(const std::string& str) {
+    return Append(str.c_str(), 0, str.size());
   }
 
-  void Append(BytesRef& ref) {
-    Append(ref.Bytes(), ref.Offset(), ref.Length());
+  BytesRefBuilder& Append(BytesRef& ref) {
+    return Append(ref.Bytes(), ref.Offset(), ref.Length());
   }
 
-  void Append(BytesRefBuilder& builder) {
-    Append(builder.ref);
+  BytesRefBuilder& Append(BytesRefBuilder& builder) {
+    return Append(builder.ref);
   }
 
-  void Grow(uint32_t new_capacity) {
-    std::pair<char*, uint32_t> new_bytes_pair =
-      ArrayUtil::Grow(ref.Bytes(), ref.Capacity(), new_capacity);
+  BytesRefBuilder& Grow(uint32_t new_capacity) {
+    if (ref.Capacity() < new_capacity) {
+      std::pair<char*, uint32_t> pair =
+        ArrayUtil::Grow(ref.Bytes(), ref.Capacity(), new_capacity);
 
-    if (new_bytes_pair.first != ref.bytes) {
-      ref.SafeDeleteBytes();
-      ref.bytes = new_bytes_pair.first;
-      ref.capacity = new_bytes_pair.second;
+      delete[] ref.Bytes();
+      ref.SetBytes(pair.first)
+         .SetCapacity(pair.second)
+         .SetOwning();
     }
+
+    return *this;
   }
 
-  void CopyBytes(const char* bytes,
-                 const uint32_t off,
-                 const uint32_t len) {
+  BytesRefBuilder& CopyBytes(const char* bytes,
+                      const uint32_t off,
+                      const uint32_t len) {
     Clear();
-    Append(bytes, off, len);
+    return Append(bytes, off, len);
   }
 
-  void CopyBytes(BytesRef& ref) {
+  BytesRefBuilder& CopyBytes(BytesRef& ref) {
     Clear();
-    Append(ref);
+    return Append(ref);
   }
 
-  void CopyBytes(BytesRefBuilder& builder) {
+  BytesRefBuilder& CopyBytes(BytesRefBuilder& builder) {
     Clear();
-    Append(builder.ref);
+    return Append(builder.ref);
   }
 
-  void CopyBytes(const std::string& str) {
+  BytesRefBuilder& CopyBytes(const std::string& str) {
     Clear();
-    Append(str.c_str(), 0, str.size());
+    return Append(str.c_str(), 0, str.size());
   }
 
   BytesRef& Get() {
@@ -593,6 +623,7 @@ class IntsRef {
   }
 
   IntsRef& SetOffset(const uint32_t new_offset) noexcept {
+
     offset = new_offset; 
     return *this;
   }
@@ -675,13 +706,11 @@ class IntsRefBuilder {
   }
 
   IntsRefBuilder& Append(IntsRef& ref) {
-    Append(ref.Ints(), ref.Offset(), ref.Length());
-    return *this;
+    return Append(ref.Ints(), ref.Offset(), ref.Length());
   }
 
   IntsRefBuilder& Append(IntsRefBuilder& builder) {
-    Append(builder.ref);
-    return *this;
+    return Append(builder.ref);
   }
 
   IntsRefBuilder& Grow(const uint32_t new_capacity) {
@@ -690,9 +719,9 @@ class IntsRefBuilder {
         ArrayUtil::Grow(ref.Ints(), ref.Capacity(), new_capacity);
 
       delete[] ref.Ints();
-      ref.SetInts(pair.first);
-      ref.SetCapacity(pair.second);
-      ref.SetOwning();
+      ref.SetInts(pair.first)
+         .SetCapacity(pair.second)
+         .SetOwning();
     }
 
     return *this;
@@ -711,20 +740,17 @@ class IntsRefBuilder {
                 const uint32_t offset,
                 const uint32_t length) {
     Clear();
-    Append(ints, offset, length);
-    return *this;
+    return Append(ints, offset, length);
   }
 
   IntsRefBuilder& CopyInts(IntsRef& ref) {
     Clear();
-    Append(ref);
-    return *this;
+    return Append(ref);
   }
 
   IntsRefBuilder& CopyInts(IntsRefBuilder& builder) {
     Clear();
-    Append(builder.ref);
-    return *this;
+    return Append(builder.ref);
   }
 
   IntsRefBuilder& CopyUTF8Bytes(const BytesRef& bytes);
