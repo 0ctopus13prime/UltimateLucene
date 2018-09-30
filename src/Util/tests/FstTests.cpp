@@ -32,71 +32,163 @@ using lucene::core::util::FST;
 using lucene::core::util::FST_INPUT_TYPE;
 using lucene::core::util::FSTUtil;
 
-void AddKeyValue(Builder<IntsRef>& builder,
-                 const std::string& key,
-                 const std::string& value) {
-  BytesRefBuilder bytes_builder1;
-  bytes_builder1.CopyChars(key);
-  BytesRef& key_bytes = bytes_builder1.Get();
+TEST(OUTPUTS__TESTS, INTS__OUTPUT) {
+  IntSequenceOutputs outputs;
 
-  BytesRefBuilder bytes_builder2;
-  bytes_builder2.CopyChars(value);
-  BytesRef& value_bytes = bytes_builder2.Get();
+  //////////////////////
+  // No ouput
+  //////////////////////
+  {
+    IntsRef no_output;
+    ASSERT_TRUE(outputs.IsNoOutput(no_output));
 
-  IntsRefBuilder ints_ref_builder1; 
-  ints_ref_builder1.CopyUTF8Bytes(key_bytes);
-  IntsRef& actual_key = ints_ref_builder1.Get();
+    // Owner whose capacity equals 100
+    IntsRef ints_ref1(IntsRef::MakeOwner(100));
+    ASSERT_FALSE(outputs.IsNoOutput(ints_ref1));
 
-  IntsRefBuilder ints_ref_builder2; 
-  ints_ref_builder2.CopyUTF8Bytes(value_bytes);
-  IntsRef& actual_value = ints_ref_builder2.Get();
+    outputs.MakeNoOutput(ints_ref1);
+    ASSERT_TRUE(outputs.IsNoOutput(ints_ref1));
+  }
 
-  std::cout << "Actual key's ints -> " << actual_key.ints << std::endl;
-  std::cout << "Actual value's ints -> " << actual_value.ints << std::endl;
+  //////////////////////
+  // Prefix length
+  //////////////////////
+  {
+    IntsRefBuilder builder1;
+    IntsRefBuilder builder2;
 
-  builder.Add(std::move(actual_key), std::move(actual_value));
+    // Case 1. No prefix
+    builder1.Append(1); builder1.Append(2);
+    builder2.Append(2); builder2.Append(3);
 
-  std::cout << "kkkkkkkkkkkkkkkkkkkkk" << std::endl;
-  std::cout << "&actual_key -> " << &actual_key << std::endl;
-  std::cout << "&ints_ref_builder1's ref -> "
-            << &ints_ref_builder1.Get() << std::endl;
+    ASSERT_EQ(0, outputs.PrefixLen(builder1.Get(), builder2.Get()));
 
-  std::cout << "&actual_value -> " << &actual_value << std::endl;
-  std::cout << "&ints_ref_builder2's ref -> "
-            << &ints_ref_builder2.Get() << std::endl;
-  std::cout << "kkkkkkkkkkkkkkkkkkkkk" << std::endl;
-}
+    // Case 2. Has common prefix
+    builder1.Clear(); builder2.Clear();
+    builder1.Append(1); builder1.Append(2); builder1.Append(3);
+    builder2.Append(1); builder2.Append(2); builder2.Append(4);
 
-IntsRef ReadValue(FST<IntsRef>& fst, const std::string& key) {
-  BytesRefBuilder bytes_builder;
-  bytes_builder.CopyChars(key);
-  BytesRef key_bytes(bytes_builder.Get());
+    ASSERT_EQ(2, outputs.PrefixLen(builder1.Get(), builder2.Get()));
 
-  return FSTUtil::Get(fst, key_bytes);
+    // Case 3. Include another word
+    builder1.Clear(); builder2.Clear();
+    builder1.Append(1)
+            .Append(2)
+            .Append(3)
+            .Append(4);
+
+    builder2.Append(1)
+            .Append(2)
+            .Append(3);
+
+    ASSERT_EQ(3, outputs.PrefixLen(builder1.Get(), builder2.Get()));
+  }
+
+  //////////////////////
+  // Reference
+  //////////////////////
+  {
+    IntsRefBuilder builder; 
+    builder.Append(1)
+           .Append(2)
+           .Append(3)
+           .Append(4)
+           .Append(5);
+
+    IntsRef prefix(outputs.PrefixReference(builder.Get(), 3));
+    ASSERT_EQ(3, prefix.Length());
+    ASSERT_EQ(1, prefix.Ints()[prefix.Offset()]);
+    ASSERT_EQ(2, prefix.Ints()[prefix.Offset() + 1]);
+    ASSERT_EQ(3, prefix.Ints()[prefix.Offset() + 2]);
+
+    IntsRef suffix(outputs.SuffixReference(builder.Get(), 3));
+    ASSERT_EQ(2, suffix.Length());
+    ASSERT_EQ(4, suffix.Ints()[suffix.Offset()]);
+    ASSERT_EQ(5, suffix.Ints()[suffix.Offset() + 1]);
+  }
+
+  //////////////////////
+  // Manipulation
+  //////////////////////
+  {
+    IntsRefBuilder builder1; 
+    builder1.Append(1)
+            .Append(2)
+            .Append(3)
+            .Append(4)
+            .Append(5);
+
+    outputs.DropSuffix(builder1.Get(), 3);
+    ASSERT_EQ(3, builder1.Length());
+    ASSERT_EQ(1, builder1[0]);
+    ASSERT_EQ(2, builder1[1]);
+    ASSERT_EQ(3, builder1[2]);
+
+    // Now builder1 has [1,2,3] 
+    // builder has [13, 14]
+    IntsRefBuilder builder2;
+    builder2.Append(13)
+            .Append(14);
+   
+    // Case1. Prepend not empty prefix to not empty output
+    // ref1 = ref2 + ref1
+    outputs.Prepend(builder2.Get(), builder1.Get());
+    ASSERT_EQ(5, builder1.Length());
+    ASSERT_EQ(13, builder1[0]);
+    ASSERT_EQ(14, builder1[1]);
+    ASSERT_EQ(1, builder1[2]);
+    ASSERT_EQ(2, builder1[3]);
+    ASSERT_EQ(3, builder1[4]);
+
+    // Case2. Prepend empty prefix to not empty output
+    // ref1 = ref2(empty) + ref1
+    builder2.Clear();
+    outputs.Prepend(builder2.Get(), builder1.Get());
+    ASSERT_EQ(5, builder1.Length());
+    ASSERT_EQ(13, builder1[0]);
+    ASSERT_EQ(14, builder1[1]);
+    ASSERT_EQ(1, builder1[2]);
+    ASSERT_EQ(2, builder1[3]);
+    ASSERT_EQ(3, builder1[4]);
+
+    // Case3. Prepend not empty prefix to empty output
+    // ref2(empty) = ref1
+    outputs.Prepend(builder1.Get(), builder2.Get());
+    ASSERT_EQ(5, builder2.Length());
+    ASSERT_EQ(13, builder2[0]);
+    ASSERT_EQ(14, builder2[1]);
+    ASSERT_EQ(1, builder2[2]);
+    ASSERT_EQ(2, builder2[3]);
+    ASSERT_EQ(3, builder2[4]);
+
+    // Case4. Prepend empty prefix to empty output
+    builder1.Clear();
+    builder2.Clear();
+    outputs.Prepend(builder1.Get(), builder2.Get());
+    ASSERT_EQ(0, builder1.Length());
+    ASSERT_EQ(0, builder2.Length());
+
+    // Shift suffix 
+    builder1.Clear()
+            .Append(1)
+            .Append(2)
+            .Append(3)
+            .Append(4)
+            .Append(5);
+
+    outputs.ShiftLeftSuffix(builder1.Get(), 3);
+    ASSERT_EQ(2, builder1.Length());
+    ASSERT_EQ(4, builder1[0]);
+    ASSERT_EQ(5, builder1[1]);
+
+    outputs.ShiftLeftSuffix(builder1.Get(), 10000);
+    ASSERT_EQ(0, builder1.Length());
+  }
 }
 
 TEST(BYTESREF__TESTS, BASIC__TEST) {
   Builder<IntsRef> builder(FST_INPUT_TYPE::BYTE1,
                            std::make_unique<IntSequenceOutputs>());
-
-  for (int i = 0 ; i < 5 ; ++i) {
-    std::cout << "[Write] i -> " << i << std::endl;
-    std::string key("k-" + std::to_string(i));
-    std::string val("v-" + std::to_string(i));
-    AddKeyValue(builder, key, val);
-  }
-
-  FST<IntsRef>* fst = builder.Finish();
-
-  std::cout << "^^^^^^^^^^^^^^^^^^^^^^^" << std::endl;
-
-  ASSERT_NE(fst, nullptr);
-
-  for (int i = 0 ; i < 5 ; ++i) {
-    std::cout << "[Read] i -> " << i << std::endl;
-    std::string key("k-" + std::to_string(i));
-    IntsRef val = ReadValue(*fst, key);
-  }
 }
 
 int main(int argc, char* argv[]) {

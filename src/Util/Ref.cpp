@@ -34,7 +34,8 @@ using lucene::core::util::UnicodeUtil;
 /**
  *  IntsRefBuilder 
  */
-void IntsRefBuilder::CopyUTF8Bytes(const BytesRef& bytes) {
+IntsRefBuilder& IntsRefBuilder::CopyUTF8Bytes(const BytesRef& bytes) {
   Grow(bytes.Length());
   ref.SetLength(UnicodeUtil::UTF8toUTF32(bytes, ref.ints));
+  return *this;
 }

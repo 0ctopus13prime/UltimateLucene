@@ -491,11 +491,21 @@ class Outputs {
  public:
   virtual ~Outputs() = default;
 
-  virtual T Common(const T& output1, const T& output2) = 0;
+  virtual bool IsNoOutput(const T& output) = 0;
 
-  virtual T Subtract(const T& output, const T& inc) = 0;
+  virtual void MakeNoOutput(T& output) = 0;
 
-  virtual T Add(const T& prefix, const T& output) = 0;
+  virtual uint32_t PrefixLen(const T& output1, const T& output2) = 0;
+
+  virtual void Prepend(const T& prefix, T& output) = 0;
+
+  virtual void ShiftLeftSuffix(T& output, const uint32_t prefix_len) = 0;
+
+  virtual void DropSuffix(T& output, const uint32_t prefix_len) = 0;
+
+  virtual T PrefixReference(T& output, const uint32_t prefix_len) = 0;
+
+  virtual T SuffixReference(T& output, const uint32_t prefix_len) = 0;
 
   virtual void Write(const T& output, lucene::core::store::DataOutput* out) = 0;
 
@@ -542,79 +552,91 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
   static IntsRef NO_OUTPUT;
 
  public:
-  IntsRef Common(const IntsRef& output1, const IntsRef& output2) {
-  /*
-    uint32_t pos1 = output1.Offset();  
-    uint32_t pos2 = output2.Offset();
-    uint32_t stop_at_1 = (pos1 + std::min(output1.Length(), output2.Length()));
-  
-    while ((pos1 < stop_at_1) &&
-           (output1.Ints()[pos1++] == output2.Ints()[pos2++]));
-
-    if (pos1 == output1.Offset()) {
-      // No common prefix
-      return NO_OUTPUT;
-    } else if (pos1 == output1.Offset() + output1.Length()) {
-      // Output1 is a prefix of output2
-      return output1;
-    } else if (pos2 == output2.Offset() + output2.Length()) {
-      // Output2 is a prefix of output1
-      return output2;
-    } else {
-      // Return a common prefix between output1 and output2
-      return IntsRef(output1.Ints(),
-                     output1.Capacity(),
-                     output1.Offset(),
-                     pos1 - output1.Offset());
-    }
-  */
-
-    // TODO(Octopus13prime): IT
-    return IntsRef();
+  bool IsNoOutput(const IntsRef& output) {
+    return (output.Ints() == nullptr);
   }
 
-  IntsRef Subtract(const IntsRef& output, const IntsRef& inc) {
-  /*
-    if (inc == NO_OUTPUT) {
-      // No prefix removed
-      return output;
-    } else if (inc.length == output.length) {
-      // Entire output removed
-      return NO_OUTPUT;
-    } else {
-      assert(inc.length > 0 && inc.length < output.length);
-      return IntsRef(output.ints,
-                     output.capacity,
-                     output.offset + inc.length,
-                     output.length - inc.length);
-    }
-  */
-
-    // TODO(Octopus13prime): IT
-    return IntsRef();
+  void MakeNoOutput(IntsRef& output) {
+    output.~IntsRef();
   }
 
-  IntsRef Add(const IntsRef& prefix, const IntsRef& output) {
-  /*
-    if (prefix == NO_OUTPUT) {
-      return output;
-    } else if (output == NO_OUTPUT) {
-      return prefix;
-    } else {
-      assert(prefix.length > 0 && output.length > 0);
-      IntsRef result(prefix.length + output.length);
-      std::memcpy(result.ints,
-                  prefix.ints + prefix.offset,
-                  prefix.length);
-      std::memcpy(result.ints + prefix.length,
-                  output.ints + output.offset,
-                  output.length);
-      result.length = (prefix.length + output.length);
-      return result;
+  uint32_t PrefixLen(const IntsRef& output1, const IntsRef& output2) {
+    const int32_t* pos1 = (output1.Ints() + output1.Offset()); 
+    const int32_t* pos2 = (output2.Ints() + output2.Offset()); 
+    uint32_t cmp_len = std::min(output1.Length(), output2.Length());
+    uint32_t common = 0;
+    
+    for ( ; (common < cmp_len && *pos1++ == *pos2++) ; ++common);
+
+    return common;
+  }
+
+  void Prepend(const IntsRef& prefix, IntsRef& output) {
+    if (prefix.Length() > 0) {
+      // Grow first
+      std::pair<int32_t*, uint32_t> pair =
+        ArrayUtil::Grow(output.Ints(),
+                        output.Capacity(), 
+                        output.Offset() + output.Length() + prefix.Length());
+      if (pair.first != output.Ints()) {
+        delete[] output.Ints();
+        output.SetInts(pair.first)
+              .SetCapacity(pair.second);
+      }
+
+      // Shift back
+      int32_t* base = (output.Ints() + output.Offset());
+      int32_t* ptr = (base + output.Length());
+
+      for ( ; ptr != base ; --ptr) {
+        ptr[prefix.Length() - 1] = ptr[-1];
+      }
+
+      // Prepend
+      ptr = (prefix.Ints() + prefix.Offset());
+      for (uint32_t i = 0 ; i < prefix.Length() ; ++i) {
+        base[i] = ptr[i];
+      }
+
+      output.SetLength(output.Length() + prefix.Length());
     }
-  */
-    // TODO(Octopus13prime): IT
-    return IntsRef();
+  }
+
+  void ShiftLeftSuffix(IntsRef& output, const uint32_t prefix_len) {
+    if (prefix_len > 0) {
+      if (prefix_len >= output.Length()) {
+        output.SetLength(0);
+        return;
+      }
+
+      int32_t* ptr = (output.Ints() + output.Offset() + prefix_len);
+      const uint32_t new_length = (output.Length() - prefix_len);
+      
+      for (uint32_t i = 0 ; i < new_length ; ++i) {
+        *(ptr - prefix_len) = *ptr;
+        ptr++;
+      }
+
+      output.SetLength(new_length);
+    }
+  }
+
+  IntsRef PrefixReference(IntsRef& output, const uint32_t prefix_len) {
+    return IntsRef(output.Ints(),
+                   output.Offset(),
+                   prefix_len,
+                   output.Capacity());
+  }
+
+  IntsRef SuffixReference(IntsRef& output, const uint32_t prefix_len) {
+    return IntsRef(output.Ints(),
+                   output.Offset() + prefix_len,
+                   output.Length() - prefix_len,
+                   output.Capacity());
+  }
+
+  void DropSuffix(IntsRef& output, const uint32_t prefix_len) {
+    output.SetLength(std::min(output.Length(), prefix_len));
   }
 
   void Write(const IntsRef& prefix, lucene::core::store::DataOutput* out) {
@@ -1481,7 +1503,7 @@ class FST {
     }
   }
 
-  void SetEmptyOutput(T& v) {
+  void SetEmptyOutput(T&& v) {
     if (is_empty_output_empty) {
       empty_output = v;
     } else {
