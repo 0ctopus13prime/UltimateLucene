@@ -173,7 +173,7 @@ class CloseableThreadLocal {
 
   TYPE& Get() {
     CheckThreadLocalDestructed();
-    reference.Get(addr_this);
+    return reference.Get(addr_this);
   }
 
   void Set(const TYPE& object) {

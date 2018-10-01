@@ -34,6 +34,7 @@
 #include <cstring>
 #include <algorithm>
 #include <limits>
+#include <list>
 #include <memory>
 #include <string>
 #include <utility>
@@ -68,76 +69,12 @@ class NodeHash {
       in(std::move(other.in)) {
   }
 
-  bool NodesEqual(typename Builder<T>::UnCompiledNode& node,
-                  const uint64_t address) {
-    fst->ReadFirstRealTargetArc(address, scratch_arc, in.get());
-    if (scratch_arc.bytes_per_arc != 0 &&
-        node.num_arcs != scratch_arc.num_arcs) {
-      return false; 
-    }
+  bool NodesEqual(typename Builder<T>::UnCompiledNode* node,
+                  const uint64_t address);
 
-    for (uint32_t arc_upto = 0 ; arc_upto < node.num_arcs ; ++arc_upto) {
-      typename Builder<T>::Arc& arc = node.arcs[arc_upto];
-      if (arc.label != scratch_arc.label ||
-          arc.output != scratch_arc.output ||
-          dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node
-            != scratch_arc.target ||
-          arc.next_final_output != scratch_arc.next_final_output ||
-          arc.is_final != scratch_arc.IsFinal()) {
-        return false;
-      } else if (scratch_arc.IsLast()) {
-        return (arc_upto == (node.num_arcs - 1));
-      }
+  int64_t Hash(typename Builder<T>::UnCompiledNode* node);
 
-      fst->ReadNextRealArc(scratch_arc, in.get());
-    }
-
-    return false;
-  }
-
-  int64_t Hash(typename Builder<T>::UnCompiledNode& node) {
-    const uint32_t PRIME = 31;  
-    int64_t h = 0;
-
-    for (uint32_t arc_idx = 0 ; arc_idx < node.num_arcs ; ++arc_idx) {
-      typename Builder<T>::Arc& arc = node.arcs[arc_idx];
-      h = PRIME * h + arc.label;
-      const int64_t n =
-        dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node;
-      h = PRIME * h + static_cast<int32_t>(n ^ (n >> 32));
-      h = PRIME * h + arc.output.HashCode();
-      h = PRIME * h + arc.next_final_output.HashCode();
-      if (arc.is_final) {
-        h += 17;
-      }
-    }
-
-    return (h & std::numeric_limits<int64_t>::max());
-  }
-
-  int64_t Hash(const int64_t node) {
-    const uint32_t PRIME = 31;
-    int64_t h = 0;
-    fst->ReadFirstRealTargetArc(node, scratch_arc, in.get());
-    while (true) {
-      h = PRIME * h + scratch_arc.label;
-      h = PRIME * h +
-          static_cast<int32_t>(scratch_arc.target ^ (scratch_arc.target >> 32));
-      h = PRIME * h + scratch_arc.output.HashCode();
-      h = PRIME * h + scratch_arc.next_final_output.HashCode();
-      if (scratch_arc.IsFinal()) {
-        h += 17;
-      }
-
-      if (scratch_arc.IsLast()) {
-        break;
-      }
-
-      fst->ReadNextRealArc(scratch_arc, in.get());
-    }
-
-    return (h & std::numeric_limits<int64_t>::max());
-  }
+  int64_t Hash(const int64_t node);
 
   void AddNew(const uint64_t address) {
     int64_t pos = (Hash(address) & mask);
@@ -206,8 +143,9 @@ class NodeHash {
   }
 
   int64_t Add(Builder<T>& builder,
-              typename Builder<T>::UnCompiledNode& node_in) {
+              typename Builder<T>::UnCompiledNode* node_in) {
     const int64_t h = Hash(node_in);
+    //std::cout << "Hash, h -> " << h << std::endl;
     int64_t pos = (h & mask);
     int32_t c = 0;
 
@@ -215,9 +153,13 @@ class NodeHash {
       const int64_t v = table.Get(pos);
       if (v == 0) {
         // Freeze & Add
+        //std::cout << "Now really freeze node" << std::endl;
         const int64_t node = builder.AddNode(node_in);
-        assert(Hash(node) == h);
+        //std::cout << "Now really freeze done" << std::endl;
+        // assert(Hash(node) == h);
         count++;
+
+        //std::cout << "Put hash info into the table" << std::endl;
         table.Set(pos, node);
         if (count > (2 * table.Size()) / 3) {
           Rehash();
@@ -252,8 +194,8 @@ class Builder {
   uint32_t share_max_tail_length;
   lucene::core::util::IntsRefBuilder last_input;
   std::vector<UnCompiledNode*> frontier;
-  std::vector<CompiledNode> compiled_node_pool;
-  std::vector<UnCompiledNode> uncompiled_node_pool;
+  std::list<CompiledNode> compiled_node_pool;
+  std::list<UnCompiledNode> uncompiled_node_pool;
   uint64_t last_frozen_node;
   uint64_t arc_count;
   uint64_t node_count;
@@ -277,15 +219,19 @@ class Builder {
     const uint64_t bytes_pos_start = bytes.GetPosition();
 
     if (dedup_hash &&
-        (do_share_non_singleton_nodes || node_in->num_arcs <= 1) &&
+        (do_share_non_singleton_nodes || node_in->arcs.size() <= 1) &&
         tail_length <= share_max_tail_length) {
-      if (node_in->num_arcs == 0) {
+      if (node_in->arcs.empty()) {
+        //std::cout << "Add node" << std::endl;
         node = AddNode(node_in); 
         last_frozen_node = node;
       } else {
+        //std::cout << "Add hash" << std::endl;
         node = dedup_hash->Add(*this, node_in);
+        //std::cout << "Add hash done" << std::endl;
       }
     } else {
+        //std::cout << "No hash, Add node" << std::endl;
       node = AddNode(node_in);
     }
 
@@ -294,9 +240,7 @@ class Builder {
       last_frozen_node = node;
     }
 
-    node_in->Clear();
-
-    return CompiledNode::New(node); 
+    return CompiledNode::New(this, node); 
   }
   
   void FreezeTail(const uint32_t prefix_len_plus1) {
@@ -313,66 +257,104 @@ class Builder {
         do_prune = true;
         do_compile = true;
       } else if(idx > prefix_len_plus1) {
+        // Prune if parent's inputCount is less than suffixMinCount2
         if (parent->input_count < min_suffix_count2 ||
             (min_suffix_count2 == 1 && parent->input_count == 1 && idx > 1)) {
+          // My parent, about to be compiled, doesn't make the cut, so
+          // I'm definitely pruned 
+
+          // If minSuffixCount2 is 1, we keep only up
+          // until the 'distinguished edge', ie we keep only the
+          // 'divergent' part of the FST. if my parent, about to be
+          // compiled, has inputCount 1 then we are already past the
+          // distinguished edge.  NOTE: this only works if
+          // the FST outputs are not "compressible" (simple
+          // ords ARE compressible).
           do_prune = true;
         } else {
+          // my parent, about to be compiled, does make the cut, so
+          // I'm definitely not pruned 
           do_prune = false;
         }
         do_compile = true;
       } else {
+        // If pruning is disabled (count is 0) we can always
+        // compile current node
         do_compile = (min_suffix_count2 == 0);
       }
 
       if (node->input_count < min_suffix_count2 ||
           (min_suffix_count2 == 1 && node->input_count == 1 && idx > 1)) {
-        for (uint32_t arc_idx = 0 ; arc_idx < node->num_arcs ; ++arc_idx) {
-            dynamic_cast<UnCompiledNode*>(node->arcs[arc_idx].target)->Clear(); 
+        // Drop all arcs
+        for (Arc& arc : node->arcs) {
+          dynamic_cast<UnCompiledNode*>(arc.target)->Clear(); 
         }
 
-        node->num_arcs = 0;
+        node->arcs.clear();
       }
 
       if (do_prune) {
+        // This node doesn't make it -- Deref it
         node->Clear();
         parent->DeleteLast(last_input[idx - 1], node);
       } else {
         if (min_suffix_count2 != 0) {
           CompileAllTargets(node, last_input.Length() - idx);
         }
-        T& next_final_output = node->output;
-        const bool is_final = (node->is_final || node->num_arcs == 0);
+
+        // We "fake" the node as being final if it has no
+        // outgoing arcs; in theory we could leave it
+        // as non-final (the FST can represent this), but
+        // FSTEnum, Util, etc., have trouble w/ non-final
+        // dead-end states: 
+        const bool is_final = (node->is_final || node->arcs.empty());
 
         if (do_compile) {
+          // This node makes it and we now compile it.  first,
+          // compile any targets that were previously
+          // undecided:
+          
+          //std::cout << "Do compile" << std::endl;
+
           CompiledNode* compiled_node =
             CompileNode(node, 1 + last_input.Length() - idx); 
+
+          //std::cout << "Compile done" << std::endl;
+
           parent->ReplaceLast(last_input[idx - 1],
                               compiled_node,
-                              std::move(next_final_output),
+                              std::move(node->output),
                               is_final);
+          node->Clear();
         } else {
+          // ReplaceLast just to install
+          // next_final_output/is_final onto the arc
           parent->ReplaceLast(last_input[idx - 1],
                               node,
-                              std::move(next_final_output),
+                              std::move(node->output),
                               is_final);
-          frontier[idx] = UnCompiledNode(this, idx);
+
+          // This node will stay in play for now, since we are
+          // undecided on whether to prune it.  later, it
+          // will be either compiled or pruned, so we must
+          // allocate a new node:
+          frontier[idx] = UnCompiledNode::New(this, idx);
         }
       }
     }
   }
 
   void CompileAllTargets(UnCompiledNode* node, const uint32_t tail_length) {
-    for (uint32_t arc_idx = 0 ; arc_idx < node->num_arcs ; arc_idx++) {
-      Arc& arc = node->arcs[arc_idx];
+    for (Arc& arc : node->arcs) {
       if (!arc.target->IsCompiled()) {
         UnCompiledNode* n = dynamic_cast<UnCompiledNode*>(arc.target);
-        if (n->num_arcs == 0) {
+        if (n->arcs.empty()) {
           arc.is_final = n->is_final = true;
         }
 
         arc.target = CompileNode(n, tail_length - 1);
       }
-    }
+    } 
   }
 
  public:
@@ -425,7 +407,7 @@ class Builder {
       min_suffix_count2(min_suffix_count2),
       bytes(fst.bytes),
       reused_byte_per_arc(),
-      share_max_tail_length(0),
+      share_max_tail_length(share_max_tail_length),
       last_input(),
       frontier(),
       compiled_node_pool(),
@@ -448,6 +430,10 @@ class Builder {
     for (uint32_t idx = 0 ; idx < frontier_rsv_size ; ++idx) {
       frontier.push_back(UnCompiledNode::New(this, idx));
     }
+
+    //std::cout << "Builder(), frontier's size -> " << frontier.size() << std::endl; 
+    //std::cout << "Builder(), uncompiled_node_pool's size -> " << uncompiled_node_pool.size() << std::endl; 
+    //std::cout << "Builder(), outputs -> " << fst.outputs.get() << std::endl;
   }
 
   uint64_t GetTermCount() const noexcept {
@@ -482,21 +468,33 @@ class Builder {
     uint32_t prefix_len_plus1 = 0;
     const uint32_t prefix_cmp_until =
       std::min(last_input.Length(), input.Length());
+    auto frontier_it = frontier.begin();
 
     while (prefix_len_plus1++ < prefix_cmp_until &&
-           *pos1++ != *pos2++); 
+           *pos1++ == *pos2++) {
+      (*frontier_it++)->input_count++;
+    }
+
+    if (frontier.size() < input.Length() + 1) {
+      const uint32_t until = ArrayUtil::Oversize(input.Length() + 1);
+      for (uint32_t idx = frontier.size() ; idx < until ; ++idx) {
+        frontier.push_back(UnCompiledNode::New(this, idx));
+      }
+    } 
 
     // Minimize/Compile states from previous input's
     // orphan'd suffix
+    //std::cout << "Start freeze tail" << std::endl;
     FreezeTail(prefix_len_plus1);
+    //std::cout << "End freeze tail" << std::endl;
 
-  /*
     for (uint32_t idx = prefix_len_plus1 ; idx <= input.Length() ; ++idx) {
-      frontier[idx - 1]->AddArc(input.ints[input.offset + idx - 1],
+      frontier[idx - 1]->AddArc(input.Ints()[input.Offset() + idx - 1],
                                 frontier[idx]);
       frontier[idx]->input_count++;
     }
 
+  /*
     UnCompiledNode* last_node = frontier[input.length];
     if (last_input.Length() != input.Length() ||
         prefix_len_plus1 != input.Length() + 1) {
@@ -573,6 +571,7 @@ class Builder {
     }
 
     fst.Finish(CompileNode(root, last_input.Length()).node);
+    root->Clear();
 
   */
     return &fst;
@@ -659,7 +658,7 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
   UnCompiledNode& operator=(const UnCompiledNode& other) = delete;
 
   UnCompiledNode(UnCompiledNode&& other)
-    : outputs(outputs),
+    : outputs(other.outputs),
       arcs(std::move(other.arcs)),
       input_count(other.input_count),
       output(std::move(other.output)),
@@ -696,20 +695,23 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
   }
 
   void AddArc(const uint32_t label, Node* target) {
+    Arc arcarc(Arc());
     arcs.push_back(Arc());
     Arc& arc = arcs.back();
     arc.label = label;
     arc.target = target;
-    outputs-MakeNoOutput(arc.output);
+    outputs->MakeNoOutput(arc.output);
     outputs->MakeNoOutput(arc.next_final_output);
     arc.is_final = false;
   }
 
-  void ReplaceLast(const uint32_t last_to_match,
+  void ReplaceLast(const uint32_t label_to_match,
                    Node* target,
                    T&& next_final_output,
                    const bool is_final) {
+    assert(!arcs.empty());
     Arc& arc = arcs.back();
+    assert(arc.label == label_to_match);
     arc.target = target;
     arc.next_final_output = std::forward<T>(next_final_output);
     arc.is_final = is_final;
@@ -764,6 +766,83 @@ class Builder<T>::CompiledNode: public Builder<T>::Node {
     return *this;
   }
 };  // Builder<T>::CompiledNode
+
+/**
+ *  NodeHash
+ */ 
+template <typename T>
+bool NodeHash<T>::NodesEqual(typename Builder<T>::UnCompiledNode* node,
+                             const uint64_t address) {
+  fst->ReadFirstRealTargetArc(address, scratch_arc, in.get());
+  if (scratch_arc.bytes_per_arc != 0 &&
+      node->arcs.size() != scratch_arc.num_arcs) {
+    return false; 
+  }
+
+  uint32_t arc_upto = 0;
+  for (typename Builder<T>::Arc& arc : node->arcs) {
+    if (arc.label != scratch_arc.label ||
+        arc.output != scratch_arc.output ||
+        dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node
+          != scratch_arc.target ||
+        arc.next_final_output != scratch_arc.next_final_output ||
+        arc.is_final != scratch_arc.IsFinal()) {
+      return false;
+    } else if (scratch_arc.IsLast()) {
+      return (arc_upto == (node->arcs.size() - 1));
+    }
+
+    arc_upto++;
+    fst->ReadNextRealArc(scratch_arc, in.get());
+  }
+
+  return false;
+}
+
+template <typename T>
+int64_t NodeHash<T>::Hash(typename Builder<T>::UnCompiledNode* node) {
+  const uint32_t PRIME = 31;  
+  int64_t h = 0;
+
+  for (typename Builder<T>::Arc& arc : node->arcs) {
+    h = PRIME * h + arc.label;
+    const int64_t n =
+      dynamic_cast<typename Builder<T>::CompiledNode*>(arc.target)->node;
+    h = PRIME * h + static_cast<int32_t>(n ^ (n >> 32));
+    h = PRIME * h + arc.output.HashCode();
+    h = PRIME * h + arc.next_final_output.HashCode();
+    if (arc.is_final) {
+      h += 17;
+    }
+  }
+
+  return (h & std::numeric_limits<int64_t>::max());
+}
+
+template <typename T>
+int64_t NodeHash<T>::Hash(const int64_t node) {
+  const uint32_t PRIME = 31;
+  int64_t h = 0;
+  fst->ReadFirstRealTargetArc(node, scratch_arc, in.get());
+  while (true) {
+    h = PRIME * h + scratch_arc.label;
+    h = PRIME * h +
+        static_cast<int32_t>(scratch_arc.target ^ (scratch_arc.target >> 32));
+    h = PRIME * h + scratch_arc.output.HashCode();
+    h = PRIME * h + scratch_arc.next_final_output.HashCode();
+    if (scratch_arc.IsFinal()) {
+      h += 17;
+    }
+
+    if (scratch_arc.IsLast()) {
+      break;
+    }
+
+    fst->ReadNextRealArc(scratch_arc, in.get());
+  }
+
+  return (h & std::numeric_limits<int64_t>::max());
+}
 
 }  // namespace util
 }  // namespace core

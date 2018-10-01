@@ -963,7 +963,8 @@ class DoublePoint : public Field {
   static lucene::core::util::BytesRef
   Pack(const std::initializer_list<const double>& point) {
     const uint32_t size = point.size();
-    const uint32_t packed_size = size * sizeof(double);
+    const uint32_t packed_size = (size * sizeof(double));
+
     lucene::core::util::BytesRef
       bytes_ref(lucene::core::util::BytesRef::MakeOwner(packed_size));
     char* packed = bytes_ref.Bytes();
@@ -990,9 +991,10 @@ class DoublePoint : public Field {
 
   static double DecodeDimension(const char value[],
                                 const uint32_t offset) noexcept {
+    return
     lucene::core::util::NumericUtils::SortableLongToDouble(
       lucene::core::util::NumericUtils::SortableBytesToLong(value,
-                                                                     offset));
+                                                            offset));
   }
 
   static double NextUp(const double d) noexcept {
@@ -1035,7 +1037,9 @@ class DoublePoint : public Field {
 
   std::optional<lucene::core::util::Number> NumericValue() {
     lucene::core::util::BytesRef& bytes_ref =
-    std::get<lucene::core::util::BytesRef>(fields_data);
+      std::get<lucene::core::util::BytesRef>(fields_data);
+
+    const char* packed = bytes_ref.Bytes();
 
     return lucene::core::util::Number(
       DoublePoint::DecodeDimension(bytes_ref.Bytes(), bytes_ref.Offset()));
@@ -1717,14 +1721,15 @@ class LongPoint : public Field {
                               char dest[],
                               const uint32_t offset) noexcept {
     lucene::core::util::NumericUtils::LongToSortableBytes(value,
-                                                                   dest,
-                                                                   offset);
+                                                          dest,
+                                                          offset);
   }
 
   static int64_t
   DecodeDimension(const char value[], const uint32_t offset) noexcept {
+    return
     lucene::core::util::NumericUtils::SortableBytesToLong(value,
-                                                                   offset);
+                                                          offset);
   }
 
  public:
@@ -1802,14 +1807,16 @@ class LongRange : public Field {
   static int64_t
   DecodeMin(const char bytes[], const uint32_t dimension) noexcept {
     const uint32_t offset = dimension * sizeof(int64_t);
-    lucene::core::util::NumericUtils::SortableBytesToLong(bytes, offset);
+    return
+      lucene::core::util::NumericUtils::SortableBytesToLong(bytes, offset);
   }
 
   static int64_t DecodeMax(const char bytes[],
                            const uint32_t bytes_length,
                            const uint32_t dimension) noexcept {
     const uint32_t offset = (bytes_length >> 1) + dimension * sizeof(int64_t);
-    lucene::core::util::NumericUtils::SortableBytesToLong(bytes, offset);
+    return
+      lucene::core::util::NumericUtils::SortableBytesToLong(bytes, offset);
   }
 
   static void VerifyAndEncode(const int64_t min[],

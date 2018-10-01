@@ -22,6 +22,7 @@
 #include <string>
 #include <mutex>
 #include <thread>
+#include <iostream>
 
 using lucene::core::util::CloseableThreadLocal;
 using lucene::core::util::EmptyThreadLocalException;

@@ -557,7 +557,7 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
   }
 
   void MakeNoOutput(IntsRef& output) {
-    output.~IntsRef();
+    output.SafeDeleteInts();
   }
 
   uint32_t PrefixLen(const IntsRef& output1, const IntsRef& output2) {
@@ -624,15 +624,22 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
   IntsRef PrefixReference(IntsRef& output, const uint32_t prefix_len) {
     return IntsRef(output.Ints(),
                    output.Offset(),
-                   prefix_len,
+                   std::min(output.Length(), prefix_len),
                    output.Capacity());
   }
 
   IntsRef SuffixReference(IntsRef& output, const uint32_t prefix_len) {
-    return IntsRef(output.Ints(),
-                   output.Offset() + prefix_len,
-                   output.Length() - prefix_len,
-                   output.Capacity());
+    if (output.Length() > prefix_len) {
+      return IntsRef(output.Ints(),
+                     output.Offset() + prefix_len,
+                     output.Length() - prefix_len,
+                     output.Capacity());
+    } else {
+      return IntsRef(output.Ints(),
+                     output.Offset() + prefix_len,
+                     0,
+                     output.Capacity());
+    }
   }
 
   void DropSuffix(IntsRef& output, const uint32_t prefix_len) {
@@ -888,7 +895,7 @@ class FST {
       bytes_array(std::move(other.bytes_array)),
       bytes_array_size(other.bytes_array_size),
       start_node(other.start_node),
-      outputs(std::move(outputs)),
+      outputs(std::move(other.outputs)),
       cached_root_arcs(std::move(other.cached_root_arcs)),
       version(other.version) {
   }

@@ -18,7 +18,9 @@
 #include <Util/FstBuilder.h>
 #include <Util/FstUtil.h>
 #include <gtest/gtest.h>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 using lucene::core::util::BytesRef;
@@ -32,6 +34,7 @@ using lucene::core::util::FST;
 using lucene::core::util::FST_INPUT_TYPE;
 using lucene::core::util::FSTUtil;
 
+/*
 TEST(OUTPUTS__TESTS, INTS__OUTPUT) {
   IntSequenceOutputs outputs;
 
@@ -44,6 +47,7 @@ TEST(OUTPUTS__TESTS, INTS__OUTPUT) {
 
     // Owner whose capacity equals 100
     IntsRef ints_ref1(IntsRef::MakeOwner(100));
+
     ASSERT_FALSE(outputs.IsNoOutput(ints_ref1));
 
     outputs.MakeNoOutput(ints_ref1);
@@ -97,6 +101,7 @@ TEST(OUTPUTS__TESTS, INTS__OUTPUT) {
 
     IntsRef prefix(outputs.PrefixReference(builder.Get(), 3));
     ASSERT_EQ(3, prefix.Length());
+
     ASSERT_EQ(1, prefix.Ints()[prefix.Offset()]);
     ASSERT_EQ(2, prefix.Ints()[prefix.Offset() + 1]);
     ASSERT_EQ(3, prefix.Ints()[prefix.Offset() + 2]);
@@ -185,10 +190,36 @@ TEST(OUTPUTS__TESTS, INTS__OUTPUT) {
     ASSERT_EQ(0, builder1.Length());
   }
 }
+*/
+
+void Add(Builder<IntsRef>& builder,
+         const std::string& key,
+         const std::string& value) {
+  BytesRef key_bytes(key.c_str(), key.size());
+  IntsRefBuilder key_ints;
+  key_ints.CopyUTF8Bytes(key_bytes);
+
+  BytesRef val_bytes(value.c_str(), value.size());
+  IntsRefBuilder val_ints;
+  val_ints.CopyUTF8Bytes(val_bytes);
+
+  builder.Add(std::move(key_ints.Get()), std::move(val_ints.Get()));
+}
 
 TEST(BYTESREF__TESTS, BASIC__TEST) {
   Builder<IntsRef> builder(FST_INPUT_TYPE::BYTE1,
                            std::make_unique<IntSequenceOutputs>());
+  std::string key;
+  std::string val;
+  std::ifstream infile("/tmp/fst.input");
+  for (int i = 0 ; i < 100 ; ++i) {
+    std::getline(infile, key);
+    std::getline(infile, val);
+    Add(builder, key, val);
+  }
+
+  infile.close();
+  std::cout << "Count -> " << builder.GetTermCount() << std::endl;
 }
 
 int main(int argc, char* argv[]) {

@@ -759,7 +759,7 @@ void CharTermAttributeImpl::GrowTermBuffer(const uint32_t new_size) {
   if (term_capacity < new_size) {
       // Not big enough; create a new array with slight
       // Over allocation:
-      term_capacity = ArrayUtil::Oversize<const uint32_t>(new_size);
+      term_capacity = ArrayUtil::Oversize(new_size);
       term_buffer.reset(new char[term_capacity]);
   }
 }

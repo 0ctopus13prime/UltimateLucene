@@ -284,7 +284,7 @@ TEST(FIELD__TESTS, LONG__POINT__TEST) {
 
       for (uint32_t i = 0 ; i < 3 ; ++i) {
         int64_t point =
-        LongPoint::DecodeDimension(bytes_ref.Bytes(), i * sizeof(int64_t));
+          LongPoint::DecodeDimension(bytes_ref.Bytes(), i * sizeof(int64_t));
         ASSERT_EQ(points[i], point);
       }
     } else {

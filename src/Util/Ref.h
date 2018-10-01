@@ -49,15 +49,6 @@ class BytesRef {
   static const uint32_t LENGTH_MASK = ((1U << 31) - 1);
 
  private:
-  void SafeDeleteBytes() {
-    if (IsOwning() && (bytes != nullptr)) {
-      delete[] bytes; 
-    }
-
-    bytes = nullptr;
-    offset = length = capacity = 0;
-  }
-
   bool IsOwning() const noexcept {
     return (length & IS_OWNING_MASK) != 0;
   }
@@ -277,6 +268,16 @@ class BytesRef {
     capacity = new_capacity;
     return *this;
   }
+
+  void SafeDeleteBytes() {
+    if (IsOwning() && (bytes != nullptr)) {
+      delete[] bytes; 
+    }
+
+    bytes = nullptr;
+    offset = length = capacity = 0;
+  }
+
 };  // BytesRef
 
 class BytesRefBuilder {
@@ -286,7 +287,6 @@ class BytesRefBuilder {
  public:
   BytesRefBuilder()
     : ref() {
-    ref.SetOwning();
   }
 
   char* Bytes() const noexcept {
@@ -352,21 +352,27 @@ class BytesRefBuilder {
 
   BytesRefBuilder& Grow(uint32_t new_capacity) {
     if (ref.Capacity() < new_capacity) {
-      std::pair<char*, uint32_t> pair =
-        ArrayUtil::Grow(ref.Bytes(), ref.Capacity(), new_capacity);
+      if (ref.Bytes() != nullptr) {
+        std::pair<char*, uint32_t> pair =
+          ArrayUtil::Grow(ref.Bytes(), ref.Capacity(), new_capacity);
 
-      delete[] ref.Bytes();
-      ref.SetBytes(pair.first)
-         .SetCapacity(pair.second)
-         .SetOwning();
+        delete[] ref.Bytes();
+        ref.SetBytes(pair.first)
+           .SetCapacity(pair.second)
+           .SetOwning();
+      } else {
+        ref.SetBytes(new char[new_capacity])
+           .SetCapacity(new_capacity)
+           .SetOwning();
+      }
     }
 
     return *this;
   }
 
   BytesRefBuilder& CopyBytes(const char* bytes,
-                      const uint32_t off,
-                      const uint32_t len) {
+                             const uint32_t off,
+                             const uint32_t len) {
     Clear();
     return Append(bytes, off, len);
   }
@@ -410,15 +416,6 @@ class IntsRef {
   uint32_t capacity;
 
  private:
-  void SafeDeleteInts() {
-    if (IsOwning() && (ints != nullptr)) {
-      delete[] ints; 
-    }
-
-    ints = nullptr;
-    offset = capacity = length = 0;
-  }
-
   bool IsOwning() const noexcept {
     return (length & IS_OWNING_MASK) != 0;
   }
@@ -477,8 +474,8 @@ class IntsRef {
   static IntsRef MakeOwner(const uint32_t capacity) {
     return IntsRef(new int32_t[capacity],
                    0,
-                   0,
-                   capacity | IS_OWNING_MASK);
+                   IS_OWNING_MASK,
+                   capacity);
   }
 
  public:
@@ -495,9 +492,9 @@ class IntsRef {
           const uint32_t length,
           const uint32_t capacity)
     : ints(const_cast<int*>(ints)),
-      capacity(capacity),
       offset(offset),
-      length(length) {
+      length(length),
+      capacity(capacity) {
   }
 
   // Referencing ints
@@ -570,6 +567,15 @@ class IntsRef {
     return *this;
   }
 
+  void SafeDeleteInts() {
+    if (IsOwning() && (ints != nullptr)) {
+      delete[] ints; 
+    }
+
+    ints = nullptr;
+    offset = capacity = length = 0;
+  }
+
   ~IntsRef() {
     SafeDeleteInts();
   }
@@ -623,7 +629,6 @@ class IntsRef {
   }
 
   IntsRef& SetOffset(const uint32_t new_offset) noexcept {
-
     offset = new_offset; 
     return *this;
   }
@@ -643,6 +648,7 @@ class IntsRef {
 
   IntsRef& SetInts(int32_t* new_ints) noexcept {
     ints = new_ints;
+    return *this;
   }
 };  // IntsRef
 
@@ -653,7 +659,6 @@ class IntsRefBuilder {
  public:
   IntsRefBuilder()
     : ref() {
-    ref.length |= IntsRef::IS_OWNING_MASK;
   }
 
   int32_t* Ints() const noexcept {
@@ -715,13 +720,20 @@ class IntsRefBuilder {
 
   IntsRefBuilder& Grow(const uint32_t new_capacity) {
     if (ref.Capacity() < new_capacity) {
-      std::pair<int32_t*, uint32_t> pair =
-        ArrayUtil::Grow(ref.Ints(), ref.Capacity(), new_capacity);
+      if (ref.Ints() != nullptr) {
+        std::pair<int32_t*, uint32_t> pair =
+          ArrayUtil::Grow(ref.Ints(), ref.Capacity(), new_capacity);
 
-      delete[] ref.Ints();
-      ref.SetInts(pair.first)
-         .SetCapacity(pair.second)
-         .SetOwning();
+        delete[] ref.Ints();
+
+        ref.SetInts(pair.first)
+           .SetCapacity(pair.second)
+           .SetOwning();
+      } else {
+        ref.SetInts(new int32_t[new_capacity])
+           .SetCapacity(new_capacity)
+           .SetOwning();
+      }
     }
 
     return *this;

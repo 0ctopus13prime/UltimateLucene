@@ -53,7 +53,6 @@ class ArrayUtil {
   // TODO(0ctopus13prime): I'm not sure this is a valid implementation.
   // How can I limit maximum array size like Java does?
   // TODO(0ctopus13prime): Remove template
-  template <typename T>
   static uint32_t Oversize(const uint32_t min_target_size) {
     return static_cast<uint32_t>(min_target_size * 1.5);
   }
@@ -63,7 +62,7 @@ class ArrayUtil {
                                       const uint32_t length,
                                       const uint32_t min_size) {
     if (length < min_size) {
-      const uint32_t new_length = Oversize<T>(min_size);
+      const uint32_t new_length = Oversize(min_size);
       T* new_array = CopyOf(array, length, new_length);
       return std::pair<T*, uint32_t>(new_array, new_length);
     }

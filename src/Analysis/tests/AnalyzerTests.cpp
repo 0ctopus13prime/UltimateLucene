@@ -163,7 +163,7 @@ TEST(ANALYZER__TESTS, GLOBAL_REUSE_STRATEGY) {
 
   std::string field2("field2");
   ts_components =
-  global_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
+    global_reuse_strategy.GetReusableComponents(dummy_analyzer, field2);
   EXPECT_NE(nullptr, ts_components);
 
   std::thread another_thread([&dummy_analyzer, &field1](){
