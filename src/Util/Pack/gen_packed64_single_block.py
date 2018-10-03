@@ -161,7 +161,7 @@ class Packed64: public PackedInts::MutableImpl {
     uint32_t block_index =
       static_cast<uint32_t>((static_cast<uint64_t>(index) * bits_per_value) >>
                              BLOCK_BITS);
-    assert((static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK == 0);
+    assert(((static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK) == 0);
     const uint32_t iterations = (len / decoder->LongValueCount());
     decoder->Decode(blocks.get(), block_index, arr, off, iterations);
     const uint32_t got_values = iterations * decoder->LongValueCount();
@@ -229,7 +229,7 @@ class Packed64: public PackedInts::MutableImpl {
     uint32_t block_index =
       static_cast<uint32_t>((static_cast<uint64_t>(index) * bits_per_value) >>
                             BLOCK_BITS);
-    assert((static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK == 0);
+    assert(((static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK) == 0);
     const uint32_t iterations = (len / encoder->LongValueCount());
     encoder->Encode(arr, off, blocks.get(), block_index, iterations);
     const uint32_t set_values = (iterations * encoder->LongValueCount());

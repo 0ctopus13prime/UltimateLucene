@@ -28,7 +28,20 @@ using lucene::core::util::PackedInts;
 using lucene::core::util::PagedGrowableWriter;
 
 TEST(PAGED__GROWABLE__WRITER, BASIC__TEST) {
-  PagedGrowableWriter table(16, 1 << 27, 8, PackedInts::COMPACT);
+  uint32_t value_count = 1000;
+  uint32_t init_bits = 8;
+  PagedGrowableWriter table(value_count,
+                            1 << 27,  // Single page size
+                            init_bits,
+                            PackedInts::COMPACT);
+
+  for (uint32_t i = 0 ; i < value_count ; ++i) {
+    table.Set(i, i);
+  }
+
+  for (uint32_t i = 0 ; i < value_count ; ++i) {
+    ASSERT_EQ(i, table.Get(i));
+  }
 }
 
 TEST(DIRECT__8__TESTS, BASIC__TEST) {

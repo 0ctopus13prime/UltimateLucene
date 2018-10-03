@@ -251,6 +251,8 @@ class PackedInts {
            ++i, ++o) {
         arr[o] = Get(i);
       }
+
+      return gets;
     }
 
     virtual int64_t Get(uint32_t index) = 0;
@@ -414,6 +416,8 @@ class PackedInts {
            ++i, ++o) {
         Set(i, arr[o]);
       }
+
+      return len;
     }
 
     virtual void Fill(uint32_t from_index,
@@ -561,10 +565,11 @@ class PackedInts {
                    int64_t buf[],
                    uint32_t buf_size) {
     assert(buf_size > 0);
-    uint32_t remaining = 0;
+    int32_t remaining = 0;
     while (len > 0) {
       const uint32_t read =
         src->Get(src_pos, buf, remaining, std::min(len, buf_size - remaining));
+
       assert(read > 0);
       src_pos += read;
       len -= read;
@@ -665,10 +670,6 @@ class PackedInts {
   }
 
   static const uint32_t UnsignedBitsRequired(const int64_t bits) {
-    std::cout << "UnsignedBitsRequired, bits -> " << bits
-              << ", NumberOfLeadingZeros -> " << lucene::core::util::NumericUtils::NumberOfLeadingZerosInt64(bits)
-              << std::endl;
-
     return std::max(1U, 64 - lucene::core::util
                             ::NumericUtils::NumberOfLeadingZerosInt64(bits));
   }
