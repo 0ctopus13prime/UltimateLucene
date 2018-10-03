@@ -64,7 +64,7 @@ class Packed64: public PackedInts::MutableImpl {
  private:
   uint32_t blocks_size;
   std::unique_ptr<uint64_t[]> blocks; 
-  uint32_t mask_right;
+  uint64_t mask_right;
   int32_t bpv_minus_block_size;
 
  private:
@@ -184,7 +184,7 @@ class Packed64: public PackedInts::MutableImpl {
     const int64_t end_bits = (major_bit_pos & MOD_MASK) + bpv_minus_block_size;
 
     // Single block
-    if (end_bits == 0) {
+    if (end_bits <= 0) {
       blocks[element_pos] = blocks[element_pos] &
                             ~(mask_right << -end_bits) |
                             (value << -end_bits);
@@ -218,18 +218,18 @@ class Packed64: public PackedInts::MutableImpl {
         Set(index++, arr[off++]);
         --len;
       }
-    }
 
-    if (len == 0) {
-      return (index - original_index);
+      if (len == 0) {
+        return (index - original_index);
+      }
     }
 
     // Bulk set
     assert(index % encoder->LongValueCount() == 0);
     uint32_t block_index =
-      static_cast<uint32_t>((static_cast<uint32_t>(index) * bits_per_value) >>
+      static_cast<uint32_t>((static_cast<uint64_t>(index) * bits_per_value) >>
                             BLOCK_BITS);
-    assert((static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK);
+    assert((static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK == 0);
     const uint32_t iterations = (len / encoder->LongValueCount());
     encoder->Encode(arr, off, blocks.get(), block_index, iterations);
     const uint32_t set_values = (iterations * encoder->LongValueCount());

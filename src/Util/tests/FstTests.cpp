@@ -23,203 +23,195 @@
 #include <sstream>
 #include <string>
 
-using lucene::core::util::BytesRef;
-using lucene::core::util::BytesRefBuilder;
-using lucene::core::util::ByteSequenceOutputs;
-using lucene::core::util::Builder;
-using lucene::core::util::IntsRef;
-using lucene::core::util::IntsRefBuilder;
-using lucene::core::util::IntSequenceOutputs;
-using lucene::core::util::FST;
-using lucene::core::util::FST_INPUT_TYPE;
-using lucene::core::util::FSTUtil;
+using lucene::core::util::BytesStore;
+using lucene::core::util::FSTBytesReader;
+using lucene::core::util::ForwardFSTBytesReader;
+using lucene::core::util::ReverseFSTBytesReader;
+using lucene::core::util::BytesStoreForwardFSTBytesReader;
+using lucene::core::util::BytesStoreReverseFSTBytesReader;
 
-/*
-TEST(OUTPUTS__TESTS, INTS__OUTPUT) {
-  IntSequenceOutputs outputs;
+TEST(BYTES__STORE__TEST, BASIC__TESTS) {
+  // Write byte
+  const uint32_t block_bits = 5;
+  BytesStore bs(block_bits);
+  bs.WriteByte(13);
+  ASSERT_EQ(1, bs.GetPosition());
 
-  //////////////////////
-  // No ouput
-  //////////////////////
-  {
-    IntsRef no_output;
-    ASSERT_TRUE(outputs.IsNoOutput(no_output));
+  for (int i = 0 ; i < 127 ; ++i) {
+    bs.WriteByte(static_cast<char>(i));
+  }
+  ASSERT_EQ(1 + 127, bs.GetPosition());
 
-    // Owner whose capacity equals 100
-    IntsRef ints_ref1(IntsRef::MakeOwner(100));
+  // Bulk write bytes
+  std::unique_ptr<char[]> bulk(std::make_unique<char[]>(8 * 1231));
 
-    ASSERT_FALSE(outputs.IsNoOutput(ints_ref1));
+  bs.WriteBytes(bulk.get(), 0, 8 * 1231);
+  ASSERT_EQ(1 + 127 + 8 * 1231, bs.GetPosition());
+  bs.WriteBytes(bulk.get(), 0, 8 * 1231);
+  ASSERT_EQ(1 + 127 + 2 * 8 * 1231, bs.GetPosition());
 
-    outputs.MakeNoOutput(ints_ref1);
-    ASSERT_TRUE(outputs.IsNoOutput(ints_ref1));
+  // Skip bytes
+  bs.SkipBytes(1234);
+  ASSERT_EQ(1 + 127 + 2 * 8 * 1231 + 1234, bs.GetPosition());
+
+  // In place byte write
+  for (int i = 0 ; i < bs.GetPosition() ; ++i) {
+    bs.WriteByte(i, static_cast<char>(i));
   }
 
-  //////////////////////
-  // Prefix length
-  //////////////////////
-  {
-    IntsRefBuilder builder1;
-    IntsRefBuilder builder2;
+  // In place bytes write
+  bs.WriteBytes(229, bulk.get(), 0, 8 * 1231);
 
-    // Case 1. No prefix
-    builder1.Append(1); builder1.Append(2);
-    builder2.Append(2); builder2.Append(3);
-
-    ASSERT_EQ(0, outputs.PrefixLen(builder1.Get(), builder2.Get()));
-
-    // Case 2. Has common prefix
-    builder1.Clear(); builder2.Clear();
-    builder1.Append(1); builder1.Append(2); builder1.Append(3);
-    builder2.Append(1); builder2.Append(2); builder2.Append(4);
-
-    ASSERT_EQ(2, outputs.PrefixLen(builder1.Get(), builder2.Get()));
-
-    // Case 3. Include another word
-    builder1.Clear(); builder2.Clear();
-    builder1.Append(1)
-            .Append(2)
-            .Append(3)
-            .Append(4);
-
-    builder2.Append(1)
-            .Append(2)
-            .Append(3);
-
-    ASSERT_EQ(3, outputs.PrefixLen(builder1.Get(), builder2.Get()));
-  }
-
-  //////////////////////
-  // Reference
-  //////////////////////
-  {
-    IntsRefBuilder builder; 
-    builder.Append(1)
-           .Append(2)
-           .Append(3)
-           .Append(4)
-           .Append(5);
-
-    IntsRef prefix(outputs.PrefixReference(builder.Get(), 3));
-    ASSERT_EQ(3, prefix.Length());
-
-    ASSERT_EQ(1, prefix.Ints()[prefix.Offset()]);
-    ASSERT_EQ(2, prefix.Ints()[prefix.Offset() + 1]);
-    ASSERT_EQ(3, prefix.Ints()[prefix.Offset() + 2]);
-
-    IntsRef suffix(outputs.SuffixReference(builder.Get(), 3));
-    ASSERT_EQ(2, suffix.Length());
-    ASSERT_EQ(4, suffix.Ints()[suffix.Offset()]);
-    ASSERT_EQ(5, suffix.Ints()[suffix.Offset() + 1]);
-  }
-
-  //////////////////////
-  // Manipulation
-  //////////////////////
-  {
-    IntsRefBuilder builder1; 
-    builder1.Append(1)
-            .Append(2)
-            .Append(3)
-            .Append(4)
-            .Append(5);
-
-    outputs.DropSuffix(builder1.Get(), 3);
-    ASSERT_EQ(3, builder1.Length());
-    ASSERT_EQ(1, builder1[0]);
-    ASSERT_EQ(2, builder1[1]);
-    ASSERT_EQ(3, builder1[2]);
-
-    // Now builder1 has [1,2,3] 
-    // builder has [13, 14]
-    IntsRefBuilder builder2;
-    builder2.Append(13)
-            .Append(14);
-   
-    // Case1. Prepend not empty prefix to not empty output
-    // ref1 = ref2 + ref1
-    outputs.Prepend(builder2.Get(), builder1.Get());
-    ASSERT_EQ(5, builder1.Length());
-    ASSERT_EQ(13, builder1[0]);
-    ASSERT_EQ(14, builder1[1]);
-    ASSERT_EQ(1, builder1[2]);
-    ASSERT_EQ(2, builder1[3]);
-    ASSERT_EQ(3, builder1[4]);
-
-    // Case2. Prepend empty prefix to not empty output
-    // ref1 = ref2(empty) + ref1
-    builder2.Clear();
-    outputs.Prepend(builder2.Get(), builder1.Get());
-    ASSERT_EQ(5, builder1.Length());
-    ASSERT_EQ(13, builder1[0]);
-    ASSERT_EQ(14, builder1[1]);
-    ASSERT_EQ(1, builder1[2]);
-    ASSERT_EQ(2, builder1[3]);
-    ASSERT_EQ(3, builder1[4]);
-
-    // Case3. Prepend not empty prefix to empty output
-    // ref2(empty) = ref1
-    outputs.Prepend(builder1.Get(), builder2.Get());
-    ASSERT_EQ(5, builder2.Length());
-    ASSERT_EQ(13, builder2[0]);
-    ASSERT_EQ(14, builder2[1]);
-    ASSERT_EQ(1, builder2[2]);
-    ASSERT_EQ(2, builder2[3]);
-    ASSERT_EQ(3, builder2[4]);
-
-    // Case4. Prepend empty prefix to empty output
-    builder1.Clear();
-    builder2.Clear();
-    outputs.Prepend(builder1.Get(), builder2.Get());
-    ASSERT_EQ(0, builder1.Length());
-    ASSERT_EQ(0, builder2.Length());
-
-    // Shift suffix 
-    builder1.Clear()
-            .Append(1)
-            .Append(2)
-            .Append(3)
-            .Append(4)
-            .Append(5);
-
-    outputs.ShiftLeftSuffix(builder1.Get(), 3);
-    ASSERT_EQ(2, builder1.Length());
-    ASSERT_EQ(4, builder1[0]);
-    ASSERT_EQ(5, builder1[1]);
-
-    outputs.ShiftLeftSuffix(builder1.Get(), 10000);
-    ASSERT_EQ(0, builder1.Length());
-  }
-}
-*/
-
-void Add(Builder<IntsRef>& builder,
-         const std::string& key,
-         const std::string& value) {
-  BytesRef key_bytes(key.c_str(), key.size());
-  IntsRefBuilder key_ints;
-  key_ints.CopyUTF8Bytes(key_bytes);
-
-  BytesRef val_bytes(value.c_str(), value.size());
-  IntsRefBuilder val_ints;
-  val_ints.CopyUTF8Bytes(val_bytes);
-
-  builder.Add(std::move(key_ints.Get()), std::move(val_ints.Get()));
-}
-
-TEST(BYTESREF__TESTS, BASIC__TEST) {
-  Builder<IntsRef> builder(FST_INPUT_TYPE::BYTE1,
-                           std::make_unique<IntSequenceOutputs>());
-  std::string key;
-  std::string val;
-  std::ifstream infile("/tmp/fst.input");
+  // Write int32
   for (int i = 0 ; i < 100 ; ++i) {
-    std::getline(infile, key);
-    std::getline(infile, val);
-    Add(builder, key, val);
+    bs.WriteInt32(i, i);
   }
 
-  infile.close();
-  std::cout << "Count -> " << builder.GetTermCount() << std::endl;
+  // Reverse
+  bs.Reverse(0, bs.GetPosition() - 1);
+
+  // In place copy bytes
+  bs.CopyBytes(0, 1231, 509);
+
+  // Truncate
+  bs.Truncate(613);
+  ASSERT_EQ(613, bs.GetPosition());
+
+  // Finish
+  const uint32_t size_before_finish = bs.GetPosition();
+  bs.Finish();
+  ASSERT_EQ(size_before_finish, bs.GetPosition());
+}
+
+TEST(FORWARD__BYTES__READER, BASIC__TEST) {
+  const uint32_t block_bits = 5;
+  BytesStore bs(block_bits);
+  
+  // Fill 10 bytes
+  for (int i = 0 ; i < 10 ; ++i) {
+    bs.WriteByte(static_cast<char>(i));
+  }
+
+  std::unique_ptr<FSTBytesReader> reader =
+    bs.GetForwardReader();
+
+  ForwardFSTBytesReader* fbr = dynamic_cast<ForwardFSTBytesReader*>(reader.get());
+  ASSERT_NE(nullptr, fbr);
+ 
+  for (uint32_t i = 0 ; i < bs.GetPosition() ; ++i) {
+    ASSERT_EQ(static_cast<char>(i), fbr->ReadByte());
+  }
+
+  char buffer[bs.GetPosition()];
+  fbr->SetPosition(0);
+  fbr->ReadBytes(buffer, 0, bs.GetPosition());
+
+  for (uint32_t i = 0 ; i < bs.GetPosition() ; ++i) {
+    ASSERT_EQ(static_cast<char>(i), buffer[i]);
+  }
+}
+
+TEST(REVERSE__BYTES__READER, BASIC__TEST) {
+  const uint32_t block_bits = 5;
+  BytesStore bs(block_bits);
+  
+  // Fill 10 bytes
+  for (int i = 0 ; i < 10 ; ++i) {
+    bs.WriteByte(static_cast<char>(i));
+  }
+
+  std::unique_ptr<FSTBytesReader> reader =
+    bs.GetReverseReader();
+
+  ReverseFSTBytesReader* rbr = dynamic_cast<ReverseFSTBytesReader*>(reader.get());
+  ASSERT_NE(nullptr, rbr);
+  // Rewind to end
+  rbr->SetPosition(bs.GetPosition() - 1);
+ 
+  for (int32_t i = bs.GetPosition() - 1 ; i >=0 ; --i) {
+    ASSERT_EQ(static_cast<char>(i), rbr->ReadByte());
+  }
+
+  rbr->SetPosition(bs.GetPosition() - 1);
+  char buffer[bs.GetPosition()];
+  rbr->ReadBytes(buffer, 0, bs.GetPosition());
+
+  for (uint32_t i = 0 ; i < bs.GetPosition() ; ++i) {
+    ASSERT_EQ(static_cast<char>(bs.GetPosition() - 1 - i), buffer[i]);
+  }
+}
+
+TEST(REVERSE__BYTES__READER, BULK__BASIC__TEST) {
+  const uint32_t block_bits = 5;
+  BytesStore bs(block_bits);
+
+  const uint32_t bulk_bytes_size = 8317;
+  // Write ${bulk_bytes_size} bytes
+  for (uint32_t i = 0 ; i < bulk_bytes_size ; ++i) {
+    bs.WriteByte(static_cast<char>(i));
+  }
+ 
+  std::unique_ptr<FSTBytesReader> reader = bs.GetForwardReader();   
+  BytesStoreForwardFSTBytesReader* fbr = dynamic_cast<BytesStoreForwardFSTBytesReader*>(reader.get());
+  ASSERT_NE(nullptr, fbr);
+
+  // Read byte
+  for (uint32_t i = 0 ; i < bulk_bytes_size ; ++i) {
+    ASSERT_EQ(static_cast<char>(i), fbr->ReadByte());
+  }
+
+  // Read bytes
+  char buffer[bulk_bytes_size];
+  fbr->SetPosition(0);
+  fbr->ReadBytes(buffer, 0, bulk_bytes_size);
+  for (uint32_t i = 0 ; i < bulk_bytes_size ; ++i) {
+    ASSERT_EQ(static_cast<char>(i), buffer[i]);
+  }
+
+  // Skip 500 bytes
+  fbr->SetPosition(500);
+  ASSERT_EQ(500, fbr->GetPosition());
+  for (uint32_t i = 500 ; i < bulk_bytes_size ; ++i) {
+    ASSERT_EQ(static_cast<char>(i), fbr->ReadByte());
+  }
+}
+
+TEST(FORWARD__BYTES__READER, BULK__BASIC__TEST) {
+  const uint32_t block_bits = 5;
+  BytesStore bs(block_bits);
+
+  const uint32_t bulk_bytes_size = 8317;
+  // Write ${bulk_bytes_size} bytes
+  for (uint32_t i = 0 ; i < bulk_bytes_size ; ++i) {
+    bs.WriteByte(static_cast<char>(i));
+  }
+ 
+  std::unique_ptr<FSTBytesReader> reader = bs.GetReverseReader();   
+  BytesStoreReverseFSTBytesReader* rbr = dynamic_cast<BytesStoreReverseFSTBytesReader*>(reader.get());
+  ASSERT_NE(nullptr, rbr);
+
+  // Read byte
+  rbr->SetPosition(bs.GetPosition() - 1);
+  for (uint32_t i = 0 ; i < bulk_bytes_size ; ++i) {
+    ASSERT_EQ(static_cast<char>(bulk_bytes_size - 1 - i), rbr->ReadByte());
+  }
+
+  // Read bytes
+  char buffer[bulk_bytes_size];
+  rbr->SetPosition(bs.GetPosition() - 1);
+  rbr->ReadBytes(buffer, 0, bulk_bytes_size);
+  for (uint32_t i = 0 ; i < bulk_bytes_size ; ++i) {
+    ASSERT_EQ(static_cast<char>(bulk_bytes_size - 1 - i), buffer[i]);
+  }
+
+  // Skip 500 bytes
+  rbr->SetPosition(bs.GetPosition() - 1);
+  rbr->SkipBytes(500);
+  ASSERT_EQ(bs.GetPosition() - 1 - 500, rbr->GetPosition());
+
+  for (uint32_t i = 0 ; i < rbr->GetPosition() ; ++i) {
+    ASSERT_EQ(static_cast<char>(bulk_bytes_size - 1 - 500 - i), rbr->ReadByte());
+  }
 }
 
 int main(int argc, char* argv[]) {

@@ -145,7 +145,7 @@ class NodeHash {
   int64_t Add(Builder<T>& builder,
               typename Builder<T>::UnCompiledNode* node_in) {
     const int64_t h = Hash(node_in);
-    //std::cout << "Hash, h -> " << h << std::endl;
+    std::cout << "Hash, h -> " << h << std::endl;
     int64_t pos = (h & mask);
     int32_t c = 0;
 
@@ -153,15 +153,16 @@ class NodeHash {
       const int64_t v = table.Get(pos);
       if (v == 0) {
         // Freeze & Add
-        //std::cout << "Now really freeze node" << std::endl;
+        std::cout << "Now really freeze node" << std::endl;
         const int64_t node = builder.AddNode(node_in);
-        //std::cout << "Now really freeze done" << std::endl;
-        // assert(Hash(node) == h);
+        std::cout << "Now really freeze done" << std::endl;
+        assert(Hash(node) == h);
         count++;
 
-        //std::cout << "Put hash info into the table" << std::endl;
+        std::cout << "Put hash info into the table" << std::endl;
         table.Set(pos, node);
         if (count > (2 * table.Size()) / 3) {
+          std::cout << "Start rehash" << std::endl;
           Rehash();
         }
         return node;
@@ -190,7 +191,7 @@ class Builder {
   uint32_t min_suffix_count1;
   uint32_t min_suffix_count2;
   BytesStore& bytes;
-  std::vector<uint32_t> reused_byte_per_arc;
+  std::vector<uint32_t> reused_bytes_per_arc;
   uint32_t share_max_tail_length;
   lucene::core::util::IntsRefBuilder last_input;
   std::vector<UnCompiledNode*> frontier;
@@ -203,14 +204,198 @@ class Builder {
   bool allow_array_arcs;
 
  private:
+  void WriteLabel(lucene::core::store::DataOutput* out, const int32_t v) {
+    assert(v >= 0);
+    if (fst.input_type == FST_INPUT_TYPE::BYTE1) {
+      assert(v <= 255);
+      out->WriteByte(static_cast<char>(v));
+    } else if (fst.input_type == FST_INPUT_TYPE::BYTE2) {
+      assert(v <= 65535);
+      out->WriteInt16(static_cast<int16_t>(v));
+    } else {
+      out->WriteInt32(v);
+    }
+  }
+
   int64_t AddNode(typename Builder<T>::UnCompiledNode* node_in) {
-    // TODO(0ctopus13prime): IT
-    return 0L;
+    if (node_in->arcs.empty()) {
+      return (node_in->is_final ? FST<T>::FINAL_END_NODE :
+                                  FST<T>::NON_FINAL_END_NODE);
+    }
+
+    const uint64_t start_address = bytes.GetPosition();
+    std::cout << "Start address -> " << start_address << std::endl;
+    const bool do_fixed_array = ShouldExpand(node_in);
+    std::cout << "do_fixed_array -> " << std::boolalpha << do_fixed_array << std::endl;
+
+    if (do_fixed_array) {
+      reused_bytes_per_arc.reserve(ArrayUtil::Oversize(node_in->arcs.size()));
+    }
+
+    arc_count += node_in->arcs.size();
+    std::cout << "Arc count -> " << arc_count << std::endl;
+
+    const uint32_t last_arc = (node_in->arcs.size() - 1);
+    uint64_t last_arc_start = bytes.GetPosition();
+    uint32_t max_bytes_per_arc = 0;
+
+    std::cout << "last_arc -> " << last_arc
+              << ", last_arc_start -> " << last_arc_start << std::endl;
+
+    for (uint32_t arc_idx = 0 ; arc_idx < node_in->arcs.size() ; ++arc_idx) {
+      std::cout << "\nProcessing [" << arc_idx << "] arc" << std::endl;      
+
+      Arc& arc = node_in->arcs[arc_idx];
+      CompiledNode* target = dynamic_cast<CompiledNode*>(arc.target);
+      const bool target_has_arcs = (target->node > 0);
+
+      // FST<T>::BIT_ARC_HAS_FINAL_OUTPUT
+      uint32_t flags = static_cast<uint32_t>(arc.is_final &&
+                       !fst.outputs->IsNoOutput(arc.next_final_output));
+
+      std::cout << "BIT_ARC_HAS_FINAL_OUTPUT, Flags -> " << (flags & 1) << std::endl;
+
+      // FST<T>::BIT_ARC_HAS_OUTPUT
+      flags =
+        ((flags << 1) | static_cast<uint32_t>(
+                        !(fst.outputs->IsNoOutput(arc.output))));
+
+      std::cout << "BIT_ARC_HAS_OUTPUT, Flags -> " << (flags & 1) << std::endl;
+
+      // FST<T>::BIT_STOP_NODE 
+      flags = ((flags << 1) |
+               static_cast<uint32_t>(!target_has_arcs));
+
+      std::cout << "target's node -> " << target->node << std::endl;
+      std::cout << "BIT_STOP_NODE, Flags -> " << (flags & 1) << std::endl;
+
+      // FST<T>::BIT_TARGET_NEXT
+      flags = ((flags << 1) |
+               static_cast<uint32_t>(last_frozen_node == target->node &&
+                                     !do_fixed_array));
+
+      std::cout << "BIT_TARGET_NEXT, Flags -> " << (flags & 1) << std::endl;
+
+      // FST<T>::BIT_LAST_ARC
+      flags = ((flags << 1) |
+               static_cast<uint32_t>(arc_idx == last_arc));
+
+      std::cout << "BIT_LAST_ARC, Flags -> " << (flags & 1) << std::endl;
+
+      // FST<T>::BIT_FINAL_ARC
+      flags = ((flags << 1) | static_cast<uint32_t>(arc.is_final));
+
+      std::cout << "BIT_FINAL_ARC, Flags -> " << (flags & 1) << std::endl;
+      std::cout << "Final flags -> " << flags << std::endl;
+
+      if (!arc.is_final) {
+        assert(fst.outputs->IsNoOutput(arc.next_final_output));
+      }
+
+      bytes.WriteByte(static_cast<char>(flags));
+
+      std::cout << "Write label, label -> " << arc.label << std::endl;
+      WriteLabel(&bytes, arc.label);
+
+      if (!fst.outputs->IsNoOutput(arc.output)) {
+        fst.outputs->Write(arc.output, &bytes);
+      }
+
+      if (!fst.outputs->IsNoOutput(arc.next_final_output)) {
+        fst.outputs->WriteFinalOutput(arc.next_final_output, &bytes);
+      }
+
+      if (target_has_arcs && !(flags & FST<T>::BIT_TARGET_NEXT)) {
+        assert(target->node > 0);
+        bytes.WriteVInt64(target->node);
+      }
+
+      if (do_fixed_array) {
+        reused_bytes_per_arc[arc_idx] =
+          static_cast<uint32_t>(bytes.GetPosition() - last_arc_start);
+        std::cout << "In case `do_fixed_array`, bytes -> " << reused_bytes_per_arc[arc_idx] << std::endl;
+
+        last_arc_start = bytes.GetPosition();
+        std::cout << "last_arc_start -> " << last_arc_start << std::endl;
+
+        max_bytes_per_arc =
+          std::max(max_bytes_per_arc, reused_bytes_per_arc[arc_idx]);
+        std::cout << "max_bytes_per_arc -> " << max_bytes_per_arc << std::endl;
+      }
+    }  // End for
+
+    if (do_fixed_array) {
+      std::cout << "Doing fixed array" << std::endl;
+      // Header(byte) + Num arcs(vint) + Num bytes(vint)
+      const uint32_t MAX_HEADER_SIZE = 11;
+      assert(max_bytes_per_arc > 0);
+      // 2nd pass just "expands" all arcs to take up a fixed byte size
+
+      char header[MAX_HEADER_SIZE];
+      lucene::core::store::ByteArrayReferenceDataOutput bad(header,
+                                                            MAX_HEADER_SIZE);
+      // Write a "false" first arc:
+      bad.WriteByte(FST<T>::ARCS_AS_FIXED_ARRAY);
+      bad.WriteVInt32(node_in->arcs.size());
+      bad.WriteVInt32(max_bytes_per_arc);
+      const uint32_t header_len = bad.GetPosition();
+
+      const uint32_t fixed_array_start = (start_address + header_len);
+      std::cout << "fixed_array_start -> " << fixed_array_start << std::endl;
+
+      // Expand the arcs in place, backwards
+      uint64_t src_pos = bytes.GetPosition();
+      uint64_t dest_pos = 
+        (fixed_array_start + node_in->arcs.size() * max_bytes_per_arc);
+
+      std::cout << "src_pos -> " << src_pos
+                << ", dest_pos -> " << dest_pos
+                << ", max_bytes_per_arc -> " << max_bytes_per_arc << std::endl;
+
+      if (dest_pos > src_pos) {
+        bytes.SkipBytes(static_cast<uint32_t>(dest_pos - src_pos));
+        for (int32_t arc_idx = node_in->arcs.size() - 1 ;
+             arc_idx >= 0 ;
+             --arc_idx) {
+          std::cout << "7777777 - " << arc_idx << std::endl;
+          dest_pos -= max_bytes_per_arc;
+          src_pos -= reused_bytes_per_arc[arc_idx];
+
+          std::cout << "src_pos -> " << src_pos
+                    << ", dest_pos -> " << dest_pos
+                    << ", max_bytes_per_arc -> " << max_bytes_per_arc << std::endl;
+          std::cout << arc_idx << "'s bytes -> " << reused_bytes_per_arc[arc_idx] << std::endl;
+          if (src_pos != dest_pos) {
+            assert(dest_pos > src_pos);
+            std::cout << "4444444" << std::endl;
+            bytes.CopyBytes(src_pos, dest_pos, reused_bytes_per_arc[arc_idx]);
+            std::cout << "5555555" << std::endl;
+          }
+          std::cout << "6666666" << std::endl;
+        }  // End for
+        std::cout << "3333333" << std::endl;
+      }  // End if
+
+      // Now write the header
+      std::cout << "1111111" << std::endl;
+      bytes.WriteBytes(start_address, header, 0, header_len);
+      std::cout << "2222222" << std::endl;
+    }  // End if
+
+    std::cout << "\nArc process is done" << std::endl;
+
+    const uint64_t this_node_address = (bytes.GetPosition() - 1);
+    // bytes.Reverse(start_address, this_node_address);
+    node_count++;
+
+    return this_node_address;
   }
 
   bool ShouldExpand(typename Builder<T>::UnCompiledNode* node) {
-    // TODO(0ctopus13prime): IT
-    return true;
+    return allow_array_arcs &&
+           ((node->depth <= FST<T>::FIXED_ARRAY_SHALLOW_DISTANCE &&
+             node->arcs.size() >= FST<T>::FIXED_ARRAY_NUM_ARCS_SHALLOW) ||
+            (node->arcs.size() >= FST<T>::FIXED_ARRAY_NUM_ARCS_DEEP));
   }
 
   CompiledNode* CompileNode(UnCompiledNode* node_in,
@@ -222,16 +407,16 @@ class Builder {
         (do_share_non_singleton_nodes || node_in->arcs.size() <= 1) &&
         tail_length <= share_max_tail_length) {
       if (node_in->arcs.empty()) {
-        //std::cout << "Add node" << std::endl;
+        std::cout << "Add node" << std::endl;
         node = AddNode(node_in); 
         last_frozen_node = node;
       } else {
-        //std::cout << "Add hash" << std::endl;
+        std::cout << "Add hash" << std::endl;
         node = dedup_hash->Add(*this, node_in);
-        //std::cout << "Add hash done" << std::endl;
+        std::cout << "Add hash done" << std::endl;
       }
     } else {
-        //std::cout << "No hash, Add node" << std::endl;
+        std::cout << "No hash, Add node" << std::endl;
       node = AddNode(node_in);
     }
 
@@ -314,12 +499,10 @@ class Builder {
           // compile any targets that were previously
           // undecided:
           
-          //std::cout << "Do compile" << std::endl;
-
+          std::cout << "Do compile" << std::endl;
           CompiledNode* compiled_node =
             CompileNode(node, 1 + last_input.Length() - idx); 
-
-          //std::cout << "Compile done" << std::endl;
+          std::cout << "Compile done" << std::endl;
 
           parent->ReplaceLast(last_input[idx - 1],
                               compiled_node,
@@ -377,7 +560,7 @@ class Builder {
   uint32_t min_suffix_count1;
   uint32_t min_suffix_count2;
   BytesStore& bytes;
-  std::vector<uint32_t> reused_byte_per_arc;
+  std::vector<uint32_t> reused_bytes_per_arc;
   uint32_t share_max_tail_length;
   lucene::core::util::IntsRefBuilder last_input;
   std::vector<UnCompiledNode*> frontier;
@@ -406,7 +589,7 @@ class Builder {
       min_suffix_count1(min_suffix_count1),
       min_suffix_count2(min_suffix_count2),
       bytes(fst.bytes),
-      reused_byte_per_arc(),
+      reused_bytes_per_arc(),
       share_max_tail_length(share_max_tail_length),
       last_input(),
       frontier(),
@@ -423,7 +606,7 @@ class Builder {
                                       bytes.GetReverseReader(false));
     }
 
-    reused_byte_per_arc.reserve(4);
+    reused_bytes_per_arc.reserve(4);
 
     const uint32_t frontier_rsv_size = 20;
     frontier.reserve(frontier_rsv_size);
@@ -433,7 +616,7 @@ class Builder {
 
     //std::cout << "Builder(), frontier's size -> " << frontier.size() << std::endl; 
     //std::cout << "Builder(), uncompiled_node_pool's size -> " << uncompiled_node_pool.size() << std::endl; 
-    //std::cout << "Builder(), outputs -> " << fst.outputs.get() << std::endl;
+    //std::cout << "Builder(), outputs -> " << fst.outputs->get() << std::endl;
   }
 
   uint64_t GetTermCount() const noexcept {
@@ -484,9 +667,9 @@ class Builder {
 
     // Minimize/Compile states from previous input's
     // orphan'd suffix
-    //std::cout << "Start freeze tail" << std::endl;
+    std::cout << "Start freeze tail" << std::endl;
     FreezeTail(prefix_len_plus1);
-    //std::cout << "End freeze tail" << std::endl;
+    std::cout << "End freeze tail" << std::endl;
 
     for (uint32_t idx = prefix_len_plus1 ; idx <= input.Length() ; ++idx) {
       frontier[idx - 1]->AddArc(input.Ints()[input.Offset() + idx - 1],
@@ -494,8 +677,7 @@ class Builder {
       frontier[idx]->input_count++;
     }
 
-  /*
-    UnCompiledNode* last_node = frontier[input.length];
+    UnCompiledNode* last_node = frontier[input.Length()];
     if (last_input.Length() != input.Length() ||
         prefix_len_plus1 != input.Length() + 1) {
       last_node->is_final = true;
@@ -508,37 +690,36 @@ class Builder {
       UnCompiledNode* parent_node = frontier[idx - 1];
 
       T& last_output =
-        parent_node->GetLastOutput(input.ints[input.offset + idx - 1]);
+        parent_node->GetLastOutput(input.Ints()[input.Offset() + idx - 1]);
 
       if (!fst.outputs->IsNoOutput(last_output)) {
         // Calculate common prefix between output and last_output
         const uint32_t prefix_len = fst.outputs->PrefixLen(output, last_output);
 
         // Propagate last input's suffix to all arcs of node
-        node.PrependOutput(
+        node->PrependOutput(
           fst.outputs->SuffixReference(last_output, prefix_len));
 
         // Drop suffix from last_output
         fst.outputs->DropSuffix(last_output, prefix_len);
-      }
 
-      // Drop common prefix from output
-      fst.outputs->ShiftLeftSuffix(output, prefix_len);
+        // Drop common prefix from output
+        fst.outputs->ShiftLeftSuffix(output, prefix_len);
+      }
     }
 
     if (last_input.Length() == input.Length() &&
         prefix_len_plus1 == (1 + input.Length())) {
       // Same input more than 1 time in a row, mapping to
       // multiple outputs
-      last_node.output = fst.outputs.Merge(last_node.output, output);
+      last_node->output = fst.outputs->Merge(last_node->output, output);
     } else {
       // This new arc is private to this new input; 
       // set its arc output to the leftover output:
       frontier[prefix_len_plus1 - 1]->SetLastOutput(
-        input.ints[input.Offset() + prefix_len_plus1 - 1],
+        input.Ints()[input.Offset() + prefix_len_plus1 - 1],
         std::forward<T>(output));
     }
-  */
 
     // Save last input
     last_input.InitInts(std::forward<IntsRef>(input));
@@ -591,7 +772,7 @@ class Builder<T>::Node {
 template<typename T>
 class Builder<T>::Arc {
  public:
-  uint32_t label;
+  int32_t label;
   Node* target;
   bool is_final;
   T output;
@@ -690,11 +871,11 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
     outputs->MakeNoOutput(output);
   }
 
-  T& GetLastOutput(const uint32_t label_to_match) const noexcept {
+  T& GetLastOutput(const int32_t label_to_match) noexcept {
     return arcs.back().output;
   }
 
-  void AddArc(const uint32_t label, Node* target) {
+  void AddArc(const int32_t label, Node* target) {
     Arc arcarc(Arc());
     arcs.push_back(Arc());
     Arc& arc = arcs.back();
@@ -705,7 +886,7 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
     arc.is_final = false;
   }
 
-  void ReplaceLast(const uint32_t label_to_match,
+  void ReplaceLast(const int32_t label_to_match,
                    Node* target,
                    T&& next_final_output,
                    const bool is_final) {
@@ -717,11 +898,11 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
     arc.is_final = is_final;
   }
 
-  void DeleteLast(const uint32_t label, Node* target) noexcept {
+  void DeleteLast(const int32_t label, Node* target) noexcept {
     arcs.pop_back();
   }
 
-  void SetLastOutput(const uint32_t label_to_match, T&& new_output) {
+  void SetLastOutput(const int32_t label_to_match, T&& new_output) {
     Arc& arc = arcs.back();
     arc.output = std::forward<T>(new_output);
   }
@@ -740,15 +921,15 @@ class Builder<T>::UnCompiledNode : public Builder<T>::Node {
 template<typename T>
 class Builder<T>::CompiledNode: public Builder<T>::Node {
  public:
-  const uint64_t node;
+  const int64_t node;
 
  private:
-  explicit CompiledNode(const uint64_t node)
+  explicit CompiledNode(const int64_t node)
     : node(node) {
   }
 
  public:
-  static CompiledNode* New(Builder<T>* builder, const uint64_t node) {
+  static CompiledNode* New(Builder<T>* builder, const int64_t node) {
     builder->compiled_node_pool.push_back(CompiledNode(node)); 
     return &(builder->compiled_node_pool.back());
   }
@@ -823,7 +1004,9 @@ template <typename T>
 int64_t NodeHash<T>::Hash(const int64_t node) {
   const uint32_t PRIME = 31;
   int64_t h = 0;
+  std::cout << "Start ReadFirstRealTargetArc, node -> " << node << std::endl;
   fst->ReadFirstRealTargetArc(node, scratch_arc, in.get());
+  std::cout << "ReadFirstRealTargetArc done" << std::endl;
   while (true) {
     h = PRIME * h + scratch_arc.label;
     h = PRIME * h +

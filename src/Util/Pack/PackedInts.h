@@ -18,6 +18,10 @@
 #ifndef SRC_UTIL_PACK_PACKEDINTS_H_
 #define SRC_UTIL_PACK_PACKEDINTS_H_
 
+// TEST
+#include <iostream>
+// TEST
+
 #include <Codec/CodecUtil.h>
 #include <Store/DataInput.h>
 #include <Store/DataOutput.h>
@@ -504,7 +508,7 @@ class PackedInts {
     }
 
     return lucene::core::util::NumericUtils
-           ::NumberOfTrailingZeros(block_size);
+           ::NumberOfTrailingZerosInt32(block_size);
   }
 
   static uint32_t NumBlocks(const uint64_t size, const uint32_t block_size) {
@@ -556,10 +560,11 @@ class PackedInts {
                    uint32_t len,
                    int64_t buf[],
                    uint32_t buf_size) {
+    assert(buf_size > 0);
     uint32_t remaining = 0;
     while (len > 0) {
       const uint32_t read =
-        src->Get(src_pos, buf, remaining, std::min(len, buf_size));
+        src->Get(src_pos, buf, remaining, std::min(len, buf_size - remaining));
       assert(read > 0);
       src_pos += read;
       len -= read;
@@ -568,7 +573,8 @@ class PackedInts {
       assert(written > 0);
       dest_pos += written;
       if (written < remaining) {
-        std::memcpy(buf, buf + written,
+        std::memcpy(buf,
+                    buf + written,
                     sizeof(int64_t) * (remaining - written));
       }
       remaining -= written;
@@ -578,7 +584,8 @@ class PackedInts {
       const uint32_t written = dest->Set(dest_pos, buf, 0, remaining);
       dest_pos += written;
       remaining -= written;
-      std::memcpy(buf, buf + written,
+      std::memcpy(buf,
+                  buf + written,
                   sizeof(int64_t) * remaining);
     }
   }
@@ -658,8 +665,12 @@ class PackedInts {
   }
 
   static const uint32_t UnsignedBitsRequired(const int64_t bits) {
+    std::cout << "UnsignedBitsRequired, bits -> " << bits
+              << ", NumberOfLeadingZeros -> " << lucene::core::util::NumericUtils::NumberOfLeadingZerosInt64(bits)
+              << std::endl;
+
     return std::max(1U, 64 - lucene::core::util
-                            ::NumericUtils::NumberOfLeadingZeros(bits));
+                            ::NumericUtils::NumberOfLeadingZerosInt64(bits));
   }
 };
 

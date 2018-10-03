@@ -22,5 +22,8 @@ target_link_libraries(NumericTests DoochiCore gtest pthread)
 add_executable(FileUtilTests FileUtilTests.cpp)
 target_link_libraries(FileUtilTests DoochiCore gtest pthread)
 
+add_executable(FstBuilderTests FstBuilderTests.cpp)
+target_link_libraries(FstBuilderTests DoochiCore gtest pthread)
+
 add_executable(FstTests FstTests.cpp)
 target_link_libraries(FstTests DoochiCore gtest pthread)

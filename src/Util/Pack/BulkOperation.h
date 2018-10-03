@@ -248,7 +248,7 @@ class BulkOperationPacked : public BulkOperation {
         next_block = 0;
         bits_left = 64;
       } else {
-        blocks[blocks_offset++] |= (values[values_offset] >> -bits_left);
+        next_block |= (values[values_offset] >> -bits_left);
         blocks[blocks_offset++] = next_block;
         next_block = ((values[values_offset++] & ((1UL << -bits_left) - 1)) << (64 + bits_left));
         bits_left += 64;

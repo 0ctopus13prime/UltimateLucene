@@ -17,6 +17,10 @@
 #ifndef SRC_UTIL_PACK_WRITER_H_
 #define SRC_UTIL_PACK_WRITER_H_
 
+// TEST
+#include <iostream>
+// TEST
+
 #include <Store/DataOutput.h>
 #include <Util/Bits.h>
 #include <Util/Exception.h>
@@ -128,24 +132,36 @@ class GrowableWriter: public PackedInts::Mutable {
 
  private:
   static uint64_t Mask(const uint32_t bpv) {
-    return (bpv == 64 ? ~0L : PackedInts::MaxValue(bpv));
+    return (bpv == 64 ? ~0UL : PackedInts::MaxValue(bpv));
   }
 
   void EnsureCapacity(const int64_t value) {
-    if ((value & current_mask) == value) {
-      return;
-    }
-
-    const uint32_t bits_required = PackedInts::UnsignedBitsRequired(value);
-    assert(bits_required > current->GetBitsPerValue());
-    const uint32_t value_count = Size();
-    std::unique_ptr<PackedInts::Mutable> next =
-      PackedInts::GetMutable(value_count, bits_required,
-                             acceptable_overhead_ratio);
-    PackedInts::Copy(current.get(), 0, next.get(), 0, value_count,
-                     PackedInts::DEFAULT_BUFFER_SIZE);
-    current = std::move(next);
-    current_mask = Mask(current->GetBitsPerValue());
+    std::cout << "Current mask -> " << current_mask
+              << ", value -> " << value
+              << ", ~current_mask & value -> "
+              << (~current_mask & value) << std::endl;
+    if (~current_mask & value) {
+      std::cout << "Enlarge bit-width" << std::endl;
+      const uint32_t bits_required = PackedInts::UnsignedBitsRequired(value);
+      assert(bits_required > current->GetBitsPerValue());
+      const uint32_t value_count = Size();
+      std::cout << "Make new mutable, bits_required -> " << bits_required
+                << ", value_count -> " << value_count << std::endl;
+      std::unique_ptr<PackedInts::Mutable> next =
+        PackedInts::GetMutable(value_count,
+                               bits_required,
+                               acceptable_overhead_ratio);
+      std::cout << "Copy current mutable to new one" << std::endl;
+      PackedInts::Copy(current.get(), 0,
+                       next.get(), 0,
+                       value_count,
+                       PackedInts::DEFAULT_BUFFER_SIZE);
+      std::cout << "Move new mutable to current" << std::endl;
+      current = std::move(next);
+      std::cout << "Change current mask" << std::endl;
+      current_mask = Mask(current->GetBitsPerValue());
+      std::cout << "Change mask done. current_mask -> " << current_mask << std::endl;
+    } 
   }
 
  public:
@@ -153,7 +169,9 @@ class GrowableWriter: public PackedInts::Mutable {
                  const uint32_t value_count,
                  const float acceptable_overhead_ratio)
     : acceptable_overhead_ratio(acceptable_overhead_ratio),
-      current(PackedInts::GetMutable(value_count, start_bits_per_value, acceptable_overhead_ratio)),
+      current(PackedInts::GetMutable(value_count,
+                                     start_bits_per_value,
+                                     acceptable_overhead_ratio)),
       current_mask(Mask(current->GetBitsPerValue())) {
   }
 
@@ -195,6 +213,11 @@ class GrowableWriter: public PackedInts::Mutable {
                uint32_t len) {
     uint64_t max = 0;
     for (uint32_t i = off, end = off + len ; i < end ; ++i) {
+      // Bitwise or is nice because either all values are positive and the
+      // or-ed result will require as many bits per value as the max of the
+      // values, or one of them is negative and the result will be negative,
+      // forcing GrowableWriter to use 64 bits per value
+      // Ex) Max 110101 -> Required bits = 6
       max |= arr[i];
     }
 

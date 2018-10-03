@@ -117,21 +117,20 @@ class AbstractPagedMutable: public Int64Values {
   }
 
   int64_t Get(const uint64_t index) {
-    const uint32_t page_index = PageIndex(index);
-    const uint32_t index_in_page = IndexInPage(index);
-    return sub_mutables[page_index]->Get(index_in_page);
+    return sub_mutables[PageIndex(index)]->Get(IndexInPage(index));
   }
 
   void Set(const uint64_t index, const uint64_t value) {
-    const uint32_t page_index = PageIndex(index);
-    const uint32_t index_in_page = IndexInPage(index);
-    sub_mutables[page_index]->Set(index_in_page, value);
+    sub_mutables[PageIndex(index)]->Set(IndexInPage(index), value);
   }
 
-  virtual std::unique_ptr<AbstractPagedMutable> NewUnfilledCopy(const uint64_t new_size) = 0;
+  virtual std::unique_ptr<AbstractPagedMutable>
+  NewUnfilledCopy(const uint64_t new_size) = 0;
 
   std::unique_ptr<T> Resize(const uint64_t new_size) {
-    std::unique_ptr<T> copy(dynamic_cast<T*>(NewUnfilledCopy(new_size).release()));
+    std::unique_ptr<T>
+      copy(dynamic_cast<T*>(NewUnfilledCopy(new_size).release()));
+
     const uint32_t num_common_pages =
       std::min(copy->sub_mutables_size, sub_mutables_size);
     uint64_t copy_buffer[1024];  // TODO(0ctopus13prime): alloca?
@@ -220,7 +219,7 @@ class PagedGrowableWriter: public AbstractPagedMutable<PagedGrowableWriter> {
                                                  acceptable_overhead_ratio,
                                                  false);  
   }
-};
+};  // PagedGrowableWriter
 
 class PagedMutable: public AbstractPagedMutable<PagedMutable> {
  private:

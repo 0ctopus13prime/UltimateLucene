@@ -546,7 +546,7 @@ class NumericUtils {
     }
   }
 
-  static uint32_t NumberOfLeadingZeros(const uint32_t i) {
+  static uint32_t NumberOfLeadingZerosInt32(const uint32_t i) {
     if (i != 0) {
       return __builtin_clz(i);  
     } else {
@@ -554,11 +554,27 @@ class NumericUtils {
     }
   }
 
-  static uint32_t NumberOfTrailingZeros(const uint32_t i) {
+  static uint32_t NumberOfTrailingZerosInt32(const uint32_t i) {
     if (i != 0) {
       return __builtin_ctz(i);  
     } else {
       return 32;
+    }
+  }
+
+  static uint32_t NumberOfLeadingZerosInt64(const uint64_t i) {
+    if (i != 0) {
+      return __builtin_clzl(i);
+    } else {
+      return 64;
+    }
+  }
+
+  static uint32_t NumberOfTrailingZerosInt64(const uint64_t i) {
+    if (i != 0) {
+      return __builtin_ctzl(i);  
+    } else {
+      return 64;
     }
   }
 };

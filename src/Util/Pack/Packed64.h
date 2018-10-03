@@ -20,6 +20,9 @@
 #ifndef SRC_UTIL_PACK_PACKED64_H_
 #define SRC_UTIL_PACK_PACKED64_H_
 
+// TEST
+#include <iostream>
+
 #include <Util/Pack/PackedInts.h>
 #include <Util/Pack/BulkOperation.h>
 #include <cassert>
@@ -41,7 +44,7 @@ class Packed64: public PackedInts::MutableImpl {
  private:
   uint32_t blocks_size;
   std::unique_ptr<uint64_t[]> blocks; 
-  uint32_t mask_right;
+  uint64_t mask_right;
   int32_t bpv_minus_block_size;
 
  private:
@@ -161,7 +164,7 @@ class Packed64: public PackedInts::MutableImpl {
     const int64_t end_bits = (major_bit_pos & MOD_MASK) + bpv_minus_block_size;
 
     // Single block
-    if (end_bits == 0) {
+    if (end_bits <= 0) {
       blocks[element_pos] = blocks[element_pos] &
                             ~(mask_right << -end_bits) |
                             (value << -end_bits);
@@ -186,8 +189,10 @@ class Packed64: public PackedInts::MutableImpl {
     const uint32_t original_index = index;
     PackedInts::Encoder* encoder =
       BulkOperation::Of(PackedInts::Format::PACKED, bits_per_value);
-
+    
     const uint32_t offset_in_blocks = (index % encoder->LongValueCount());
+    std::cout << "offset_in_blocks - " << offset_in_blocks << std::endl; 
+
     if (offset_in_blocks != 0) {
       for (uint32_t i = offset_in_blocks ;
            i < encoder->LongValueCount() && len > 0 ;
@@ -195,28 +200,44 @@ class Packed64: public PackedInts::MutableImpl {
         Set(index++, arr[off++]);
         --len;
       }
-    }
 
-    if (len == 0) {
-      return (index - original_index);
+      if (len == 0) {
+        return (index - original_index);
+      }
     }
 
     // Bulk set
     assert(index % encoder->LongValueCount() == 0);
     uint32_t block_index =
-      static_cast<uint32_t>((static_cast<uint32_t>(index) * bits_per_value) >>
+      static_cast<uint32_t>((static_cast<uint64_t>(index) * bits_per_value) >>
                             BLOCK_BITS);
-    assert((static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK);
+
+    std::cout << "block_index - " << block_index
+              << ", index - " << index
+              << ", len - " << len
+              << ", bpv - " << bits_per_value
+              << ", (static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK - "
+              << ((static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK) << std::endl;
+
+
+    assert(((static_cast<uint64_t>(index) * bits_per_value) & MOD_MASK) == 0);
     const uint32_t iterations = (len / encoder->LongValueCount());
+    std::cout << "iterations - " << iterations
+              << ", LongValueCount - " << encoder->LongValueCount() << std::endl;
     encoder->Encode(arr, off, blocks.get(), block_index, iterations);
+    std::cout << "Encode done" << std::endl;
     const uint32_t set_values = (iterations * encoder->LongValueCount());
+    std::cout << "set_values - " << set_values << std::endl;
     index += set_values;
     len -= set_values;
+    std::cout << "index - " << index << std::endl;
+    std::cout << "len - " << len << std::endl;
 
     if (index > original_index) {
       return (index - original_index);
     } else {
       assert(index == original_index);
+      std::cout << "PackedInts::MutableImpl::Set" << std::endl;
       return PackedInts::MutableImpl::Set(index, arr, off, len);
     }
   }

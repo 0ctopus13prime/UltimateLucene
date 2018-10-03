@@ -262,13 +262,13 @@ class ByteArrayReferenceDataOutput: public DataOutput {
     bytes[pos++] = b;
   }
 
-  void WriteBytes(char bytes[],
+  void WriteBytes(const char b[],
                   const uint32_t offset,
                   const uint32_t length) {
-    std::memcpy(bytes + pos, bytes + offset, length);
+    std::memcpy(bytes + pos, b + offset, length);
     pos += length;
   }
-};
+};  // ByteArrayReferenceDataOutput
 
 class GrowableByteArrayDataOutput: public DataOutput {
  private:
