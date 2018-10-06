@@ -22,6 +22,7 @@
 
 #include <Util/Exception.h>
 #include <Util/Pack/PackedInts.h>
+#include <cassert>
 #include <cmath>
 #include <string>
 
@@ -336,7 +337,6 @@ class BulkOperationPacked : public BulkOperation {
   }
 };
 
-// TODO(0ctopus13prime): Implement it
 class BulkOperationPackedSingleBlock : public BulkOperation {
  private:
   static const uint32_t BLOCK_COUNT = 1;
@@ -345,27 +345,73 @@ class BulkOperationPackedSingleBlock : public BulkOperation {
   const uint32_t value_count;
   const uint64_t mask;
 
+ private:
+  static int64_t ReadLong(const char blocks[], uint32_t blocks_offset) {
+    return (blocks[blocks_offset++] & 0xFFL) << 56
+           | (blocks[blocks_offset++] & 0xFFL) << 48
+           | (blocks[blocks_offset++] & 0xFFL) << 40 
+           | (blocks[blocks_offset++] & 0xFFL) << 32 
+           | (blocks[blocks_offset++] & 0xFFL) << 24
+           | (blocks[blocks_offset++] & 0xFFL) << 16
+           | (blocks[blocks_offset++] & 0xFFL) << 8
+           | (blocks[blocks_offset] & 0xFFL);
+  }
+
+  int32_t Decode(uint64_t block, int64_t values[], uint32_t values_offset) {
+    for (uint32_t i = 0 ; i < value_count ; ++i) {
+      values[values_offset++] = (block & mask);
+      block >>= bits_per_value;
+    }
+    return values_offset;
+  }
+
+  int32_t Decode(uint64_t block, int32_t values[], uint32_t values_offset) {
+    for (uint32_t i = 0 ; i < value_count ; ++i) {
+      values[values_offset++] = static_cast<int32_t>(block & mask);
+      block >>= bits_per_value;
+    }
+    return values_offset;
+  }
+
+  uint64_t Encode(const int64_t values[], uint32_t values_offset) {
+    uint64_t block;
+    for (uint32_t i = 0 ; i < value_count ; ++i) {
+      block |= (values[values_offset++] << (i * bits_per_value));
+    }
+
+    return block;
+  }
+
+  uint64_t Encode(const int32_t values[], uint32_t values_offset) {
+    uint64_t block;
+    for (uint32_t i = 0 ; i < value_count ; ++i) {
+      block |= (values[values_offset++] & 0xFFFFFFFFL) << (i * bits_per_value);
+    }
+
+    return block;
+  }
+
  public:
   BulkOperationPackedSingleBlock(const uint32_t bits_per_value)
     : bits_per_value(bits_per_value),
       value_count(64 / bits_per_value),
-      mask((1L << bits_per_value) - 1) {
+      mask((1UL << bits_per_value) - 1) {
   }
 
   uint32_t LongBlockCount() {
-    return 0;
+    return BLOCK_COUNT;
   }
 
   uint32_t LongValueCount() {
-    return 0;
+    return value_count;
   }
 
   uint32_t ByteBlockCount() {
-    return 0;
+    return (BLOCK_COUNT * 8);
   }
 
   uint32_t ByteValueCount() {
-    return 0;
+    return value_count;
   }
 
   void Decode(const uint64_t blocks[],
@@ -373,6 +419,10 @@ class BulkOperationPackedSingleBlock : public BulkOperation {
               int64_t values[],
               uint32_t values_offset,
               uint32_t iterations) {
+    for (uint32_t i = 0 ; i < iterations ; ++i) {
+      values_offset = 
+        Decode(blocks[blocks_offset++], values, values_offset);
+    }
   }
 
   void Decode(const char blocks[],
@@ -380,6 +430,10 @@ class BulkOperationPackedSingleBlock : public BulkOperation {
               int64_t values[],
               uint32_t values_offset,
               uint32_t iterations) {
+    for (uint32_t i = 0 ; i < iterations ; ++i) {
+      values_offset = Decode(ReadLong(blocks, blocks_offset), values, values_offset);
+      blocks_offset += 8;
+    }
   }
 
   void Decode(const uint64_t blocks[],
@@ -387,6 +441,12 @@ class BulkOperationPackedSingleBlock : public BulkOperation {
               int32_t values[],
               uint32_t values_offset,
               uint32_t iterations) {
+    assert(bits_per_value > 32);
+    for (uint32_t i = 0 ; i < iterations ; ++i) {
+      values_offset = Decode(blocks[blocks_offset++],
+                             values,
+                             values_offset);
+    }
   }
 
   void Decode(const char blocks[],
@@ -394,6 +454,11 @@ class BulkOperationPackedSingleBlock : public BulkOperation {
               int32_t values[],
               uint32_t values_offset,
               uint32_t iterations) {
+    assert(bits_per_value > 32);
+    for (uint32_t i = 0 ; i < iterations ; ++i) {
+      values_offset = Decode(ReadLong(blocks, blocks_offset), values, values_offset);
+      blocks_offset += 8;
+    }
   }
 
   void Encode(const int64_t values[],
@@ -401,13 +466,10 @@ class BulkOperationPackedSingleBlock : public BulkOperation {
               uint64_t blocks[],
               uint32_t blocks_offset,
               uint32_t iterations) {
-  }
-
-  void Encode(const int64_t values[],
-              uint32_t values_offset,
-              char blocks[],
-              uint32_t blocks_offset,
-              uint32_t iterations) {
+    for (uint32_t i = 0 ; i < iterations ; ++i) {
+      blocks[blocks_offset++] = Encode(values, values_offset);
+      values_offset += value_count;
+    }
   }
 
   void Encode(const int32_t values[],
@@ -415,6 +477,22 @@ class BulkOperationPackedSingleBlock : public BulkOperation {
               uint64_t blocks[],
               uint32_t blocks_offset,
               uint32_t iterations) {
+    for (uint32_t i = 0 ; i < iterations ; ++i) {
+      blocks[blocks_offset++] = Encode(values, values_offset);
+      values_offset += value_count;
+    }
+  }
+
+  void Encode(const int64_t values[],
+              uint32_t values_offset,
+              char blocks[],
+              uint32_t blocks_offset,
+              uint32_t iterations) {
+    for (uint32_t i = 0 ; i < iterations ; ++i) {
+      blocks_offset =
+        WriteLong(Encode(values, values_offset), blocks, blocks_offset);
+      values_offset += value_count;
+    }
   }
 
   void Encode(const int32_t values[],
@@ -422,6 +500,11 @@ class BulkOperationPackedSingleBlock : public BulkOperation {
               char blocks[],
               uint32_t blocks_offset,
               uint32_t iterations) {
+    for (uint32_t i = 0 ; i < iterations ; ++i) {
+      blocks_offset =
+        WriteLong(Encode(values, values_offset), blocks, blocks_offset);
+      values_offset += value_count;
+    }
   }
 };
 

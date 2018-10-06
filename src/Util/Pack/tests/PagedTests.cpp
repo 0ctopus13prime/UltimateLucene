@@ -86,7 +86,7 @@ TEST(DIRECT__8__TESTS, BASIC__TEST) {
   }
 }
 
-TEST(GROWABLE__WRITER, BASIC__TEST) {
+TEST(GROWABLE__WRITER, BIT__EXPAND) {
   const uint32_t value_count = 16;
   const uint32_t init_bits = 8;
 

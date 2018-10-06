@@ -605,11 +605,11 @@ class IntsRef {
   }
 
   int32_t HashCode() {
-    const int32_t prime = 31;
+    const int32_t PRIME = 31;
     int32_t result = 0;
-    const int end = (offset + length);
-    for (int i = offset ; i < end ; ++i) {
-      result = ((prime * result) + ints[i]);
+    int32_t* ptr = (Ints() + Offset());
+    for (uint32_t i = 0, len = Length() ; i < len ; ++i) {
+      result = (PRIME * result + *ptr++);
     }
 
     return result;

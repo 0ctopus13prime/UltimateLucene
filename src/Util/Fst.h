@@ -44,24 +44,24 @@ namespace lucene {
 namespace core {
 namespace util {
 
-class FSTBytesReader: public lucene::core::store::DataInput {
+class FstBytesReader: public lucene::core::store::DataInput {
  public:
-  virtual ~FSTBytesReader() = default;
+  virtual ~FstBytesReader() = default;
 
   virtual uint64_t GetPosition() const noexcept = 0;
 
   virtual void SetPosition(const uint64_t pos) noexcept = 0;
 
   virtual bool Reversed() const noexcept = 0;
-};  // FSTBytesReader
+};  // FstBytesReader
 
-class ForwardFSTBytesReader: public FSTBytesReader {
+class ForwardFstBytesReader: public FstBytesReader {
  private:
   char* bytes;
   uint32_t pos;
 
  public:
-  ForwardFSTBytesReader(char* bytes)
+  ForwardFstBytesReader(char* bytes)
     : bytes(bytes),
       pos(0) {
   }
@@ -90,15 +90,15 @@ class ForwardFSTBytesReader: public FSTBytesReader {
   bool Reversed() const noexcept {
     return false;
   }
-};  // ForwardFSTBytesReader
+};  // ForwardFstBytesReader
 
-class ReverseFSTBytesReader: public FSTBytesReader {
+class ReverseFstBytesReader: public FstBytesReader {
  private:
   const char* bytes;
   uint32_t pos;
 
  public:
-  ReverseFSTBytesReader(const char* bytes)
+  ReverseFstBytesReader(const char* bytes)
     : bytes(bytes),
       pos(0) {
   }
@@ -131,15 +131,15 @@ class ReverseFSTBytesReader: public FSTBytesReader {
   bool Reversed() const noexcept {
     return true;
   }
-};  // ReverseFSTBytesReader
+};  // ReverseFstBytesReader
 
-class BytesStoreReverseFSTBytesReader;
-class BytesStoreForwardFSTBytesReader;
+class BytesStoreReverseFstBytesReader;
+class BytesStoreForwardFstBytesReader;
 
 class BytesStore: public lucene::core::store::DataOutput {
  private:
-  friend class BytesStoreReverseFSTBytesReader;
-  friend class BytesStoreForwardFSTBytesReader;
+  friend class BytesStoreReverseFstBytesReader;
+  friend class BytesStoreForwardFstBytesReader;
 
   std::vector<std::pair<std::unique_ptr<char[]>, uint32_t>> blocks;
   uint32_t block_bits;
@@ -190,8 +190,8 @@ class BytesStore: public lucene::core::store::DataOutput {
       next_write(block_size),
       current(nullptr) {
 
-    std::cout << "BytesStore()"
-              << ", block_bits -> " << block_bits << std::endl;
+    // std::cout << "BytesStore()"
+    //           << ", block_bits -> " << block_bits << std::endl;
   }
 
   BytesStore(std::unique_ptr<lucene::core::store::DataInput>&& in,
@@ -218,19 +218,23 @@ class BytesStore: public lucene::core::store::DataOutput {
       left -= chunk;
     }
 
-    std::cout << "BytesStore()"
-              << ", num_bytes -> " << num_bytes
-              << ", max_block_size -> " << std::endl;
+    // std::cout << "BytesStore()"
+    //           << ", num_bytes -> " << num_bytes
+    //           << ", max_block_size -> " << max_block_size
+    //           << std::endl;
 
     next_write = blocks.back().second;
     current = nullptr;
   }
 
   void WriteByte(const uint32_t dest, const char b) {
+    // std::cout << "ByteStore, WriteByte, dest - " << dest
+    //           << ", b - " << static_cast<int>(b) << std::endl;
     blocks[dest >> block_bits].first[dest & block_mask] = b;
   }
 
   void WriteByte(const char b) {
+    // std::cout << "ByteStore, WriteByte, b - " << static_cast<int>(b) << std::endl;
     if (next_write == block_size) {
       NewBlock();
     }
@@ -241,6 +245,10 @@ class BytesStore: public lucene::core::store::DataOutput {
   void WriteBytes(const char bytes[],
                   const uint32_t offset,
                   const uint32_t len) {
+    // std::cout << "ByteStore, WriteBytes, bytes - " << reinterpret_cast<long>(bytes)
+    //           << ", offset - " << offset
+    //           << ", len - " << len << std::endl;
+
     uint32_t offset_until = offset;
     uint32_t len_until = len;
     
@@ -271,6 +279,10 @@ class BytesStore: public lucene::core::store::DataOutput {
                   const char bytes[],
                   const uint32_t offset,
                   const uint32_t len) {
+    // std::cout << "ByteStore, WriteBytes, dest - " << dest
+    //           << ", bytes - " << reinterpret_cast<long>(bytes)
+    //           << ", offset - " << offset
+    //           << ", len - " << len << std::endl;
     assert(dest + len <= GetPosition());
 
     uint32_t offset_tmp = offset;
@@ -299,32 +311,119 @@ class BytesStore: public lucene::core::store::DataOutput {
 
   using lucene::core::store::DataOutput::CopyBytes;
   void CopyBytes(const uint64_t src, const uint64_t dest, const uint32_t len) {
+    // std::cout << "ByteStore, CopyBytes, src - " << src
+    //           << ", dest - " << dest
+    //           << ", len - " << len
+    //           << std::endl;
     assert(src < dest);
+    // We have to copy from rear to front to prevent data corruption
+    // Because copy range would overlap occationally
+    // For example, src = 0, dest 20, len 30
+    // src <-------->
+    //           <--------> end
+
+    // Original comment
+    // Note: weird: must go "backwards" because copyBytes
+    // calls us with overlapping src/dest.  If we
+    // go forwards then we overwrite bytes before we can
+    // copy them:
 
     // Prepare
-    uint32_t block_index = static_cast<uint32_t>(src >> block_bits);
-    uint32_t down_to = static_cast<uint32_t>(src & block_mask);
+    const uint32_t BUF_SIZE = 2048;
+    char buf[BUF_SIZE];
+    const uint32_t src_end_pos = (src + len);
+    uint32_t src_blk_idx = static_cast<uint32_t>(src_end_pos >> block_bits);
+    const uint32_t src_end = static_cast<uint32_t>(src_end_pos & block_mask);
+    char* src_block = blocks[src_blk_idx].first.get();
+
+    // Copy residual bytes in last block
+    // When len < src_end
+    // Block <------------------------->
+    //           ^          ^       ^
+    //        src_start   c_idx  src_end
+    //           <------------------>
+    //                 first_drop
+    //
+    // OR
+    // When len >= src_end
+    // Block <------------------------->
+    //        ^             ^       ^
+    //    src_start       c_idx  src_end
+    //        <--------------------->
+    //                 first_drop
+
+    const uint32_t first_drop = std::min(src_end, len);
+    uint32_t dest_tmp = (dest + len);
+    uint32_t len_tmp = (len - first_drop);
+    for (uint32_t src_start = src_end - first_drop, cidx = src_end ; cidx > src_start ; ) {
+      const uint32_t copy_len = std::min(cidx - src_start, BUF_SIZE);
+      std::memcpy(buf, src_block + cidx - copy_len, copy_len);
+      dest_tmp -= copy_len;
+      WriteBytes(dest_tmp, buf, 0, copy_len);
+      cidx -= copy_len;
+    }
+
+    // Copy left bytes
+    while (len_tmp > 0) {
+      src_block = blocks[--src_blk_idx].first.get();  
+      const uint32_t chunk = std::min(block_size, len_tmp);
+      // When len_tmp < block_size
+      // Block <------------------------->
+      //           ^          ^         ^
+      //        src_start   c_idx   block_size 
+      //           <------------------>
+      //                   chunk
+      //
+      // OR
+      //
+      // When len_tmp >= block_size
+      // Block <------------------------->
+      //        ^             ^         ^
+      //    src_start       c_idx   block_size
+      //        <--------------------->
+      //                 chunk
+
+      dest_tmp = (dest + len_tmp);
+      len_tmp -= chunk;
+      for (uint32_t src_start = block_size - chunk, cidx = block_size ; cidx > src_start ; ) {
+        const uint32_t copy_len = std::min(cidx - src_start, BUF_SIZE);
+        std::memcpy(buf, src_block + cidx - copy_len, copy_len);
+        dest_tmp -= copy_len;
+        WriteBytes(dest_tmp, buf, 0, copy_len);
+        cidx -= copy_len;
+      }
+    }
+
+    /*
+    uint64_t end = (src + len);
+    uint32_t block_index = static_cast<uint32_t>(end >> block_bits);
+    uint32_t down_to = static_cast<uint32_t>(end & block_mask);
+    if (down_to == 0) {
+      block_index--;
+      down_to = block_size;
+    }
+
     char* block = blocks[block_index].first.get();
-    uint32_t dest_tmp = dest;
     uint32_t len_tmp = len;
 
-    // Copy residual bytes in src block
-    const uint32_t first_drop = std::min(block_size - down_to, len_tmp);
-    WriteBytes(dest, block, down_to, first_drop);
-    dest_tmp += first_drop;
-    len_tmp -= first_drop;
-
-    // Copy left bytes to dest
-    while (len_tmp > 0) {
-      const uint32_t chunk = std::min(block_size, len_tmp);
-      block = blocks[++block_index].first.get();
-      WriteBytes(dest_tmp, block, 0, chunk);
-      len_tmp -= chunk;
-      dest_tmp += chunk;
+    while (len > 0) {
+      if (len <= down_to) {
+        WriteBytes(dest, block, down_to - len_tmp , len_tmp);
+        break;
+      } else {
+        len_tmp -= down_to;
+        WriteBytes(dest + len_tmp, block, 0, down_to);
+        block_index--;
+        block = blocks[block_index].first.get();
+        down_to = block_size;
+      }
     }
+    */
   }
 
   void WriteInt32(const uint64_t pos, const uint32_t value) {
+    // std::cout << "BytesStore, WriteInt32 pos - " << pos
+    //           << ", value - " << value << std::endl;
     uint32_t block_index = static_cast<uint32_t>(pos >> block_bits);
     uint32_t upto = static_cast<uint32_t>(pos & block_mask);
     char* block = blocks[block_index].first.get();
@@ -340,6 +439,8 @@ class BytesStore: public lucene::core::store::DataOutput {
   }
 
   void Reverse(const uint64_t src_pos, const uint64_t dest_pos) {
+    // std::cout << "BytesStore, Reverse src_pos - " << src_pos
+    //           << ", dest_pos - " << dest_pos << std::endl;
     assert(src_pos < dest_pos);
     assert(dest_pos < GetPosition());
     
@@ -350,12 +451,17 @@ class BytesStore: public lucene::core::store::DataOutput {
 
     // Dest prepare
     uint32_t dest_block_index = static_cast<uint32_t>(dest_pos >> block_bits);
-    uint32_t dest = static_cast<uint32_t>(dest_pos & block_bits);
+    uint32_t dest = static_cast<uint32_t>(dest_pos & block_mask);
     char* dest_block = blocks[dest_block_index].first.get();
+
+    // std::cout << "src - " << src << ", dest - " << dest
+    //           << ", block_bits - " << block_bits << std::endl;
 
     // Reverse 
     uint32_t limit = static_cast<uint32_t>(dest_pos - src_pos + 1) >> 1;
     for (uint32_t i = 0 ; i < limit ; ++i) {
+      // std::cout << "Swaping .. src - " << src
+      //           << ", dest - " << dest << std::endl;
       std::swap(src_block[src], dest_block[dest]);
       if (++src == block_size) {
         src_block = blocks[++src_block_index].first.get();
@@ -372,6 +478,7 @@ class BytesStore: public lucene::core::store::DataOutput {
   }
 
   void SkipBytes(const uint32_t len) {
+    // std::cout << "BytesStore, SkipBytes len - " << len << std::endl;
     uint32_t len_tmp = len;
     
     // Skip the last block
@@ -397,6 +504,7 @@ class BytesStore: public lucene::core::store::DataOutput {
   }
 
   void Truncate(const uint64_t new_len) {
+    // std::cout << "BytesStore, Truncat, new_len - " << new_len << std::endl;
     assert(new_len <= GetPosition());
 
     if (new_len != 0) {
@@ -427,17 +535,18 @@ class BytesStore: public lucene::core::store::DataOutput {
   }
 
   void WriteTo(lucene::core::store::DataOutput* out) {
+    // std::cout << "BytesStore, WriteTo out - " << reinterpret_cast<long>(out) << std::endl;
     for (auto& block_pair : blocks) {
       out->WriteBytes(block_pair.first.get(), 0, block_pair.second);
     }
   }
 
-  std::unique_ptr<FSTBytesReader> GetForwardReader();
+  std::unique_ptr<FstBytesReader> GetForwardReader();
 
-  std::unique_ptr<FSTBytesReader> GetReverseReader(const bool allow_single = true);
+  std::unique_ptr<FstBytesReader> GetReverseReader(const bool allow_single = true);
 };  // BytesStore
 
-class BytesStoreForwardFSTBytesReader: public FSTBytesReader {
+class BytesStoreForwardFstBytesReader: public FstBytesReader {
  private:
   BytesStore* store;
   char* current;
@@ -448,7 +557,7 @@ class BytesStoreForwardFSTBytesReader: public FSTBytesReader {
   void NextBlock();
 
  public:
-  BytesStoreForwardFSTBytesReader(BytesStore* store);
+  BytesStoreForwardFstBytesReader(BytesStore* store);
 
   char ReadByte();
 
@@ -461,9 +570,9 @@ class BytesStoreForwardFSTBytesReader: public FSTBytesReader {
   void SetPosition(const uint64_t pos) noexcept;
 
   bool Reversed() const noexcept;
-};  // BytesStoreForwardFSTBytesReader
+};  // BytesStoreForwardFstBytesReader
 
-class BytesStoreReverseFSTBytesReader: public FSTBytesReader {
+class BytesStoreReverseFstBytesReader: public FstBytesReader {
  private:
   BytesStore* store; 
   char* current;
@@ -471,7 +580,7 @@ class BytesStoreReverseFSTBytesReader: public FSTBytesReader {
   int32_t next_read;
 
  public:
-  explicit BytesStoreReverseFSTBytesReader(BytesStore* store);
+  explicit BytesStoreReverseFstBytesReader(BytesStore* store);
 
   char ReadByte();
 
@@ -484,7 +593,7 @@ class BytesStoreReverseFSTBytesReader: public FSTBytesReader {
   void SetPosition(const uint64_t new_pos) noexcept;
 
   bool Reversed() const noexcept;
-};  // BytesStoreReverseFSTBytesReader
+};  // BytesStoreReverseFstBytesReader
 
 template<typename T>
 class Outputs {
@@ -533,24 +642,9 @@ class Outputs {
   virtual T Merge(const T& first, const T& second) {
     throw lucene::core::util::UnsupportedOperationException();
   }
-
-  virtual uint32_t HashCode() {
-    const uint32_t bottom =
-      static_cast<uint32_t>(reinterpret_cast<uint64_t>(this));
-
-    return bottom << 24 |
-           (bottom << 8) & 0x00FF0000 |
-           (bottom >> 8) & 0x0000FF00 |
-           bottom >> 24;
-  }
-
-  virtual T& GetNoOutput() = 0;
 };  // Outputs<T>
 
 class IntSequenceOutputs: public Outputs<IntsRef> {
- private:
-  static IntsRef NO_OUTPUT;
-
  public:
   bool IsNoOutput(const IntsRef& output) {
     return (output.Ints() == nullptr);
@@ -579,7 +673,9 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
                         output.Capacity(), 
                         output.Offset() + output.Length() + prefix.Length());
       if (pair.first != output.Ints()) {
-        delete[] output.Ints();
+        if (output.Ints() != nullptr) {
+          delete[] output.Ints();
+        }
         output.SetInts(pair.first)
               .SetCapacity(pair.second);
       }
@@ -605,19 +701,18 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
   void ShiftLeftSuffix(IntsRef& output, const uint32_t prefix_len) {
     if (prefix_len > 0) {
       if (prefix_len >= output.Length()) {
-        output.SetLength(0);
-        return;
-      }
+        MakeNoOutput(output); 
+      } else {
+        int32_t* ptr = (output.Ints() + output.Offset() + prefix_len);
+        const uint32_t new_length = (output.Length() - prefix_len);
+        
+        for (uint32_t i = 0 ; i < new_length ; ++i) {
+          *(ptr - prefix_len) = *ptr;
+          ptr++;
+        }
 
-      int32_t* ptr = (output.Ints() + output.Offset() + prefix_len);
-      const uint32_t new_length = (output.Length() - prefix_len);
-      
-      for (uint32_t i = 0 ; i < new_length ; ++i) {
-        *(ptr - prefix_len) = *ptr;
-        ptr++;
+        output.SetLength(new_length);
       }
-
-      output.SetLength(new_length);
     }
   }
 
@@ -643,7 +738,11 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
   }
 
   void DropSuffix(IntsRef& output, const uint32_t prefix_len) {
-    output.SetLength(std::min(output.Length(), prefix_len));
+    if (prefix_len == 0) {
+      MakeNoOutput(output);
+    } else {
+      output.SetLength(std::min(output.Length(), prefix_len));
+    }
   }
 
   void Write(const IntsRef& prefix, lucene::core::store::DataOutput* out) {
@@ -659,8 +758,10 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
     if (len == 0) {
       return IntsRef();
     } else {
+      // std::cout << "IntsSequenceOutputs, Reading len - " << len << std::endl;
       IntsRef output(IntsRef::MakeOwner(len));
       for (uint32_t idx = 0 ; idx < len ; ++idx) {
+        // std::cout << "Reading idx - " << idx << std::endl;
         output.Ints()[idx] = in->ReadVInt32();
       }
       output.SetLength(len);
@@ -677,10 +778,6 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
     for (uint32_t idx = 0 ; idx < len ; ++idx) {
       in->ReadVInt32();
     }
-  }
-
-  IntsRef& GetNoOutput() {
-    return NO_OUTPUT;
   }
 
   std::string OutputToString(const IntsRef& output) {
@@ -811,14 +908,14 @@ enum class FST_INPUT_TYPE {
 };
 
 template <typename T>
-class Builder;
+class FstBuilder;
 
 template <typename T>
 class NodeHash;
 
 template <typename T>
-class FST {
- friend class Builder<T>;
+class Fst {
+ friend class FstBuilder<T>;
  friend class NodeHash<T>;
 
  public:
@@ -870,10 +967,10 @@ class FST {
   }
 
  public:
-  FST(const FST&) = delete;
-  FST& operator=(const FST&) = delete;
+  Fst(const Fst&) = delete;
+  Fst& operator=(const Fst&) = delete;
 
-  FST(FST&& other)
+  Fst(Fst&& other)
     : input_type(other.input_type),
       empty_output(other.empty_output),
       is_empty_output_empty(other.is_empty_output_empty),
@@ -887,7 +984,7 @@ class FST {
       version(other.version) {
   }
 
-  FST& operator=(FST&& other) {
+  Fst& operator=(Fst&& other) {
       if (this != &other) {
         input_type = other.input_type;
         empty_output = other.empty_output;
@@ -905,12 +1002,12 @@ class FST {
       return *this;
   }
 
-  FST(lucene::core::store::DataInput* in,
+  Fst(lucene::core::store::DataInput* in,
       std::unique_ptr<Outputs<T>>&& outputs)
-    : FST(in, std::forward<Outputs<T>>(outputs), MAX_BLOCK_BITS) {
+    : Fst(in, std::forward<Outputs<T>>(outputs), MAX_BLOCK_BITS) {
   }
 
-  FST(lucene::core::store::DataInput* in,
+  Fst(lucene::core::store::DataInput* in,
       std::unique_ptr<Outputs<T>>&& outputs,
       const uint32_t max_block_bits) {
     is_empty_output_empty = true;
@@ -940,7 +1037,7 @@ class FST {
       empty_bytes.CopyBytes(in, num_bytes);
 
       // De-serialize empty-string output:
-      std::unique_ptr<FSTBytesReader> reader =
+      std::unique_ptr<FstBytesReader> reader =
         empty_bytes.GetReverseReader();
 
       // NoOutputs uses 0 bytes when writing its output,
@@ -995,7 +1092,7 @@ class FST {
     CacheRootArcs();
   }
 
-  FST(const FST_INPUT_TYPE input_type, 
+  Fst(const FST_INPUT_TYPE input_type, 
       std::unique_ptr<Outputs<T>>&& outputs,
       const uint32_t bytes_page_bits)
     : input_type(input_type),
@@ -1088,21 +1185,18 @@ class FST {
   }
 
   Arc GetFirstArc(Arc& arc) {
-    T NO_OUTPUT = outputs->GetNoOutput(); 
-
+    // std::cout << "GetFirstArc" << std::endl;
     if (!is_empty_output_empty) {
       arc.flags = (BIT_FINAL_ARC | BIT_LAST_ARC);
       arc.next_final_output = empty_output;
-      if (&empty_output != &NO_OUTPUT) {
+      if (!outputs.IsNoOutput(empty_output)) {
         arc.flags |= BIT_ARC_HAS_FINAL_OUTPUT; 
       }
     } else {
       arc.flags = BIT_LAST_ARC;
-      arc.next_final_output = NO_OUTPUT;
+      outputs.MakeNoOutput(arc.next_final_output);
     }
-    arc.output = NO_OUTPUT;
-
-    arc.output = NO_OUTPUT;
+    outputs.MakeNoOutput(arc.output);
 
     // If there are no nodes, ie, the FST only accepts the
     // empty string, then startNode is 0
@@ -1111,7 +1205,7 @@ class FST {
 
   Arc ReadLastTargetArc(Arc& follow,
                         Arc& arc,
-                        FSTBytesReader* in) {
+                        FstBytesReader* in) {
     if (!TargetHasArcs(follow)) {
       assert(follow.IsFinal());
       arc.label = END_LABEL;
@@ -1164,7 +1258,7 @@ class FST {
     }
   }
 
-  Arc ReadFirstTargetArc(Arc& follow, Arc& arc, FSTBytesReader* in) {
+  Arc ReadFirstTargetArc(Arc& follow, Arc& arc, FstBytesReader* in) {
     if (follow.IsFinal()) {
       arc.label = END_LABEL;
       arc.output = follow.next_final_output;
@@ -1184,22 +1278,30 @@ class FST {
 
   Arc ReadFirstRealTargetArc(const int64_t node,
                              Arc& arc,
-                             FSTBytesReader* in) {
+                             FstBytesReader* in) {
     const int64_t address = node;
+    // std::cout << "ReadFirstRealTargetArc, set position - " << address << std::endl;
     in->SetPosition(address);
 
     if (in->ReadByte() == ARCS_AS_FIXED_ARRAY) {
+      // std::cout << "ReadFirstRealTargetArc, It's a fixed array" << std::endl;
       // This is first arc in a fixed-array
       arc.num_arcs = in->ReadVInt32();
+      // std::cout << "Num arcs -> " << arc.num_arcs << std::endl;
       if (version >= VERSION_VINT_TARGET) {
         arc.bytes_per_arc = in->ReadVInt32();
       } else {
         arc.bytes_per_arc = in->ReadInt32();
       }
+      // std::cout << "Bytes per arc - " << arc.bytes_per_arc << std::endl;
 
       arc.arc_idx = -1;
       arc.next_arc = arc.pos_arcs_start = in->GetPosition();
+      // std::cout << "Next arc - " << arc.next_arc << std::endl;
+      // std::cout << "Taregt - " << arc.target << std::endl;
+      // std::cout << "Label - " << arc.label << std::endl;
     } else {
+      // std::cout << "ReadFirstRealTargetArc, it's not a fixed array" << std::endl;
       arc.next_arc = address;
       arc.bytes_per_arc = 0;
     }
@@ -1207,7 +1309,7 @@ class FST {
     return ReadNextRealArc(arc, in);
   }
   
-  Arc ReadNextArc(Arc& arc, FSTBytesReader* in) {
+  Arc ReadNextArc(Arc& arc, FstBytesReader* in) {
     if (arc.label == END_LABEL) {
       if (arc.next_arc <= 0) {
         throw IllegalArgumentException("Cannot read next arc when "
@@ -1220,7 +1322,7 @@ class FST {
     }
   }
 
-  int32_t ReadNextArcLabel(Arc& arc, FSTBytesReader* in) {
+  int32_t ReadNextArcLabel(Arc& arc, FstBytesReader* in) {
     assert(!arc.IsLast());
 
     if (arc.label == END_LABEL) {
@@ -1255,31 +1357,41 @@ class FST {
     return ReadLabel(in);
   }
 
-  Arc ReadNextRealArc(Arc& arc, FSTBytesReader* in) {
+  Arc ReadNextRealArc(Arc& arc, FstBytesReader* in) {
+    // std::cout << "ReadNextRealArc start" << std::endl;
     // This is a continuing arc in a fixed array 
     if (arc.bytes_per_arc != 0) {
+      // std::cout << "ReadNextRealArc, arc.bytes_per_arc != 0" << std::endl;
       // Arcs are at fixed entries
       arc.arc_idx++;
       assert(arc.arc_idx < arc.num_arcs);
       in->SetPosition(arc.pos_arcs_start);
       in->SkipBytes(arc.arc_idx * arc.bytes_per_arc);
     } else {
+      // std::cout << "ReadNextRealArc, packed arc, future position - " << arc.next_arc << std::endl;
       // Arcs are packed 
       in->SetPosition(arc.next_arc);
     }
     arc.flags = in->ReadByte();
     arc.label = ReadLabel(in);
 
+    // std::cout << "ReadNextRealArc, arc's flags - " << arc.flags
+    //           << ", arc's label - " << arc.label << std::endl;
+
     if (arc.Flag(BIT_ARC_HAS_OUTPUT)) {
+      // std::cout << "ReadNextRealArc, This arc has output" << std::endl;
       arc.output = outputs->Read(in);
     } else {
-      arc.output = outputs->GetNoOutput();
+      // std::cout << "ReadNextRealArc, This arc has output" << std::endl;
+      outputs->MakeNoOutput(arc.output);
     }
 
     if (arc.Flag(BIT_ARC_HAS_FINAL_OUTPUT)) {
+      // std::cout << "ReadNextRealArc, has final output" << std::endl;
       arc.next_final_output = outputs->ReadFinalOutput(in);
     } else {
-      arc.next_final_output = outputs->GetNoOutput();
+      // std::cout << "ReadNextRealArc, does not have final output" << std::endl;
+      outputs->MakeNoOutput(arc.next_final_output);
     }
 
     if (arc.Flag(BIT_STOP_NODE)) {
@@ -1312,7 +1424,7 @@ class FST {
   Arc FindTargetArc(const int32_t label_to_match,
                     Arc& follow,
                     Arc& arc,
-                    FSTBytesReader* in,
+                    FstBytesReader* in,
                     bool use_root_arc_cache = true) {
     if (label_to_match == END_LABEL) {
       if (follow.IsFinal()) {
@@ -1402,9 +1514,9 @@ class FST {
     }
   }
 
-  std::unique_ptr<FSTBytesReader> GetBytesReader() {
+  std::unique_ptr<FstBytesReader> GetBytesReader() {
     if (bytes_array) {
-      return std::make_unique<ReverseFSTBytesReader>(bytes_array.get());
+      return std::make_unique<ReverseFstBytesReader>(bytes_array.get());
     } else {
       return bytes.GetReverseReader();
     }
@@ -1415,9 +1527,9 @@ class FST {
   }
 
  public:
-  static FST<T> Read(const std::string& path,
+  static Fst<T> Read(const std::string& path,
                      std::unique_ptr<Outputs<T>> outputs) {
-    return FST<T>(lucene::core::store::BufferedFileInputStreamDataInput(path),
+    return Fst<T>(lucene::core::store::BufferedFileInputStreamDataInput(path),
                   std::move(outputs));
   }
 
@@ -1426,7 +1538,7 @@ class FST {
   }
 
  private:
-  void SeekToNextNode(FSTBytesReader* in) {
+  void SeekToNextNode(FstBytesReader* in) {
     while (true) {
       const uint32_t flags = (in->ReadByte() & 0xFF);
       ReadLabel(in);
@@ -1453,14 +1565,14 @@ class FST {
     /*
       Arc arc;
       GetFirstArc(arc);
-      std::unique_ptr<FSTBytesReader> in = GetBytesReader();
+      std::unique_ptr<FstBytesReader> in = GetBytesReader();
       Arc result = FindTargetArc(label, arc, arc, in, false);
     */
     // TODO(0ctopus13prime): IT
     return true;
   }
 
-  bool IsExpandedTarget(Arc& follow, FSTBytesReader* in) {
+  bool IsExpandedTarget(Arc& follow, FstBytesReader* in) {
     if (TargetHasArc(follow)) {
       in->SetPosition(follow.target);
       return (in->ReadByte() == ARCS_AS_FIXED_ARRAY);
@@ -1469,7 +1581,7 @@ class FST {
     }
   }
 
-  int64_t ReadUnpackedNodeTarget(FSTBytesReader* in) {
+  int64_t ReadUnpackedNodeTarget(FstBytesReader* in) {
     if (version < VERSION_VINT_TARGET) {
       return static_cast<int64_t>(in->ReadInt32());
     } else {
@@ -1499,7 +1611,7 @@ class FST {
     Arc arc;
     GetFirstArc(arc);
     if (TargetHasArcs(arc)) {
-      std::unique_ptr<FSTBytesReader> in = GetBytesReader(); 
+      std::unique_ptr<FstBytesReader> in = GetBytesReader(); 
       std::unordered_map<uint32_t, Arc> arcs(0x100);
       ReadFirstRealTargetArc(arc.target, arc, in.get());
       uint32_t count = 0;
@@ -1541,10 +1653,10 @@ class FST {
     bytes.Finish();
     CacheRootArcs();
   }
-};  // FST
+};  // Fst
 
 template<typename T>
-class FST<T>::Arc {
+class Fst<T>::Arc {
  public:
   T output;
   T next_final_output;
@@ -1631,7 +1743,7 @@ class FST<T>::Arc {
   }
 
   bool Flag(const uint8_t flag) const noexcept {
-    return FST<T>::Flag(flags, flag);
+    return Fst<T>::Flag(flags, flag);
   }
 
   bool IsLast() const noexcept {
@@ -1641,32 +1753,32 @@ class FST<T>::Arc {
   bool IsFinal() const noexcept {
     return Flag(BIT_FINAL_ARC);
   }
-};  // FST<T>::Arc
+};  // Fst<T>::Arc
 
 /**
  *  BytesStore
  */
-std::unique_ptr<FSTBytesReader> BytesStore::GetForwardReader() {
+std::unique_ptr<FstBytesReader> BytesStore::GetForwardReader() {
   if (blocks.size() == 1) {
-    return std::make_unique<ForwardFSTBytesReader>(blocks[0].first.get());
+    return std::make_unique<ForwardFstBytesReader>(blocks[0].first.get());
   } else {
-    return std::make_unique<BytesStoreForwardFSTBytesReader>(this);
+    return std::make_unique<BytesStoreForwardFstBytesReader>(this);
   }
 }
 
-std::unique_ptr<FSTBytesReader>
+std::unique_ptr<FstBytesReader>
 BytesStore::GetReverseReader(const bool allow_single/*= true*/) {
   if (allow_single && blocks.size() == 1) {
-    return std::make_unique<ReverseFSTBytesReader>(blocks[0].first.get());
+    return std::make_unique<ReverseFstBytesReader>(blocks[0].first.get());
   } else {
-    return std::make_unique<BytesStoreReverseFSTBytesReader>(this);
+    return std::make_unique<BytesStoreReverseFstBytesReader>(this);
   }
 }
 
 /**
- *  BytesStoreForwardFSTBytesReader
+ *  BytesStoreForwardFstBytesReader
  */
-BytesStoreForwardFSTBytesReader::BytesStoreForwardFSTBytesReader(
+BytesStoreForwardFstBytesReader::BytesStoreForwardFstBytesReader(
   BytesStore* store)
   : store(store),
     current(nullptr),
@@ -1674,12 +1786,12 @@ BytesStoreForwardFSTBytesReader::BytesStoreForwardFSTBytesReader(
     next_read(store->block_size) {
 }
 
-void BytesStoreForwardFSTBytesReader::NextBlock() {
+void BytesStoreForwardFstBytesReader::NextBlock() {
   current = store->blocks[next_buffer++].first.get();
   next_read = 0;
 }
 
-char BytesStoreForwardFSTBytesReader::ReadByte() {
+char BytesStoreForwardFstBytesReader::ReadByte() {
   if (next_read == store->block_size) {
     NextBlock();
   }
@@ -1687,7 +1799,7 @@ char BytesStoreForwardFSTBytesReader::ReadByte() {
   return current[next_read++];
 }
 
-void BytesStoreForwardFSTBytesReader::ReadBytes(char bytes[],
+void BytesStoreForwardFstBytesReader::ReadBytes(char bytes[],
                                                 const uint32_t offset,
                                                 const uint32_t len) {
   // Prepare
@@ -1714,16 +1826,16 @@ void BytesStoreForwardFSTBytesReader::ReadBytes(char bytes[],
   }
 }
 
-void BytesStoreForwardFSTBytesReader::SkipBytes(const uint64_t count) {
+void BytesStoreForwardFstBytesReader::SkipBytes(const uint64_t count) {
   SetPosition(GetPosition() + count);
 }
 
-uint64_t BytesStoreForwardFSTBytesReader::GetPosition() const noexcept {
+uint64_t BytesStoreForwardFstBytesReader::GetPosition() const noexcept {
   return
   static_cast<uint64_t>(next_buffer - 1) * store->block_size + next_read;
 }
 
-void BytesStoreForwardFSTBytesReader::SetPosition(const uint64_t pos) noexcept {
+void BytesStoreForwardFstBytesReader::SetPosition(const uint64_t pos) noexcept {
   const uint32_t buffer_idx =
   static_cast<const uint32_t>(pos >> store->block_bits); 
 
@@ -1732,14 +1844,14 @@ void BytesStoreForwardFSTBytesReader::SetPosition(const uint64_t pos) noexcept {
   next_read = static_cast<uint32_t>(pos & store->block_mask);
 }
 
-bool BytesStoreForwardFSTBytesReader::Reversed() const noexcept {
+bool BytesStoreForwardFstBytesReader::Reversed() const noexcept {
   return false;
 }
 
 /**
- *  BytesStoreReverseFSTBytesReader
+ *  BytesStoreReverseFstBytesReader
  */
-BytesStoreReverseFSTBytesReader::BytesStoreReverseFSTBytesReader(
+BytesStoreReverseFstBytesReader::BytesStoreReverseFstBytesReader(
   BytesStore* store)
   : store(store),
     current(store->blocks.empty() ? nullptr : store->blocks[0].first.get()),
@@ -1747,7 +1859,7 @@ BytesStoreReverseFSTBytesReader::BytesStoreReverseFSTBytesReader(
     next_read(0) {
 }
 
-char BytesStoreReverseFSTBytesReader::ReadByte() {
+char BytesStoreReverseFstBytesReader::ReadByte() {
   if (next_read == -1) {
     current = store->blocks[next_buffer--].first.get();
     next_read = (store->block_size - 1);
@@ -1756,7 +1868,7 @@ char BytesStoreReverseFSTBytesReader::ReadByte() {
   return current[next_read--];
 }
 
-void BytesStoreReverseFSTBytesReader::ReadBytes(char bytes[],
+void BytesStoreReverseFstBytesReader::ReadBytes(char bytes[],
                                                 const uint32_t offset,
                                                 const uint32_t len) {
   char* base = (bytes + offset);
@@ -1765,17 +1877,17 @@ void BytesStoreReverseFSTBytesReader::ReadBytes(char bytes[],
   }
 }
 
-void BytesStoreReverseFSTBytesReader::SkipBytes(const uint64_t count) {
+void BytesStoreReverseFstBytesReader::SkipBytes(const uint64_t count) {
   SetPosition(GetPosition() - count);
 }
 
-uint64_t BytesStoreReverseFSTBytesReader::GetPosition() const noexcept {
+uint64_t BytesStoreReverseFstBytesReader::GetPosition() const noexcept {
   return
   (static_cast<uint64_t>(next_buffer) + 1) * store->block_size + next_read; 
 }
 
 void
-BytesStoreReverseFSTBytesReader::SetPosition(const uint64_t new_pos) noexcept {
+BytesStoreReverseFstBytesReader::SetPosition(const uint64_t new_pos) noexcept {
   // TODO(0ctopus13prime): What happens if `new_pos` == 0?
   const int32_t buffer_idx =
     static_cast<int32_t>(new_pos >> store->block_bits);
@@ -1785,7 +1897,7 @@ BytesStoreReverseFSTBytesReader::SetPosition(const uint64_t new_pos) noexcept {
   assert(new_pos == GetPosition());
 }
 
-bool BytesStoreReverseFSTBytesReader::Reversed() const noexcept {
+bool BytesStoreReverseFstBytesReader::Reversed() const noexcept {
   return true;
 }
 

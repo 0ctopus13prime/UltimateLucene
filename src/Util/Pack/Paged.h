@@ -71,12 +71,14 @@ class AbstractPagedMutable: public Int64Values {
   }
 
   AbstractPagedMutable& operator=(AbstractPagedMutable&& other) {
-    size = other.size;
-    page_shift = other.page_shift;
-    page_mask = other.page_mask;
-    sub_mutables_size = other.sub_mutables_size;
-    bits_per_value = other.bits_per_value;
-    sub_mutables = std::move(other.sub_mutables);
+    if (this != &other) {
+      size = other.size;
+      page_shift = other.page_shift;
+      page_mask = other.page_mask;
+      sub_mutables_size = other.sub_mutables_size;
+      bits_per_value = other.bits_per_value;
+      sub_mutables = std::move(other.sub_mutables);
+    }
 
     return *this;
   }

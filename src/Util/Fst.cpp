@@ -19,20 +19,15 @@
 
 using lucene::core::util::BytesRef;
 using lucene::core::util::ByteSequenceOutputs;
-using lucene::core::util::FST;
+using lucene::core::util::Fst;
 using lucene::core::util::IntsRef;
 using lucene::core::util::IntSequenceOutputs;
 
 /**
- *  FST
+ *  Fst
  */
 template<typename T>
-const std::string FST<T>::FILE_FORMAT_NAME("FST");
-
-/**
- *  IntSequenceOutputs
- */
-IntsRef IntSequenceOutputs::NO_OUTPUT;
+const std::string Fst<T>::FILE_FORMAT_NAME("FST");
 
 /**
  *  ByteSequenceOutputs

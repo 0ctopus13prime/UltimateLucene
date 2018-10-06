@@ -24,11 +24,11 @@
 #include <string>
 
 using lucene::core::util::BytesStore;
-using lucene::core::util::FSTBytesReader;
-using lucene::core::util::ForwardFSTBytesReader;
-using lucene::core::util::ReverseFSTBytesReader;
-using lucene::core::util::BytesStoreForwardFSTBytesReader;
-using lucene::core::util::BytesStoreReverseFSTBytesReader;
+using lucene::core::util::FstBytesReader;
+using lucene::core::util::ForwardFstBytesReader;
+using lucene::core::util::ReverseFstBytesReader;
+using lucene::core::util::BytesStoreForwardFstBytesReader;
+using lucene::core::util::BytesStoreReverseFstBytesReader;
 
 TEST(BYTES__STORE__TEST, BASIC__TESTS) {
   // Write byte
@@ -92,10 +92,10 @@ TEST(FORWARD__BYTES__READER, BASIC__TEST) {
     bs.WriteByte(static_cast<char>(i));
   }
 
-  std::unique_ptr<FSTBytesReader> reader =
+  std::unique_ptr<FstBytesReader> reader =
     bs.GetForwardReader();
 
-  ForwardFSTBytesReader* fbr = dynamic_cast<ForwardFSTBytesReader*>(reader.get());
+  ForwardFstBytesReader* fbr = dynamic_cast<ForwardFstBytesReader*>(reader.get());
   ASSERT_NE(nullptr, fbr);
  
   for (uint32_t i = 0 ; i < bs.GetPosition() ; ++i) {
@@ -120,10 +120,10 @@ TEST(REVERSE__BYTES__READER, BASIC__TEST) {
     bs.WriteByte(static_cast<char>(i));
   }
 
-  std::unique_ptr<FSTBytesReader> reader =
+  std::unique_ptr<FstBytesReader> reader =
     bs.GetReverseReader();
 
-  ReverseFSTBytesReader* rbr = dynamic_cast<ReverseFSTBytesReader*>(reader.get());
+  ReverseFstBytesReader* rbr = dynamic_cast<ReverseFstBytesReader*>(reader.get());
   ASSERT_NE(nullptr, rbr);
   // Rewind to end
   rbr->SetPosition(bs.GetPosition() - 1);
@@ -151,8 +151,8 @@ TEST(REVERSE__BYTES__READER, BULK__BASIC__TEST) {
     bs.WriteByte(static_cast<char>(i));
   }
  
-  std::unique_ptr<FSTBytesReader> reader = bs.GetForwardReader();   
-  BytesStoreForwardFSTBytesReader* fbr = dynamic_cast<BytesStoreForwardFSTBytesReader*>(reader.get());
+  std::unique_ptr<FstBytesReader> reader = bs.GetForwardReader();   
+  BytesStoreForwardFstBytesReader* fbr = dynamic_cast<BytesStoreForwardFstBytesReader*>(reader.get());
   ASSERT_NE(nullptr, fbr);
 
   // Read byte
@@ -186,8 +186,8 @@ TEST(FORWARD__BYTES__READER, BULK__BASIC__TEST) {
     bs.WriteByte(static_cast<char>(i));
   }
  
-  std::unique_ptr<FSTBytesReader> reader = bs.GetReverseReader();   
-  BytesStoreReverseFSTBytesReader* rbr = dynamic_cast<BytesStoreReverseFSTBytesReader*>(reader.get());
+  std::unique_ptr<FstBytesReader> reader = bs.GetReverseReader();   
+  BytesStoreReverseFstBytesReader* rbr = dynamic_cast<BytesStoreReverseFstBytesReader*>(reader.get());
   ASSERT_NE(nullptr, rbr);
 
   // Read byte

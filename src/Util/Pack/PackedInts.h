@@ -551,6 +551,7 @@ class PackedInts {
       }
     } else if (len > 0) {
       // Use bulk operations
+      // std::cout << "Copy - bulk operations" << std::endl;
       const uint32_t buf_size = std::min(capacity, len);
       int64_t buf[buf_size];
       Copy(src, src_pos, dest, dest_pos, len, buf, buf_size);
@@ -564,6 +565,12 @@ class PackedInts {
                    uint32_t len,
                    int64_t buf[],
                    uint32_t buf_size) {
+    // std::cout << "PackedInts, Copy "
+    //           << ", src_pos - " << src_pos
+    //           << ", dest_pos - " << dest_pos
+    //           << ", len - " << len
+    //           << ", buf_size - " << buf_size << std::endl;
+          
     assert(buf_size > 0);
     int32_t remaining = 0;
     while (len > 0) {

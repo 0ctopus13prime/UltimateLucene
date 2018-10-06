@@ -44,6 +44,7 @@ HEAD = """
 #include <Util/Exception.h>
 #include <Util/Pack/PackedInts.h>
 #include <algorithm>
+#include <limits>
 #include <memory>
 
 namespace lucene {
@@ -92,7 +93,7 @@ def gen():
     ln(
 """
  public:
-  static const uint32_t MAX_SIZE = 0x7FFFFFFF / 3;
+  static const uint32_t MAX_SIZE = std::numeric_limits<int32_t>::max() / 3;
 
  private:
   std::unique_ptr<%s[]> blocks;
@@ -107,7 +108,7 @@ def gen():
       throw ArrayIndexOutOfBoundsException("MAX_SIZE exceeded");
     }
 
-    blocks = std::make_unique<%s[]>(value_count);
+    blocks = std::make_unique<%s[]>(3 * value_count);
   }
 
   Packed%dThreeBlocks(const uint32_t packed_ints_version,

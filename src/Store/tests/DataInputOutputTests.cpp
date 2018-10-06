@@ -28,11 +28,25 @@ using lucene::core::store::MMapDirectory;
 using lucene::core::store::IndexInput;
 using lucene::core::store::IndexOutput;
 using lucene::core::store::IOContext;
+using lucene::core::store::ByteArrayReferenceDataOutput;
 using lucene::core::store::BytesArrayReferenceIndexInput;
 using lucene::core::store::FileIndexOutput;
 using lucene::core::store::GrowableByteArrayDataOutput;
 using lucene::core::store::BufferedChecksumIndexInput;
 using lucene::core::util::FileUtil;
+
+TEST(AAA, BBB) {
+  int64_t node = 227955;
+  char buf[1024];
+  ByteArrayReferenceDataOutput out(buf, 1024);
+
+  std::cout << "Write 227955" << std::endl;
+  out.WriteVInt64(node);
+
+  std::string str("");
+  BytesArrayReferenceIndexInput in(str, buf, 1024);
+  std::cout << in.ReadVInt64() << std::endl;
+}
 
 TEST(DATA__OUTPUT__TESTS, FILE__INDEX__OUT) {
   FileUtil::Delete("/tmp/kdy");

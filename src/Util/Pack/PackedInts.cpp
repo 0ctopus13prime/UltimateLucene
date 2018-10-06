@@ -15,6 +15,10 @@
  *
  */
 
+// TEST
+#include <iostream>
+// TEST
+
 #include <Util/Pack/BulkOperation.h>
 #include <Util/Pack/Direct.h>
 #include <Util/Pack/PackedInts.h>
@@ -246,28 +250,36 @@ PackedInts::GetMutable(const uint32_t value_count,
   if (format == PackedInts::Format::PACKED) {
     switch (bits_per_value) {
       case 8:
+        // std::cout << "GetMutable Direct8" << std::endl;
         return std::make_unique<Direct8>(value_count);
       case 16:
+        // std::cout << "GetMutable Direct16" << std::endl;
         return std::make_unique<Direct16>(value_count);
       case 32:
+        // std::cout << "GetMutable Direct32" << std::endl;
         return std::make_unique<Direct32>(value_count);
       case 64:
+        // std::cout << "GetMutable 64" << std::endl;
         return std::make_unique<Direct64>(value_count);
       case 24:
         if (value_count <= Packed8ThreeBlocks::MAX_SIZE) {
+        // std::cout << "GetMutable Packed8ThreeBlock" << std::endl;
           return std::make_unique<Packed8ThreeBlocks>(value_count);
         }
         break;
       case 48:
         if (value_count <= Packed16ThreeBlocks::MAX_SIZE) {
+          // std::cout << "GetMutable Packed16ThreeBlock" << std::endl;
           return
           std::make_unique<Packed16ThreeBlocks>(value_count);
         }
         break;
     }
 
+    // std::cout << "GetMutable Packed64" << std::endl;
     return std::make_unique<Packed64>(value_count, bits_per_value);
   } else if (format == PackedInts::Format::PACKED_SINGLE_BLOCK) {
+    // std::cout << "GetMutable Packed64SingleBlock" << std::endl;
     return Packed64SingleBlock::Create(value_count, bits_per_value);
   } else {
      throw IllegalArgumentException();

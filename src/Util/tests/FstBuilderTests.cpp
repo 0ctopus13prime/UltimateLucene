@@ -26,13 +26,14 @@
 using lucene::core::util::BytesRef;
 using lucene::core::util::BytesRefBuilder;
 using lucene::core::util::ByteSequenceOutputs;
-using lucene::core::util::Builder;
+using lucene::core::util::FstBuilder;
 using lucene::core::util::IntsRef;
 using lucene::core::util::IntsRefBuilder;
 using lucene::core::util::IntSequenceOutputs;
-using lucene::core::util::FST;
+using lucene::core::util::NodeHash;
+using lucene::core::util::Fst;
 using lucene::core::util::FST_INPUT_TYPE;
-using lucene::core::util::FSTUtil;
+using lucene::core::util::FstUtil;
 
 /*
 TEST(OUTPUTS__TESTS, INTS__OUTPUT) {
@@ -192,7 +193,7 @@ TEST(OUTPUTS__TESTS, INTS__OUTPUT) {
 }
 */
 
-void Add(Builder<IntsRef>& builder,
+void Add(FstBuilder<IntsRef>& builder,
          const std::string& key,
          const std::string& value) {
   BytesRef key_bytes(key.c_str(), key.size());
@@ -207,21 +208,60 @@ void Add(Builder<IntsRef>& builder,
 }
 
 TEST(BYTESREF__TESTS, BASIC__TEST) {
-  Builder<IntsRef> builder(FST_INPUT_TYPE::BYTE1,
-                           std::make_unique<IntSequenceOutputs>());
+  FstBuilder<IntsRef> builder(FST_INPUT_TYPE::BYTE1,
+                              std::make_unique<IntSequenceOutputs>());
   std::string key;
   std::string val;
   std::ifstream infile("/tmp/fst.input");
-  for (int i = 0 ; i < 100 ; ++i) {
-    std::cout << i << "th data insertion" << std::endl;
+  for (int i = 0 ; i < 100000 ; ++i) {
     std::getline(infile, key);
     std::getline(infile, val);
+    // std::cout << i << "] Key -> " << key << ", Val -> " << val << std::endl;
     Add(builder, key, val);
   }
 
+  std::cout << "-------- summary ------- " << std::endl;
+  std::cout << "Arc -> " << builder.GetArcCount() << std::endl;
+  std::cout << "Node -> " << builder.GetNodeCount() << std::endl;
+  std::cout << "Term -> " << builder.GetTermCount() << std::endl;
+
   infile.close();
-  std::cout << "Count -> " << builder.GetTermCount() << std::endl;
 }
+
+/*
+TEST(NODE_HASH, BASIC__TEST) {
+  FstBuilder<IntsRef> builder(FST_INPUT_TYPE::BYTE1,
+                              std::make_unique<IntSequenceOutputs>());
+  NodeHash<IntsRef>& node_hash = builder.GetNodeHash();
+
+  //        [A]         [B]
+  //         a           b
+  // Node0 ----> Node1 ----> Node2
+  std::cout << "Node2" << std::endl;
+  FstBuilder<IntsRef>::UnCompiledNode* node2 =
+    FstBuilder<IntsRef>::UnCompiledNode::New(&builder, 2);
+
+  std::cout << "Compile Node2" << std::endl;
+  FstBuilder<IntsRef>::CompiledNode* cnode2 = 
+    FstBuilder<IntsRef>::CompiledNode::New(&builder,
+                                           -1);
+  std::cout << "Node1" << std::endl;
+  FstBuilder<IntsRef>::UnCompiledNode* node1 =
+    FstBuilder<IntsRef>::UnCompiledNode::New(&builder, 1);
+  std::cout << "Add arc from Node1 to Node2 with label 'b'" << std::endl;
+  node1->AddArc(static_cast<int32_t>('b'), cnode2);
+  
+  std::cout << "Compile Node1" << std::endl;
+  FstBuilder<IntsRef>::CompiledNode* cnode1 = 
+    FstBuilder<IntsRef>::CompiledNode::New(&builder,
+                                           node_hash.Add(&builder, node1));
+  std::cout << "Node0" << std::endl;
+  FstBuilder<IntsRef>::UnCompiledNode* node0 =
+    FstBuilder<IntsRef>::UnCompiledNode::New(&builder, 0);
+  std::cout << "Add arc from Node0 to Node1 with label 'a'" << std::endl;
+  node0->AddArc(static_cast<int32_t>('a'), cnode1);
+}
+*/
 
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);

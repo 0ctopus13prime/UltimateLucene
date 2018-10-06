@@ -25,13 +25,13 @@ namespace lucene {
 namespace core {
 namespace util {
 
-class FSTUtil {
+class FstUtil {
  private:
-  FSTUtil() = default;
+  FstUtil() = default;
 
  public:
   template <typename T>
-  static T Get(FST<T>& fst, BytesRef& input) {
+  static T Get(Fst<T>& fst, BytesRef& input) {
     return T();
   }
 };

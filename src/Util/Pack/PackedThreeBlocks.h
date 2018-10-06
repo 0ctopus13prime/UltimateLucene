@@ -24,6 +24,7 @@
 #include <Util/Exception.h>
 #include <Util/Pack/PackedInts.h>
 #include <algorithm>
+#include <limits>
 #include <memory>
 
 namespace lucene {
@@ -32,7 +33,7 @@ namespace util {
 
 class Packed8ThreeBlocks : public PackedInts::MutableImpl {
  public:
-  static const uint32_t MAX_SIZE = 0x7FFFFFFF / 3;
+  static const uint32_t MAX_SIZE = std::numeric_limits<int32_t>::max() / 3;
 
  private:
   std::unique_ptr<char[]> blocks;
@@ -47,7 +48,7 @@ class Packed8ThreeBlocks : public PackedInts::MutableImpl {
       throw ArrayIndexOutOfBoundsException("MAX_SIZE exceeded");
     }
 
-    blocks = std::make_unique<char[]>(value_count);
+    blocks = std::make_unique<char[]>(3 * value_count);
   }
 
   Packed8ThreeBlocks(const uint32_t packed_ints_version,
@@ -122,7 +123,7 @@ class Packed8ThreeBlocks : public PackedInts::MutableImpl {
 
 class Packed16ThreeBlocks : public PackedInts::MutableImpl {
  public:
-  static const uint32_t MAX_SIZE = 0x7FFFFFFF / 3;
+  static const uint32_t MAX_SIZE = std::numeric_limits<int32_t>::max() / 3;
 
  private:
   std::unique_ptr<uint16_t[]> blocks;
@@ -137,7 +138,7 @@ class Packed16ThreeBlocks : public PackedInts::MutableImpl {
       throw ArrayIndexOutOfBoundsException("MAX_SIZE exceeded");
     }
 
-    blocks = std::make_unique<uint16_t[]>(value_count);
+    blocks = std::make_unique<uint16_t[]>(3 * value_count);
   }
 
   Packed16ThreeBlocks(const uint32_t packed_ints_version,

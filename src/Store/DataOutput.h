@@ -18,6 +18,10 @@
 #ifndef SRC_STORE_DATAOUTPUT_H_
 #define SRC_STORE_DATAOUTPUT_H_
 
+// TEST
+#include <iostream>
+// TEST
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -56,7 +60,7 @@ class DataOutput {
     }
   }
 
-  void WriteSignedVInt64(int64_t i) {
+  void WriteSignedVInt64(uint64_t i) {
     while ((i & ~0x7FL) != 0L) {
       WriteByte(static_cast<char>((i & 0x7FL) | 0x80L));
       i >>= 7;

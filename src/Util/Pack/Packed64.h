@@ -20,6 +20,10 @@
 #ifndef SRC_UTIL_PACK_PACKED64_H_
 #define SRC_UTIL_PACK_PACKED64_H_
 
+// TEST
+#include <iostream>
+// TEST
+
 #include <Util/Pack/PackedInts.h>
 #include <Util/Pack/BulkOperation.h>
 #include <cassert>
@@ -88,6 +92,10 @@ class Packed64: public PackedInts::MutableImpl {
       blocks[blocks_size - 1] = last_long;
     }
   }
+
+  Packed64(const Packed64& other) = delete;
+
+  Packed64& operator=(const Packed64& other) = delete;
 
   int64_t Get(uint32_t index) {
     const uint64_t major_bit_pos =

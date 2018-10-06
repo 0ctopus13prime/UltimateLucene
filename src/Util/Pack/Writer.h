@@ -141,26 +141,26 @@ class GrowableWriter: public PackedInts::Mutable {
     //           << ", ~current_mask & value -> "
     //           << (~current_mask & value) << std::endl;
     if (~current_mask & value) {
-      //std::cout << "Enlarge bit-width" << std::endl;
+      // std::cout << "Enlarge bit-width" << std::endl;
       const uint32_t bits_required = PackedInts::UnsignedBitsRequired(value);
       assert(bits_required > current->GetBitsPerValue());
       const uint32_t value_count = Size();
-      //std::cout << "Make new mutable, bits_required -> " << bits_required
-      //          << ", value_count -> " << value_count << std::endl;
+      // std::cout << "Make new mutable, bits_required -> " << bits_required
+      //           << ", value_count -> " << value_count << std::endl;
       std::unique_ptr<PackedInts::Mutable> next =
         PackedInts::GetMutable(value_count,
                                bits_required,
                                acceptable_overhead_ratio);
-      //std::cout << "Copy current mutable to new one" << std::endl;
+      // std::cout << "Copy current mutable to new one" << std::endl;
       PackedInts::Copy(current.get(), 0,
                        next.get(), 0,
                        value_count,
                        PackedInts::DEFAULT_BUFFER_SIZE);
-      //std::cout << "Move new mutable to current" << std::endl;
+      // std::cout << "Move new mutable to current" << std::endl;
       current = std::move(next);
-      //std::cout << "Change current mask" << std::endl;
+      // std::cout << "Change current mask" << std::endl;
       current_mask = Mask(current->GetBitsPerValue());
-      //std::cout << "Change mask done. current_mask -> " << current_mask << std::endl;
+      // std::cout << "Change mask done. current_mask -> " << current_mask << std::endl;
     } 
   }
 

@@ -146,11 +146,13 @@ class BitUtil {
     return ((i >> 31) ^ (i << 1));
   }
 
-  static int32_t ZigZagDecode(const int32_t i) {
+  static int32_t ZigZagDecode(const int32_t j) {
+    uint32_t i = static_cast<uint32_t>(j);
     return ((i >> 1) ^ -(i & 1));
   }
 
-  static int64_t ZigZagDecode(const int64_t l) {
+  static int64_t ZigZagDecode(const int64_t j) {
+    uint64_t l = static_cast<uint64_t>(j);
     return ((l >> 1) ^ -(l & 1));
   }
 };
