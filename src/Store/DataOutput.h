@@ -336,7 +336,7 @@ class GrowableByteArrayDataOutput: public DataOutput {
   void Reset() noexcept {
     length = 0;
   }
-};
+};  // GrowableByteArrayDataOutput
 
 class FileIndexOutput: public IndexOutput {
  public:
@@ -451,7 +451,7 @@ class RateLimitedIndexOutput: public IndexOutput {
   // TODO(0ctopus13prime): Implement it
 };
 
-class BufferedFileOutputStream {
+class BufferedFileOutputStream: public DataOutput {
  private:
   static const uint32_t BUFFER_SIZE = 8 * 1024;
 
@@ -476,7 +476,7 @@ class BufferedFileOutputStream {
 
   void FlushIf(const uint32_t length_cond) {
     if (idx >= length_cond) {
-      uint32_t left = length_cond;
+      uint32_t left = idx;
       char* base = buffer;
       while (left > 0) {
         const uint32_t wrote = write(fd, base, left);
@@ -494,7 +494,7 @@ class BufferedFileOutputStream {
       fd(open(path.c_str(),
               O_CREAT | O_WRONLY | O_EXCL,
               S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)),
-      idx(BUFFER_SIZE) {
+      idx(0) {
     if (fd == -1) {
       throw lucene::core::util::IOException("Cannot open file(" +
                                             path + " for writing");
@@ -535,7 +535,7 @@ class BufferedFileOutputStream {
   }
 };  // BufferedFileOutputStream
 
-class GrowableByteArrayOutputStream: public DataOutput {
+class GrowableByteBucketOutputStream: public DataOutput {
  private:
   static const uint32_t BUCKET_SIZE = 1024;
 
@@ -557,14 +557,14 @@ class GrowableByteArrayOutputStream: public DataOutput {
   }
 
  public:
-  GrowableByteArrayOutputStream()
+  GrowableByteBucketOutputStream()
     : bucket_list(),
       bucket(nullptr),
       idx(0) {
     AllocateBucket(); 
   }
 
-  ~GrowableByteArrayOutputStream() {
+  ~GrowableByteBucketOutputStream() {
     for (char* b : bucket_list) {
       delete[] b;
     }
@@ -609,7 +609,7 @@ class GrowableByteArrayOutputStream: public DataOutput {
       }
     }
   }
-};  // GrowableByteArrayOutputStream
+};  // GrowableByteBucketOutputStream
 
 }  // namespace store
 }  // namespace core

@@ -23,6 +23,7 @@
 #include <sstream>
 #include <string>
 
+using lucene::core::store::BufferedFileOutputStream;
 using lucene::core::util::BytesRef;
 using lucene::core::util::BytesRefBuilder;
 using lucene::core::util::ByteSequenceOutputs;
@@ -197,9 +198,11 @@ void Add(FstBuilder<IntsRef>& builder,
          const std::string& key,
          const std::string& value) {
   BytesRef key_bytes(key.c_str(), key.size());
+  // BytesRef key_bytes = BytesRef::MakeOwner(key);
   IntsRefBuilder key_ints;
   key_ints.CopyUTF8Bytes(key_bytes);
 
+  // BytesRef val_bytes = BytesRef::MakeOwner(value);
   BytesRef val_bytes(value.c_str(), value.size());
   IntsRefBuilder val_ints;
   val_ints.CopyUTF8Bytes(val_bytes);
@@ -212,11 +215,18 @@ TEST(BYTESREF__TESTS, BASIC__TEST) {
                               std::make_unique<IntSequenceOutputs>());
   std::string key;
   std::string val;
+  // std::ifstream infile("/tmp/english-words/sorted-words.txt");
+  // for (int i = 0 ; i < 466544 ; ++i) {
+  //   std::getline(infile, key);
+  //   val = std::to_string(i % 100000);
+  //   // std::cout << i << "] Key -> " << key << ", Val -> " << val << std::endl;
+  //   Add(builder, key, val);
+  // }
+
   std::ifstream infile("/tmp/fst.input");
   for (int i = 0 ; i < 100000 ; ++i) {
     std::getline(infile, key);
     std::getline(infile, val);
-    // std::cout << i << "] Key -> " << key << ", Val -> " << val << std::endl;
     Add(builder, key, val);
   }
 
@@ -226,6 +236,11 @@ TEST(BYTESREF__TESTS, BASIC__TEST) {
   std::cout << "Term -> " << builder.GetTermCount() << std::endl;
 
   infile.close();
+
+  Fst<IntsRef>* fst = builder.Finish();
+  std::string path("/tmp/fst.output");
+  BufferedFileOutputStream bos(path);
+  fst->Save(&bos);
 }
 
 /*

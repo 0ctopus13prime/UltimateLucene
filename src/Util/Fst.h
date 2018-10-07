@@ -33,6 +33,7 @@
 #include <cassert>
 #include <cstring>
 #include <algorithm>
+#include <bitset>
 #include <limits>
 #include <memory>
 #include <string>
@@ -158,7 +159,9 @@ class BytesStore: public lucene::core::store::DataOutput {
   }
 
  public:
-  BytesStore(const BytesStore& other) = delete;
+  BytesStore(const BytesStore&) = delete;
+
+  BytesStore& operator=(const BytesStore&) = delete;
 
   BytesStore(BytesStore&& other)
     : blocks(std::move(other.blocks)),
@@ -328,6 +331,8 @@ class BytesStore: public lucene::core::store::DataOutput {
     // go forwards then we overwrite bytes before we can
     // copy them:
 
+    // TODO(0ctopus13prime): Replace double buffer copy strategy
+
     // Prepare
     const uint32_t BUF_SIZE = 2048;
     char buf[BUF_SIZE];
@@ -428,13 +433,25 @@ class BytesStore: public lucene::core::store::DataOutput {
     uint32_t upto = static_cast<uint32_t>(pos & block_mask);
     char* block = blocks[block_index].first.get();
     uint32_t shift = 24;
-    for (int i = 0 ; i < 4 ; ++i) {
-      block[upto++] = static_cast<char>(value >> shift);
-      shift -= 8;
-      if (upto == block_size) {
-        upto = 0;
-        block = blocks[++block_index].first.get();
-      }
+    block[upto++] = static_cast<char>(value >> 24);
+    if (upto == block_size) {
+      upto = 0;
+      block = blocks[++block_index].first.get();
+    }
+    block[upto++] = static_cast<char>(value >> 16);
+    if (upto == block_size) {
+      upto = 0;
+      block = blocks[++block_index].first.get();
+    }
+    block[upto++] = static_cast<char>(value >> 8);
+    if (upto == block_size) {
+      upto = 0;
+      block = blocks[++block_index].first.get();
+    }
+    block[upto++] = static_cast<char>(value);
+    if (upto == block_size) {
+      upto = 0;
+      block = blocks[++block_index].first.get();
     }
   }
 
@@ -524,11 +541,16 @@ class BytesStore: public lucene::core::store::DataOutput {
 
   void Finish() {
     if (current != nullptr) {
+      std::cout << "Bytes store start finishing, next_write - "
+                << next_write << std::endl;
       // Make current buffer compact so that no redundant space in final bytes
-      std::unique_ptr<char[]> last_buffer(std::make_unique<char[]>(next_write));
+      // No alloca here to avoid exceed stack size limitation.
+      // Worst case next_write would be same as block_size
+      // that usually more than 1M
+      std::unique_ptr<char[]> last_buffer(new char[next_write]);
       std::memcpy(last_buffer.get(), current, next_write);
       std::pair<std::unique_ptr<char[]>, uint32_t> block_pair(
-        std::move(last_buffer), block_size);
+        std::move(last_buffer), next_write);
       blocks.back() = std::move(block_pair);
       current = nullptr;
     }
@@ -619,6 +641,7 @@ class Outputs {
   virtual void Write(const T& output, lucene::core::store::DataOutput* out) = 0;
 
   virtual void WriteFinalOutput(const T& output,
+
                                 lucene::core::store::DataOutput* out) {
     Write(output, out);
   }
@@ -945,15 +968,14 @@ class Fst {
   static const int64_t NON_FINAL_END_NODE = 0;
   static const int32_t END_LABEL = -1;
   static const uint32_t MAX_BLOCK_BITS = 30;
+  static const uint32_t CACHED_ROOT_SIZE = 0x100;
 
  public:
   class Arc;
 
   FST_INPUT_TYPE input_type;
-  T empty_output;
-  bool is_empty_output_empty;
-  BytesStore bytes;
-  bool is_bytes_empty;
+  std::optional<T> empty_output;
+  std::optional<BytesStore> bytes;
   std::unique_ptr<char[]> bytes_array;
   uint32_t bytes_array_size;
   int64_t start_node;
@@ -972,10 +994,8 @@ class Fst {
 
   Fst(Fst&& other)
     : input_type(other.input_type),
-      empty_output(other.empty_output),
-      is_empty_output_empty(other.is_empty_output_empty),
+      empty_output(std::move(other.empty_output)),
       bytes(std::move(other.bytes)),
-      is_bytes_empty(other.is_bytes_empty),
       bytes_array(std::move(other.bytes_array)),
       bytes_array_size(other.bytes_array_size),
       start_node(other.start_node),
@@ -987,10 +1007,8 @@ class Fst {
   Fst& operator=(Fst&& other) {
       if (this != &other) {
         input_type = other.input_type;
-        empty_output = other.empty_output;
-        is_empty_output_empty = other.is_empty_output_empty;
+        empty_output = std::move(other.empty_output);
         bytes = std::move(other.bytes);
-        is_bytes_empty = other.is_bytes_empty;
         bytes_array = std::move(other.bytes_array);
         bytes_array_size = other.bytes_array_size;
         start_node = other.start_node;
@@ -1010,7 +1028,6 @@ class Fst {
   Fst(lucene::core::store::DataInput* in,
       std::unique_ptr<Outputs<T>>&& outputs,
       const uint32_t max_block_bits) {
-    is_empty_output_empty = true;
     this->outputs = std::move(outputs);
 
     if (max_block_bits == 0 || max_block_bits > MAX_BLOCK_BITS) {
@@ -1047,7 +1064,6 @@ class Fst {
       }
 
       empty_output = outputs->ReadFinalOutput(reader.get());
-      is_empty_output_empty = false;
     }
 
     const char t = in->ReadByte();
@@ -1074,7 +1090,6 @@ class Fst {
     }
 
     const int64_t num_bytes = in->ReadVInt64();
-    is_bytes_empty = false;
     if (num_bytes > (1 << max_block_bits)) {
       // FST is big: We need to multiple pages
       bytes = BytesStore(in, num_bytes, 1 << max_block_bits);
@@ -1097,9 +1112,7 @@ class Fst {
       const uint32_t bytes_page_bits)
     : input_type(input_type),
       empty_output(),
-      is_empty_output_empty(true),
-      bytes(bytes_page_bits),
-      is_bytes_empty(false),
+      bytes(BytesStore(bytes_page_bits)),
       bytes_array(),
       bytes_array_size(0),
       start_node(-1),
@@ -1108,7 +1121,7 @@ class Fst {
       version(VERSION_CURRENT) {
     // Pad: Ensure no node gets address 0 which is reserved to mean
     // the stop state w/ no arcs
-    bytes.WriteByte(0);
+    bytes->WriteByte(0);
   }
 
   FST_INPUT_TYPE GetInputType() const noexcept {
@@ -1120,39 +1133,34 @@ class Fst {
   }
 
   void Save(lucene::core::store::DataOutput* out) {
+    assert(bytes.operator bool());
     lucene::core::codec::CodecUtil::WriteHeader(out,
                                                 FILE_FORMAT_NAME,
                                                 VERSION_CURRENT);
-    if (!is_empty_output_empty) {
+    if (empty_output) {
+      std::cout << "Write empty output" << std::endl;
       // Accept empty string
       out->WriteByte(static_cast<char>(1));
 
       // Serialize empty-string output
-      lucene::core::store::GrowableByteArrayOutputStream bos;
-      outputs->WriteFinalOutput(empty_output, &bos);
+      lucene::core::store::GrowableByteBucketOutputStream bos;
+      outputs->WriteFinalOutput(*empty_output, &bos);
 
       const uint32_t empty_output_bytes_size = bos.Size();
-      // Avoid overflow stack limit
-      std::unique_ptr<char[]> empty_output_bytes = 
-        std::make_unique<char[]>(empty_output_bytes_size);
-
-      bos.WriteTo(empty_output_bytes.get());
-
-      // Free space
-      bos.~GrowableByteArrayOutputStream();
+      std::unique_ptr<char[]>
+        empty_output_bytes(std::make_unique<char[]>(empty_output_bytes_size));
 
       // Reverse
       const uint32_t stop_at = (empty_output_bytes_size >> 1);
       for (uint32_t upto = 0 ; upto < stop_at ; ++upto) {
-        const char b = empty_output_bytes[upto];
-        empty_output_bytes[upto] =
-          empty_output_bytes[empty_output_bytes_size - upto - 1];
-        empty_output_bytes[empty_output_bytes_size - upto - 1] = b;
+        std::swap(empty_output_bytes[upto],
+                  empty_output_bytes[empty_output_bytes_size - upto - 1]);
       }
 
       out->WriteVInt32(empty_output_bytes_size);
       out->WriteBytes(empty_output_bytes.get(), 0, empty_output_bytes_size);
     } else {
+      // std::cout << "No empty output" << std::endl;
       out->WriteByte(0);
     }
 
@@ -1168,10 +1176,12 @@ class Fst {
         break;
     }
 
+    // std::cout << "Save] start_node - " << start_node << std::endl;
     out->WriteVInt64(start_node);
-    if (!is_bytes_empty) {
-      out->WriteVInt64(bytes.GetPosition());
-      bytes.WriteTo(out);
+    if (bytes) {
+      // std::cout << "Num bytes - " << bytes->GetPosition() << std::endl;
+      out->WriteVInt64(bytes->GetPosition());
+      bytes->WriteTo(out);
     } else {
       assert(bytes_array);
       out->WriteVInt64(bytes_array_size);
@@ -1186,17 +1196,17 @@ class Fst {
 
   Arc GetFirstArc(Arc& arc) {
     // std::cout << "GetFirstArc" << std::endl;
-    if (!is_empty_output_empty) {
+    if (empty_output) {
       arc.flags = (BIT_FINAL_ARC | BIT_LAST_ARC);
-      arc.next_final_output = empty_output;
-      if (!outputs.IsNoOutput(empty_output)) {
+      arc.next_final_output = *empty_output;
+      if (!outputs->IsNoOutput(*empty_output)) {
         arc.flags |= BIT_ARC_HAS_FINAL_OUTPUT; 
       }
     } else {
       arc.flags = BIT_LAST_ARC;
-      outputs.MakeNoOutput(arc.next_final_output);
+      outputs->MakeNoOutput(arc.next_final_output);
     }
-    outputs.MakeNoOutput(arc.output);
+    outputs->MakeNoOutput(arc.output);
 
     // If there are no nodes, ie, the FST only accepts the
     // empty string, then startNode is 0
@@ -1518,12 +1528,12 @@ class Fst {
     if (bytes_array) {
       return std::make_unique<ReverseFstBytesReader>(bytes_array.get());
     } else {
-      return bytes.GetReverseReader();
+      return bytes->GetReverseReader();
     }
   }
 
   bool AcceptEmptyOutput() {
-    return !is_empty_output_empty;
+    return empty_output.operator bool();
   }
 
  public:
@@ -1600,10 +1610,10 @@ class Fst {
   }
 
   void SetEmptyOutput(T&& v) {
-    if (is_empty_output_empty) {
+    if (!empty_output) {
       empty_output = v;
     } else {
-      empty_output = outputs->Merge(empty_output, v);
+      empty_output = outputs->Merge(*empty_output, v);
     }
   }
 
@@ -1612,14 +1622,16 @@ class Fst {
     GetFirstArc(arc);
     if (TargetHasArcs(arc)) {
       std::unique_ptr<FstBytesReader> in = GetBytesReader(); 
-      std::unordered_map<uint32_t, Arc> arcs(0x100);
+      std::unordered_map<uint32_t, Arc> arcs(CACHED_ROOT_SIZE);
       ReadFirstRealTargetArc(arc.target, arc, in.get());
       uint32_t count = 0;
       cached_root_arcs.clear();
+
       while (true) {
         assert(arc.label != END_LABEL);
-        if (arc.label < 0x80) {
-          arcs[arc.label] = arc;
+        if (arc.label < CACHED_ROOT_SIZE) {
+          // Avoid full copy of outputs (Ex IntsRef)
+          arcs[arc.label] = std::move(arc);
         } else {
           break;
         }
@@ -1639,21 +1651,26 @@ class Fst {
   }
 
   void Finish(const int64_t new_start_node) {
-    assert(new_start_node <= bytes.GetPosition());
+    assert(new_start_node <= bytes->GetPosition());
     if (start_node != -1) {
       throw IllegalStateException("Already finished");
     }
 
-    if (new_start_node == FINAL_END_NODE && !is_empty_output_empty) {
+    if (new_start_node == FINAL_END_NODE && empty_output) {
       start_node = 0;
     } else {
       start_node = new_start_node;
     }
 
-    bytes.Finish();
+    std::cout << "BytesStore, Before Finished, Bytes pos - " << bytes->GetPosition() << std::endl;
+    bytes->Finish();
     CacheRootArcs();
+    std::cout << "BytesStore, Finished, Bytes pos - " << bytes->GetPosition() << std::endl;
   }
 };  // Fst
+
+template<typename T>
+const std::string Fst<T>::FILE_FORMAT_NAME("FST");
 
 template<typename T>
 class Fst<T>::Arc {

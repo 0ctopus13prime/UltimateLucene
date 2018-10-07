@@ -24,12 +24,6 @@ using lucene::core::util::IntsRef;
 using lucene::core::util::IntSequenceOutputs;
 
 /**
- *  Fst
- */
-template<typename T>
-const std::string Fst<T>::FILE_FORMAT_NAME("FST");
-
-/**
  *  ByteSequenceOutputs
  */
 BytesRef ByteSequenceOutputs::NO_OUTPUT;

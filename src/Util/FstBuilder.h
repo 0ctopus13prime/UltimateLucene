@@ -143,6 +143,7 @@ class NodeHash {
 
     while (true) {
       const int64_t v = table.Get(pos);
+      // std::cout << "Finding ..." << std::endl;
       if (v == 0) {
         // Freeze & Add
         // std::cout << "Now really freeze node" << std::endl;
@@ -354,12 +355,14 @@ class FstBuilder {
       WriteLabel(&bytes, arc.label);
 
       if (!fst.outputs->IsNoOutput(arc.output)) {
-        // std::cout << "Because arc.output is not a no-output value. Write it's value" << std::endl;
+        // std::cout << "Because arc.output is not a no-output value. Write it's value"
+        //           << ", Length - " << arc.output.Length() << std::endl;
         fst.outputs->Write(arc.output, &bytes);
       }
 
       if (!fst.outputs->IsNoOutput(arc.next_final_output)) {
-        // std::cout << "Because arc.next_final_output is not a no-output value. Write it's value" << std::endl;
+        // std::cout << "Because arc.next_final_output is not a no-output value. Write it's value"
+        //           << ", Length - " << arc.next_final_output.Length() << std::endl;
         fst.outputs->WriteFinalOutput(arc.next_final_output, &bytes);
       }
 
@@ -381,19 +384,8 @@ class FstBuilder {
           std::max(max_bytes_per_arc, reused_bytes_per_arc[arc_idx]);
         // std::cout << "max_bytes_per_arc -> " << max_bytes_per_arc << std::endl;
       }
-    }  // End for
 
-    // TEST
-    {
-      if (2228200 == start_address) {
-        std::unique_ptr<FstBytesReader> kdy = bytes.GetForwardReader();
-        kdy->SetPosition(start_address);
-        for (long i = start_address ; i < bytes.GetPosition() ; ++i) {
-          // std::cout << "kkkk " << static_cast<int32_t>(kdy->ReadByte() & 0xFF) << std::endl;
-        }
-      }
-    }
-    // TEST
+    }  // End for
 
     // std::cout << "Do fixed array -> " << std::boolalpha << do_fixed_array << std::endl;
     if (do_fixed_array) {
@@ -472,6 +464,10 @@ class FstBuilder {
                             const uint32_t tail_length) {
     int64_t node;
     const uint64_t bytes_pos_start = bytes.GetPosition();
+
+    // std::cout << "Compile Node, arcs - " << node_in->arcs.size()
+    //           << ", tail length - " << tail_length
+    //           << ", bytes pos start - " << bytes_pos_start << std::endl;
 
     if (dedup_hash &&
         (do_share_non_singleton_nodes || node_in->arcs.size() <= 1) &&
@@ -578,6 +574,7 @@ class FstBuilder {
           CompiledNode* compiled_node =
             CompileNode(node, 1 + last_input.Length() - idx); 
           // std::cout << "Compile done" << std::endl;
+          // std::cout << "Bytes pos - " << bytes.GetPosition() << std::endl;
 
           parent->ReplaceLast(last_input[idx - 1],
                               compiled_node,
@@ -585,6 +582,7 @@ class FstBuilder {
                               is_final);
           node->Clear();
         } else {
+          // std::cout << "No compile, Just install next final output + is_final" << std::endl;
           // ReplaceLast just to install
           // next_final_output/is_final onto the arc
           parent->ReplaceLast(last_input[idx - 1],
@@ -604,8 +602,7 @@ class FstBuilder {
 
   void CompileAllTargets(UnCompiledNode* node, const uint32_t tail_length) {
     for (Arc& arc : node->arcs) {
-      if (!arc.target->IsCompiled()) {
-        UnCompiledNode* n = dynamic_cast<UnCompiledNode*>(arc.target);
+      if (UnCompiledNode* n = dynamic_cast<UnCompiledNode*>(arc.target)) {
         if (n->arcs.empty()) {
           arc.is_final = n->is_final = true;
         }
@@ -663,7 +660,7 @@ class FstBuilder {
           bytes_page_bits),
       min_suffix_count1(min_suffix_count1),
       min_suffix_count2(min_suffix_count2),
-      bytes(fst.bytes),
+      bytes(*fst.bytes),
       reused_bytes_per_arc(),
       share_max_tail_length(share_max_tail_length),
       last_input(),
@@ -693,6 +690,11 @@ class FstBuilder {
     //std::cout << "FstBuilder(), uncompiled_node_pool's size -> " << uncompiled_node_pool.size() << std::endl; 
     //std::cout << "FstBuilder(), outputs -> " << fst.outputs->get() << std::endl;
   }
+
+  FstBuilder(const FstBuilder&) = delete;
+  FstBuilder(FstBuilder&&) = delete;
+  FstBuilder& operator=(const FstBuilder&) = delete;
+  FstBuilder& operator=(FstBuilder&&) = delete;
 
   uint64_t GetTermCount() const noexcept {
     return frontier[0]->input_count; 
@@ -798,6 +800,8 @@ class FstBuilder {
 
     // Save last input
     last_input.InitInts(std::forward<IntsRef>(input));
+
+    // std::cout << "Bytes pos - " << bytes.GetPosition() << std::endl;
   }
 
   // TEST
@@ -807,15 +811,16 @@ class FstBuilder {
   // TEST
 
   Fst<T>* Finish() {
-  /*
-    UnCompiledNode& root = frontier[0];
+    UnCompiledNode* root = frontier[0];
+    std::cout << "FstBuider, Before freeze root, Bytes pos - " << bytes.GetPosition() << std::endl;
     FreezeTail(0);
-    if (root.input_count < min_suffix_count1 ||
-        root.input_count < min_suffix_count2 ||
-        root.num_arcs == 0) {
+    std::cout << "FstBuider, Freezed root, Bytes pos - " << bytes.GetPosition() << std::endl;
+    if (root->input_count < min_suffix_count1 ||
+        root->input_count < min_suffix_count2 ||
+        root->arcs.empty()) {
       std::cout << "[Finish] ====================================" << std::endl;
-      std::cout << "root.input_count -> " << root.input_count << std::endl;
-      std::cout << "root.num_arcs -> " << root.num_arcs << std::endl;
+      std::cout << "root.input_count -> " << root->input_count << std::endl;
+      std::cout << "root.num_arcs -> " << root->arcs.size() << std::endl;
       std::cout << "min_suffix_count1 -> " << min_suffix_count1 << std::endl;
       std::cout << "min_suffix_count2 -> " << min_suffix_count2 << std::endl;
       std::cout << "fst.AcceptEmptyOutput -> " << std::boolalpha << fst.AcceptEmptyOutput()
@@ -826,16 +831,13 @@ class FstBuilder {
           (min_suffix_count1 > 0 || min_suffix_count2 > 0)) {
         return nullptr;
       }
-    } else {
-      if (min_suffix_count2 != 0) {
-        CompileAllTargets(root, last_input.Length());
-      }
+    } else if(min_suffix_count2 != 0) {
+      CompileAllTargets(root, last_input.Length());
     }
 
-    fst.Finish(CompileNode(root, last_input.Length()).node);
+    fst.Finish(CompileNode(root, last_input.Length())->node);
     root->Clear();
 
-  */
     return &fst;
   }
 };  // FstBuilder<T>
@@ -976,10 +978,6 @@ class FstBuilder<T>::UnCompiledNode : public FstBuilder<T>::Node {
     arc.target = target;
     arc.next_final_output = std::forward<T>(next_final_output);
     arc.is_final = is_final;
-
-    if (arc.output.Length() == 0 && arc.output.Ints() != nullptr) {
-      std::cout << "WTF??" << std::endl;
-    }
   }
 
   void DeleteLast(const int32_t label, Node* target) noexcept {
