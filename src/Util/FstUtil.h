@@ -18,8 +18,12 @@
 #ifndef SRC_UTIL_FSTUTIL_H_
 #define SRC_UTIL_FSTUTIL_H_
 
+// TEST
+#include <iostream>
+
 #include <Util/Ref.h>
 #include <Util/Fst.h>
+#include <memory>
 
 namespace lucene {
 namespace core {
@@ -31,8 +35,41 @@ class FstUtil {
 
  public:
   template <typename T>
-  static T Get(Fst<T>& fst, BytesRef& input) {
-    return T();
+  static void Get(Fst<T>& fst, IntsRef& input, T& scratch) {
+    typename Fst<T>::Arc arc;
+    fst.GetFirstArc(arc);
+    // TODO(0ctopus13prime): Every time new? Really?
+    // There must some ways to around this. Ex: Reuse reader
+    // If get nothing from `FindTargetArc`, this newed reader
+    // is a totally useless garbage.
+    std::unique_ptr<FstBytesReader> fst_reader =
+      fst.GetBytesReader();
+
+    // Accumulate output as we go
+    fst.outputs->MakeNoOutput(scratch);
+    const int32_t* base = (input.Ints() + input.Offset());
+    for (uint32_t i = 0 ; i < input.Length() ; ++i) {
+      std::cout << "xxxxxxx " << i
+                << ", output length - " << scratch.Length() << std::endl;
+      fst.FindTargetArc(base[i],
+                        arc,
+                        arc,
+                        fst_reader.get());
+      std::cout << "jjjjjjjj " << std::endl;
+      if (arc.IsEmptyArc()) {
+        return;
+      }
+      std::cout << "kkkkkkkkkk " << std::endl;
+      fst.outputs->Append(scratch, arc.output);
+      std::cout << std::endl;
+    }
+
+    std::cout << "zzzzzzzzzz " << std::endl;
+    if (arc.IsFinal()) {
+      fst.outputs->Append(scratch, arc.next_final_output);
+    } else {
+      fst.outputs->MakeNoOutput(scratch);
+    }
   }
 };
 

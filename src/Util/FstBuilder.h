@@ -781,7 +781,7 @@ class FstBuilder {
         fst.outputs->DropSuffix(last_output, prefix_len);
 
         // Drop common prefix from output
-        fst.outputs->ShiftLeftSuffix(output, prefix_len);
+        fst.outputs->DropPrefix(output, prefix_len);
       }
     }
 

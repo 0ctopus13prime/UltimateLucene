@@ -192,7 +192,6 @@ TEST(OUTPUTS__TESTS, INTS__OUTPUT) {
     ASSERT_EQ(0, builder1.Length());
   }
 }
-*/
 
 void Add(FstBuilder<IntsRef>& builder,
          const std::string& key,
@@ -210,25 +209,25 @@ void Add(FstBuilder<IntsRef>& builder,
   builder.Add(std::move(key_ints.Get()), std::move(val_ints.Get()));
 }
 
-TEST(BYTESREF__TESTS, BASIC__TEST) {
+TEST(FST, FST__WRITE) {
   FstBuilder<IntsRef> builder(FST_INPUT_TYPE::BYTE1,
                               std::make_unique<IntSequenceOutputs>());
   std::string key;
   std::string val;
-  // std::ifstream infile("/tmp/english-words/sorted-words.txt");
-  // for (int i = 0 ; i < 466544 ; ++i) {
-  //   std::getline(infile, key);
-  //   val = std::to_string(i % 100000);
-  //   // std::cout << i << "] Key -> " << key << ", Val -> " << val << std::endl;
-  //   Add(builder, key, val);
-  // }
-
-  std::ifstream infile("/tmp/fst.input");
-  for (int i = 0 ; i < 100000 ; ++i) {
+  std::ifstream infile("/tmp/english-words/sorted-words.txt");
+  for (int i = 0 ; i < 466544 ; ++i) {
     std::getline(infile, key);
-    std::getline(infile, val);
+    val = std::to_string(i % 100000);
+    // std::cout << i << "] Key -> " << key << ", Val -> " << val << std::endl;
     Add(builder, key, val);
   }
+
+  // std::ifstream infile("/tmp/fst.input");
+  // for (int i = 0 ; i < 100000 ; ++i) {
+  //   std::getline(infile, key);
+  //   std::getline(infile, val);
+  //   Add(builder, key, val);
+  // }
 
   std::cout << "-------- summary ------- " << std::endl;
   std::cout << "Arc -> " << builder.GetArcCount() << std::endl;
@@ -243,7 +242,6 @@ TEST(BYTESREF__TESTS, BASIC__TEST) {
   fst->Save(&bos);
 }
 
-/*
 TEST(NODE_HASH, BASIC__TEST) {
   FstBuilder<IntsRef> builder(FST_INPUT_TYPE::BYTE1,
                               std::make_unique<IntSequenceOutputs>());
@@ -277,6 +275,23 @@ TEST(NODE_HASH, BASIC__TEST) {
   node0->AddArc(static_cast<int32_t>('a'), cnode1);
 }
 */
+
+TEST(FST, FST__READ) {
+  Fst<IntsRef> fst(Fst<IntsRef>::Read("/tmp/fst.output",
+                                      std::make_unique<IntSequenceOutputs>()));
+  IntsRef scratch;
+
+  std::string key_str("Love");
+  BytesRef key_bytes(key_str.c_str(), key_str.size());
+  IntsRefBuilder key_ints;
+  key_ints.CopyUTF8Bytes(key_bytes);
+
+  FstUtil::Get(fst, key_ints.Get(), scratch);
+
+  for (int i = 0 ; i < scratch.Length() ; ++i) {
+    std::cout << "i - " << scratch.Ints()[scratch.Offset() + i] << std::endl;
+  }
+}
 
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);

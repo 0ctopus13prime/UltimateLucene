@@ -197,7 +197,7 @@ class BytesStore: public lucene::core::store::DataOutput {
     //           << ", block_bits -> " << block_bits << std::endl;
   }
 
-  BytesStore(std::unique_ptr<lucene::core::store::DataInput>&& in,
+  BytesStore(lucene::core::store::DataInput* in,
              const uint64_t num_bytes,
              const uint32_t max_block_size) {
     uint32_t tmp_block_size = 2;
@@ -630,7 +630,9 @@ class Outputs {
 
   virtual void Prepend(const T& prefix, T& output) = 0;
 
-  virtual void ShiftLeftSuffix(T& output, const uint32_t prefix_len) = 0;
+  virtual void Append(T& output, const T& suffix) = 0;
+
+  virtual void DropPrefix(T& output, const uint32_t prefix_len) = 0;
 
   virtual void DropSuffix(T& output, const uint32_t prefix_len) = 0;
 
@@ -689,14 +691,14 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
   }
 
   void Prepend(const IntsRef& prefix, IntsRef& output) {
-    if (prefix.Length() > 0) {
+    if (!IsNoOutput(prefix)) {
       // Grow first
       std::pair<int32_t*, uint32_t> pair =
         ArrayUtil::Grow(output.Ints(),
                         output.Capacity(), 
                         output.Offset() + output.Length() + prefix.Length());
       if (pair.first != output.Ints()) {
-        if (output.Ints() != nullptr) {
+        if (output.Ints()) {
           delete[] output.Ints();
         }
         output.SetInts(pair.first)
@@ -705,58 +707,75 @@ class IntSequenceOutputs: public Outputs<IntsRef> {
 
       // Shift back
       int32_t* base = (output.Ints() + output.Offset());
-      int32_t* ptr = (base + output.Length());
 
-      for ( ; ptr != base ; --ptr) {
-        ptr[prefix.Length() - 1] = ptr[-1];
-      }
+      std::memmove(base + prefix.Length(),
+                   base,
+                   output.Length() * sizeof(int32_t));
 
-      // Prepend
-      ptr = (prefix.Ints() + prefix.Offset());
-      for (uint32_t i = 0 ; i < prefix.Length() ; ++i) {
-        base[i] = ptr[i];
-      }
+      std::memcpy(base,
+                  prefix.Ints() + prefix.Offset(),
+                  prefix.Length() * sizeof(int32_t));
 
       output.SetLength(output.Length() + prefix.Length());
     }
   }
 
-  void ShiftLeftSuffix(IntsRef& output, const uint32_t prefix_len) {
+  void Append(IntsRef& output, const IntsRef& suffix) {
+    if (!IsNoOutput(suffix)) {
+      // Grow first
+      std::pair<int32_t*, uint32_t> pair =
+        ArrayUtil::Grow(output.Ints(),
+                        output.Capacity(), 
+                        output.Offset() + output.Length() + suffix.Length());
+
+      if (pair.first != output.Ints()) {
+        if (output.Ints()) {
+          delete[] output.Ints();
+        }
+
+        output.SetInts(pair.first)
+              .SetCapacity(pair.second);
+      }
+
+      // Append
+      std::memcpy(output.Ints() + output.Offset() + output.Length(),
+                  suffix.Ints() + suffix.Offset(),
+                  suffix.Length() * sizeof(int32_t));
+
+      output.SetLength(output.Length() + suffix.Length());
+    }
+  }
+
+  void DropPrefix(IntsRef& output, const uint32_t prefix_len) {
     if (prefix_len > 0) {
       if (prefix_len >= output.Length()) {
         MakeNoOutput(output); 
       } else {
-        int32_t* ptr = (output.Ints() + output.Offset() + prefix_len);
-        const uint32_t new_length = (output.Length() - prefix_len);
-        
-        for (uint32_t i = 0 ; i < new_length ; ++i) {
-          *(ptr - prefix_len) = *ptr;
-          ptr++;
-        }
-
-        output.SetLength(new_length);
+        output.SetOffset(output.Offset() + prefix_len)
+              .SetLength(output.Length() - prefix_len);
       }
     }
   }
 
   IntsRef PrefixReference(IntsRef& output, const uint32_t prefix_len) {
-    return IntsRef(output.Ints(),
-                   output.Offset(),
-                   std::min(output.Length(), prefix_len),
-                   output.Capacity());
+    if (const uint32_t len = std::min(output.Length(), prefix_len)) {
+      return IntsRef(output.Ints() + output.Offset(),
+                     0,
+                     len,
+                     output.Capacity());
+    } else {
+      return IntsRef();
+    }
   }
 
   IntsRef SuffixReference(IntsRef& output, const uint32_t prefix_len) {
     if (output.Length() > prefix_len) {
-      return IntsRef(output.Ints(),
-                     output.Offset() + prefix_len,
+      return IntsRef(output.Ints() + output.Offset() + prefix_len,
+                     0,
                      output.Length() - prefix_len,
                      output.Capacity());
     } else {
-      return IntsRef(output.Ints(),
-                     output.Offset() + prefix_len,
-                     0,
-                     output.Capacity());
+      return IntsRef();
     }
   }
 
@@ -968,7 +987,7 @@ class Fst {
   static const int64_t NON_FINAL_END_NODE = 0;
   static const int32_t END_LABEL = -1;
   static const uint32_t MAX_BLOCK_BITS = 30;
-  static const uint32_t CACHED_ROOT_SIZE = 0x100;
+  static const uint32_t CACHED_ROOT_SIZE = 0x80;
 
  public:
   class Arc;
@@ -984,8 +1003,10 @@ class Fst {
   uint32_t version;
 
  private:
-  static bool Flag(const uint32_t flag, const uint32_t bit) noexcept {
-    return ((flag & bit) != 0);
+  static bool Flag(const uint32_t flags, const uint32_t bit) noexcept {
+    std::cout << "Flag, flags - " << flags << ", bit - " << bit
+              << ", & - " << (flags & bit) << std::endl;
+    return ((flags & bit) != 0);
   }
 
  public:
@@ -1022,7 +1043,7 @@ class Fst {
 
   Fst(lucene::core::store::DataInput* in,
       std::unique_ptr<Outputs<T>>&& outputs)
-    : Fst(in, std::forward<Outputs<T>>(outputs), MAX_BLOCK_BITS) {
+    : Fst(in, std::forward<std::unique_ptr<Outputs<T>>>(outputs), MAX_BLOCK_BITS) {
   }
 
   Fst(lucene::core::store::DataInput* in,
@@ -1040,6 +1061,7 @@ class Fst {
                                                   FILE_FORMAT_NAME,
                                                   VERSION_PACKED,
                                                   VERSION_CURRENT);
+    std::cout << "Fst init] version - " << version << std::endl;
     if (version < VERSION_PACKED_REMOVED &&
         in->ReadByte() == 1) {
         throw lucene::core::index::CorruptIndexException(
@@ -1047,6 +1069,7 @@ class Fst {
     }
 
     if (in->ReadByte() == 1) {
+      std::cout << "Fst init] Accept empty string" << std::endl;
       // Accept empty string
       // 1KB blocks
       BytesStore empty_bytes(10);
@@ -1082,7 +1105,10 @@ class Fst {
                               std::to_string(static_cast<uint32_t>(t & 0xFF)));
     }
 
+    std::cout << "Fst init] input type, t - " << (t & 0xFF) << std::endl;
+
     start_node = in->ReadVInt64();
+    std::cout << "Fst init] start node - " << start_node << std::endl;
     if (version < VERSION_NO_NODE_ARC_COUNTS) {
       in->ReadVInt64();
       in->ReadVInt64();
@@ -1090,17 +1116,19 @@ class Fst {
     }
 
     const int64_t num_bytes = in->ReadVInt64();
+    std::cout << "Fst init] num bytes - " << num_bytes << std::endl;
     if (num_bytes > (1 << max_block_bits)) {
       // FST is big: We need to multiple pages
+      std::cout << "FST is big, New BytesStore" << std::endl;
       bytes = BytesStore(in, num_bytes, 1 << max_block_bits);
       bytes_array.reset();
       bytes_array_size = 0;
     } else {
       // FST file into a single block:
       // Use ByteArrayBytesStoreReader for less overhead
-      bytes = BytesStore();
+      std::cout << "FST is small, New bytes array" << std::endl;
       bytes_array_size = num_bytes;
-      bytes_array = std::make_unique<char[]>(bytes_array_size);
+      bytes_array = std::unique_ptr<char[]>(new char[bytes_array_size]);
       in->ReadBytes(bytes_array.get(), 0, bytes_array_size);
     }
 
@@ -1138,7 +1166,7 @@ class Fst {
                                                 FILE_FORMAT_NAME,
                                                 VERSION_CURRENT);
     if (empty_output) {
-      std::cout << "Write empty output" << std::endl;
+      // std::cout << "Write empty output" << std::endl;
       // Accept empty string
       out->WriteByte(static_cast<char>(1));
 
@@ -1194,7 +1222,7 @@ class Fst {
     Save(&out);
   }
 
-  Arc GetFirstArc(Arc& arc) {
+  void GetFirstArc(Arc& arc) {
     // std::cout << "GetFirstArc" << std::endl;
     if (empty_output) {
       arc.flags = (BIT_FINAL_ARC | BIT_LAST_ARC);
@@ -1213,15 +1241,17 @@ class Fst {
     arc.target = start_node;
   }
 
-  Arc ReadLastTargetArc(Arc& follow,
+  void ReadLastTargetArc(Arc& follow,
                         Arc& arc,
                         FstBytesReader* in) {
     if (!TargetHasArcs(follow)) {
       assert(follow.IsFinal());
       arc.label = END_LABEL;
       arc.target = FINAL_END_NODE;
+      // TODO(0ctopus13prime): Check if we can use move here
       arc.output = follow.next_final_output;
       arc.flags = BIT_LAST_ARC;
+      return;
     } else {
       in->SetPosition(follow.target);
       const char b = in->ReadByte();
@@ -1264,31 +1294,31 @@ class Fst {
 
       ReadNextRealArc(arc, in);
       assert(arc.IsLast());
-      return arc;
     }
   }
 
-  Arc ReadFirstTargetArc(Arc& follow, Arc& arc, FstBytesReader* in) {
+  void ReadFirstTargetArc(Arc& follow, Arc& arc, FstBytesReader* in) {
     if (follow.IsFinal()) {
       arc.label = END_LABEL;
+      // TODO(0ctopus13prime): Check if we can use move here
       arc.output = follow.next_final_output;
       arc.flags = BIT_FINAL_ARC;
       if (follow.target <= 0) {
         arc.flags |= BIT_LAST_ARC;
       } else {
+        // NOTE: `next_arc` is a node (not an address!) in this case:
         arc.next_arc = follow.target;
       }
 
       arc.target = FINAL_END_NODE;
-      return arc;
     } else {
-      return ReadFirstRealTargetArc(follow.target, arc, in);
+      ReadFirstRealTargetArc(follow.target, arc, in);
     }
   }
 
-  Arc ReadFirstRealTargetArc(const int64_t node,
-                             Arc& arc,
-                             FstBytesReader* in) {
+  void ReadFirstRealTargetArc(const int64_t node,
+                              Arc& arc,
+                              FstBytesReader* in) {
     const int64_t address = node;
     // std::cout << "ReadFirstRealTargetArc, set position - " << address << std::endl;
     in->SetPosition(address);
@@ -1316,19 +1346,19 @@ class Fst {
       arc.bytes_per_arc = 0;
     }
 
-    return ReadNextRealArc(arc, in);
+    ReadNextRealArc(arc, in);
   }
-  
-  Arc ReadNextArc(Arc& arc, FstBytesReader* in) {
+
+  void ReadNextArc(Arc& arc, FstBytesReader* in) {
     if (arc.label == END_LABEL) {
       if (arc.next_arc <= 0) {
         throw IllegalArgumentException("Cannot read next arc when "
                                        "arc.IsLast() == true");
       }
 
-      return ReadFirstRealTargetArc(arc.next_arc, arc, in);
+      ReadFirstRealTargetArc(arc.next_arc, arc, in);
     } else {
-      return ReadNextRealArc(arc, in);
+      ReadNextRealArc(arc, in);
     }
   }
 
@@ -1367,40 +1397,40 @@ class Fst {
     return ReadLabel(in);
   }
 
-  Arc ReadNextRealArc(Arc& arc, FstBytesReader* in) {
-    // std::cout << "ReadNextRealArc start" << std::endl;
+  void ReadNextRealArc(Arc& arc, FstBytesReader* in) {
+    std::cout << "ReadNextRealArc start, arc arc_idx - " << arc.arc_idx << std::endl;
     // This is a continuing arc in a fixed array 
     if (arc.bytes_per_arc != 0) {
-      // std::cout << "ReadNextRealArc, arc.bytes_per_arc != 0" << std::endl;
+      std::cout << "ReadNextRealArc, arc.bytes_per_arc != 0" << std::endl;
       // Arcs are at fixed entries
       arc.arc_idx++;
       assert(arc.arc_idx < arc.num_arcs);
       in->SetPosition(arc.pos_arcs_start);
       in->SkipBytes(arc.arc_idx * arc.bytes_per_arc);
     } else {
-      // std::cout << "ReadNextRealArc, packed arc, future position - " << arc.next_arc << std::endl;
+      std::cout << "ReadNextRealArc, packed arc, future position - " << arc.next_arc << std::endl;
       // Arcs are packed 
       in->SetPosition(arc.next_arc);
     }
     arc.flags = in->ReadByte();
     arc.label = ReadLabel(in);
 
-    // std::cout << "ReadNextRealArc, arc's flags - " << arc.flags
-    //           << ", arc's label - " << arc.label << std::endl;
+    std::cout << "ReadNextRealArc, arc's flags - " << (arc.flags & 0xFF)
+              << ", arc's label - " << arc.label << std::endl;
 
     if (arc.Flag(BIT_ARC_HAS_OUTPUT)) {
-      // std::cout << "ReadNextRealArc, This arc has output" << std::endl;
+      std::cout << "ReadNextRealArc, This arc has output" << std::endl;
       arc.output = outputs->Read(in);
     } else {
-      // std::cout << "ReadNextRealArc, This arc has output" << std::endl;
+      std::cout << "ReadNextRealArc, This arc has no output" << std::endl;
       outputs->MakeNoOutput(arc.output);
     }
 
     if (arc.Flag(BIT_ARC_HAS_FINAL_OUTPUT)) {
-      // std::cout << "ReadNextRealArc, has final output" << std::endl;
+      std::cout << "ReadNextRealArc, has final output" << std::endl;
       arc.next_final_output = outputs->ReadFinalOutput(in);
     } else {
-      // std::cout << "ReadNextRealArc, does not have final output" << std::endl;
+      std::cout << "ReadNextRealArc, does not have final output" << std::endl;
       outputs->MakeNoOutput(arc.next_final_output);
     }
 
@@ -1427,11 +1457,9 @@ class Fst {
       arc.target = ReadUnpackedNodeTarget(in);
       arc.next_arc = in->GetPosition();
     }
-
-    return arc;
   }
 
-  Arc FindTargetArc(const int32_t label_to_match,
+  void FindTargetArc(const int32_t label_to_match,
                     Arc& follow,
                     Arc& arc,
                     FstBytesReader* in,
@@ -1446,54 +1474,70 @@ class Fst {
           arc.next_arc = follow.target;
         }
 
+        // TODO(0ctopus13prime): Move here?
         arc.output = follow.next_final_output;
         arc.label = END_LABEL;
-        return arc;
       } else {
-        // return null;
-        return Arc();
+        return;
       }
     }
 
     // Short-circuit if this arc is in the root arc cache:
+    std::cout << "FindTargetArc] use_root_arc_cache - " << use_root_arc_cache
+              << ", cache empty? - " << cached_root_arcs.empty()
+              << ", cache size - " << cached_root_arcs.size()
+              << ", follow target - " << follow.target
+              << ", start_node - " << start_node
+              << ", label to match - " << label_to_match << std::endl;
     if (use_root_arc_cache &&
         !cached_root_arcs.empty() &&
         follow.target == start_node &&
-        label_to_match < cached_root_arcs.size()) {
-      if (cached_root_arcs.find(label_to_match) != cached_root_arcs.end()) {
-        Arc& result = cached_root_arcs[label_to_match];
-        assert(AssertRootCachedArc(label_to_match, result));
+        label_to_match < CACHED_ROOT_SIZE) {
+      std::cout << "FindTargetArc] In a short cut" << std::endl;
+      auto it = cached_root_arcs.find(label_to_match);
+      if (it != cached_root_arcs.end()) {
+        std::cout << "FindTargetArc] Find it from cache. label - " << label_to_match << std::endl;
+        std::cout << "wwwwwwwwwww idx - " << it->first << std::endl;
+        Arc& result = it->second;
+        std::cout << "hhhhhhhhhhhhh" << std::endl;
+        AssertRootCachedArc(label_to_match, &result);
+        std::cout << "uuuuuuuuuuuuu" << std::endl;
         arc = result;
+        return;
       } else {
-        // return null;
-        return Arc();
+        AssertRootCachedArc(label_to_match, nullptr);
+        return;
       }
     }
 
     if (!TargetHasArcs(follow)) {
-      // return null;
-      return Arc();
+      return;
     }
 
+    std::cout << "FindTargetArc] Ready to read pos - " << follow.target << std::endl;
     in->SetPosition(follow.target);
 
     if (in->ReadByte() == ARCS_AS_FIXED_ARRAY) {
+      std::cout << "FindTargetArc] Ars is a fixed array" << std::endl;
       // Arcs are full array. Do binary search
       arc.num_arcs = in->ReadVInt32();
+      std::cout << "FindTargetArc] num arcs - " << arc.num_arcs << std::endl;
       if (version >= VERSION_VINT_TARGET) {
-        arc.bytse_per_arc = in->ReadVInt32();
+        arc.bytes_per_arc = in->ReadVInt32();
       } else {
         arc.bytes_per_arc = in->ReadInt32();
       }
+      std::cout << "FindTargetArc] bytes pre arc - " << arc.bytes_per_arc << std::endl;
 
       arc.pos_arcs_start = in->GetPosition();
+      std::cout << "FindTargetArc] pos arcs start - " << arc.pos_arcs_start << std::endl;
       uint32_t low = 0;
       uint32_t high = (arc.num_arcs - 1);
       while (low <= high) {
         const uint32_t mid = (low + high) >> 1;
         in->SetPosition(arc.pos_arcs_start);
         in->SkipBytes(arc.bytes_per_arc * mid + 1);
-        int32_t mid_label = ReadLabel(in);
+        const int32_t mid_label = ReadLabel(in);
         const int32_t cmp = (mid_label - label_to_match);
         if (cmp < 0) {
           low = (mid + 1);
@@ -1501,26 +1545,20 @@ class Fst {
           high = (mid - 1);
         } else {
           arc.arc_idx = (mid - 1);
-          return ReadNextRealArc(arc, in);
+          ReadNextRealArc(arc, in);
+          return;
         }
       }
-
-      // return null;
-      return Arc();
     }
 
     // Linear scan
+    std::cout << "FindTargetArc] Linear scan" << std::endl;
     ReadFirstRealTargetArc(follow.target, arc, in);
     
-    while (true) {
-      if (arc.lebel == label_to_match) {
-        return arc;
-      } else if (arc.label > label_to_match || arc.IsLast()) {
-        // return null;
-        return Arc();
-      } else {
-        ReadNextRealArc(arc, in);
-      }
+    while (arc.label != label_to_match &&
+           arc.label <= label_to_match &&
+           !arc.IsLast()) {
+      ReadNextRealArc(arc, in);
     }
   }
 
@@ -1538,19 +1576,21 @@ class Fst {
 
  public:
   static Fst<T> Read(const std::string& path,
-                     std::unique_ptr<Outputs<T>> outputs) {
-    return Fst<T>(lucene::core::store::BufferedFileInputStreamDataInput(path),
+                     std::unique_ptr<Outputs<T>>&& outputs) {
+    lucene::core::store::BufferedFileInputStreamDataInput in(path);
+    return Fst<T>(&in,
                   std::move(outputs));
   }
 
-  static bool TargetHasArcs(Arc& arc) {
+  static bool TargetHasArcs(const Arc& arc) {
     return (arc.target > 0);
   }
 
  private:
   void SeekToNextNode(FstBytesReader* in) {
-    while (true) {
-      const uint32_t flags = (in->ReadByte() & 0xFF);
+    uint32_t flags;
+    do {
+      flags = (in->ReadByte() & 0xFF);
       ReadLabel(in);
 
       if (Flag(flags, BIT_ARC_HAS_OUTPUT)) {
@@ -1564,22 +1604,36 @@ class Fst {
       if (!Flag(flags, BIT_STOP_NODE) && !Flag(flags, BIT_TARGET_NEXT)) {
         ReadUnpackedNodeTarget(in);
       }
-
-      if (Flag(flags, BIT_LAST_ARC)) {
-        return;
-      }
-    }
+    } while(!Flag(flags, BIT_LAST_ARC));
   }
 
-  bool AssertRootCachedArc(const int32_t label, Arc& cached_arc) {
-    /*
-      Arc arc;
-      GetFirstArc(arc);
-      std::unique_ptr<FstBytesReader> in = GetBytesReader();
-      Arc result = FindTargetArc(label, arc, arc, in, false);
-    */
-    // TODO(0ctopus13prime): IT
-    return true;
+  void AssertRootCachedArc(const int32_t label, Arc* cached_arc) {
+  #ifdef NDEBUG
+    // Empty body
+  #else
+    std::cout << "[AssertRootCachedArc]" << std::endl;
+    Arc result;
+    GetFirstArc(result);
+    std::unique_ptr<FstBytesReader> in = GetBytesReader();
+    FindTargetArc(label, result, result, in.get(), false);
+
+    // Ars is empty, nothing got from `FindTargetArc`
+    if (result.IsEmptyArc()) {
+      assert(cached_arc == nullptr);
+    } else {
+      assert(cached_arc != nullptr);
+      assert(cached_arc->arc_idx == result.arc_idx);
+      assert(cached_arc->bytes_per_arc == result.bytes_per_arc);
+      assert(cached_arc->flags == result.flags);
+      assert(cached_arc->label == result.label);
+      assert(cached_arc->next_arc == result.next_arc);
+      assert(cached_arc->next_final_output == result.next_final_output);
+      assert(cached_arc->num_arcs == result.num_arcs);
+      assert(cached_arc->output == result.output);
+      assert(cached_arc->pos_arcs_start == result.pos_arcs_start);
+      assert(cached_arc->target == result.target);
+    }
+  #endif
   }
 
   bool IsExpandedTarget(Arc& follow, FstBytesReader* in) {
@@ -1643,6 +1697,8 @@ class Fst {
         ReadNextRealArc(arc, in.get());
         count++;
       }  // End while
+
+      std::cout << "Fst] init, count - " << count << std::endl;
 
       if (count >= FIXED_ARRAY_NUM_ARCS_SHALLOW) {
         cached_root_arcs = std::move(arcs); 
@@ -1759,7 +1815,7 @@ class Fst<T>::Arc {
     return *this;
   }
 
-  bool Flag(const uint8_t flag) const noexcept {
+  bool Flag(const uint32_t flag) const noexcept {
     return Fst<T>::Flag(flags, flag);
   }
 
@@ -1769,6 +1825,10 @@ class Fst<T>::Arc {
 
   bool IsFinal() const noexcept {
     return Flag(BIT_FINAL_ARC);
+  }
+
+  bool IsEmptyArc() const noexcept {
+    return (target == 0);
   }
 };  // Fst<T>::Arc
 
