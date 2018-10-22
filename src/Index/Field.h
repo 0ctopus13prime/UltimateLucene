@@ -22,10 +22,13 @@
 #include <Analysis/Reader.h>
 #include <Analysis/TokenStream.h>
 #include <Index/DocValue.h>
+#include <Index/Term.h>
+#include <Util/Etc.h>
 #include <Util/Ref.h>
 #include <Util/Numeric.h>
 #include <optional>
 #include <string>
+#include <vector>
 
 namespace lucene {
 namespace core {
@@ -61,6 +64,29 @@ enum class IndexOptions {
    */
   DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS
 };
+
+class Fields {
+ protected:
+  Fields() = default;
+
+ public:
+  virtual ~Fields() = default;
+
+  virtual lucene::core::util::Iterator<std::string> Iterator() = 0;
+
+  virtual Terms* GetTerms(const std::string& field) = 0;
+
+  virtual int32_t Size() = 0;
+};  // Fields
+
+class FieldInfo {
+
+};  // FieldInfo
+
+class FieldInfos {
+
+};  // FieldInfos
+
 
 }  // namespace index
 }  // namespace core

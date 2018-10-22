@@ -22,6 +22,7 @@
 #include <Util/Exception.h>
 #include <Util/Unicode.h>
 #include <Util/ZlibCrc32.h>
+#include <Util/Ref.h>
 #include <cassert>
 #include <memory>
 #include <string>
@@ -80,7 +81,7 @@ class Version {
   static Version FromBits(const uint8_t major,
                           const uint8_t minor,
                           const uint8_t bugfix);
-};
+};  // Version
 
 class Checksum {
  public:
@@ -92,7 +93,7 @@ class Checksum {
                       const uint32_t len) = 0;
   virtual int64_t GetValue() = 0;
   virtual void Reset() = 0;
-};
+};  // Checksum
 
 class Crc32: public Checksum {
  private:
@@ -123,27 +124,35 @@ class Crc32: public Checksum {
   void Reset() {
     crc = 0;
   }
-};
+};  // Crc32
 
 class Int64Values {
  public:
   virtual ~Int64Values() = default;
 
   virtual int64_t Get(const uint64_t index) = 0; 
-};
+};  // Int64Values
 
 class IdentityInt64Values : public Int64Values {
  public:
   int64_t Get(const uint64_t index) {
     return index;
   }
-};
+};  // IdentityInt64Values
 
 class ZeroInt64Values : public Int64Values {
   int64_t Get(const uint64_t index) {
     return 0;
   }
-};
+};  // ZeroInt64Values
+
+template <typename T>
+class Iterator {
+ public:
+  virtual ~Iterator() = default;
+
+  virtual T* Next() = 0;
+};  // Iterator
 
 }  // namespace util
 }  // namespace core

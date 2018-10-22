@@ -33,6 +33,8 @@ add_headers_and_sources(DoochiCore Document)
 add_headers_and_sources(DoochiCore Index)
 add_headers_and_sources(DoochiCore Store)
 add_headers_and_sources(DoochiCore Codec)
+add_headers_and_sources(DoochiCore Codec/BlockTree)
+add_headers_and_sources(DoochiCore Codec/Lucene50)
 add_library(DoochiCore SHARED ${DoochiCore_headers} ${DoochiCore_sources})
 
 add_subdirectory(Codec)

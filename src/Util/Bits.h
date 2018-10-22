@@ -155,7 +155,19 @@ class BitUtil {
     uint64_t l = static_cast<uint64_t>(j);
     return ((l >> 1) ^ -(l & 1));
   }
-};
+};  // BitUtil
+
+class BitSet {
+
+};  // BitSet
+
+class FixedBitSet {
+
+};  // FixedBitSet
+
+class SparseFixedBitSet {
+
+};  // SparseFixedBitSet
 
 }  // namespace util
 }  // namespace core
