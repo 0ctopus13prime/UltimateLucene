@@ -43,10 +43,6 @@ class TermsEnum: public lucene::core::util::Iterator<
  public:
   virtual ~TermsEnum() = default;
 
-  PostingsEnum* Postings() {
-    return Postings(PostingsEnum::FREQS);
-  }
-
   virtual PostingsEnum* Postings(uint32_t flags) = 0;
 
   virtual lucene::core::util::BytesRef* Term() = 0;
@@ -85,6 +81,12 @@ class TermsEnum::EmptyTermsEnum: public TermsEnum {
 
   lucene::core::util::BytesRef* Next() {
     return nullptr;
+  }
+
+  virtual PostingsEnum* Postings(PostingsEnum* reuse, const uint32_t flags) = 0;
+
+  PostingsEnum* Postings(PostingsEnum* reuse) {
+    return Postings(reuse, PostingsEnum::FREQS);
   }
 
   // TODO(0ctopus13prime): IT

@@ -23,24 +23,41 @@ namespace core {
 namespace codec {
 
 class BlockTermState {
+ public:
+  int32_t doc_freq;
+  int32_t term_block_ord;
+  int64_t total_term_freq;
+  uint64_t block_file_pointer;
+  uint64_t ord;
+
  protected:
-  BlockTermState() = default;
+  BlockTermState()
+    : doc_freq(0),
+      term_block_ord(0),
+      total_term_freq(0),
+      block_file_pointer(0),
+      ord(0) {
+  }
 
  public:
-  BlockTermState(const BlockTermState& other) {
-    // TODO(0ctopus13prime): IT
+  BlockTermState(const BlockTermState& other)
+    : doc_freq(other.doc_freq),
+      term_block_ord(other.term_block_ord),
+      total_term_freq(other.total_term_freq),
+      block_file_pointer(other.block_file_pointer),
+      ord(other.ord) {
   };
 
   BlockTermState& operator=(const BlockTermState& other) {
-    // TODO(0ctopus13prime): IT
-  }
+    if (this != &other) {
+      doc_freq = other.doc_freq;
+      term_block_ord = other.term_block_ord;
+      total_term_freq = other.total_term_freq;
+      block_file_pointer = other.block_file_pointer;
+      ord = other.ord;
+    }
 
-  BlockTermState(BlockTermState&& other) {
-    // TODO(0ctopus13prime): IT
-  };
-
-  BlockTermState& operator=(BlockTermState&& other) {
-    // TODO(0ctopus13prime): IT
+    return *this;
   }
 };  // BlockTermState
 
