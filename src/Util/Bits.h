@@ -162,7 +162,10 @@ class BitSet {
 };  // BitSet
 
 class FixedBitSet {
-
+ public:
+  void Set(const uint32_t i) {
+    // TODO(0ctopus13prime): IT
+  }
 };  // FixedBitSet
 
 class SparseFixedBitSet {

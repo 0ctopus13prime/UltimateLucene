@@ -22,44 +22,35 @@ namespace lucene {
 namespace core {
 namespace codec {
 
-class BlockTermState {
+class IntBlockTermState {
  public:
   int32_t doc_freq;
   int32_t term_block_ord;
   int64_t total_term_freq;
   uint64_t block_file_pointer;
   uint64_t ord;
+  int64_t doc_start_fp;
+  int64_t pos_start_fp;
+  int64_t pay_start_fp;
+  int64_t skip_offset;
+  int64_t last_pos_block_offset;
+  int32_t singleton_doc_id;
 
  protected:
-  BlockTermState()
+  IntBlockTermState()
     : doc_freq(0),
       term_block_ord(0),
       total_term_freq(0),
       block_file_pointer(0),
-      ord(0) {
+      ord(0),
+      doc_start_fp(0),
+      pos_start_fp(0),
+      pay_start_fp(0),
+      skip_offset(-1),
+      last_pos_block_offset(-1),
+      singleton_doc_id(-1) {
   }
-
- public:
-  BlockTermState(const BlockTermState& other)
-    : doc_freq(other.doc_freq),
-      term_block_ord(other.term_block_ord),
-      total_term_freq(other.total_term_freq),
-      block_file_pointer(other.block_file_pointer),
-      ord(other.ord) {
-  };
-
-  BlockTermState& operator=(const BlockTermState& other) {
-    if (this != &other) {
-      doc_freq = other.doc_freq;
-      term_block_ord = other.term_block_ord;
-      total_term_freq = other.total_term_freq;
-      block_file_pointer = other.block_file_pointer;
-      ord = other.ord;
-    }
-
-    return *this;
-  }
-};  // BlockTermState
+};  // IntBlockTermState
 
 }  // namespace codec
 }  // namespace core

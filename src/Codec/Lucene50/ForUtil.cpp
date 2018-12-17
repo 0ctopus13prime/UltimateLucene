@@ -21,7 +21,7 @@
 using lucene::core::codec::ForUtil;
 using lucene::core::util::PackedInts;
 
-const uint32_t ForUtil::MAX_DATA_SIZE = []() {
+uint32_t ForUtil::MAX_DATA_SIZE = []() {
   uint32_t max_data_size = 0;
 
   for (uint32_t version = PackedInts::VERSION_START ;

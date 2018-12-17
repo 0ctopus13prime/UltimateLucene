@@ -140,7 +140,8 @@ class BlockTreeTermsWriter: public FieldsConsumer {
     out->WriteBytes(bytes.Bytes(), bytes.Offset(), bytes.Length());
   }
 
-  void WriteTrailer(lucene::core::store::IndexOutput* out, const uint64_t dir_start) {
+  void WriteTrailer(lucene::core::store::IndexOutput* out,
+                    const uint64_t dir_start) {
     // TODO(0ctopus13prime): IT
   }
 
@@ -163,6 +164,63 @@ class BlockTreeTermsWriter: public FieldsConsumer {
     // TODO(0ctopus13prime): IT
   }
 };  // BlockTreeTermsWriter
+
+class TermsWriter {
+ private:
+  FieldInfo field_info;
+  uint32_t longs_size;
+  FixedBitSet docs_seen;
+  uint64_t sum_total_term_freq;
+  uint64_t sum_doc_freq;
+  uint64_t index_start_fp;
+  BytesRefBuilder last_term;
+  std::vector<uint32_t> prefix_starts;
+  std::vector<uint64_t> longs;
+  std::vector<PendingEntry> pending;
+  std::vector<PendingBlock> new_blocks;
+  PendingTerm first_pending_term;
+  PendingTerm last_pending_term;
+
+ private:
+  static void WriteByteRef(IndexOutput* out, BytesRef& bytes) {
+
+  }
+
+  PendingBlock WriteBlock(const uint32_t prefix_length,
+                          const bool is_floor,
+                          const uint32_t floor_lead_label,
+                          const uint32_t start,
+                          const uint32_t end,
+                          const bool has_terms,
+                          const bool has_sub_blocks) {
+  }
+
+  void PushTerm(BytesRef& text) {
+
+  }
+
+ public:
+  explicit TermsWriter(FieldInfo& field_info) {
+
+  }
+
+  void WriteBlock(const uint32_t prefix_length,
+                  const uint32_t count) {
+  }
+
+  template <class TermsEnum>
+  void Write(BytesRef& text, TermsEnum& terms_enum) {
+
+  }
+
+  void Finish() {
+
+  }
+
+  void Close() {
+
+  }
+};  // TermsWriter
 
 }  // codec
 }  // core

@@ -21,7 +21,7 @@
 #include <Store/DataInput.h>
 #include <Store/DataOutput.h>
 #include <Util/Pack/PackedInts.h>
-#include <Codec/Lucene50/Lucene50PostingsFormat.h>
+#include <Codec/Lucene50/Lucene50.h>
 #include <cassert>
 #include <cmath>
 #include <cstring>
@@ -32,11 +32,10 @@ namespace core {
 namespace codec {
 
 class ForUtil {
- private:
+ public:
   static const uint32_t ALL_VALUES_EQUAL = 0;
-  static const uint32_t MAX_ENCODED_SIZE =
-    (Lucene50PostingsFormat::BLOCK_SIZE * 4);
-  static const uint32_t MAX_DATA_SIZE;
+  static const uint32_t MAX_ENCODED_SIZE = (Lucene50::POSTING_BLOCK_SIZE * 4);
+  static uint32_t MAX_DATA_SIZE;
 
  private:
   uint32_t encoded_sizes[33];
@@ -47,7 +46,7 @@ class ForUtil {
  private:
   static bool IsAllEqual(const int32_t data[]) {
     int32_t v = data[0];
-    for (uint32_t i = 1 ; i < Lucene50PostingsFormat::BLOCK_SIZE ; ++i) {
+    for (uint32_t i = 1 ; i < Lucene50::POSTING_BLOCK_SIZE ; ++i) {
       if (data[i] != v) {
         return false;
       }
@@ -58,7 +57,7 @@ class ForUtil {
 
   static uint32_t BitsRequired(const int32_t data[]) {
     int64_t or_data = 0; 
-    for (uint32_t i = 0 ; i < Lucene50PostingsFormat::BLOCK_SIZE ; ++i) {
+    for (uint32_t i = 0 ; i < Lucene50::POSTING_BLOCK_SIZE ; ++i) {
       assert(data[i] >= 0);
       or_data |= data[i];
     }
@@ -71,7 +70,7 @@ class ForUtil {
                               const uint32_t bits_per_value) {
     const uint64_t byte_count =
       format.ByteCount(packed_ints_version,
-                       Lucene50PostingsFormat::BLOCK_SIZE,
+                       Lucene50::POSTING_BLOCK_SIZE,
                        bits_per_value);
     assert(byte_count >= 0 &&
            byte_count <= std::numeric_limits<int32_t>::max());
@@ -82,18 +81,18 @@ class ForUtil {
   static uint32_t
   ComputeIterations(lucene::core::util::PackedInts::Decoder* decoder) {
     return static_cast<uint32_t>(
-      std::ceil(static_cast<float>(Lucene50PostingsFormat::BLOCK_SIZE) /
+      std::ceil(static_cast<float>(Lucene50::POSTING_BLOCK_SIZE) /
        decoder->ByteValueCount())); 
   }
 
-  ForUtil(const float acceptable_overhead_ratio,
-          lucene::core::store::DataOutput* out) {
+  void Init(const float acceptable_overhead_ratio,
+            lucene::core::store::DataOutput* out) {
     using PackedInts = lucene::core::util::PackedInts;
     out->WriteVInt32(PackedInts::VERSION_CURRENT);
 
     for (uint32_t bpv = 1 ; bpv <= 32 ; ++bpv) {
       PackedInts::FormatAndBits format_and_bits =
-        PackedInts::FastestFormatAndBits(Lucene50PostingsFormat::BLOCK_SIZE,
+        PackedInts::FastestFormatAndBits(Lucene50::POSTING_BLOCK_SIZE,
                                          bpv,
                                          acceptable_overhead_ratio);
       assert(format_and_bits.format.IsSupported(
@@ -117,7 +116,7 @@ class ForUtil {
     }
   }
 
-  ForUtil(lucene::core::store::DataInput* in) {
+  void Init(lucene::core::store::DataInput* in) {
     const uint32_t packed_ints_version = in->ReadVInt32();
     lucene::core::util::PackedInts::CheckVersion(packed_ints_version);
 
@@ -156,7 +155,7 @@ class ForUtil {
         encoders[num_bits];
       const uint32_t iters = iterations[num_bits];
       assert(iters * encoder->ByteValueCount() >=
-             Lucene50PostingsFormat::BLOCK_SIZE);
+             Lucene50::POSTING_BLOCK_SIZE);
       const uint32_t encoded_size = encoded_sizes[num_bits];
       assert(iters * encoder->ByteBlockCount() >= encoded_size);
 
@@ -177,7 +176,7 @@ class ForUtil {
       const int32_t value = in->ReadVInt32();
       std::memset(decoded,
                   0,
-                  sizeof(uint32_t) * Lucene50PostingsFormat::BLOCK_SIZE);
+                  sizeof(uint32_t) * Lucene50::POSTING_BLOCK_SIZE);
     } else {
       const uint32_t encoded_size = encoded_sizes[num_bits];
       in->ReadBytes(encoded, 0, encoded_size);
@@ -185,7 +184,7 @@ class ForUtil {
       lucene::core::util::PackedInts::Decoder* decoder = decoders[num_bits];
       const uint32_t iters = iterations[num_bits];
       assert(iters * decoder->ByteValueCount() >=
-             Lucene50PostingsFormat::BLOCK_SIZE);
+             Lucene50::POSTING_BLOCK_SIZE);
     }
   }
 

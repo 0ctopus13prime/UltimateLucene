@@ -80,7 +80,18 @@ class Fields {
 };  // Fields
 
 class FieldInfo {
+ // TODO(0ctopus13prime) : IT
 
+ public:
+  IndexOptions GetIndexOptions() {
+    // TODO(0ctopus13prime) : IT
+    return IndexOptions::DOCS_AND_FREQS; 
+  }
+
+  bool HasPayloads() {
+    // TODO(0ctopus13prime) : IT
+    return false;
+  }
 };  // FieldInfo
 
 class FieldInfos {
